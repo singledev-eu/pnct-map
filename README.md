@@ -1,0 +1,94 @@
+# pnct-map
+
+Interactive map of the PNCT territories (Programa Nacional para a Coesão Territorial) in mainland Portugal.
+
+**Phase 1 (this repo state): data pipeline only.** There is no map UI yet.
+
+## Run end to end
+
+Requirements: [uv](https://docs.astral.sh/uv/) (it provides Python 3.12), Node/npx (for mapshaper), `make`, `curl`, `unzip`.
+
+```sh
+uv sync
+uv run make all      # download CAOP (checksum-verified) → parse → match → geo → tests
+```
+
+| Target | What it does |
+|---|---|
+| `make download` | Fetches the CAOP 2025 Continente GeoPackage into `data/external/` (gitignored) and verifies its SHA-256 |
+| `make parse` | `scripts/parse_pdf.py` → `data/interim/pnct_raw.csv` |
+| `make match` | `scripts/build_parishes.py` → `data/processed/pnct_parishes.csv`, `data/processed/unmatched.csv` |
+| `make geo` | `scripts/build_geo.py` → `data/processed/parishes_all.geojson`, `data/processed/concelhos.geojson` |
+| `make test` | `pytest` (`tests/test_pipeline.py`) |
+| `make clean` | Removes `data/interim` and `data/processed` |
+
+mapshaper is run through `npx` at a pinned version (`mapshaper@0.7.68`), with its npm cache in `./.npm-cache`.
+
+## Data sources
+
+| Source | Edition | URL | Downloaded |
+|---|---|---|---|
+| PNCT territories list | PDF dated 2026-02-04 (5 pages) | `data/raw/territorios-pnct-2026-02-04.pdf` | provided |
+| CAOP – Carta Administrativa Oficial de Portugal, DGT, Continente | **CAOP 2025** (approved 2026-01-28; Aviso n.º 3502/2026/2, DR 2.ª série, 2026-02-18), GeoPackage, layer `cont_freguesias`, EPSG:3763 | https://geo2.dgterritorio.gov.pt/caop/CAOP_Continente_2025-gpkg.zip (SHA-256 `87cd67f4…3ecd1d`) | 2026-10-11 |
+
+The CAOP landing page is https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop. CAOP is licensed CC-BY-4.0. Attribution: *"Informação geográfica cedida pela Direção-Geral do Território"*. More background is in `docs/caop_research.md`.
+
+## CAOP edition and the U.F. split
+
+Lei n.º 25-A/2025 restored 302 parishes from 135 *uniões de freguesias*, effective from the 12 Oct 2025 local elections. DGT published three relevant Continente editions:
+
+| Edition | Parishes | State |
+|---|---|---|
+| CAOP 2024 | 2882 | pre-split |
+| CAOP 2024.1 (extraordinary, Aug 2025) | 3049 | post-split |
+| CAOP 2025 | 3049 | post-split; same codes and names as 2024.1 |
+
+We expected the list to follow CAOP 2024, but **the list was written for the post-split map**. 18 of the 83 explicit rows name restored parishes that do not exist in CAOP 2024:
+
+- Águeda: Agadão, Belazaima do Chão, Castanheira do Vouga
+- Castelo de Paiva: Raiva, Pedorido, Paraíso
+- Loulé: Querença, Tôr, Benafim
+- Ourém: Matas, Cercal, Rio de Couros, Casal dos Bernardos
+- Tomar: Serra, Junceira
+- Ponte de Lima: Gaifar, Sandiães, Vilar das Almas
+
+Every "U.F." name that the list still uses belongs to a union that was *not* split, and all of them exist unchanged in CAOP 2025.
+
+**Decision: match against CAOP 2025.**
+
+- All 83 explicit rows resolve within their own municipality, so no U.F. needs to be mapped onto successor parishes and no rows are flagged for it.
+- Against CAOP 2024, exactly those 18 rows fail to match. In 2024 each of them is only part of a larger union, such as `010123` "U.F. de Belazaima do Chão, Castanheira do Vouga e Agadão", so a pre-split map could not show them.
+- Wildcard rows (whole district or whole municipality) are expanded using the CAOP 2025 parish set.
+
+## Matching rules (`scripts/build_parishes.py`)
+
+- Each row is matched only within its own municipality, which is resolved from district plus concelho. Rows are never matched across municipalities.
+- The match methods are tried in this order:
+  1. `override`: a row pin from `data/overrides.csv`.
+  2. `exact`: case-insensitive comparison with accents kept.
+  3. `normalized`: accents stripped, uppercased, whitespace collapsed, and `U.F. [DE]` / `UNIÃO DAS FREGUESIAS DE` removed. Compared against both `freguesia` and `designacao_simplificada`.
+  4. `fuzzy`: rapidfuzz, accepted only if the score is ≥ 90 and at least 5 points clear of the runner-up.
+- Anything else goes to `data/processed/unmatched.csv` together with its top 3 candidates.
+- Wildcards produce `match_method = wildcard`.
+
+`data/overrides.csv` holds the manual fixes:
+
+- `freguesia = *` is a concelho alias.
+- Otherwise the row pins a PDF row to one or more dicofres (separated by `;`).
+- A stale override, or a pin that targets an unknown or wrong-municipality code, fails the build.
+
+Known PDF quirks:
+
+- **Duplicate line:** "São Pedro do Sul / todas" appears twice. `parse_pdf.py` drops the duplicate.
+- **CASTANHEIRA DE PERA:** officially Castanheira de Pêra. Handled by a concelho alias. Accent stripping would also match it.
+- **VÁRZEA, ALIVIADA E FOLHADA (Marco de Canaveses):** pinned to `130740`. In CAOP 2025 this is also the official name, without a "União das freguesias de" prefix.
+- **VILAR ALMAS (Ponte de Lima):** pinned to `160763` Vilar das Almas. The fuzzy score was 84.6, below 90, so it was not accepted automatically.
+
+## Outputs
+
+- `data/processed/pnct_parishes.csv`: one row per PNCT parish, with columns `dicofre, distrito, concelho, freguesia_official, source_row, match_method, match_score`.
+- `data/processed/parishes_all.geojson`: all 3049 mainland parishes.
+  - Properties: `dicofre, freguesia, concelho, distrito, pnct` (bool).
+  - EPSG:4326, 5-decimal precision, about 4.7 MB.
+  - Simplified with mapshaper (`-simplify 6% keep-shapes`).
+- `data/processed/concelhos.geojson`: 278 municipality outlines. They are dissolved from the simplified parishes, so the borders line up exactly.
