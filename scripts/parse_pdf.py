@@ -63,7 +63,7 @@ def main() -> None:
     rows, duplicates = extract_rows(PDF_PATH)
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     with OUT_PATH.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=FIELDS)
+        writer = csv.DictWriter(f, fieldnames=FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     print(f"{len(rows)} rows written to {OUT_PATH.relative_to(ROOT)} ({duplicates} duplicates dropped)")
