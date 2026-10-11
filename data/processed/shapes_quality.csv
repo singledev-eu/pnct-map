@@ -1,0 +1,1862 @@
+dicofre,freguesia,concelho,method,points,tolerance_m,parts,coverage,overreach_km2,overreach_ratio
+010127,União das freguesias do Préstimo e Macieira de Alcoba,Águeda,single,54,108.2,1,0.98956,0.5437,0.01303
+010128,Agadão,Águeda,single,52,46.8,1,0.99631,0.1753,0.00445
+010132,Belazaima do Chão,Águeda,single,58,35.4,1,0.9961,0.117,0.00617
+010134,Castanheira do Vouga,Águeda,single,57,53.8,1,0.99496,0.1923,0.00647
+010402,Alvarenga,Arouca,single,57,108.2,1,0.9869,0.6038,0.01557
+010407,Chave,Arouca,single,60,40.7,1,0.99277,0.0861,0.00789
+010409,Escariz,Arouca,single,57,61.9,1,0.98973,0.2596,0.01443
+010411,Fermedo,Arouca,single,58,71.2,1,0.9712,0.1547,0.01393
+010413,Mansores,Arouca,single,52,61.9,1,0.99101,0.2102,0.01494
+010414,Moldes,Arouca,single,59,46.8,1,0.99394,0.1301,0.00464
+010415,Rossas,Arouca,single,58,26.8,1,0.99803,0.0607,0.00547
+010416,Santa Eulália,Arouca,single,58,61.9,1,0.99028,0.1321,0.00573
+010417,São Miguel do Mato,Arouca,single,60,71.2,1,0.98947,0.2192,0.01281
+010418,Tropeço,Arouca,single,60,108.2,1,0.97794,0.2908,0.0163
+010419,Urrô,Arouca,single,55,26.8,1,0.99434,0.0353,0.00327
+010420,Várzea,Arouca,single,51,5.0,1,0.99808,0.0021,0.00116
+010421,União das freguesias de Arouca e Burgo,Arouca,single,59,30.8,1,0.99675,0.0857,0.00562
+010422,União das freguesias de Cabreiros e Albergaria da Serra,Arouca,single,59,17.6,1,0.99829,0.0304,0.00097
+010423,União das freguesias de Canelas e Espiunca,Arouca,single,57,71.2,1,0.98973,0.1964,0.0055
+010424,União das freguesias de Covelo de Paivó e Janarde,Arouca,single,51,108.2,1,0.98991,0.4013,0.00904
+010606,Real,Castelo de Paiva,single,56,94.1,1,0.99171,0.4638,0.01438
+010613,Paraíso,Castelo de Paiva,single,57,108.2,1,0.98383,0.4634,0.02024
+010614,Pedorido,Castelo de Paiva,single,56,53.8,1,0.98782,0.101,0.00834
+010615,Raiva,Castelo de Paiva,single,52,46.8,1,0.99242,0.1415,0.00921
+011702,Couto de Esteves,Sever do Vouga,single,52,61.9,1,0.98805,0.1097,0.00668
+011704,Pessegueiro do Vouga,Sever do Vouga,single,59,23.3,1,0.99577,0.0523,0.0033
+011705,Rocas do Vouga,Sever do Vouga,single,59,61.9,1,0.99126,0.1589,0.01072
+011706,Sever do Vouga,Sever do Vouga,single,58,35.4,1,0.99605,0.0507,0.00438
+011708,Talhadas,Sever do Vouga,single,57,46.8,1,0.99397,0.1221,0.00426
+011712,Cedrim,Sever do Vouga,single,58,20.2,1,0.99464,0.0289,0.00309
+011713,Dornelas,Sever do Vouga,single,60,5.0,1,0.99958,0.004,0.00044
+011714,Paradela,Sever do Vouga,single,58,20.2,1,0.99639,0.0367,0.00407
+011715,Silva Escura,Sever do Vouga,single,58,40.7,1,0.99522,0.0686,0.00453
+011901,Arões,Vale de Cambra,single,58,61.9,1,0.99647,0.3327,0.00825
+011905,Junqueira,Vale de Cambra,single,58,10.1,1,0.99928,0.0116,0.00064
+020102,Ervidel,Aljustrel,single,60,61.9,1,0.99498,0.2141,0.00551
+020103,Messejana,Aljustrel,single,59,124.5,1,0.99219,0.6601,0.0058
+020104,São João de Negrilhos,Aljustrel,single,57,30.8,1,0.99795,0.1232,0.0016
+020107,Aljustrel,Aljustrel,single,58,164.6,1,0.99439,1.3198,0.0069
+020108,Rio de Moinhos,Aljustrel,single,59,61.9,1,0.99401,0.2878,0.00769
+020203,Rosário,Almodôvar,single,54,124.5,1,0.98757,0.5613,0.00925
+020205,Santa Cruz,Almodôvar,single,47,503.5,1,0.95714,4.7743,0.0387
+020206,São Barnabé,Almodôvar,single,54,287.9,1,0.98244,2.6156,0.01846
+020208,Aldeia dos Fernandes,Almodôvar,single,60,94.1,1,0.98415,0.4142,0.01948
+020211,Almodôvar,Almodôvar,single,60,380.7,1,0.98186,4.2841,0.01929
+020212,Gomes Aires,Almodôvar,single,56,250.3,1,0.97385,2.1664,0.03308
+020213,Santa Clara-a-Nova,Almodôvar,single,57,250.3,1,0.98262,1.5283,0.01411
+020214,Senhora da Graça dos Padrões,Almodôvar,single,58,94.1,1,0.98448,0.3208,0.00916
+020301,Alvito,Alvito,single,59,124.5,1,0.99452,0.9071,0.00664
+020302,Vila Nova da Baronia,Alvito,single,60,108.2,1,0.99548,0.8206,0.00639
+020401,Barrancos,Barrancos,single,57,380.7,1,0.97552,4.2656,0.02533
+020502,Baleizão,Beja,single,60,189.3,1,0.9869,1.0511,0.00752
+020503,Beringel,Beja,single,56,20.2,1,0.99789,0.0513,0.0032
+020504,Cabeça Gorda,Beja,single,59,108.2,1,0.99402,0.5077,0.0065
+020506,Nossa Senhora das Neves,Beja,single,56,108.2,1,0.99142,0.4255,0.00801
+020510,Santa Clara de Louredo,Beja,single,60,71.2,1,0.99673,0.3326,0.00463
+020516,São Matias,Beja,single,60,81.8,1,0.99332,0.3527,0.00502
+020519,União das freguesias de Albernoa e Trindade,Beja,single,59,189.3,1,0.98972,0.8494,0.00406
+020520,União das freguesias de Beja (Salvador e Santa Maria da Feira),Beja,single,55,46.8,1,0.99084,0.1174,0.00522
+020521,União das freguesias de Beja (Santiago Maior e São João Baptista),Beja,single,56,108.2,1,0.98574,0.3206,0.00625
+020522,União das freguesias de Salvada e Quintos,Beja,single,60,250.3,1,0.98323,2.035,0.01019
+020523,União das freguesias de Santa Vitória e Mombeja,Beja,single,59,287.9,1,0.99293,2.5028,0.01507
+020524,União das freguesias de Trigaches e São Brissos,Beja,single,56,40.7,1,0.99834,0.1515,0.00222
+020603,Entradas,Castro Verde,single,56,124.5,1,0.99298,0.6348,0.00833
+020604,Santa Bárbara de Padrões,Castro Verde,single,55,143.1,1,0.98722,0.625,0.00943
+020605,São Marcos da Ataboeira,Castro Verde,single,53,250.3,1,0.98398,1.4946,0.01435
+020606,União das freguesias de Castro Verde e Casével,Castro Verde,single,57,331.1,1,0.98674,3.5579,0.01102
+020701,Cuba,Cuba,single,58,61.9,1,0.99544,0.1624,0.00232
+020702,Faro do Alentejo,Cuba,single,59,26.8,1,0.99839,0.0664,0.00149
+020703,Vila Alva,Cuba,single,55,61.9,1,0.99569,0.2466,0.00663
+020704,Vila Ruiva,Cuba,hull,29,0.0,2,1.0,13.6097,0.67635
+020803,Figueira dos Cavaleiros,Ferreira do Alentejo,single,57,164.6,1,0.99154,1.6868,0.01094
+020804,Odivelas,Ferreira do Alentejo,single,58,81.8,1,0.99635,0.307,0.00279
+020809,Alfundão,Ferreira do Alentejo,single,59,35.4,1,0.99762,0.1548,0.00298
+020810,Canhestros,Ferreira do Alentejo,single,58,53.8,1,0.99627,0.1242,0.00173
+020811,Ferreira do Alentejo,Ferreira do Alentejo,single,56,287.9,1,0.98842,1.9394,0.00867
+020812,Peroguarda,Ferreira do Alentejo,single,58,11.6,1,0.99955,0.0393,0.00108
+020901,Alcaria Ruiva,Mértola,single,51,380.7,1,0.97913,3.2106,0.01482
+020902,Corte do Pinto,Mértola,single,51,108.2,1,0.99329,0.5488,0.00768
+020903,Espírito Santo,Mértola,single,60,287.9,1,0.97748,1.8123,0.01333
+020904,Mértola,Mértola,single,57,380.7,1,0.98643,5.4558,0.0169
+020905,Santana de Cambas,Mértola,single,56,217.7,1,0.98776,2.3775,0.01426
+020906,São João dos Caldeireiros,Mértola,single,54,287.9,1,0.97537,1.6941,0.0163
+020910,"União das freguesias de São Miguel do Pinheiro, São Pedro de Solis e São Sebastião dos Carros",Mértola,single,57,503.5,1,0.9748,6.9035,0.02507
+021001,Amareleja,Moura,single,58,124.5,1,0.99369,0.9379,0.00864
+021002,Póvoa de São Miguel,Moura,single,52,217.7,1,0.98979,2.1586,0.01154
+021008,Sobral da Adiça,Moura,single,56,217.7,1,0.98567,1.207,0.00873
+021009,União das freguesias de Moura (Santo Agostinho e São João Baptista) e Santo Amador,Moura,single,57,287.9,1,0.98769,3.1057,0.01081
+021011,Safara,Moura,single,58,124.5,1,0.9898,0.719,0.01246
+021012,Santo Aleixo da Restauração,Moura,single,50,380.7,1,0.98476,4.5058,0.0251
+021102,Relíquias,Odemira,single,55,189.3,1,0.98839,1.5485,0.0129
+021103,Sabóia,Odemira,single,55,217.7,1,0.98785,1.8212,0.01172
+021106,São Luís,Odemira,single,57,250.3,1,0.9899,2.0247,0.01381
+021107,São Martinho das Amoreiras,Odemira,single,56,250.3,1,0.98395,1.8713,0.01298
+021111,Vila Nova de Milfontes,Odemira,single,58,124.5,1,0.99361,0.8027,0.0105
+021115,Luzianes-Gare,Odemira,single,54,189.3,1,0.98958,0.9144,0.00969
+021116,Boavista dos Pinheiros,Odemira,single,55,164.6,1,0.96911,0.8799,0.02325
+021117,Longueira/Almograve,Odemira,single,52,143.1,1,0.99212,0.8307,0.00906
+021119,Santa Clara-a-Velha,Odemira,single,52,250.3,1,0.99051,2.8026,0.01712
+021120,São Salvador e Santa Maria,Odemira,single,58,287.9,1,0.97719,2.103,0.01738
+021121,São Teotónio,Odemira,single,55,380.7,1,0.98926,6.1086,0.01759
+021123,Bicos,Odemira,single,58,30.8,1,0.99766,0.0689,0.00131
+021124,Colos,Odemira,single,60,143.1,1,0.9919,0.8164,0.00789
+021125,Vale de Santiago,Odemira,single,55,108.2,1,0.99307,0.6165,0.00936
+021203,Ourique,Ourique,single,56,287.9,1,0.98879,2.8409,0.01138
+021206,Santana da Serra,Ourique,single,58,287.9,1,0.98209,2.2585,0.01183
+021208,União das freguesias de Panoias e Conceição,Ourique,single,51,250.3,1,0.98544,1.8469,0.01287
+021209,Garvão,Ourique,single,53,94.1,1,0.991,0.4131,0.00934
+021210,Santa Luzia,Ourique,single,57,94.1,1,0.98627,0.3834,0.01098
+021302,Brinches,Serpa,single,60,71.2,1,0.99567,0.4041,0.00437
+021303,Pias,Serpa,single,58,164.6,1,0.99253,1.2174,0.00743
+021307,Vila Verde de Ficalho,Serpa,single,60,108.2,1,0.99518,0.6026,0.00572
+021308,União das freguesias de Serpa (Salvador e Santa Maria),Serpa,single,55,331.1,1,0.9933,6.6049,0.01489
+021310,Vale de Vargo,Serpa,single,57,61.9,1,0.99664,0.248,0.00428
+021311,Vila Nova de São Bento,Serpa,single,57,164.6,1,0.99006,0.8445,0.00349
+021401,Pedrógão,Vidigueira,single,50,164.6,1,0.99161,1.3396,0.01066
+021402,Selmes,Vidigueira,single,58,189.3,1,0.98819,1.6849,0.01226
+021403,Vidigueira,Vidigueira,single,59,40.7,1,0.99533,0.1448,0.0052
+021404,Vila de Frades,Vidigueira,single,53,61.9,1,0.99272,0.2267,0.00885
+030112,Goães,Amares,single,58,5.8,1,0.99876,0.0036,0.00119
+030120,Bouro (Santa Marta),Amares,single,60,23.3,1,0.99401,0.0243,0.00256
+030126,"União das freguesias de Caldelas, Sequeiros e Paranhos",Amares,single,58,13.3,1,0.99773,0.0222,0.00195
+030129,"União das freguesias de Vilela, Seramil e Paredes Secas",Amares,single,53,15.3,1,0.99828,0.0324,0.00377
+030401,Abadim,Cabeceiras de Basto,single,57,53.8,1,0.99052,0.0964,0.00637
+030404,Basto,Cabeceiras de Basto,single,60,30.8,1,0.99242,0.0701,0.01256
+030405,Bucos,Cabeceiras de Basto,single,58,30.8,1,0.99703,0.0808,0.00454
+030406,Cabeceiras de Basto,Cabeceiras de Basto,single,59,53.8,1,0.99583,0.2272,0.00927
+030407,Cavez,Cabeceiras de Basto,single,60,35.4,1,0.99724,0.1045,0.0039
+030408,Faia,Cabeceiras de Basto,single,55,13.3,1,0.99709,0.0157,0.00304
+030413,Pedraça,Cabeceiras de Basto,single,55,46.8,1,0.9908,0.0877,0.00721
+030415,Rio Douro,Cabeceiras de Basto,single,60,53.8,1,0.99621,0.1005,0.00233
+030418,União das freguesias de Alvite e Passos,Cabeceiras de Basto,single,55,61.9,1,0.98862,0.1877,0.0154
+030419,União das freguesias de Arco de Baúlhe e Vila Nune,Cabeceiras de Basto,single,59,26.8,1,0.99522,0.0384,0.00424
+030420,União das freguesias de Gondiães e Vilar de Cunhas,Cabeceiras de Basto,single,55,61.9,1,0.99302,0.2485,0.006
+030422,Outeiro,Cabeceiras de Basto,single,56,20.2,1,0.9945,0.023,0.00304
+030423,Painzela,Cabeceiras de Basto,single,56,23.3,1,0.99601,0.042,0.00572
+030424,Refojos de Basto,Cabeceiras de Basto,single,56,94.1,1,0.97923,0.3328,0.02373
+030501,Agilde,Celorico de Basto,single,60,30.8,1,0.99553,0.0567,0.00629
+030502,Arnóia,Celorico de Basto,single,55,71.2,1,0.98663,0.1955,0.01044
+030503,Borba de Montanha,Celorico de Basto,single,54,26.8,1,0.99595,0.0501,0.0046
+030508,Codeçoso,Celorico de Basto,single,56,23.3,1,0.99591,0.0306,0.00286
+030510,Fervença,Celorico de Basto,single,55,46.8,1,0.99158,0.1056,0.00876
+030515,Moreira do Castelo,Celorico de Basto,single,56,23.3,1,0.99589,0.0393,0.0064
+030517,Rego,Celorico de Basto,single,56,35.4,1,0.99481,0.0597,0.00348
+030518,Ribas,Celorico de Basto,single,54,40.7,1,0.99211,0.074,0.00895
+030520,Basto (São Clemente),Celorico de Basto,single,56,53.8,1,0.98744,0.1421,0.00922
+030521,Vale de Bouro,Celorico de Basto,single,52,46.8,1,0.9893,0.0994,0.0126
+030523,"União das freguesias de Britelo, Gémeos e Ourilhe",Celorico de Basto,single,55,71.2,1,0.99185,0.2704,0.01575
+030524,União das freguesias de Caçarilhe e Infesta,Celorico de Basto,single,59,30.8,1,0.99489,0.0536,0.0047
+030525,União das freguesias de Canedo de Basto e Corgo,Celorico de Basto,single,54,30.8,1,0.99391,0.0437,0.0033
+030526,União das freguesias de Carvalho e Basto (Santa Tecla),Celorico de Basto,single,58,40.7,1,0.99313,0.051,0.00508
+030527,"União das freguesias de Veade, Gagos e Molares",Celorico de Basto,single,59,53.8,1,0.9917,0.1218,0.00937
+030705,Armil,Fafe,single,59,11.6,1,0.99681,0.009,0.00194
+030708,Estorãos,Fafe,single,60,46.8,1,0.98214,0.0639,0.01082
+030709,Fafe,Fafe,single,58,35.4,1,0.99099,0.0651,0.00817
+030712,Fornelos,Fafe,single,59,15.3,1,0.99245,0.0174,0.00712
+030714,Golães,Fafe,single,57,26.8,1,0.991,0.0399,0.00849
+030716,Medelo,Fafe,single,57,11.6,1,0.99687,0.0113,0.00451
+030719,Paços,Fafe,single,60,23.3,1,0.99293,0.0278,0.00679
+030722,Quinchães,Fafe,single,57,61.9,1,0.9841,0.1202,0.01133
+030723,Regadas,Fafe,single,55,35.4,1,0.994,0.0551,0.00934
+030724,Revelhe,Fafe,single,60,17.6,1,0.99559,0.0199,0.00404
+030725,Ribeiros,Fafe,single,60,30.8,1,0.99222,0.055,0.0111
+030726,Arões (Santa Cristina),Fafe,single,59,20.2,1,0.99545,0.0245,0.0062
+030728,São Gens,Fafe,hull,32,0.0,2,0.99999,9.5097,0.64267
+030729,Silvares (São Martinho),Fafe,single,60,26.8,1,0.99216,0.0299,0.00476
+030730,Arões (São Romão),Fafe,single,55,20.2,1,0.99442,0.0123,0.00215
+030733,Travassós,Fafe,single,55,53.8,1,0.98501,0.1082,0.01329
+030736,Vinhós,Fafe,single,60,13.3,1,0.99492,0.0101,0.00352
+030737,"União de freguesias de Aboim, Felgueiras, Gontim e Pedraído",Fafe,single,56,94.1,1,0.99114,0.3199,0.01198
+030738,União de freguesias de Agrela e Serafão,Fafe,single,57,40.7,1,0.9916,0.0447,0.00487
+030739,União de freguesias de Antime e Silvares (São Clemente),Fafe,single,55,30.8,1,0.99317,0.0549,0.00984
+030740,"União de freguesias de Ardegão, Arnozela e Seidões",Fafe,single,60,46.8,1,0.99003,0.0679,0.00694
+030741,União de freguesias de Cepães e Fareja,Fafe,single,60,30.8,1,0.99197,0.0695,0.0094
+030742,União de freguesias de Freitas e Vila Cova,Fafe,single,59,53.8,1,0.99149,0.1444,0.01258
+030743,União de freguesias de Monte e Queimadela,Fafe,single,51,94.1,1,0.98598,0.2187,0.01073
+030744,União de freguesias de Moreira do Rei e Várzea Cova,Fafe,single,52,94.1,1,0.98795,0.2746,0.00976
+030877,União das freguesias de Arosa e Castelões,Guimarães,single,57,30.8,1,0.98868,0.0694,0.01257
+030906,Covelas,Póvoa de Lanhoso,single,57,5.0,1,0.99928,0.0031,0.00106
+030908,Ferreiros,Póvoa de Lanhoso,single,51,30.8,1,0.98969,0.044,0.01001
+030912,Galegos,Póvoa de Lanhoso,single,58,11.6,1,0.99747,0.0064,0.00218
+030913,Garfe,Póvoa de Lanhoso,single,59,10.1,1,0.99872,0.0076,0.00141
+030914,Geraz do Minho,Póvoa de Lanhoso,single,55,26.8,1,0.99448,0.0248,0.00513
+030915,Lanhoso,Póvoa de Lanhoso,single,56,26.8,1,0.99368,0.0433,0.00715
+030917,Monsul,Póvoa de Lanhoso,single,54,30.8,1,0.98632,0.0233,0.00712
+030919,Póvoa de Lanhoso (Nossa Senhora do Amparo),Póvoa de Lanhoso,single,58,35.4,1,0.98989,0.0531,0.00932
+030921,Rendufinho,Póvoa de Lanhoso,single,60,17.6,1,0.99798,0.0177,0.00212
+030922,Santo Emilião,Póvoa de Lanhoso,single,57,13.3,1,0.99257,0.0153,0.00714
+030923,São João de Rei,Póvoa de Lanhoso,single,59,7.6,1,0.99928,0.0097,0.00177
+030924,Serzedelo,Póvoa de Lanhoso,single,58,30.8,1,0.99555,0.0459,0.00456
+030925,Sobradelo da Goma,Póvoa de Lanhoso,single,60,30.8,1,0.99354,0.037,0.00366
+030926,Taíde,Póvoa de Lanhoso,single,60,26.8,1,0.99269,0.0629,0.00944
+030927,Travassos,Póvoa de Lanhoso,single,55,26.8,1,0.99457,0.0269,0.00579
+030929,Vilela,Póvoa de Lanhoso,single,60,17.6,1,0.99479,0.0204,0.00445
+030930,União das freguesias de Águas Santas e Moure,Póvoa de Lanhoso,single,55,17.6,1,0.99785,0.0248,0.00635
+030931,União das freguesias de Calvos e Frades,Póvoa de Lanhoso,single,55,23.3,1,0.99484,0.0422,0.00484
+030932,União das freguesias de Campos e Louredo,Póvoa de Lanhoso,single,58,5.0,1,0.99948,0.0035,0.0007
+030933,União das freguesias de Esperança e Brunhais,Póvoa de Lanhoso,single,60,35.4,1,0.99364,0.0705,0.00859
+030934,União das freguesias de Fonte Arcada e Oliveira,Póvoa de Lanhoso,single,57,53.8,1,0.98889,0.1117,0.0101
+030935,"União das freguesias de Verim, Friande e Ajude",Póvoa de Lanhoso,single,56,40.7,1,0.99285,0.0763,0.00756
+031001,Balança,Terras de Bouro,single,59,10.1,1,0.99857,0.0091,0.00241
+031003,Campo do Gerês,Terras de Bouro,single,56,94.1,1,0.99434,0.7643,0.01111
+031004,Carvalheira,Terras de Bouro,single,52,30.8,1,0.99261,0.0567,0.00626
+031008,Covide,Terras de Bouro,single,60,15.3,1,0.99882,0.0174,0.00096
+031009,Gondoriz,Terras de Bouro,single,59,20.2,1,0.99627,0.0305,0.00413
+031010,Moimenta,Terras de Bouro,single,58,8.7,1,0.9988,0.0094,0.00281
+031012,Ribeira,Terras de Bouro,single,59,6.6,1,0.9969,0.0039,0.00172
+031013,Rio Caldo,Terras de Bouro,single,56,17.6,1,0.99784,0.0259,0.00185
+031014,Souto,Terras de Bouro,single,59,10.1,1,0.99794,0.0144,0.00357
+031015,Valdosende,Terras de Bouro,single,59,8.7,1,0.99935,0.0108,0.00089
+031017,Vilar da Veiga,Terras de Bouro,single,56,81.8,1,0.99694,0.3133,0.00403
+031018,União das freguesias de Chamoim e Vilar,Terras de Bouro,single,59,20.2,1,0.99785,0.0298,0.00237
+031019,União das freguesias de Chorense e Monte,Terras de Bouro,single,57,53.8,1,0.98917,0.1387,0.00684
+031020,União das freguesias de Cibões e Brufe,Terras de Bouro,single,57,46.8,1,0.99625,0.1535,0.00639
+031105,Cantelães,Vieira do Minho,single,57,23.3,1,0.99745,0.0519,0.0045
+031107,Eira Vedra,Vieira do Minho,single,53,23.3,1,0.99189,0.0257,0.0046
+031108,Guilhofrei,Vieira do Minho,single,50,35.4,1,0.99354,0.0468,0.00416
+031109,Louredo,Vieira do Minho,single,59,23.3,1,0.99691,0.0482,0.00633
+031110,Mosteiro,Vieira do Minho,single,56,40.7,1,0.9899,0.0689,0.00636
+031111,Parada de Bouro,Vieira do Minho,single,59,7.6,1,0.99896,0.0066,0.00086
+031112,Pinheiro,Vieira do Minho,single,60,13.3,1,0.9978,0.016,0.00156
+031113,Rossas,Vieira do Minho,single,59,108.2,1,0.98161,0.4698,0.01488
+031115,Salamonde,Vieira do Minho,single,58,13.3,1,0.99772,0.0109,0.0013
+031118,Tabuaças,Vieira do Minho,single,53,26.8,1,0.99535,0.0429,0.00444
+031120,Vieira do Minho,Vieira do Minho,single,57,26.8,1,0.99409,0.0463,0.00644
+031122,União das freguesias de Anissó e Soutelo,Vieira do Minho,single,57,26.8,1,0.99506,0.0394,0.00484
+031123,União das freguesias de Anjos e Vilar do Chão,Vieira do Minho,single,57,46.8,1,0.99601,0.0976,0.00391
+031124,União das freguesias de Caniçada e Soengas,Vieira do Minho,single,54,20.2,1,0.99569,0.0318,0.00354
+031125,União das freguesias de Ruivães e Campos,Vieira do Minho,single,60,71.2,1,0.99279,0.1556,0.00353
+031126,União das freguesias de Ventosa e Cova,Vieira do Minho,single,57,20.2,1,0.99675,0.0294,0.00338
+031304,Atiães,Vila Verde,single,41,5.0,1,0.99937,0.0018,0.00045
+031308,Cabanelas,Vila Verde,single,55,11.6,1,0.99757,0.0123,0.00182
+031309,Cervães,Vila Verde,single,56,11.6,1,0.99864,0.0205,0.00188
+031311,Coucieiro,Vila Verde,single,59,15.3,1,0.99763,0.0151,0.00358
+031313,Dossãos,Vila Verde,single,53,5.0,1,0.99857,0.0033,0.00098
+031316,Freiriz,Vila Verde,single,59,6.6,1,0.99902,0.0051,0.00087
+031317,Gême,Vila Verde,single,60,8.7,1,0.99597,0.0038,0.0024
+031323,Lage,Vila Verde,single,58,8.7,1,0.99969,0.0068,0.00146
+031324,Lanhas,Vila Verde,single,50,5.0,1,0.99855,0.0009,0.00051
+031325,Loureira,Vila Verde,single,56,10.1,1,0.9955,0.0049,0.00279
+031328,Moure,Vila Verde,single,58,5.8,1,0.99942,0.0042,0.00093
+031330,Oleiros,Vila Verde,single,56,11.6,1,0.99651,0.0068,0.00181
+031331,Parada de Gatim,Vila Verde,single,37,5.0,1,0.99893,0.0026,0.00082
+031335,Pico,Vila Verde,single,59,15.3,1,0.99434,0.0114,0.00406
+031337,Ponte,Vila Verde,single,58,7.6,1,0.99868,0.0063,0.00185
+031340,Sabariz,Vila Verde,single,56,5.0,1,0.99868,0.0029,0.00139
+031342,Vila de Prado,Vila Verde,single,60,6.6,1,0.99896,0.004,0.00072
+031350,Prado (São Miguel),Vila Verde,single,60,8.7,1,0.99868,0.0063,0.00114
+031352,Soutelo,Vila Verde,single,60,6.6,1,0.99812,0.0032,0.00076
+031354,Turiz,Vila Verde,single,56,5.0,1,0.99936,0.0018,0.00051
+031355,Valdreu,Vila Verde,single,60,35.4,1,0.99648,0.1016,0.00566
+031359,Aboim da Nóbrega e Gondomar,Vila Verde,single,56,26.8,1,0.99647,0.0602,0.00418
+031360,União das freguesias da Ribeira do Neiva,Vila Verde,single,57,23.3,1,0.99826,0.0519,0.00154
+031361,União das freguesias de Carreiras (São Miguel) e Carreiras (Santiago),Vila Verde,single,57,5.0,1,0.99917,0.0027,0.00061
+031362,União das freguesias de Escariz (São Mamede) e Escariz (São Martinho),Vila Verde,single,54,6.6,1,0.99919,0.0062,0.00107
+031363,"União das freguesias de Esqueiros, Nevogilde e Travassós",Vila Verde,single,58,11.6,1,0.99853,0.0073,0.00144
+031364,União das freguesias de Marrancos e Arcozelo,Vila Verde,single,58,10.1,1,0.99827,0.0059,0.00091
+031365,União das freguesias de Oriz (Santa Marinha) e Oriz (São Miguel),Vila Verde,single,57,15.3,1,0.99626,0.0168,0.00278
+031366,"União das freguesias de Pico de Regalados, Gondiães e Mós",Vila Verde,single,57,26.8,1,0.99784,0.0363,0.0038
+031367,"União das freguesias de Sande, Vilarinho, Barros e Gomide",Vila Verde,single,56,30.8,1,0.99454,0.0605,0.00489
+031368,"União das freguesias de Valbom (São Pedro), Passô e Valbom (São Martinho)",Vila Verde,single,58,11.6,1,0.99797,0.0092,0.00148
+031369,União das freguesias do Vade,Vila Verde,single,58,30.8,1,0.99624,0.0486,0.00311
+031370,Vila Verde e Barbudo,Vila Verde,single,55,23.3,1,0.99767,0.0304,0.00403
+040102,Alfândega da Fé,Alfândega da Fé,single,51,124.5,1,0.98758,0.5916,0.01456
+040103,Cerejais,Alfândega da Fé,single,57,81.8,1,0.988,0.2395,0.01409
+040111,Sambade,Alfândega da Fé,single,57,71.2,1,0.99205,0.3439,0.01092
+040118,Vilar Chão,Alfândega da Fé,single,52,71.2,1,0.98993,0.1503,0.00612
+040119,Vilarelhos,Alfândega da Fé,single,60,10.1,1,0.99929,0.0095,0.00079
+040120,Vilares de Vilariça,Alfândega da Fé,single,59,20.2,1,0.9979,0.0626,0.00419
+040121,"União das freguesias de Agrobom, Saldonha e Vale Pereiro",Alfândega da Fé,single,59,81.8,1,0.991,0.2842,0.00872
+040122,"União das freguesias de Eucisia, Gouveia e Valverde",Alfândega da Fé,single,56,81.8,1,0.99389,0.4274,0.00841
+040123,União das freguesias de Ferradosa e Sendim da Serra,Alfândega da Fé,single,60,81.8,1,0.99314,0.2826,0.01044
+040124,União das freguesias de Gebelim e Soeima,Alfândega da Fé,single,55,61.9,1,0.99366,0.1673,0.00547
+040125,União das freguesias de Parada e Sendim da Ribeira,Alfândega da Fé,single,57,71.2,1,0.99343,0.2196,0.00877
+040126,União das freguesias de Pombal e Vales,Alfândega da Fé,single,55,20.2,1,0.99758,0.0229,0.00151
+040201,Alfaião,Bragança,single,58,6.6,1,0.99945,0.0061,0.00035
+040203,Babe,Bragança,single,59,11.6,1,0.99934,0.012,0.00047
+040204,Baçal,Bragança,single,55,26.8,1,0.99809,0.0411,0.00145
+040206,Carragosa,Bragança,single,57,61.9,1,0.99267,0.2471,0.0089
+040209,Castro de Avelãs,Bragança,single,49,5.0,1,0.99983,0.0043,0.00032
+040210,Coelhoso,Bragança,single,60,11.6,1,0.99929,0.0262,0.00133
+040212,Donai,Bragança,single,58,6.6,1,0.99928,0.0037,0.00025
+040213,Espinhosela,Bragança,single,58,61.9,1,0.99421,0.162,0.00437
+040215,França,Bragança,single,49,71.2,1,0.99449,0.4477,0.00834
+040216,Gimonde,Bragança,single,60,23.3,1,0.9987,0.0187,0.00113
+040217,Gondesende,Bragança,single,56,15.3,1,0.99802,0.0277,0.00214
+040218,Gostei,Bragança,single,56,5.0,1,0.99973,0.0022,0.00011
+040219,Grijó de Parada,Bragança,single,57,30.8,1,0.99776,0.0808,0.00259
+040221,Macedo do Mato,Bragança,single,56,8.7,1,0.99913,0.0084,0.00054
+040224,Mós,Bragança,single,60,35.4,1,0.99396,0.0979,0.00842
+040225,Nogueira,Bragança,single,52,0.0,1,0.99996,0.0023,0.00019
+040226,Outeiro,Bragança,single,59,71.2,1,0.99418,0.3584,0.00876
+040229,Parâmio,Bragança,single,53,61.9,1,0.99001,0.1607,0.00712
+040230,Pinela,Bragança,single,59,26.8,1,0.99767,0.0403,0.00178
+040232,Quintanilha,Bragança,single,60,20.2,1,0.99862,0.0515,0.00254
+040233,Quintela de Lampaças,Bragança,single,57,40.7,1,0.99475,0.1606,0.00804
+040234,Rabal,Bragança,single,59,26.8,1,0.99746,0.0409,0.00175
+040236,Rebordãos,Bragança,single,57,46.8,1,0.99623,0.1633,0.00621
+040239,Salsas,Bragança,single,56,26.8,1,0.9978,0.0653,0.0025
+040240,Samil,Bragança,single,54,5.0,1,0.99959,0.0024,0.00023
+040241,Santa Comba de Rossas,Bragança,single,60,13.3,1,0.99906,0.0155,0.00177
+040244,São Pedro de Sarracenos,Bragança,single,58,26.8,1,0.99792,0.0323,0.00203
+040246,Sendas,Bragança,single,57,30.8,1,0.9954,0.0642,0.00335
+040247,Serapicos,Bragança,single,59,23.3,1,0.99765,0.0609,0.00216
+040248,Sortes,Bragança,single,57,20.2,1,0.99828,0.0188,0.00088
+040249,Zoio,Bragança,single,60,35.4,1,0.99703,0.0832,0.00341
+040250,União das freguesias de Aveleda e Rio de Onor,Bragança,single,60,81.8,1,0.99776,0.3708,0.00349
+040251,União das freguesias de Castrelos e Carrazedo,Bragança,single,56,81.8,1,0.99142,0.2516,0.00498
+040252,"União das freguesias de Izeda, Calvelhe e Paradinha Nova",Bragança,single,58,94.1,1,0.99489,0.3591,0.00494
+040253,União das freguesias de Parada e Faílde,Bragança,single,54,71.2,1,0.99573,0.2211,0.00424
+040254,União das freguesias de Rebordainhos e Pombares,Bragança,single,60,17.6,1,0.99836,0.033,0.00137
+040255,União das freguesias de Rio Frio e Milhão,Bragança,single,60,53.8,1,0.99713,0.3077,0.00484
+040256,União das freguesias de São Julião de Palácios e Deilão,Bragança,single,57,94.1,1,0.99446,0.4071,0.00505
+040257,"União das freguesias de Sé, Santa Maria e Meixedo",Bragança,single,55,61.9,1,0.99358,0.1145,0.00321
+040304,Carrazeda de Ansiães,Carrazeda de Ansiães,single,56,35.4,1,0.99546,0.0748,0.00834
+040306,Fonte Longa,Carrazeda de Ansiães,single,59,20.2,1,0.99701,0.0312,0.00228
+040308,Linhares,Carrazeda de Ansiães,single,53,46.8,1,0.99384,0.1576,0.0055
+040309,Marzagão,Carrazeda de Ansiães,single,59,23.3,1,0.99573,0.0288,0.00177
+040311,Parambos,Carrazeda de Ansiães,single,57,8.7,1,0.99941,0.0065,0.00058
+040312,Pereiros,Carrazeda de Ansiães,single,54,11.6,1,0.99858,0.0222,0.00151
+040313,Pinhal do Norte,Carrazeda de Ansiães,single,60,20.2,1,0.99796,0.0516,0.00307
+040314,Pombal,Carrazeda de Ansiães,single,59,17.6,1,0.99858,0.0403,0.0024
+040316,Seixo de Ansiães,Carrazeda de Ansiães,single,54,40.7,1,0.99652,0.1609,0.00671
+040318,Vilarinho da Castanheira,Carrazeda de Ansiães,single,58,46.8,1,0.99323,0.1463,0.00518
+040320,União das freguesias de Amedo e Zedes,Carrazeda de Ansiães,single,59,30.8,1,0.99728,0.0559,0.00239
+040321,União das freguesias de Belver e Mogo de Malta,Carrazeda de Ansiães,single,59,26.8,1,0.99725,0.0667,0.00337
+040322,União das freguesias de Castanheiro do Norte e Ribalonga,Carrazeda de Ansiães,single,59,40.7,1,0.99561,0.1173,0.00567
+040323,"União das freguesias de Lavandeira, Beira Grande e Selores",Carrazeda de Ansiães,single,58,53.8,1,0.99434,0.1964,0.00545
+040404,Ligares,Freixo de Espada à Cinta,single,58,81.8,1,0.99322,0.3841,0.00841
+040406,Poiares,Freixo de Espada à Cinta,single,54,53.8,1,0.99593,0.168,0.00412
+040407,União das freguesias de Freixo de Espada à Cinta e Mazouco,Freixo de Espada à Cinta,single,57,143.1,1,0.99091,0.93,0.00995
+040408,União das freguesias de Lagoaça e Fornos,Freixo de Espada à Cinta,single,59,124.5,1,0.98733,0.4643,0.00722
+040502,Amendoeira,Macedo de Cavaleiros,single,59,30.8,1,0.9965,0.0609,0.00387
+040503,Arcas,Macedo de Cavaleiros,single,58,53.8,1,0.99388,0.1762,0.00766
+040507,Carrapatas,Macedo de Cavaleiros,single,54,8.7,1,0.99834,0.014,0.00216
+040509,Chacim,Macedo de Cavaleiros,single,55,30.8,1,0.99672,0.0708,0.00364
+040510,Cortiços,Macedo de Cavaleiros,single,57,15.3,1,0.99955,0.0434,0.00179
+040511,Corujas,Macedo de Cavaleiros,single,55,5.0,1,0.99966,0.0065,0.00066
+040514,Ferreira,Macedo de Cavaleiros,single,59,23.3,1,0.99711,0.0338,0.00172
+040515,Grijó,Macedo de Cavaleiros,single,60,5.0,1,0.99935,0.0047,0.00052
+040516,Lagoa,Macedo de Cavaleiros,single,54,71.2,1,0.99023,0.2295,0.00653
+040517,Lamalonga,Macedo de Cavaleiros,single,56,20.2,1,0.99678,0.049,0.00289
+040518,Lamas,Macedo de Cavaleiros,single,56,5.8,1,0.99945,0.0054,0.00069
+040519,Lombo,Macedo de Cavaleiros,single,56,61.9,1,0.98447,0.142,0.00986
+040520,Macedo de Cavaleiros,Macedo de Cavaleiros,single,59,11.6,1,0.99862,0.0166,0.00112
+040521,Morais,Macedo de Cavaleiros,single,60,71.2,1,0.99511,0.3463,0.00664
+040523,Olmos,Macedo de Cavaleiros,single,60,30.8,1,0.9954,0.0895,0.00478
+040524,Peredo,Macedo de Cavaleiros,single,57,61.9,1,0.99233,0.2159,0.00978
+040526,Salselas,Macedo de Cavaleiros,single,59,35.4,1,0.99572,0.1229,0.00339
+040528,Sezulfe,Macedo de Cavaleiros,single,60,10.1,1,0.99926,0.0102,0.00067
+040530,Talhas,Macedo de Cavaleiros,single,58,71.2,1,0.99246,0.2438,0.00557
+040532,Vale Benfeito,Macedo de Cavaleiros,single,58,11.6,1,0.99841,0.0234,0.00155
+040533,Vale da Porca,Macedo de Cavaleiros,single,59,15.3,1,0.99769,0.0232,0.00133
+040534,Vale de Prados,Macedo de Cavaleiros,single,55,7.6,1,0.99929,0.0103,0.001
+040536,Vilarinho de Agrochão,Macedo de Cavaleiros,single,59,20.2,1,0.99629,0.0489,0.00353
+040538,Vinhas,Macedo de Cavaleiros,single,58,26.8,1,0.99877,0.0849,0.00257
+040539,União das freguesias de Ala e Vilarinho do Monte,Macedo de Cavaleiros,single,59,53.8,1,0.99455,0.2213,0.00543
+040540,União das freguesias de Bornes e Burga,Macedo de Cavaleiros,single,59,30.8,1,0.99628,0.0626,0.00241
+040541,União das freguesias de Castelãos e Vilar do Monte,Macedo de Cavaleiros,single,59,6.6,1,0.99962,0.0058,0.00031
+040542,"União das freguesias de Espadanedo, Edroso, Murçós e Soutelo Mourisco",Macedo de Cavaleiros,single,60,81.8,1,0.99478,0.4412,0.00688
+040543,União das freguesias de Podence e Santa Combinha,Macedo de Cavaleiros,single,59,15.3,1,0.99827,0.0433,0.00223
+040544,União das freguesias de Talhinhas e Bagueixe,Macedo de Cavaleiros,single,56,53.8,1,0.99418,0.1712,0.00486
+040604,Duas Igrejas,Miranda do Douro,single,60,35.4,1,0.99817,0.0917,0.00184
+040605,Genísio,Miranda do Douro,single,55,26.8,1,0.99753,0.0597,0.00203
+040607,Malhadas,Miranda do Douro,single,58,20.2,1,0.99854,0.0563,0.00204
+040608,Miranda do Douro,Miranda do Douro,single,59,40.7,1,0.99646,0.1125,0.00317
+040609,Palaçoulo,Miranda do Douro,single,57,53.8,1,0.99549,0.1623,0.00383
+040611,Picote,Miranda do Douro,single,57,26.8,1,0.99562,0.0457,0.00235
+040612,Póvoa,Miranda do Douro,single,56,5.0,1,0.99979,0.004,0.00018
+040613,São Martinho de Angueira,Miranda do Douro,single,60,23.3,1,0.99807,0.0581,0.00158
+040616,Vila Chã de Braciosa,Miranda do Douro,single,60,61.9,1,0.99459,0.2021,0.00471
+040618,União das freguesias de Constantim e Cicouro,Miranda do Douro,single,59,20.2,1,0.99875,0.0518,0.00143
+040619,União das freguesias de Ifanes e Paradela,Miranda do Douro,single,59,17.6,1,0.99938,0.0355,0.00079
+040620,União das freguesias de Sendim e Atenor,Miranda do Douro,single,55,164.6,1,0.98541,0.955,0.01621
+040621,União das freguesias de Silva e Águas Vivas,Miranda do Douro,single,60,13.3,1,0.9993,0.0343,0.00085
+040701,Abambres,Mirandela,single,55,20.2,1,0.99798,0.0737,0.00392
+040702,Abreiro,Mirandela,single,55,40.7,1,0.99456,0.1052,0.00438
+040703,Aguieiras,Mirandela,single,55,17.6,1,0.99596,0.0352,0.00239
+040704,Alvites,Mirandela,single,57,17.6,1,0.99813,0.0516,0.0029
+040708,Bouça,Mirandela,single,59,23.3,1,0.99625,0.0497,0.00382
+040709,Cabanelas,Mirandela,single,58,23.3,1,0.99648,0.0721,0.00387
+040710,Caravelas,Mirandela,single,59,13.3,1,0.9977,0.0155,0.00123
+040711,Carvalhais,Mirandela,single,57,40.7,1,0.99346,0.1104,0.00501
+040712,Cedães,Mirandela,single,54,53.8,1,0.98989,0.1273,0.005
+040713,Cobro,Mirandela,single,58,23.3,1,0.99735,0.0417,0.00339
+040714,Fradizela,Mirandela,single,56,26.8,1,0.99621,0.0479,0.00375
+040716,Frechas,Mirandela,single,55,40.7,1,0.99375,0.0876,0.00472
+040718,Lamas de Orelhão,Mirandela,single,58,23.3,1,0.99647,0.0695,0.00361
+040720,Mascarenhas,Mirandela,single,59,15.3,1,0.99845,0.0432,0.00154
+040721,Mirandela,Mirandela,single,58,61.9,1,0.99435,0.2655,0.00818
+040722,Múrias,Mirandela,single,57,26.8,1,0.99628,0.0436,0.00193
+040724,Passos,Mirandela,single,59,15.3,1,0.99772,0.036,0.00196
+040727,São Pedro Velho,Mirandela,single,58,35.4,1,0.99549,0.0992,0.0042
+040728,São Salvador,Mirandela,single,60,15.3,1,0.99784,0.0314,0.00221
+040729,Suçães,Mirandela,single,60,40.7,1,0.99584,0.1308,0.00361
+040730,Torre de Dona Chama,Mirandela,single,59,30.8,1,0.99698,0.0875,0.00316
+040731,Vale de Asnes,Mirandela,single,60,23.3,1,0.9977,0.0697,0.00325
+040732,Vale de Gouvinhas,Mirandela,single,56,15.3,1,0.99796,0.0306,0.00178
+040733,Vale de Salgueiro,Mirandela,single,55,13.3,1,0.99777,0.0269,0.00177
+040734,Vale de Telhas,Mirandela,single,60,11.6,1,0.9981,0.0232,0.00153
+040738,União das freguesias de Avantos e Romeu,Mirandela,single,55,35.4,1,0.99632,0.0632,0.0023
+040739,"União das freguesias de Avidagos, Navalho e Pereira",Mirandela,single,57,53.8,1,0.99443,0.1773,0.00535
+040740,"União das freguesias de Barcel, Marmelos e Valverde da Gestosa",Mirandela,single,56,61.9,1,0.99344,0.2521,0.00517
+040741,União das freguesias de Franco e Vila Boa,Mirandela,single,56,71.2,1,0.98893,0.2094,0.00795
+040742,União das freguesias de Freixeda e Vila Verde,Mirandela,single,57,35.4,1,0.99471,0.0986,0.00464
+040801,Azinhoso,Mogadouro,single,53,124.5,1,0.98369,0.5192,0.01686
+040802,Bemposta,Mogadouro,single,60,94.1,1,0.99044,0.3892,0.01026
+040803,Bruçó,Mogadouro,single,58,81.8,1,0.99271,0.3485,0.01076
+040804,Brunhoso,Mogadouro,single,59,71.2,1,0.98882,0.155,0.00745
+040807,Castelo Branco,Mogadouro,single,50,189.3,1,0.98508,1.2032,0.02215
+040808,Castro Vicente,Mogadouro,single,57,108.2,1,0.99169,0.4361,0.01254
+040809,Meirinhos,Mogadouro,single,54,124.5,1,0.98622,0.4049,0.00758
+040811,Paradela,Mogadouro,single,53,71.2,1,0.99253,0.1697,0.00826
+040812,Penas Roias,Mogadouro,single,55,124.5,1,0.98702,0.4879,0.01466
+040813,Peredo da Bemposta,Mogadouro,single,55,108.2,1,0.9846,0.3481,0.01917
+040815,Saldanha,Mogadouro,single,54,108.2,1,0.98736,0.3198,0.01235
+040817,São Martinho do Peso,Mogadouro,single,57,124.5,1,0.98794,0.4863,0.00932
+040819,Tó,Mogadouro,single,60,94.1,1,0.98795,0.2961,0.0125
+040820,Travanca,Mogadouro,single,57,94.1,1,0.98776,0.2944,0.01398
+040821,Urrós,Mogadouro,single,46,94.1,1,0.9893,0.4129,0.01293
+040822,Vale da Madre,Mogadouro,single,56,81.8,1,0.98954,0.1817,0.01571
+040826,Vila de Ala,Mogadouro,single,59,94.1,1,0.99065,0.2865,0.01072
+040829,"União das freguesias de Brunhozinho, Castanheira e Sanhoane",Mogadouro,single,51,124.5,1,0.98514,0.4505,0.01053
+040830,"União das freguesias de Mogadouro, Valverde, Vale de Porco e Vilar de Rei",Mogadouro,single,52,217.7,1,0.98016,1.3105,0.0127
+040831,União das freguesias de Remondes e Soutelo,Mogadouro,single,60,94.1,1,0.98922,0.3113,0.00853
+040832,União das freguesias de Vilarinho dos Galegos e Ventozelo,Mogadouro,single,51,124.5,1,0.99001,0.584,0.01198
+040901,Açoreira,Torre de Moncorvo,single,57,71.2,1,0.9898,0.194,0.00809
+040903,Cabeça Boa,Torre de Moncorvo,single,58,40.7,1,0.99623,0.1123,0.00426
+040905,Carviçais,Torre de Moncorvo,single,59,124.5,1,0.99229,0.9095,0.01444
+040906,Castedo,Torre de Moncorvo,single,57,35.4,1,0.99419,0.0642,0.00358
+040909,Horta da Vilariça,Torre de Moncorvo,single,58,26.8,1,0.99729,0.0493,0.003
+040910,Larinho,Torre de Moncorvo,single,60,53.8,1,0.99538,0.1988,0.00674
+040911,Lousa,Torre de Moncorvo,single,58,40.7,1,0.99562,0.1193,0.00351
+040913,Mós,Torre de Moncorvo,single,54,108.2,1,0.98796,0.3164,0.00535
+040916,Torre de Moncorvo,Torre de Moncorvo,single,59,35.4,1,0.99669,0.1332,0.00369
+040918,União das freguesias de Adeganha e Cardanha,Torre de Moncorvo,single,57,94.1,1,0.99314,0.4683,0.00727
+040919,União das freguesias de Felgar e Souto da Velha,Torre de Moncorvo,single,59,71.2,1,0.99329,0.2546,0.00542
+040920,União das freguesias de Felgueiras e Maçores,Torre de Moncorvo,single,60,71.2,1,0.99137,0.2089,0.00537
+040921,União das freguesias de Urros e Peredo dos Castelhanos,Torre de Moncorvo,single,55,124.5,1,0.98888,0.3875,0.00517
+041002,Benlhevai,Vila Flor,single,57,5.0,1,0.99937,0.0035,0.00031
+041005,Freixiel,Vila Flor,single,57,23.3,1,0.99804,0.0597,0.00172
+041009,Roios,Vila Flor,single,59,15.3,1,0.99841,0.0563,0.00368
+041010,Samões,Vila Flor,single,57,7.6,1,0.99952,0.008,0.0006
+041011,Sampaio,Vila Flor,single,59,8.7,1,0.99817,0.0154,0.00179
+041012,Santa Comba de Vilariça,Vila Flor,single,60,11.6,1,0.99782,0.0119,0.00097
+041013,Seixo de Manhoses,Vila Flor,single,59,30.8,1,0.99269,0.08,0.00821
+041014,Trindade,Vila Flor,single,49,35.4,1,0.99401,0.1103,0.00736
+041015,Vale Frechoso,Vila Flor,single,60,23.3,1,0.99724,0.0667,0.00346
+041020,União das freguesias de Assares e Lodões,Vila Flor,single,59,17.6,1,0.99754,0.0387,0.00272
+041021,União das freguesias de Candoso e Carvalho de Egas,Vila Flor,single,58,13.3,1,0.99873,0.0289,0.00288
+041022,União das freguesias de Valtorno e Mourão,Vila Flor,single,56,53.8,1,0.99133,0.1091,0.00587
+041023,União das freguesias de Vila Flor e Nabo,Vila Flor,single,60,40.7,1,0.99697,0.1327,0.0033
+041024,União das freguesias de Vilas Boas e Vilarinho das Azenhas,Vila Flor,single,60,30.8,1,0.99734,0.0904,0.0021
+041103,Argozelo,Vimioso,single,58,40.7,1,0.99452,0.1179,0.00399
+041107,Carção,Vimioso,single,60,94.1,1,0.98948,0.4275,0.01564
+041108,Matela,Vimioso,single,58,81.8,1,0.99196,0.2744,0.00616
+041109,Pinelo,Vimioso,single,58,40.7,1,0.99532,0.1269,0.00385
+041110,Santulhão,Vimioso,single,56,124.5,1,0.98757,0.5908,0.01197
+041113,Vilar Seco,Vimioso,single,60,13.3,1,0.999,0.0212,0.0009
+041114,Vimioso,Vimioso,single,56,71.2,1,0.99446,0.1699,0.00307
+041115,"União das freguesias de Algoso, Campo de Víboras e Uva",Vimioso,single,58,164.6,1,0.99161,1.0509,0.01089
+041116,União das freguesias de Caçarelhos e Angueira,Vimioso,single,59,40.7,1,0.99684,0.1572,0.00296
+041117,União das freguesias de Vale de Frades e Avelanoso,Vimioso,single,59,61.9,1,0.99759,0.2182,0.00314
+041201,Agrochão,Vinhais,single,55,23.3,1,0.99706,0.0539,0.00308
+041203,Candedo,Vinhais,single,55,53.8,1,0.99377,0.1492,0.00696
+041204,Celas,Vinhais,single,60,53.8,1,0.99556,0.2256,0.00595
+041206,Edral,Vinhais,single,53,81.8,1,0.98858,0.2552,0.00975
+041207,Edrosa,Vinhais,single,57,30.8,1,0.99739,0.0721,0.0033
+041208,Ervedosa,Vinhais,single,55,61.9,1,0.99431,0.1885,0.00625
+041215,Paçó,Vinhais,single,58,23.3,1,0.99893,0.034,0.00204
+041216,Penhas Juntas,Vinhais,single,54,35.4,1,0.99641,0.09,0.00342
+041219,Rebordelo,Vinhais,single,57,30.8,1,0.99703,0.0588,0.00279
+041221,Santalha,Vinhais,single,60,94.1,1,0.98998,0.334,0.0115
+041226,Tuizelo,Vinhais,single,58,94.1,1,0.9875,0.243,0.00775
+041227,Vale das Fontes,Vinhais,single,56,35.4,1,0.99588,0.0937,0.00528
+041229,Vila Boa de Ousilhão,Vinhais,single,59,17.6,1,0.99752,0.0201,0.00243
+041230,Vila Verde,Vinhais,single,56,23.3,1,0.99762,0.0469,0.00315
+041232,Vilar de Ossos,Vinhais,single,58,23.3,1,0.99734,0.0453,0.00256
+041233,Vilar de Peregrinos,Vinhais,single,59,20.2,1,0.9983,0.0263,0.00165
+041234,Vilar Seco de Lomba,Vinhais,single,55,53.8,1,0.9956,0.1914,0.00858
+041235,Vinhais,Vinhais,single,58,108.2,1,0.98579,0.3787,0.01183
+041236,União das freguesias de Curopos e Vale de Janeiro,Vinhais,single,60,53.8,1,0.99586,0.1925,0.00532
+041237,União das freguesias de Moimenta e Montouto,Vinhais,single,54,81.8,1,0.99132,0.2959,0.00682
+041238,União das freguesias de Nunes e Ousilhão,Vinhais,single,56,46.8,1,0.99588,0.1599,0.00744
+041239,União das freguesias de Quirás e Pinheiro Novo,Vinhais,single,59,124.5,1,0.98708,0.4551,0.00769
+041240,União das freguesias de Sobreiro de Baixo e Alvaredos,Vinhais,single,59,61.9,1,0.99524,0.2266,0.00846
+041241,"União das freguesias de Soeira, Fresulfe e Mofreita",Vinhais,single,55,124.5,1,0.9864,0.6175,0.01323
+041242,União das freguesias de Travanca e Santa Cruz,Vinhais,single,59,30.8,1,0.99638,0.0889,0.00383
+041243,União das freguesias de Vilar de Lomba e São Jomil,Vinhais,single,56,71.2,1,0.9902,0.2331,0.00791
+050102,Caria,Belmonte,single,58,35.4,1,0.99682,0.1066,0.00273
+050104,Inguias,Belmonte,single,57,26.8,1,0.99633,0.0596,0.00257
+050105,Maçainhas,Belmonte,single,58,26.8,1,0.99701,0.0461,0.00253
+050107,Belmonte,Belmonte,hull,15,0.0,2,1.0,25.1712,0.81447
+050108,Colmeal da Torre,Belmonte,single,59,17.6,1,0.9971,0.0297,0.004
+050201,Alcains,Castelo Branco,single,57,94.1,1,0.99208,0.4581,0.0124
+050202,Almaceda,Castelo Branco,single,52,217.7,1,0.98134,1.643,0.02276
+050203,Benquerenças,Castelo Branco,single,52,164.6,1,0.99023,1.5646,0.02564
+050205,Castelo Branco,Castelo Branco,largest,52,287.9,2,0.98186,1.7057,0.01002
+050211,Lardosa,Castelo Branco,single,60,124.5,1,0.98378,0.3098,0.00697
+050212,Louriçal do Campo,Castelo Branco,single,55,108.2,1,0.98544,0.3969,0.01779
+050214,Malpica do Tejo,Castelo Branco,single,53,217.7,1,0.99272,3.1467,0.01279
+050216,Monforte da Beira,Castelo Branco,single,58,164.6,1,0.99136,1.1121,0.00924
+050220,Salgueiro do Campo,Castelo Branco,single,57,94.1,1,0.98878,0.3003,0.0099
+050221,Santo André das Tojeiras,Castelo Branco,single,57,143.1,1,0.9903,0.7319,0.00977
+050222,São Vicente da Beira,Castelo Branco,single,50,189.3,1,0.98704,1.3201,0.0132
+050223,Sarzedas,Castelo Branco,single,53,331.1,1,0.97915,3.8462,0.02236
+050225,Tinalhas,Castelo Branco,single,57,71.2,1,0.98563,0.1951,0.01205
+050226,União das freguesias de Cebolais de Cima e Retaxo,Castelo Branco,single,55,124.5,1,0.98817,0.5755,0.02291
+050229,União das freguesias de Freixial e Juncal do Campo,Castelo Branco,single,59,124.5,1,0.98265,0.4857,0.01194
+050231,União das freguesias de Póvoa de Rio de Moinhos e Cafede,Castelo Branco,single,58,164.6,1,0.98005,0.6656,0.01621
+050232,Escalos de Baixo,Castelo Branco,single,45,189.3,1,0.97971,1.1012,0.02389
+050233,Escalos de Cima,Castelo Branco,single,58,71.2,1,0.98472,0.1426,0.00925
+050234,Lousa,Castelo Branco,single,52,108.2,1,0.98874,0.4228,0.0118
+050235,Mata,Castelo Branco,single,59,81.8,1,0.99192,0.2264,0.00944
+050236,Ninho do Açor,Castelo Branco,single,53,71.2,1,0.98679,0.209,0.01771
+050237,Sobral do Campo,Castelo Branco,single,54,164.6,1,0.97741,0.6148,0.01973
+050302,Aldeia de São Francisco de Assis,Covilhã,single,59,40.7,1,0.99217,0.0723,0.00449
+050305,Boidobra,Covilhã,single,57,61.9,1,0.98998,0.2051,0.01262
+050308,Cortes do Meio,Covilhã,single,59,26.8,1,0.99708,0.0415,0.00088
+050309,Dominguizo,Covilhã,single,59,5.0,1,0.99933,0.0037,0.00076
+050310,Erada,Covilhã,single,60,20.2,1,0.9992,0.0314,0.00072
+050311,Ferro,Covilhã,single,56,61.9,1,0.99397,0.1624,0.00528
+050312,Orjais,Covilhã,single,59,30.8,1,0.99525,0.0816,0.00432
+050314,Paul,Covilhã,single,55,35.4,1,0.995,0.0795,0.00332
+050315,Peraboa,Covilhã,single,59,53.8,1,0.9932,0.1359,0.005
+050318,São Jorge da Beira,Covilhã,single,56,40.7,1,0.99596,0.1154,0.00501
+050322,Sobral de São Miguel,Covilhã,single,59,40.7,1,0.99672,0.0947,0.00396
+050324,Tortosendo,Covilhã,single,55,13.3,1,0.99826,0.0106,0.0006
+050325,Unhais da Serra,Covilhã,single,56,23.3,1,0.99844,0.1179,0.00394
+050327,Verdelhos,Covilhã,single,58,40.7,1,0.9965,0.08,0.00219
+050335,União das freguesias de Covilhã e Canhoso,Covilhã,single,59,81.8,1,0.98889,0.3255,0.01254
+050337,União das freguesias de Teixoso e Sarzedo,Covilhã,single,59,94.1,1,0.99257,0.3812,0.00816
+050338,União das freguesias de Vale Formoso e Aldeia do Souto,Covilhã,single,60,26.8,1,0.99683,0.0403,0.00213
+050339,Barco,Covilhã,single,54,35.4,1,0.99545,0.0849,0.00603
+050340,Cantar-Galo,Covilhã,single,57,17.6,1,0.99554,0.0144,0.00246
+050341,Casegas,Covilhã,single,55,71.2,1,0.99459,0.3362,0.00817
+050342,Coutada,Covilhã,single,59,23.3,1,0.99651,0.0165,0.00166
+050343,Ourondo,Covilhã,single,56,35.4,1,0.98819,0.0777,0.01096
+050344,Peso,Covilhã,single,60,30.8,1,0.99589,0.0416,0.00386
+050345,Vales do Rio,Covilhã,single,57,17.6,1,0.99542,0.0191,0.00373
+050346,Vila do Carvalho,Covilhã,single,59,6.6,1,0.99985,0.0065,0.00066
+050401,Alcaide,Fundão,single,58,30.8,1,0.99765,0.0742,0.00444
+050402,Alcaria,Fundão,single,54,71.2,1,0.98653,0.2287,0.01065
+050403,Alcongosta,Fundão,single,56,5.8,1,0.99922,0.0043,0.00059
+050406,Alpedrinha,Fundão,single,54,26.8,1,0.99471,0.0603,0.00373
+050408,Barroca,Fundão,single,60,40.7,1,0.99419,0.1249,0.00541
+050410,Bogas de Cima,Fundão,single,55,46.8,1,0.99419,0.151,0.00483
+050411,Capinha,Fundão,single,51,81.8,1,0.99025,0.2771,0.00699
+050412,Castelejo,Fundão,single,60,46.8,1,0.99534,0.1435,0.00486
+050413,Castelo Novo,Fundão,single,60,81.8,1,0.99289,0.3528,0.00871
+050416,Fatela,Fundão,single,55,35.4,1,0.9917,0.0493,0.00437
+050419,Lavacolhos,Fundão,single,58,30.8,1,0.99747,0.0724,0.00365
+050420,Orca,Fundão,single,55,108.2,1,0.99197,0.5939,0.0108
+050421,Pêro Viseu,Fundão,single,59,46.8,1,0.99496,0.1484,0.00773
+050424,Silvares,Fundão,single,59,46.8,1,0.9935,0.2316,0.01144
+050425,Soalheira,Fundão,single,57,35.4,1,0.99383,0.068,0.00547
+050426,Souto da Casa,Fundão,single,58,40.7,1,0.99555,0.1213,0.00413
+050427,Telhado,Fundão,single,57,30.8,1,0.9945,0.049,0.00278
+050431,Enxames,Fundão,single,60,53.8,1,0.99554,0.1539,0.00684
+050432,Três Povos,Fundão,single,60,94.1,1,0.99387,0.5364,0.00813
+050433,União das freguesias de Janeiro de Cima e Bogas de Baixo,Fundão,single,56,124.5,1,0.98442,0.6015,0.01297
+050434,"União das freguesias de Fundão, Valverde, Donas, Aldeia de Joanes e Aldeia Nova do Cabo",Fundão,single,57,71.2,1,0.99574,0.3306,0.00572
+050435,União das freguesias de Póvoa de Atalaia e Atalaia do Campo,Fundão,single,48,35.4,1,0.99541,0.0886,0.00366
+050436,União das freguesias de Vale de Prazeres e Mata da Rainha,Fundão,single,56,108.2,1,0.99162,0.4857,0.00668
+050502,Aldeia de Santa Margarida,Idanha-a-Nova,single,58,53.8,1,0.99332,0.1731,0.01271
+050505,Ladoeiro,Idanha-a-Nova,single,56,124.5,1,0.98813,0.6058,0.00957
+050506,Medelim,Idanha-a-Nova,single,58,94.1,1,0.99069,0.3076,0.01009
+050509,Oledo,Idanha-a-Nova,single,56,81.8,1,0.99235,0.2274,0.00822
+050510,Penha Garcia,Idanha-a-Nova,single,60,124.5,1,0.99069,0.6694,0.00521
+050511,Proença-a-Velha,Idanha-a-Nova,single,54,164.6,1,0.9867,0.7065,0.01218
+050512,Rosmaninhal,Idanha-a-Nova,single,55,217.7,1,0.99166,1.8956,0.00711
+050514,São Miguel de Acha,Idanha-a-Nova,single,54,143.1,1,0.98642,0.6067,0.0147
+050516,Toulões,Idanha-a-Nova,single,52,61.9,1,0.9907,0.1837,0.005
+050518,União das freguesias de Idanha-a-Nova e Alcafozes,Idanha-a-Nova,single,52,380.7,1,0.98237,4.2805,0.01503
+050519,União das freguesias de Monfortinho e Salvaterra do Extremo,Idanha-a-Nova,single,58,164.6,1,0.9893,1.1737,0.00867
+050520,União das freguesias de Monsanto e Idanha-a-Velha,Idanha-a-Nova,single,57,287.9,1,0.98513,2.8702,0.01879
+050521,União das freguesias de Zebreira e Segura,Idanha-a-Nova,single,59,250.3,1,0.99013,2.4551,0.01384
+050601,Álvaro,Oleiros,single,54,94.1,1,0.98285,0.3447,0.01172
+050603,Cambas,Oleiros,single,59,81.8,1,0.99113,0.2284,0.00471
+050605,Isna,Oleiros,single,58,61.9,1,0.99302,0.186,0.00666
+050606,Madeirã,Oleiros,single,59,61.9,1,0.99129,0.2082,0.00775
+050607,Mosteiro,Oleiros,single,59,61.9,1,0.99129,0.2121,0.01199
+050609,Orvalho,Oleiros,single,54,124.5,1,0.98749,0.645,0.01936
+050610,Sarnadas de São Simão,Oleiros,single,53,81.8,1,0.99144,0.263,0.00848
+050611,Sobral,Oleiros,single,58,61.9,1,0.98749,0.1611,0.0084
+050613,Estreito-Vilar Barroco,Oleiros,single,59,164.6,1,0.98653,1.0408,0.01113
+050614,Oleiros-Amieira,Oleiros,single,59,217.7,1,0.98555,1.9161,0.01334
+050704,Aranhas,Penamacor,single,60,35.4,1,0.99467,0.0581,0.01061
+050706,Benquerença,Penamacor,single,60,81.8,1,0.99075,0.2599,0.00909
+050707,Meimão,Penamacor,single,55,53.8,1,0.99384,0.1586,0.00479
+050708,Meimoa,Penamacor,single,60,61.9,1,0.99127,0.1584,0.0055
+050710,Penamacor,Penamacor,single,51,503.5,1,0.98034,9.4636,0.02534
+050711,Salvador,Penamacor,single,54,26.8,1,0.9943,0.0501,0.00478
+050712,Vale da Senhora da Póvoa,Penamacor,single,56,53.8,1,0.99337,0.1488,0.0077
+050713,"União das freguesias de Aldeia do Bispo, Águas e Aldeia de João Pires",Penamacor,single,52,94.1,1,0.99097,0.338,0.01033
+050714,União das freguesias de Pedrógão de São Pedro e Bemposta,Penamacor,single,59,108.2,1,0.98998,0.3493,0.01101
+050802,Montes da Senhora,Proença-a-Nova,single,58,143.1,1,0.98205,0.5737,0.01562
+050805,São Pedro do Esteval,Proença-a-Nova,single,52,250.3,1,0.9728,1.4757,0.02154
+050807,União das freguesias de Proença-a-Nova e Peral,Proença-a-Nova,single,60,380.7,1,0.9752,4.0571,0.02365
+050808,União das freguesias de Sobreira Formosa e Alvito da Beira,Proença-a-Nova,single,58,287.9,1,0.97578,2.3471,0.01978
+050901,Cabeçudo,Sertã,single,53,35.4,1,0.99349,0.0717,0.0069
+050902,Carvalhal,Sertã,single,51,46.8,1,0.9901,0.1185,0.01183
+050903,Castelo,Sertã,single,53,61.9,1,0.99049,0.2693,0.01096
+050911,Pedrógão Pequeno,Sertã,single,54,53.8,1,0.99419,0.1768,0.0048
+050912,Sertã,Sertã,single,56,143.1,1,0.98893,0.6049,0.00747
+050913,Troviscal,Sertã,single,60,124.5,1,0.9846,0.5892,0.01104
+050914,Várzea dos Cavaleiros,Sertã,single,56,61.9,1,0.99521,0.1959,0.00568
+050915,"União das freguesias de Cernache do Bonjardim, Nesperal e Palhais",Sertã,single,55,189.3,1,0.98392,0.8679,0.00854
+050916,União das freguesias de Cumeada e Marmeleiro,Sertã,single,51,164.6,1,0.98407,0.7855,0.01518
+050917,União das freguesias de Ermida e Figueiredo,Sertã,single,57,143.1,1,0.98316,0.6592,0.01542
+051001,Fundada,Vila de Rei,single,56,94.1,1,0.99082,0.2672,0.00731
+051002,São João do Peso,Vila de Rei,single,56,81.8,1,0.98274,0.1956,0.01499
+051003,Vila de Rei,Vila de Rei,single,60,217.7,1,0.98769,1.6496,0.01162
+051101,Fratel,Vila Velha de Ródão,single,55,164.6,1,0.98783,1.0703,0.01094
+051102,Perais,Vila Velha de Ródão,single,58,108.2,1,0.99366,0.4906,0.00599
+051103,Sarnadas de Ródão,Vila Velha de Ródão,single,54,124.5,1,0.98834,0.5227,0.00876
+051104,Vila Velha de Ródão,Vila Velha de Ródão,single,54,164.6,1,0.98864,1.2683,0.01402
+060102,Arganil,Arganil,single,56,81.8,1,0.98969,0.35,0.01026
+060104,Benfeita,Arganil,single,58,15.3,1,0.99852,0.0172,0.00079
+060105,Celavisa,Arganil,single,56,26.8,1,0.9967,0.0636,0.00416
+060109,Folques,Arganil,single,53,40.7,1,0.9944,0.104,0.00566
+060111,Piódão,Arganil,single,53,61.9,1,0.99502,0.288,0.00788
+060112,Pomares,Arganil,single,59,46.8,1,0.99657,0.2096,0.00665
+060113,Pombeiro da Beira,Arganil,single,58,94.1,1,0.98181,0.3768,0.01154
+060114,São Martinho da Cortiça,Arganil,single,54,143.1,1,0.97018,0.586,0.01858
+060115,Sarzedo,Arganil,single,56,30.8,1,0.99287,0.0644,0.00557
+060116,Secarias,Arganil,single,54,17.6,1,0.99522,0.0301,0.00434
+060119,União das freguesias de Cepos e Teixeira,Arganil,single,57,108.2,1,0.98787,0.4186,0.0128
+060120,União das freguesias de Cerdeira e Moura da Serra,Arganil,hull,23,0.0,2,1.0,13.6628,0.74158
+060121,União das freguesias de Côja e Barril de Alva,Arganil,single,60,71.2,1,0.99068,0.3025,0.01245
+060122,União das freguesias de Vila Cova de Alva e Anseriz,Arganil,single,59,61.9,1,0.98425,0.1388,0.0081
+060407,Furadouro,Condeixa-a-Nova,single,48,5.0,1,0.99957,0.0057,0.00039
+060601,Alvares,Góis,single,57,164.6,1,0.99031,0.7773,0.00773
+060604,Góis,Góis,single,58,94.1,1,0.99605,0.5433,0.00746
+060605,Vila Nova do Ceira,Góis,single,59,23.3,1,0.99609,0.0412,0.00209
+060606,União das freguesias de Cadafaz e Colmeal,Góis,single,57,124.5,1,0.99049,0.699,0.00996
+060704,Serpins,Lousã,single,57,46.8,1,0.99701,0.1757,0.00486
+060706,Gândaras,Lousã,single,59,23.3,1,0.99681,0.0242,0.00241
+060707,União das freguesias de Foz de Arouce e Casal de Ermio,Lousã,single,57,35.4,1,0.99478,0.0802,0.00404
+060709,Lousã,Lousã,single,60,81.8,1,0.99043,0.3865,0.00821
+060710,Vilarinho,Lousã,single,60,20.2,1,0.99828,0.0356,0.00141
+060901,Lamas,Miranda do Corvo,single,54,23.3,1,0.99673,0.0666,0.00425
+060902,Miranda do Corvo,Miranda do Corvo,single,59,143.1,1,0.98181,0.8698,0.0187
+060905,Vila Nova,Miranda do Corvo,single,59,30.8,1,0.99735,0.0907,0.00337
+060906,União das freguesias de Semide e Rio Vide,Miranda do Corvo,single,53,61.9,1,0.99407,0.2101,0.00563
+061101,Aldeia das Dez,Oliveira do Hospital,single,55,40.7,1,0.9908,0.0757,0.00405
+061102,Alvoco das Várzeas,Oliveira do Hospital,single,60,23.3,1,0.99639,0.0544,0.00468
+061103,Avô,Oliveira do Hospital,single,59,13.3,1,0.99708,0.0164,0.00228
+061104,Bobadela,Oliveira do Hospital,single,55,8.7,1,0.99816,0.0125,0.00219
+061106,Lagares,Oliveira do Hospital,single,56,40.7,1,0.99298,0.0846,0.00642
+061109,Lourosa,Oliveira do Hospital,single,58,35.4,1,0.99411,0.0514,0.00369
+061110,Meruge,Oliveira do Hospital,single,59,6.6,1,0.99896,0.0054,0.00075
+061111,Nogueira do Cravo,Oliveira do Hospital,single,59,23.3,1,0.99674,0.0504,0.00336
+061115,São Gião,Oliveira do Hospital,single,60,20.2,1,0.99701,0.0291,0.002
+061118,Seixo da Beira,Oliveira do Hospital,single,60,30.8,1,0.99718,0.1092,0.00324
+061119,Travanca de Lagos,Oliveira do Hospital,single,59,53.8,1,0.99172,0.1599,0.0101
+061123,União das freguesias de Lagos da Beira e Lajeosa,Oliveira do Hospital,single,58,30.8,1,0.99384,0.046,0.00341
+061124,União das freguesias de Oliveira do Hospital e São Paio de Gramaços,Oliveira do Hospital,single,60,35.4,1,0.99435,0.0658,0.00481
+061125,União das freguesias de Penalva de Alva e São Sebastião da Feira,Oliveira do Hospital,single,57,53.8,1,0.98955,0.1148,0.00792
+061126,União das freguesias de Santa Ovaia e Vila Pouca da Beira,Oliveira do Hospital,single,53,46.8,1,0.98329,0.1391,0.01872
+061127,Ervedal,Oliveira do Hospital,single,57,71.2,1,0.98862,0.1888,0.00867
+061128,Vila Franca da Beira,Oliveira do Hospital,single,55,20.2,1,0.99699,0.0399,0.00569
+061201,Cabril,Pampilhosa da Serra,single,55,46.8,1,0.99542,0.1485,0.00422
+061202,Dornelas do Zêzere,Pampilhosa da Serra,single,56,30.8,1,0.99603,0.0822,0.005
+061204,Janeiro de Baixo,Pampilhosa da Serra,single,59,94.1,1,0.98665,0.4765,0.01171
+061206,Pampilhosa da Serra,Pampilhosa da Serra,single,59,164.6,1,0.98905,1.1752,0.01173
+061207,Pessegueiro,Pampilhosa da Serra,single,56,71.2,1,0.99006,0.3268,0.01021
+061209,Unhais-o-Velho,Pampilhosa da Serra,single,56,53.8,1,0.99469,0.2488,0.00629
+061211,Fajão-Vidual,Pampilhosa da Serra,single,55,189.3,1,0.97885,1.133,0.01424
+061212,Portela do Fojo-Machio,Pampilhosa da Serra,single,50,250.3,1,0.96919,1.7891,0.03389
+061301,Carvalho,Penacova,single,59,40.7,1,0.9947,0.1071,0.00355
+061302,Figueira de Lorvão,Penacova,single,56,71.2,1,0.9935,0.3234,0.01212
+061304,Lorvão,Penacova,single,56,61.9,1,0.99213,0.2473,0.00918
+061307,Penacova,Penacova,single,60,71.2,1,0.99384,0.3134,0.00967
+061310,Sazes do Lorvão,Penacova,single,55,15.3,1,0.99837,0.0335,0.00187
+061312,União das freguesias de Friúmes e Paradela,Penacova,single,49,94.1,1,0.98199,0.2862,0.01291
+061313,União das freguesias de Oliveira do Mondego e Travanca do Mondego,Penacova,single,56,71.2,1,0.98979,0.1883,0.00834
+061314,União das freguesias de São Pedro de Alva e São Paio de Mondego,Penacova,single,59,124.5,1,0.98498,0.6621,0.01745
+061401,Cumeeira,Penela,single,58,61.9,1,0.98942,0.171,0.00803
+061402,Espinhal,Penela,single,53,94.1,1,0.98994,0.3193,0.01087
+061403,Podentes,Penela,single,56,53.8,1,0.99075,0.1603,0.00928
+061407,"União das freguesias de São Miguel, Santa Eufémia e Rabaçal",Penela,single,51,164.6,1,0.98246,0.7884,0.0118
+061501,Alfarelos,Soure,single,58,15.3,1,0.9979,0.0247,0.00176
+061504,Figueiró do Campo,Soure,largest,48,17.6,2,0.98962,0.0374,0.00332
+061506,Granja do Ulmeiro,Soure,single,60,11.6,1,0.99679,0.0135,0.00268
+061508,Samuel,Soure,single,59,61.9,1,0.99349,0.2107,0.00672
+061509,Soure,Soure,single,54,81.8,1,0.99496,0.5071,0.00549
+061510,Tapéus,Soure,single,54,15.3,1,0.99869,0.0425,0.00306
+061511,Vila Nova de Anços,Soure,single,56,23.3,1,0.99583,0.055,0.00267
+061512,Vinha da Rainha,Soure,single,52,46.8,1,0.99487,0.1443,0.00708
+061513,União das freguesias de Degracias e Pombalinho,Soure,largest,58,46.8,2,0.9867,0.0966,0.00245
+061514,União das freguesias de Gesteira e Brunhós,Soure,single,59,46.8,1,0.9935,0.1267,0.00756
+061602,Candosa,Tábua,single,60,23.3,1,0.99542,0.0451,0.00396
+061603,Carapinha,Tábua,single,60,15.3,1,0.99808,0.0196,0.00208
+061608,Midões,Tábua,single,54,61.9,1,0.99064,0.1892,0.00943
+061609,Mouronho,Tábua,single,56,46.8,1,0.99433,0.1361,0.00566
+061611,Póvoa de Midões,Tábua,single,59,26.8,1,0.9965,0.0408,0.00428
+061612,São João da Boa Vista,Tábua,single,59,17.6,1,0.99807,0.0278,0.00282
+061614,Tábua,Tábua,single,59,35.4,1,0.99724,0.1166,0.0047
+061616,União das freguesias de Ázere e Covelo,Tábua,single,55,71.2,1,0.99033,0.2696,0.01058
+061617,União das freguesias de Covas e Vila Nova de Oliveirinha,Tábua,single,54,46.8,1,0.99377,0.1164,0.00533
+061618,União das freguesias de Espariz e Sinde,Tábua,single,59,46.8,1,0.99575,0.1157,0.00492
+061619,União das freguesias de Pinheiro de Coja e Meda de Mouros,Tábua,single,58,71.2,1,0.98981,0.2537,0.01279
+061701,Arrifana,Vila Nova de Poiares,single,58,71.2,1,0.99031,0.2283,0.00957
+061702,Lavegadas,Vila Nova de Poiares,single,58,46.8,1,0.98814,0.1839,0.01633
+061703,Poiares (Santo André),Vila Nova de Poiares,single,57,61.9,1,0.99041,0.1688,0.00586
+061704,São Miguel de Poiares,Vila Nova de Poiares,single,54,26.8,1,0.99593,0.0566,0.00275
+070103,Santiago Maior,Alandroal,single,55,189.3,1,0.98809,1.2936,0.01145
+070104,Capelins (Santo António),Alandroal,single,59,189.3,1,0.98121,0.8366,0.0096
+070105,Terena (São Pedro),Alandroal,single,60,189.3,1,0.984,1.1548,0.01392
+070107,"União das freguesias de Alandroal (Nossa Senhora da Conceição), São Brás dos Matos (Mina do Bugalho) e Juromenha (Nossa Senhora do Loreto)",Alandroal,single,59,331.1,1,0.9836,4.1802,0.0161
+070201,Arraiolos,Arraiolos,single,60,287.9,1,0.9842,1.8633,0.01276
+070202,Igrejinha,Arraiolos,single,57,164.6,1,0.98814,0.7506,0.00888
+070206,Vimieiro,Arraiolos,single,52,437.8,1,0.97487,4.2442,0.0168
+070209,União das freguesias de São Gregório e Santa Justa,Arraiolos,single,49,331.1,1,0.98129,3.6958,0.03154
+070210,Gafanhoeira (São Pedro),Arraiolos,single,49,143.1,1,0.98556,1.133,0.02456
+070211,Sabugueiro,Arraiolos,single,57,81.8,1,0.99327,0.3755,0.01007
+070301,Borba (Matriz),Borba,single,56,94.1,1,0.99073,0.5475,0.01325
+070302,Orada,Borba,single,56,143.1,1,0.98761,0.6033,0.01187
+070303,Rio de Moinhos,Borba,single,57,94.1,1,0.98956,0.3974,0.00752
+070304,Borba (São Bartolomeu),Borba,single,43,5.0,1,0.99468,0.0008,0.00369
+070401,Arcos,Estremoz,single,55,124.5,1,0.98212,0.39,0.01632
+070402,Glória,Estremoz,single,53,164.6,1,0.98638,0.9503,0.01306
+070404,Évora Monte (Santa Maria),Estremoz,single,56,189.3,1,0.9843,1.3072,0.01315
+070411,São Domingos de Ana Loura,Estremoz,single,59,46.8,1,0.99028,0.0808,0.00495
+070413,Veiros,Estremoz,single,60,108.2,1,0.98973,0.3935,0.00991
+070414,União das freguesias de Estremoz (Santa Maria e Santo André),Estremoz,single,55,189.3,1,0.98538,0.9089,0.01422
+070415,União das freguesias de São Bento do Cortiço e Santo Estêvão,Estremoz,single,57,94.1,1,0.98911,0.3238,0.00568
+070416,União das freguesias de São Lourenço de Mamporcão e São Bento de Ana Loura,Estremoz,single,60,71.2,1,0.99231,0.358,0.00825
+070417,União das freguesias do Ameixial (Santa Vitória e São Bento),Estremoz,single,55,189.3,1,0.99099,1.388,0.01424
+070502,Nossa Senhora da Graça do Divor,Évora,single,52,217.7,1,0.98116,1.4071,0.01672
+070503,Nossa Senhora de Machede,Évora,single,60,287.9,1,0.9814,2.8642,0.01547
+070506,São Bento do Mato,Évora,single,53,164.6,1,0.99258,1.1135,0.01673
+070509,São Miguel de Machede,Évora,single,60,143.1,1,0.98821,1.0144,0.01244
+070513,Torre de Coelheiros,Évora,single,56,287.9,1,0.98319,2.2233,0.00983
+070515,Canaviais,Évora,single,58,26.8,1,0.99608,0.0565,0.00291
+070522,União das freguesias de Bacelo e Senhora da Saúde,Évora,single,56,164.6,1,0.97536,1.2252,0.02635
+070523,"União das freguesias de Évora (São Mamede, Sé, São Pedro e Santo Antão)",Évora,single,28,5.0,1,0.99797,0.0018,0.0016
+070524,União das freguesias de Malagueira e Horta das Figueiras,Évora,single,56,143.1,1,0.99088,0.6767,0.0105
+070525,União das freguesias de Nossa Senhora da Tourega e Nossa Senhora de Guadalupe,Évora,single,54,331.1,1,0.98735,4.1266,0.01567
+070526,União das freguesias de São Manços e São Vicente do Pigeiro,Évora,single,56,287.9,1,0.98747,4.4175,0.02286
+070527,União das freguesias de São Sebastião da Giesteira e Nossa Senhora da Boa Fé,Évora,single,56,189.3,1,0.98632,1.3435,0.01782
+070601,Cabrela,Montemor-o-Novo,single,58,94.1,1,0.99652,0.5524,0.00287
+070605,Santiago do Escoural,Montemor-o-Novo,single,57,287.9,1,0.98215,2.1219,0.0153
+070606,São Cristóvão,Montemor-o-Novo,single,59,217.7,1,0.98586,1.3082,0.00897
+070607,Ciborro,Montemor-o-Novo,single,59,124.5,1,0.98556,0.7191,0.01296
+070610,Foros de Vale de Figueira,Montemor-o-Novo,single,57,124.5,1,0.99288,0.8206,0.01217
+070613,Cortiçadas de Lavre,Montemor-o-Novo,single,59,143.1,1,0.99092,0.879,0.00885
+070614,Lavre,Montemor-o-Novo,single,59,164.6,1,0.98828,0.8902,0.00778
+070615,Nossa Senhora da Vila,Montemor-o-Novo,single,55,437.8,1,0.9757,4.9895,0.02668
+070616,Nossa Senhora do Bispo,Montemor-o-Novo,single,57,217.7,1,0.98739,1.6391,0.01345
+070617,Silveiras,Montemor-o-Novo,single,58,189.3,1,0.98773,1.5146,0.01369
+070701,Brotas,Mora,single,53,124.5,1,0.98864,0.8227,0.00989
+070702,Cabeção,Mora,single,59,61.9,1,0.99594,0.24,0.00506
+070703,Mora,Mora,single,59,143.1,1,0.99046,1.2277,0.00961
+070704,Pavia,Mora,single,58,217.7,1,0.98941,2.0475,0.01103
+070801,Granja,Mourão,single,58,164.6,1,0.97979,1.0413,0.01125
+070802,Luz,Mourão,single,59,61.9,1,0.99462,0.345,0.00678
+070803,Mourão,Mourão,single,57,189.3,1,0.98712,1.4383,0.01064
+070903,Monte do Trigo,Portel,single,56,164.6,1,0.99182,1.2023,0.01122
+070905,Portel,Portel,single,55,250.3,1,0.98532,2.6462,0.01692
+070906,Santana,Portel,single,58,61.9,1,0.99469,0.2433,0.0058
+070908,Vera Cruz,Portel,single,54,81.8,1,0.99395,0.3794,0.0085
+070911,Alqueva,Portel,single,55,143.1,1,0.99064,0.6182,0.00784
+070912,Amieira,Portel,single,55,189.3,1,0.98513,1.1803,0.01201
+070913,Oriola,Portel,single,50,61.9,1,0.99302,0.2946,0.00813
+070914,São Bartolomeu do Outeiro,Portel,single,60,53.8,1,0.99368,0.2793,0.00745
+071001,Montoito,Redondo,single,57,61.9,1,0.99721,0.2832,0.00459
+071002,Redondo,Redondo,single,57,380.7,1,0.98548,4.9726,0.01616
+071102,Corval,Reguengos de Monsaraz,single,59,189.3,1,0.98604,1.0667,0.01106
+071103,Monsaraz,Reguengos de Monsaraz,single,53,189.3,1,0.99164,1.6417,0.01859
+071104,Reguengos de Monsaraz,Reguengos de Monsaraz,single,58,143.1,1,0.98776,0.733,0.00721
+071106,União das freguesias de Campo e Campinho,Reguengos de Monsaraz,single,59,189.3,1,0.99225,1.563,0.0088
+071201,Vendas Novas,Vendas Novas,single,56,143.1,1,0.99459,0.6892,0.00437
+071202,Landeira,Vendas Novas,single,58,26.8,1,0.99879,0.0472,0.00073
+071301,Alcáçovas,Viana do Alentejo,single,59,143.1,1,0.99437,1.0379,0.00387
+071302,Viana do Alentejo,Viana do Alentejo,single,58,108.2,1,0.99155,0.5535,0.00585
+071303,Aguiar,Viana do Alentejo,single,57,61.9,1,0.99176,0.1959,0.00632
+071401,Bencatel,Vila Viçosa,single,59,94.1,1,0.98894,0.3164,0.00874
+071402,Ciladas,Vila Viçosa,single,56,250.3,1,0.98268,1.9164,0.01782
+071404,Pardais,Vila Viçosa,single,59,61.9,1,0.98891,0.1542,0.00859
+071406,Nossa Senhora da Conceição e São Bartolomeu,Vila Viçosa,single,60,71.2,1,0.99243,0.2455,0.0074
+080202,Giões,Alcoutim,single,58,164.6,1,0.98601,1.1815,0.01646
+080203,Martim Longo,Alcoutim,single,52,287.9,1,0.98332,2.3563,0.01834
+080205,Vaqueiros,Alcoutim,single,60,217.7,1,0.98691,1.9934,0.01385
+080206,União das freguesias de Alcoutim e Pereiro,Alcoutim,single,53,331.1,1,0.98791,4.3857,0.01897
+080301,Aljezur,Aljezur,largest,60,189.3,60,0.99139,2.1795,0.01307
+080302,Bordeira,Aljezur,largest,59,143.1,38,0.9904,0.7678,0.00961
+080303,Odeceixe,Aljezur,largest,47,189.3,17,0.97528,1.2768,0.03047
+080304,Rogil,Aljezur,largest,54,81.8,16,0.9928,0.3359,0.00961
+080401,Azinhal,Castro Marim,single,58,217.7,1,0.9806,1.4452,0.0212
+080402,Castro Marim,Castro Marim,single,59,143.1,1,0.99096,0.8556,0.01078
+080403,Odeleite,Castro Marim,single,54,331.1,1,0.97713,1.9019,0.01337
+080404,Altura,Castro Marim,single,57,35.4,1,0.99326,0.0594,0.00535
+080802,Alte,Loulé,single,59,108.2,1,0.99499,0.6762,0.00717
+080803,Ameixial,Loulé,single,60,250.3,1,0.98618,2.2229,0.01795
+080807,Salir,Loulé,single,56,217.7,1,0.98824,1.7715,0.00944
+080813,Benafim,Loulé,single,59,40.7,1,0.99766,0.0901,0.00171
+080814,Querença,Loulé,single,56,81.8,1,0.9896,0.188,0.00558
+080815,Tôr,Loulé,single,54,35.4,1,0.99471,0.1058,0.00668
+080901,Alferce,Monchique,single,54,189.3,1,0.98555,1.5513,0.01614
+080902,Marmelete,Monchique,single,57,287.9,1,0.98092,2.3854,0.01705
+080903,Monchique,Monchique,single,59,217.7,1,0.98608,1.9085,0.01198
+081306,São Marcos da Serra,Silves,single,60,287.9,1,0.98611,2.5878,0.01558
+081401,Cachopo,Tavira,single,53,250.3,1,0.9896,2.048,0.01006
+081404,Santa Catarina da Fonte do Bispo,Tavira,single,53,217.7,1,0.987,1.4685,0.01249
+081501,Barão de São Miguel,Vila do Bispo,single,58,46.8,1,0.99057,0.0926,0.00623
+081502,Budens,Vila do Bispo,single,52,94.1,1,0.98946,0.4199,0.00921
+081504,Sagres,Vila do Bispo,largest,53,164.6,28,0.97926,0.7129,0.02074
+081506,Vila do Bispo e Raposeira,Vila do Bispo,largest,45,189.3,6,0.9889,1.4108,0.01675
+090102,Carapito,Aguiar da Beira,single,56,17.6,1,0.99842,0.0332,0.00192
+090103,Cortiçada,Aguiar da Beira,single,58,35.4,1,0.99494,0.0487,0.00385
+090105,Dornelas,Aguiar da Beira,single,54,53.8,1,0.99515,0.2294,0.00966
+090106,Eirado,Aguiar da Beira,single,58,30.8,1,0.99453,0.0268,0.0029
+090107,Forninhos,Aguiar da Beira,single,59,30.8,1,0.99732,0.0546,0.00568
+090109,Pena Verde,Aguiar da Beira,single,59,53.8,1,0.99562,0.1769,0.00602
+090110,Pinheiro,Aguiar da Beira,single,58,17.6,1,0.99855,0.025,0.00157
+090114,União das freguesias de Aguiar da Beira e Coruche,Aguiar da Beira,single,57,61.9,1,0.99426,0.175,0.00404
+090115,União das freguesias de Sequeiros e Gradiz,Aguiar da Beira,single,55,46.8,1,0.99603,0.0887,0.00371
+090116,União das freguesias de Souto de Aguiar da Beira e Valverde,Aguiar da Beira,single,60,61.9,1,0.99257,0.1951,0.009
+090203,Almeida,Almeida,single,60,61.9,1,0.99561,0.2327,0.00444
+090207,Castelo Bom,Almeida,single,60,26.8,1,0.99774,0.0606,0.00242
+090209,Freineda,Almeida,single,59,30.8,1,0.998,0.0774,0.00265
+090210,Freixo,Almeida,single,59,20.2,1,0.99867,0.0422,0.00246
+090213,Malhada Sorda,Almeida,single,59,71.2,1,0.99599,0.2249,0.00491
+090219,Nave de Haver,Almeida,single,60,35.4,1,0.99708,0.0982,0.00239
+090224,São Pedro de Rio Seco,Almeida,single,57,11.6,1,0.99943,0.0154,0.00068
+090227,Vale da Mula,Almeida,single,59,35.4,1,0.99682,0.091,0.00553
+090229,Vilar Formoso,Almeida,single,59,15.3,1,0.99838,0.0227,0.0015
+090230,"União das freguesias de Amoreira, Parada e Cabreira",Almeida,single,57,71.2,1,0.99426,0.3074,0.00979
+090231,"União das freguesias de Azinhal, Peva e Valverde",Almeida,single,58,71.2,1,0.99468,0.2722,0.00579
+090232,"União das freguesias de Castelo Mendo, Ade, Monteperobolso e Mesquitela",Almeida,single,54,46.8,1,0.99532,0.1696,0.00405
+090233,União das freguesias de Junça e Naves,Almeida,single,60,35.4,1,0.99699,0.0964,0.00298
+090234,"União das freguesias de Leomil, Mido, Senouras e Aldeia Nova",Almeida,single,57,35.4,1,0.9964,0.0843,0.00199
+090235,União das freguesias de Malpartida e Vale de Coelha,Almeida,single,59,46.8,1,0.99387,0.0998,0.00344
+090236,União das freguesias de Miuzela e Porto de Ovelha,Almeida,single,57,53.8,1,0.99364,0.1933,0.00669
+090302,Baraçal,Celorico da Beira,single,57,17.6,1,0.99765,0.0277,0.00226
+090304,Carrapichana,Celorico da Beira,single,37,5.0,1,0.99936,0.0032,0.00057
+090306,Forno Telheiro,Celorico da Beira,single,60,17.6,1,0.99869,0.0543,0.00261
+090307,Lajeosa do Mondego,Celorico da Beira,single,57,20.2,1,0.99788,0.0332,0.00267
+090308,Linhares,Celorico da Beira,single,55,23.3,1,0.99715,0.0481,0.00306
+090309,Maçal do Chão,Celorico da Beira,single,60,30.8,1,0.99648,0.0546,0.00361
+090310,Mesquitela,Celorico da Beira,single,43,5.0,1,0.99957,0.0045,0.00026
+090311,Minhocal,Celorico da Beira,single,60,8.7,1,0.99873,0.0049,0.00045
+090312,Prados,Celorico da Beira,single,54,23.3,1,0.99667,0.0353,0.00248
+090314,Ratoeira,Celorico da Beira,single,56,20.2,1,0.99719,0.0416,0.00537
+090318,Vale de Azares,Celorico da Beira,single,60,11.6,1,0.9979,0.0085,0.00094
+090322,Casas do Soeiro,Celorico da Beira,single,56,20.2,1,0.99603,0.0303,0.00505
+090323,União das freguesias de Açores e Velosa,Celorico da Beira,single,56,30.8,1,0.99759,0.0651,0.00311
+090324,União das freguesias de Celorico (São Pedro e Santa Maria) e Vila Boa do Mondego,Celorico da Beira,single,56,71.2,1,0.99232,0.3096,0.00753
+090325,"União das freguesias de Cortiçô da Serra, Vide entre Vinhas e Salgueirais",Celorico da Beira,single,56,46.8,1,0.99391,0.0846,0.00379
+090326,União das freguesias de Rapa e Cadafaz,Celorico da Beira,single,58,30.8,1,0.99846,0.0712,0.0044
+090403,Castelo Rodrigo,Figueira de Castelo Rodrigo,single,58,53.8,1,0.99539,0.1119,0.0034
+090406,Escalhão,Figueira de Castelo Rodrigo,single,53,81.8,1,0.99574,0.3459,0.00439
+090408,Figueira de Castelo Rodrigo,Figueira de Castelo Rodrigo,single,60,35.4,1,0.99699,0.0662,0.00237
+090410,Mata de Lobos,Figueira de Castelo Rodrigo,single,54,30.8,1,0.99662,0.0477,0.00129
+090415,Vermiosa,Figueira de Castelo Rodrigo,single,58,35.4,1,0.99756,0.1213,0.00303
+090418,"União das freguesias de Algodres, Vale de Afonsinho e Vilar de Amargo",Figueira de Castelo Rodrigo,single,54,94.1,1,0.99584,0.794,0.01097
+090419,União das freguesias de Almofala e Escarigo,Figueira de Castelo Rodrigo,single,53,124.5,1,0.98237,0.4719,0.00997
+090420,União das freguesias de Cinco Vilas e Reigada,Figueira de Castelo Rodrigo,single,50,53.8,1,0.99415,0.2256,0.00542
+090421,"União das freguesias de Freixeda do Torrão, Quintã de Pêro Martins e Penha de Águia",Figueira de Castelo Rodrigo,single,58,71.2,1,0.99708,0.3126,0.00541
+090422,União das freguesias do Colmeal e Vilar Torpim,Figueira de Castelo Rodrigo,single,59,61.9,1,0.99771,0.3486,0.00478
+090501,Algodres,Fornos de Algodres,single,53,11.6,1,0.99834,0.0183,0.00181
+090502,Casal Vasco,Fornos de Algodres,single,60,11.6,1,0.99746,0.0164,0.00243
+090504,Figueiró da Granja,Fornos de Algodres,single,59,20.2,1,0.99772,0.0412,0.00353
+090505,Fornos de Algodres,Fornos de Algodres,single,59,40.7,1,0.99229,0.0913,0.00591
+090507,Infias,Fornos de Algodres,single,58,7.6,1,0.99861,0.0073,0.00261
+090509,Maceira,Fornos de Algodres,single,45,5.0,1,0.99962,0.0047,0.00058
+090510,Matança,Fornos de Algodres,single,56,8.7,1,0.99938,0.005,0.00036
+090511,Muxagata,Fornos de Algodres,single,59,7.6,1,0.99948,0.0083,0.00084
+090512,Queiriz,Fornos de Algodres,single,59,10.1,1,0.99828,0.0146,0.0015
+090517,União das freguesias de Cortiçô e Vila Chã,Fornos de Algodres,single,55,5.0,1,0.99955,0.0025,0.00032
+090518,"União das freguesias de Juncais, Vila Ruiva e Vila Soeiro do Chão",Fornos de Algodres,single,55,23.3,1,0.99789,0.0721,0.00363
+090519,União das freguesias de Sobral Pichorro e Fuinhas,Fornos de Algodres,single,51,17.6,1,0.99828,0.031,0.00204
+090602,Arcozelo,Gouveia,single,55,53.8,1,0.99351,0.1414,0.00589
+090603,Cativelos,Gouveia,single,58,30.8,1,0.99563,0.0692,0.0049
+090605,Folgosinho,Gouveia,single,60,71.2,1,0.99386,0.3068,0.00594
+090612,Nespereira,Gouveia,single,51,11.6,1,0.99669,0.0129,0.00239
+090613,Paços da Serra,Gouveia,single,52,46.8,1,0.98887,0.1299,0.0125
+090614,Ribamondego,Gouveia,single,59,15.3,1,0.9979,0.0259,0.00343
+090617,São Paio,Gouveia,single,59,46.8,1,0.98984,0.1422,0.00913
+090619,Vila Cortês da Serra,Gouveia,single,58,20.2,1,0.99519,0.0224,0.00203
+090620,Vila Franca da Serra,Gouveia,single,59,20.2,1,0.99713,0.038,0.00345
+090621,Vila Nova de Tazem,Gouveia,single,51,35.4,1,0.99504,0.0564,0.00354
+090623,União das freguesias de Aldeias e Mangualde da Serra,Gouveia,single,57,81.8,1,0.99199,0.2762,0.00736
+090624,União das freguesias de Figueiró da Serra e Freixo da Serra,Gouveia,single,60,17.6,1,0.99785,0.0391,0.00307
+090625,Gouveia,Gouveia,single,59,81.8,1,0.99219,0.3517,0.00992
+090626,União das freguesias de Melo e Nabais,Gouveia,single,59,40.7,1,0.99431,0.0928,0.00642
+090627,União das freguesias de Moimenta da Serra e Vinhó,Gouveia,single,57,35.4,1,0.99483,0.1093,0.00763
+090628,União das freguesias de Rio Torto e Lagarinhos,Gouveia,single,55,35.4,1,0.99456,0.0972,0.00502
+090703,Aldeia do Bispo,Guarda,single,56,35.4,1,0.99298,0.0818,0.00621
+090704,Aldeia Viçosa,Guarda,single,57,15.3,1,0.99799,0.0286,0.00385
+090705,Alvendre,Guarda,single,60,35.4,1,0.99538,0.0566,0.00437
+090706,Arrifana,Guarda,single,58,46.8,1,0.99295,0.068,0.0043
+090708,Avelãs da Ribeira,Guarda,single,58,30.8,1,0.98917,0.0697,0.00617
+090709,Benespera,Guarda,single,52,40.7,1,0.99431,0.1059,0.00586
+090711,Casal de Cinza,Guarda,single,53,61.9,1,0.98964,0.1561,0.00869
+090712,Castanheira,Guarda,single,53,46.8,1,0.99514,0.133,0.0054
+090713,Cavadoude,Guarda,single,58,10.1,1,0.99863,0.0076,0.00114
+090714,Codesseiro,Guarda,single,53,26.8,1,0.99563,0.0364,0.00378
+090716,Faia,Guarda,single,59,20.2,1,0.99655,0.032,0.0032
+090717,Famalicão,Guarda,single,54,30.8,1,0.995,0.0609,0.00381
+090718,Fernão Joanes,Guarda,single,57,46.8,1,0.99564,0.18,0.00718
+090721,Gonçalo Bocas,Guarda,single,54,26.8,1,0.99201,0.0333,0.00517
+090722,João Antão,Guarda,single,53,23.3,1,0.99611,0.0407,0.00464
+090723,Maçainhas,Guarda,single,59,23.3,1,0.99837,0.0568,0.00465
+090724,Marmeleiro,Guarda,single,55,81.8,1,0.98993,0.246,0.0083
+090725,Meios,Guarda,single,58,30.8,1,0.98792,0.0538,0.01113
+090728,Panoias de Cima,Guarda,single,60,26.8,1,0.99473,0.0504,0.00442
+090729,Pega,Guarda,single,56,26.8,1,0.99458,0.0457,0.0043
+090730,Pêra do Moço,Guarda,single,57,61.9,1,0.99274,0.1386,0.00673
+090732,Porto da Carne,Guarda,single,43,5.0,1,0.99877,0.0026,0.0013
+090734,Ramela,Guarda,single,60,30.8,1,0.99339,0.0675,0.00665
+090738,Santana da Azinha,Guarda,single,59,40.7,1,0.99379,0.1043,0.00654
+090744,Sobral da Serra,Guarda,single,58,5.0,1,0.99967,0.0059,0.00053
+090746,Vale de Estrela,Guarda,single,57,35.4,1,0.99594,0.0661,0.00474
+090747,Valhelhas,Guarda,single,53,53.8,1,0.99295,0.1202,0.00596
+090748,Vela,Guarda,single,60,40.7,1,0.99512,0.1069,0.00509
+090749,Videmonte,Guarda,single,57,143.1,1,0.9828,0.6822,0.01265
+090750,Vila Cortês do Mondego,Guarda,single,53,7.6,1,0.99816,0.0057,0.00131
+090751,Vila Fernando,Guarda,hull,25,0.0,2,1.0,17.1239,1.05252
+090752,Vila Franca do Deão,Guarda,single,57,35.4,1,0.99362,0.0598,0.00461
+090753,Vila Garcia,Guarda,single,57,53.8,1,0.99395,0.2101,0.01371
+090757,Gonçalo,Guarda,single,58,81.8,1,0.98759,0.259,0.00955
+090758,Guarda,Guarda,single,60,71.2,1,0.99106,0.2265,0.00602
+090759,Jarmelo São Miguel,Guarda,single,55,53.8,1,0.99216,0.1624,0.00952
+090760,Jarmelo São Pedro,Guarda,single,60,71.2,1,0.99044,0.2887,0.00929
+090761,União de freguesias de Avelãs de Ambom e Rocamondo,Guarda,single,56,30.8,1,0.99643,0.0677,0.00507
+090762,União de freguesias de Corujeira e Trinta,Guarda,single,50,108.2,1,0.96283,0.2728,0.02187
+090763,"União de freguesias de Mizarela, Pêro Soares e Vila Soeiro",Guarda,single,58,30.8,1,0.99522,0.0475,0.00339
+090764,União de freguesias de Pousade e Albardo,Guarda,single,58,71.2,1,0.98703,0.207,0.01226
+090765,União de freguesias de Rochoso e Monte Margarida,Guarda,single,55,46.8,1,0.99692,0.1804,0.00762
+090766,Adão,Guarda,single,56,94.1,1,0.9831,1.171,0.04135
+090801,Sameiro,Manteigas,single,57,13.3,1,0.99824,0.0231,0.00105
+090802,Manteigas (Santa Maria),Manteigas,single,58,81.8,1,0.98861,0.3216,0.01442
+090803,Manteigas (São Pedro),Manteigas,single,60,53.8,1,0.99646,0.2427,0.00399
+090804,Vale de Amoreira,Manteigas,single,57,23.3,1,0.99678,0.043,0.00256
+090901,Aveloso,Mêda,single,60,35.4,1,0.98937,0.0566,0.00759
+090902,Barreira,Mêda,single,54,46.8,1,0.99498,0.1348,0.00524
+090905,Coriscada,Mêda,single,54,71.2,1,0.99315,0.2672,0.01061
+090907,Longroiva,Mêda,single,56,124.5,1,0.98543,0.6057,0.01467
+090908,Marialva,Mêda,single,59,46.8,1,0.99325,0.1405,0.00732
+090912,Poço do Canto,Mêda,single,58,53.8,1,0.99189,0.1385,0.00854
+090914,Rabaçal,Mêda,single,59,20.2,1,0.99683,0.0333,0.00237
+090915,Ranhados,Mêda,single,54,53.8,1,0.99402,0.1552,0.00613
+090917,"Mêda, Outeiro de Gatos e Fonte Longa",Mêda,single,58,164.6,1,0.98258,0.9079,0.01782
+090918,Prova e Casteição,Mêda,single,57,108.2,1,0.97619,0.5546,0.02131
+090919,"União das freguesias de Vale Flor, Carvalhal e Pai Penela",Mêda,single,60,61.9,1,0.99448,0.2993,0.00864
+091009,Ervedosa,Pinhel,single,54,53.8,1,0.99037,0.1293,0.01007
+091010,Freixedas,Pinhel,single,59,53.8,1,0.99515,0.1345,0.00406
+091012,Lamegal,Pinhel,single,57,30.8,1,0.99713,0.0706,0.00321
+091013,Lameiras,Pinhel,single,57,35.4,1,0.99554,0.0569,0.0032
+091014,Manigoto,Pinhel,single,57,15.3,1,0.99909,0.0281,0.00177
+091015,Pala,Pinhel,single,53,23.3,1,0.99779,0.0546,0.00384
+091017,Pinhel,Pinhel,single,56,46.8,1,0.99758,0.1493,0.00334
+091018,Pínzio,Pinhel,single,58,46.8,1,0.99662,0.1379,0.00508
+091024,Souro Pires,Pinhel,single,60,23.3,1,0.99682,0.0452,0.00289
+091027,Vascoveiro,Pinhel,single,57,11.6,1,0.99948,0.0126,0.00069
+091028,Agregação das freguesias Sul de Pinhel,Pinhel,single,59,35.4,1,0.99679,0.0675,0.00165
+091029,Alverca da Beira/Bouça Cova,Pinhel,single,52,46.8,1,0.99215,0.1503,0.00762
+091030,Terras de Massueime,Pinhel,single,52,46.8,1,0.99162,0.1015,0.00819
+091031,Valbom/Bogalhal,Pinhel,single,59,40.7,1,0.99522,0.1321,0.00409
+091032,Alto do Palurdo,Pinhel,single,51,81.8,1,0.99044,0.3253,0.00688
+091033,Vale do Côa,Pinhel,single,55,94.1,1,0.98887,0.4207,0.00806
+091034,Vale do Massueime,Pinhel,single,57,53.8,1,0.99448,0.1893,0.00786
+091035,União das freguesias de Atalaia e Safurdão,Pinhel,single,58,61.9,1,0.99228,0.1828,0.00533
+091101,Águas Belas,Sabugal,single,60,40.7,1,0.9942,0.1273,0.00619
+091102,Aldeia do Bispo,Sabugal,single,59,17.6,1,0.99765,0.0199,0.00152
+091103,Aldeia da Ponte,Sabugal,single,55,46.8,1,0.99358,0.1403,0.00383
+091106,Aldeia Velha,Sabugal,single,52,20.2,1,0.99788,0.0373,0.00179
+091107,Alfaiates,Sabugal,single,60,30.8,1,0.99683,0.1184,0.00377
+091109,Baraçal,Sabugal,single,56,30.8,1,0.99608,0.0887,0.00553
+091110,Bendada,Sabugal,single,60,46.8,1,0.9919,0.1661,0.0048
+091111,Bismula,Sabugal,single,56,46.8,1,0.99184,0.0921,0.00482
+091112,Casteleiro,Sabugal,single,50,71.2,1,0.99408,0.354,0.00795
+091113,Cerdeira,Sabugal,single,56,46.8,1,0.99374,0.1078,0.0046
+091114,Fóios,Sabugal,single,58,30.8,1,0.99688,0.0556,0.00196
+091118,Malcata,Sabugal,single,56,46.8,1,0.99296,0.1353,0.00637
+091120,Nave,Sabugal,single,56,46.8,1,0.9944,0.1587,0.00585
+091123,Quadrazais,Sabugal,single,60,61.9,1,0.99213,0.2457,0.00605
+091124,Quintas de São Bartolomeu,Sabugal,single,59,30.8,1,0.99593,0.0591,0.00556
+091125,Rapoula do Côa,Sabugal,single,56,23.3,1,0.99547,0.0324,0.00408
+091126,Rebolosa,Sabugal,single,57,20.2,1,0.99558,0.0283,0.00315
+091127,Rendo,Sabugal,single,56,61.9,1,0.98887,0.1189,0.00553
+091133,Sortelha,Sabugal,single,55,46.8,1,0.99555,0.144,0.00363
+091134,Souto,Sabugal,single,57,30.8,1,0.99652,0.0767,0.00273
+091136,Vale de Espinho,Sabugal,single,60,61.9,1,0.99163,0.1932,0.00611
+091138,Vila Boa,Sabugal,single,52,30.8,1,0.99462,0.0609,0.00707
+091139,Vila do Touro,Sabugal,single,56,53.8,1,0.99188,0.1348,0.00578
+091141,"União das freguesias de Aldeia da Ribeira, Vilar Maior e Badamalos",Sabugal,single,58,81.8,1,0.99515,0.3513,0.00511
+091142,União das freguesias de Lajeosa e Forcalhos,Sabugal,single,57,40.7,1,0.99676,0.1223,0.00423
+091143,"União das freguesias de Pousafoles do Bispo, Pena Lobo e Lomba",Sabugal,single,59,61.9,1,0.99437,0.2806,0.00735
+091144,"União das freguesias de Ruvina, Ruivós e Vale das Éguas",Sabugal,single,54,46.8,1,0.99324,0.1571,0.00852
+091145,União das freguesias do Sabugal e Aldeia de Santo António,Sabugal,single,60,143.1,1,0.99006,0.8974,0.01593
+091146,União das freguesias de Santo Estêvão e Moita,Sabugal,single,56,61.9,1,0.99326,0.1972,0.0068
+091147,União das freguesias de Seixo do Côa e Vale Longo,Sabugal,single,60,71.2,1,0.99422,0.295,0.01179
+091201,Alvoco da Serra,Seia,single,59,40.7,1,0.99665,0.1585,0.00422
+091205,Girabolhos,Seia,single,54,40.7,1,0.99462,0.1096,0.00618
+091207,Loriga,Seia,single,60,61.9,1,0.99161,0.1727,0.00477
+091208,Paranhos,Seia,single,58,26.8,1,0.99795,0.0469,0.00221
+091209,Pinhanços,Seia,single,60,11.6,1,0.99885,0.0156,0.00187
+091210,Sabugueiro,Seia,single,53,53.8,1,0.99698,0.2702,0.00674
+091212,Sandomil,Seia,single,59,23.3,1,0.99744,0.0361,0.00273
+091213,Santa Comba,Seia,single,59,26.8,1,0.99541,0.0477,0.00403
+091216,Santiago,Seia,single,56,20.2,1,0.99539,0.0291,0.00392
+091219,Sazes da Beira,Seia,single,56,10.1,1,0.99859,0.0163,0.00209
+091221,Teixeira,Seia,single,59,35.4,1,0.99555,0.0838,0.00527
+091224,Travancinha,Seia,single,60,15.3,1,0.99842,0.0171,0.00137
+091225,Valezim,Seia,single,59,20.2,1,0.99748,0.0283,0.00234
+091228,Vila Cova à Coelheira,Seia,single,59,15.3,1,0.99745,0.0146,0.0019
+091230,União das freguesias de Carragozela e Várzea de Meruge,Seia,single,57,23.3,1,0.99571,0.0335,0.00332
+091231,União das freguesias de Sameice e Santa Eulália,Seia,single,57,53.8,1,0.99252,0.1383,0.00969
+091234,União das freguesias de Torrozelo e Folhadosa,Seia,single,58,30.8,1,0.99474,0.0578,0.00566
+091235,União das freguesias de Tourais e Lajes,Seia,single,59,53.8,1,0.99578,0.2145,0.00819
+091236,União das freguesias de Vide e Cabeça,Seia,single,58,71.2,1,0.99681,0.3835,0.00679
+091237,Lapa dos Dinheiros,Seia,single,58,30.8,1,0.99338,0.0483,0.00638
+091238,Santa Marinha,Seia,single,59,30.8,1,0.99293,0.0451,0.00535
+091239,São Martinho,Seia,single,57,30.8,1,0.99313,0.0613,0.0092
+091240,São Romão,Seia,single,55,71.2,1,0.99034,0.2984,0.01325
+091241,Seia,Seia,single,59,61.9,1,0.9921,0.2064,0.00871
+091301,Aldeia Nova,Trancoso,single,56,35.4,1,0.99789,0.1307,0.00487
+091303,Castanheira,Trancoso,single,57,11.6,1,0.99921,0.0155,0.00156
+091304,Cogula,Trancoso,single,55,23.3,1,0.99266,0.0265,0.00571
+091305,Cótimos,Trancoso,single,58,53.8,1,0.99141,0.1145,0.0085
+091307,Fiães,Trancoso,single,56,13.3,1,0.99829,0.0101,0.00105
+091309,Granja,Trancoso,single,58,13.3,1,0.99808,0.0176,0.0019
+091310,Guilheiro,Trancoso,single,50,5.0,1,0.9996,0.0056,0.00041
+091311,Moimentinha,Trancoso,single,60,17.6,1,0.99617,0.0237,0.00355
+091312,Moreira de Rei,Trancoso,single,60,40.7,1,0.99725,0.1143,0.00347
+091313,Palhais,Trancoso,single,60,10.1,1,0.9979,0.0118,0.00272
+091314,Póvoa do Concelho,Trancoso,single,59,30.8,1,0.99576,0.0459,0.00424
+091315,Reboleiro,Trancoso,single,57,8.7,1,0.99796,0.0044,0.00097
+091316,Rio de Mel,Trancoso,single,59,35.4,1,0.99635,0.0717,0.00307
+091321,Tamanhos,Trancoso,single,59,15.3,1,0.99865,0.0129,0.00155
+091325,Valdujo,Trancoso,single,60,26.8,1,0.99692,0.0295,0.00192
+091330,União das freguesias de Freches e Torres,Trancoso,single,54,30.8,1,0.99715,0.1227,0.00515
+091331,"União das freguesias de Torre do Terrenho, Sebadelhe da Serra e Terrenho",Trancoso,single,60,53.8,1,0.99326,0.1489,0.00507
+091332,União das freguesias de Trancoso (São Pedro e Santa Maria) e Souto Maior,Trancoso,single,57,143.1,1,0.98707,0.837,0.01442
+091333,União das freguesias de Vale do Seixo e Vila Garcia,Trancoso,single,54,71.2,1,0.98626,0.1758,0.00864
+091334,União das freguesias de Vila Franca das Naves e Feital,Trancoso,single,60,30.8,1,0.99425,0.0593,0.0037
+091335,União das freguesias de Vilares e Carnicães,Trancoso,single,56,46.8,1,0.99324,0.1359,0.00675
+091401,Almendra,Vila Nova de Foz Côa,single,58,53.8,1,0.99689,0.2978,0.00547
+091402,Castelo Melhor,Vila Nova de Foz Côa,single,59,46.8,1,0.99609,0.1557,0.00424
+091403,Cedovim,Vila Nova de Foz Côa,single,57,94.1,1,0.99191,0.437,0.01361
+091404,Chãs,Vila Nova de Foz Côa,single,60,71.2,1,0.98993,0.1935,0.01099
+091405,Custóias,Vila Nova de Foz Côa,single,55,23.3,1,0.99669,0.0657,0.00604
+091407,Horta,Vila Nova de Foz Côa,single,58,26.8,1,0.99497,0.0542,0.00538
+091410,Muxagata,Vila Nova de Foz Côa,single,58,46.8,1,0.99469,0.1281,0.00483
+091411,Numão,Vila Nova de Foz Côa,single,56,61.9,1,0.99108,0.243,0.01054
+091412,Santa Comba,Vila Nova de Foz Côa,single,59,46.8,1,0.99383,0.135,0.00442
+091414,Sebadelhe,Vila Nova de Foz Côa,single,59,26.8,1,0.99443,0.0439,0.00543
+091415,Seixas,Vila Nova de Foz Côa,single,59,40.7,1,0.99147,0.1191,0.00976
+091416,Touça,Vila Nova de Foz Côa,single,55,15.3,1,0.99864,0.0267,0.00284
+091418,Freixo de Numão,Vila Nova de Foz Côa,single,57,71.2,1,0.99189,0.2678,0.00737
+091419,Vila Nova de Foz Côa,Vila Nova de Foz Côa,single,58,124.5,1,0.98988,0.6937,0.00769
+100201,Almoster,Alvaiázere,single,60,35.4,1,0.99584,0.0697,0.0027
+100204,Maçãs de Dona Maria,Alvaiázere,single,53,40.7,1,0.99451,0.1179,0.00481
+100205,Pelmá,Alvaiázere,single,56,46.8,1,0.99617,0.1018,0.00335
+100208,Alvaiázere,Alvaiázere,single,49,40.7,1,0.99761,0.1189,0.00309
+100209,Pussos São Pedro,Alvaiázere,single,59,71.2,1,0.99325,0.2625,0.00637
+100301,Alvorge,Ansião,single,58,94.1,1,0.98974,0.5232,0.0134
+100303,Avelar,Ansião,single,59,13.3,1,0.99759,0.0199,0.00234
+100304,Chão de Couce,Ansião,single,55,35.4,1,0.99404,0.0473,0.00199
+100306,Pousaflores,Ansião,single,55,46.8,1,0.99561,0.2482,0.00982
+100307,Santiago da Guarda,Ansião,single,59,53.8,1,0.99745,0.1442,0.0035
+100309,Ansião,Ansião,single,54,53.8,1,0.99425,0.23,0.00601
+100703,União das freguesias de Castanheira de Pêra e Coentral,Castanheira de Pêra,single,58,81.8,1,0.99356,0.4045,0.00606
+100801,Aguda,Figueiró dos Vinhos,single,60,53.8,1,0.99534,0.274,0.00691
+100802,Arega,Figueiró dos Vinhos,single,58,61.9,1,0.99317,0.1998,0.00697
+100803,Campelo,Figueiró dos Vinhos,single,60,94.1,1,0.99321,0.4153,0.00804
+100806,União das freguesias de Figueiró dos Vinhos e Bairradas,Figueiró dos Vinhos,single,55,108.2,1,0.99089,0.5013,0.00937
+101301,Graça,Pedrógão Grande,single,57,94.1,1,0.98939,0.4119,0.0131
+101302,Pedrógão Grande,Pedrógão Grande,single,51,217.7,1,0.98639,1.6964,0.02114
+101303,Vila Facaia,Pedrógão Grande,single,58,71.2,1,0.98645,0.1721,0.01009
+101501,Abiul,Pombal,single,60,61.9,1,0.9952,0.2274,0.0042
+120101,Alter do Chão,Alter do Chão,single,55,189.3,1,0.99017,2.066,0.01467
+120102,Chancelaria,Alter do Chão,single,58,61.9,1,0.99461,0.2475,0.00345
+120103,Seda,Alter do Chão,single,53,189.3,1,0.98887,1.3356,0.01188
+120104,Cunheira,Alter do Chão,single,57,46.8,1,0.99505,0.117,0.00316
+120201,Assunção,Arronches,single,57,250.3,1,0.98748,3.0459,0.01489
+120202,Esperança,Arronches,single,58,108.2,1,0.99306,0.5205,0.00911
+120203,Mosteiros,Arronches,single,60,124.5,1,0.98919,0.5026,0.00949
+120302,Aldeia Velha,Avis,single,60,217.7,1,0.98233,1.3192,0.01046
+120303,Avis,Avis,single,59,287.9,1,0.97642,1.9723,0.02142
+120305,Ervedal,Avis,single,59,71.2,1,0.99508,0.3612,0.00949
+120306,Figueira e Barros,Avis,single,60,124.5,1,0.99118,0.5994,0.00853
+120309,União das freguesias de Alcórrego e Maranhão,Avis,single,58,217.7,1,0.98829,1.6475,0.0128
+120310,União das freguesias de Benavila e Valongo,Avis,single,54,287.9,1,0.98561,1.9837,0.01317
+120401,Nossa Senhora da Expectação,Campo Maior,single,57,81.8,1,0.99526,0.4258,0.00405
+120402,Nossa Senhora da Graça dos Degolados,Campo Maior,single,58,71.2,1,0.99143,0.291,0.00814
+120403,São João Baptista,Campo Maior,single,50,124.5,1,0.99142,0.9557,0.00898
+120501,Nossa Senhora da Graça de Póvoa e Meadas,Castelo de Vide,single,55,189.3,1,0.97417,1.1085,0.01507
+120502,Santa Maria da Devesa,Castelo de Vide,single,56,164.6,1,0.98202,0.8327,0.01478
+120503,Santiago Maior,Castelo de Vide,single,60,81.8,1,0.9948,0.5017,0.00853
+120504,São João Baptista,Castelo de Vide,single,59,143.1,1,0.98885,0.9755,0.0128
+120601,Aldeia da Mata,Crato,single,59,81.8,1,0.99388,0.3588,0.00962
+120604,Gáfete,Crato,single,59,81.8,1,0.99132,0.2812,0.00609
+120605,Monte da Pedra,Crato,single,60,124.5,1,0.98756,0.7568,0.0126
+120607,"União das freguesias de Crato e Mártires, Flor da Rosa e Vale do Peso",Crato,single,55,189.3,1,0.98937,1.342,0.00527
+120706,Santa Eulália,Elvas,single,59,108.2,1,0.99393,0.7245,0.00735
+120707,São Brás e São Lourenço,Elvas,single,58,94.1,1,0.99317,0.4019,0.00844
+120708,São Vicente e Ventosa,Elvas,single,53,250.3,1,0.98315,1.829,0.01799
+120712,"Assunção, Ajuda, Salvador e Santo Ildefonso",Elvas,single,56,217.7,1,0.98779,1.6186,0.01641
+120713,"Caia, São Pedro e Alcáçova",Elvas,single,60,287.9,1,0.97804,1.7808,0.01712
+120714,União das freguesias de Barbacena e Vila Fernando,Elvas,single,54,71.2,1,0.99476,0.4633,0.00561
+120716,Terrugem,Elvas,single,56,143.1,1,0.9933,0.839,0.01154
+120717,Vila Boim,Elvas,single,60,35.4,1,0.99779,0.1195,0.00469
+120801,Cabeço de Vide,Fronteira,single,58,108.2,1,0.98859,0.3246,0.00493
+120802,Fronteira,Fronteira,single,55,331.1,1,0.97981,3.233,0.02287
+120803,São Saturnino,Fronteira,single,54,143.1,1,0.98397,0.5888,0.01422
+120902,Belver,Gavião,single,48,124.5,1,0.9916,0.5836,0.00836
+120903,Comenda,Gavião,single,55,143.1,1,0.99159,0.8227,0.00914
+120905,Margem,Gavião,single,57,94.1,1,0.99216,0.4067,0.00715
+120906,União das freguesias de Gavião e Atalaia,Gavião,single,58,124.5,1,0.98981,0.5875,0.00754
+121001,Beirã,Marvão,single,50,108.2,1,0.98974,0.5292,0.01182
+121002,Santa Maria de Marvão,Marvão,single,57,108.2,1,0.9807,0.5685,0.02435
+121003,Santo António das Areias,Marvão,single,50,94.1,1,0.98908,0.3466,0.00963
+121004,São Salvador da Aramenha,Marvão,single,57,94.1,1,0.99039,0.3225,0.00635
+121101,Assumar,Monforte,single,60,81.8,1,0.99157,0.3709,0.00581
+121102,Monforte,Monforte,single,55,250.3,1,0.99073,2.7413,0.01277
+121103,Santo Aleixo,Monforte,single,58,81.8,1,0.99063,0.4339,0.00742
+121104,Vaiamonte,Monforte,single,58,81.8,1,0.99628,0.5626,0.00676
+121201,Alpalhão,Nisa,single,54,53.8,1,0.99539,0.1973,0.00576
+121205,Montalvão,Nisa,single,51,189.3,1,0.99062,1.3519,0.01089
+121207,Santana,Nisa,single,55,71.2,1,0.99221,0.2879,0.01059
+121208,São Matias,Nisa,single,52,164.6,1,0.98571,0.789,0.01443
+121210,Tolosa,Nisa,single,53,61.9,1,0.99471,0.2538,0.01079
+121211,União das freguesias de Arez e Amieira do Tejo,Nisa,single,57,189.3,1,0.98851,0.9898,0.00626
+121212,"União das freguesias de Espírito Santo, Nossa Senhora da Graça e São Simão",Nisa,single,60,250.3,1,0.98403,1.6146,0.01051
+121301,Galveias,Ponte de Sor,single,59,108.2,1,0.99127,0.5331,0.00668
+121302,Montargil,Ponte de Sor,single,54,217.7,1,0.99464,2.676,0.00901
+121304,Foros de Arrão,Ponte de Sor,single,59,108.2,1,0.99238,0.6058,0.00718
+121305,Longomel,Ponte de Sor,single,58,94.1,1,0.98962,0.3446,0.00734
+121309,Ponte de Sor,Ponte de Sor,single,54,189.3,1,0.98903,1.9536,0.01126
+121310,Tramaga,Ponte de Sor,single,58,81.8,1,0.99429,0.4974,0.00539
+121311,Vale de Açor,Ponte de Sor,single,58,108.2,1,0.99118,0.5903,0.00896
+121401,Alagoa,Portalegre,single,60,26.8,1,0.99671,0.0518,0.00285
+121402,Alegrete,Portalegre,single,59,108.2,1,0.99305,0.4395,0.00506
+121404,Fortios,Portalegre,single,55,189.3,1,0.9836,1.086,0.01649
+121410,Urra,Portalegre,single,57,189.3,1,0.99203,1.3542,0.01042
+121411,União das freguesias da Sé e São Lourenço,Portalegre,single,56,71.2,1,0.99304,0.2375,0.01006
+121412,União das freguesias de Reguengo e São Julião,Portalegre,single,60,124.5,1,0.98818,0.5825,0.00807
+121413,União das freguesias de Ribeira de Nisa e Carreiras,Portalegre,single,58,94.1,1,0.9934,0.4968,0.00985
+121501,Cano,Sousel,single,59,61.9,1,0.99632,0.3017,0.0061
+121502,Casa Branca,Sousel,single,55,189.3,1,0.98679,1.3457,0.01332
+121503,Santo Amaro,Sousel,single,60,61.9,1,0.99523,0.2275,0.00574
+121504,Sousel,Sousel,single,57,143.1,1,0.9886,0.391,0.00438
+130103,Ansiães,Amarante,single,60,35.4,1,0.99688,0.0745,0.00274
+130107,Candemil,Amarante,single,59,26.8,1,0.99385,0.048,0.004
+130118,Jazente,Amarante,single,59,15.3,1,0.99708,0.0185,0.00552
+130128,Rebordelo,Amarante,single,55,53.8,1,0.99029,0.1606,0.01026
+130129,Salvador do Monte,Amarante,single,55,13.3,1,0.99703,0.0115,0.00153
+130134,Gouveia (São Simão),Amarante,single,58,26.8,1,0.99529,0.0464,0.00371
+130139,Vila Chã do Marão,Amarante,single,58,23.3,1,0.99624,0.0307,0.00457
+130141,"União das freguesias de Aboadela, Sanche e Várzea",Amarante,single,60,30.8,1,0.99838,0.1252,0.00411
+130143,"União das freguesias de Bustelo, Carneiro e Carvalho de Rei",Amarante,single,56,53.8,1,0.99428,0.2019,0.00862
+130146,União das freguesias de Olo e Canadelo,Amarante,single,59,61.9,1,0.98972,0.1759,0.00901
+130204,Frende,Baião,single,57,15.3,1,0.99414,0.0139,0.00481
+130205,Gestaçô,Baião,single,58,46.8,1,0.99468,0.1165,0.00819
+130206,Gove,Baião,single,57,46.8,1,0.99293,0.1276,0.01107
+130207,Grilo,Baião,single,58,10.1,1,0.99879,0.0068,0.00114
+130208,Loivos do Monte,Baião,single,59,46.8,1,0.98735,0.0985,0.01126
+130215,Santa Marinha do Zêzere,Baião,single,59,40.7,1,0.99325,0.0923,0.00863
+130219,Valadares,Baião,single,58,23.3,1,0.99707,0.0288,0.0029
+130220,Viariz,Baião,single,60,5.8,1,0.99944,0.0068,0.00109
+130221,União das freguesias de Ancede e Ribadouro,Baião,single,59,26.8,1,0.99626,0.063,0.00439
+130222,União das freguesias de Baião (Santa Leocádia) e Mesquinhata,Baião,single,57,26.8,1,0.99669,0.0612,0.00715
+130223,União das freguesias de Campelo e Ovil,Baião,single,57,53.8,1,0.99539,0.1893,0.00595
+130224,União das freguesias de Loivos da Ribeira e Tresouras,Baião,single,56,11.6,1,0.99774,0.0157,0.00219
+130225,União das freguesias de Santa Cruz do Douro e São Tomé de Covelas,Baião,single,59,23.3,1,0.99728,0.03,0.00186
+130226,União das freguesias de Teixeira e Teixeiró,Baião,single,59,46.8,1,0.99557,0.1123,0.00427
+130740,"Várzea, Aliviada e Folhada",Marco de Canaveses,single,58,23.3,1,0.99773,0.0761,0.00328
+140104,Bemposta,Abrantes,single,54,217.7,1,0.99079,1.6382,0.00874
+140105,Martinchel,Abrantes,single,50,35.4,1,0.99606,0.1139,0.00667
+140106,Mouriscas,Abrantes,single,59,81.8,1,0.99158,0.3489,0.00996
+140107,Pego,Abrantes,single,56,46.8,1,0.99564,0.1527,0.00424
+140108,Rio de Moinhos,Abrantes,single,60,81.8,1,0.98539,0.2879,0.01437
+140115,Tramagal,Abrantes,single,57,30.8,1,0.99673,0.0919,0.00381
+140118,Fontes,Abrantes,single,60,46.8,1,0.99379,0.1505,0.00528
+140119,Carvalhal,Abrantes,single,52,46.8,1,0.99316,0.1237,0.00705
+140120,União das freguesias de Abrantes (São Vicente e São João) e Alferrarede,Abrantes,single,59,108.2,1,0.99094,0.5897,0.00915
+140121,União das freguesias de Aldeia do Mato e Souto,Abrantes,single,59,94.1,1,0.99044,0.3741,0.00836
+140122,União das freguesias de Alvega e Concavada,Abrantes,single,58,143.1,1,0.99073,0.7329,0.00966
+140123,União das freguesias de São Facundo e Vale das Mós,Abrantes,single,59,124.5,1,0.9927,0.6947,0.00662
+140124,União das freguesias de São Miguel do Rio Torto e Rossio ao Sul do Tejo,Abrantes,single,52,108.2,1,0.99439,0.602,0.01021
+140704,Ulme,Chamusca,single,59,124.5,1,0.99146,0.8238,0.00676
+140705,Vale de Cavalos,Chamusca,single,57,143.1,1,0.99095,1.125,0.00937
+140707,Carregueira,Chamusca,single,59,46.8,1,0.99677,0.2239,0.00227
+140708,União das freguesias da Chamusca e Pinheiro Grande,Chamusca,single,52,94.1,1,0.99204,0.6081,0.00906
+140709,União das freguesias de Parreira e Chouto,Chamusca,single,56,250.3,1,0.99246,2.6584,0.00786
+140801,Constância,Constância,single,53,30.8,1,0.99276,0.0514,0.00583
+140802,Montalvo,Constância,single,54,20.2,1,0.99677,0.0261,0.00204
+140803,Santa Margarida da Coutada,Constância,single,58,53.8,1,0.99737,0.1868,0.00318
+140902,Couço,Coruche,single,58,437.8,1,0.97405,5.0876,0.01468
+140903,São José da Lamarosa,Coruche,single,51,143.1,1,0.99193,0.8635,0.00779
+140905,Branca,Coruche,single,56,164.6,1,0.99059,1.8218,0.01553
+140907,Biscainho,Coruche,single,57,124.5,1,0.98984,0.731,0.00898
+140908,Santana do Mato,Coruche,single,58,143.1,1,0.98961,1.1677,0.01133
+140910,Coruche,Coruche,single,56,250.3,1,0.98653,1.9064,0.00786
+140911,Erra,Coruche,single,60,61.9,1,0.99457,0.2126,0.00332
+140912,Fajarda,Coruche,single,59,71.2,1,0.99165,0.2122,0.00425
+141101,Águas Belas,Ferreira do Zêzere,single,51,71.2,1,0.98692,0.2415,0.01091
+141103,Beco,Ferreira do Zêzere,single,60,53.8,1,0.99284,0.1493,0.00921
+141104,Chãos,Ferreira do Zêzere,single,55,81.8,1,0.99016,0.3014,0.01292
+141106,Ferreira do Zêzere,Ferreira do Zêzere,single,59,71.2,1,0.9947,0.2333,0.00615
+141107,Igreja Nova do Sobral,Ferreira do Zêzere,single,58,53.8,1,0.99122,0.1493,0.01028
+141110,Nossa Senhora do Pranto,Ferreira do Zêzere,single,56,71.2,1,0.99184,0.1949,0.0064
+141111,União das freguesias de Areias e Pias,Ferreira do Zêzere,single,56,81.8,1,0.99005,0.273,0.00596
+141302,Amêndoa,Mação,single,58,61.9,1,0.99613,0.1447,0.00385
+141303,Cardigos,Mação,single,57,124.5,1,0.98794,0.6515,0.00919
+141304,Carvoeiro,Mação,single,60,143.1,1,0.98794,0.5666,0.01158
+141305,Envendos,Mação,single,55,189.3,1,0.98925,1.3558,0.01473
+141307,Ortiga,Mação,single,55,53.8,1,0.99045,0.1157,0.00707
+141309,"União das freguesias de Mação, Penhascoso e Aboboreira",Mação,single,56,164.6,1,0.99115,1.0587,0.00789
+141631,União das freguesias de Casével e Vaqueiros,Santarém,single,54,94.1,1,0.99073,0.408,0.01109
+141701,Alcaravela,Sardoal,single,50,94.1,1,0.9923,0.3441,0.00936
+141702,Santiago de Montalegre,Sardoal,single,55,46.8,1,0.99073,0.0664,0.00391
+141703,Sardoal,Sardoal,single,59,94.1,1,0.98924,0.4552,0.01517
+141704,Valhascos,Sardoal,single,56,23.3,1,0.9962,0.0445,0.00532
+141808,Olalhas,Tomar,single,58,124.5,1,0.9827,0.5788,0.01667
+141814,Sabacheira,Tomar,single,55,71.2,1,0.99232,0.1997,0.00583
+141817,União das freguesias de Além da Ribeira e Pedreira,Tomar,single,59,71.2,1,0.98661,0.2295,0.00937
+141818,União das freguesias de Casais e Alviobeira,Tomar,single,51,143.1,1,0.9836,0.6687,0.0186
+141822,Junceira,Tomar,single,55,71.2,1,0.98824,0.21,0.01609
+141823,Serra,Tomar,single,54,81.8,1,0.99246,0.3053,0.00911
+142001,Atalaia,Vila Nova da Barquinha,single,58,40.7,1,0.99666,0.1268,0.00881
+142002,Praia do Ribatejo,Vila Nova da Barquinha,single,54,40.7,1,0.99325,0.1444,0.00713
+142003,Tancos,Vila Nova da Barquinha,single,59,11.6,1,0.99252,0.0048,0.00236
+142006,Vila Nova da Barquinha,Vila Nova da Barquinha,single,57,35.4,1,0.99457,0.0872,0.00679
+142105,Espite,Ourém,single,59,61.9,1,0.99324,0.1828,0.00924
+142119,"União das freguesias de Freixianda, Ribeira do Fárrio e Formigais",Ourém,single,50,143.1,1,0.98739,0.9456,0.01472
+142123,Casal dos Bernardos,Ourém,single,56,46.8,1,0.99257,0.1037,0.00447
+142124,Cercal,Ourém,single,57,35.4,1,0.99361,0.0561,0.00722
+142126,Matas,Ourém,single,52,61.9,1,0.98623,0.1514,0.01166
+142128,Rio de Couros,Ourém,single,59,46.8,1,0.99543,0.1315,0.00629
+150104,Torrão,Alcácer do Sal,single,59,164.6,1,0.99662,1.2244,0.00329
+150105,São Martinho,Alcácer do Sal,single,60,81.8,1,0.99383,0.3781,0.00427
+150106,Comporta,Alcácer do Sal,single,58,40.7,1,0.99828,0.1547,0.00103
+150108,Alcácer do Sal (Santa Maria do Castelo),Alcácer do Sal,single,60,124.5,1,0.99755,1.0325,0.00237
+150109,Alcácer do Sal (Santiago),Alcácer do Sal,single,55,189.3,1,0.99459,1.7598,0.00614
+150110,Santa Susana,Alcácer do Sal,single,53,189.3,1,0.99101,1.7163,0.01033
+150501,Azinheira dos Barros e São Mamede do Sádão,Grândola,single,57,250.3,1,0.98277,1.8562,0.01076
+150503,Melides,Grândola,single,59,108.2,1,0.99633,0.9183,0.00592
+150505,Carvalhal,Grândola,single,58,81.8,1,0.99539,1.1228,0.01369
+150506,União das freguesias de Grândola e Santa Margarida da Serra,Grândola,single,60,217.7,1,0.99473,3.0363,0.00729
+150901,Abela,Santiago do Cacém,single,55,189.3,1,0.99012,1.6849,0.01224
+150902,Alvalade,Santiago do Cacém,single,56,124.5,1,0.99635,0.4605,0.00285
+150903,Cercal,Santiago do Cacém,single,58,217.7,1,0.98796,1.4614,0.01063
+150904,Ermidas-Sado,Santiago do Cacém,single,59,143.1,1,0.99265,0.8129,0.00986
+150907,Santo André,Santiago do Cacém,single,60,40.7,1,0.99719,0.1339,0.00178
+150910,São Francisco da Serra,Santiago do Cacém,single,60,124.5,1,0.98602,0.6898,0.01343
+150912,"União das freguesias de Santiago do Cacém, Santa Cruz e São Bartolomeu da Serra",Santiago do Cacém,single,53,380.7,1,0.98047,4.0528,0.01949
+150914,São Domingos,Santiago do Cacém,single,56,164.6,1,0.98527,0.8125,0.00626
+150915,Vale de Água,Santiago do Cacém,single,59,124.5,1,0.99045,0.5922,0.00778
+160101,Aboim das Choças,Arcos de Valdevez,single,50,5.0,1,0.99855,0.0028,0.00151
+160102,Aguiã,Arcos de Valdevez,single,57,15.3,1,0.99672,0.0165,0.00435
+160104,Ázere,Arcos de Valdevez,single,55,6.6,1,0.99851,0.0048,0.0015
+160105,Cabana Maior,Arcos de Valdevez,single,50,40.7,1,0.99343,0.1096,0.00818
+160106,Cabreiro,Arcos de Valdevez,single,58,61.9,1,0.99338,0.1773,0.00425
+160108,Cendufe,Arcos de Valdevez,single,58,6.6,1,0.99857,0.006,0.00189
+160109,Couto,Arcos de Valdevez,single,57,17.6,1,0.99721,0.0213,0.00369
+160113,Gavieira,Arcos de Valdevez,single,56,40.7,1,0.99692,0.1188,0.00206
+160115,Gondoriz,Arcos de Valdevez,single,57,61.9,1,0.99502,0.3319,0.00977
+160121,Miranda,Arcos de Valdevez,single,56,23.3,1,0.99558,0.0269,0.00269
+160122,Monte Redondo,Arcos de Valdevez,single,35,5.0,1,0.99943,0.0013,0.00056
+160123,Oliveira,Arcos de Valdevez,single,59,5.0,1,0.99896,0.0038,0.0012
+160124,Paçô,Arcos de Valdevez,single,58,11.6,1,0.99636,0.0126,0.00273
+160125,Padroso,Arcos de Valdevez,single,53,6.6,1,0.99855,0.0049,0.00061
+160128,Prozelo,Arcos de Valdevez,single,60,8.7,1,0.9987,0.0049,0.00123
+160130,Rio Frio,Arcos de Valdevez,single,58,40.7,1,0.99666,0.0475,0.00247
+160131,Rio de Moinhos,Arcos de Valdevez,single,58,17.6,1,0.99541,0.0144,0.00402
+160133,Sabadim,Arcos de Valdevez,single,58,26.8,1,0.99693,0.0507,0.00609
+160142,Jolda (São Paio),Arcos de Valdevez,single,41,5.0,1,0.99873,0.0019,0.0011
+160144,Senharei,Arcos de Valdevez,single,53,30.8,1,0.99472,0.0503,0.00668
+160145,Sistelo,Arcos de Valdevez,single,60,53.8,1,0.99342,0.1234,0.0047
+160146,Soajo,Arcos de Valdevez,single,59,81.8,1,0.99491,0.3404,0.00576
+160149,Vale,Arcos de Valdevez,single,60,23.3,1,0.99837,0.017,0.00112
+160152,União das freguesias de Alvora e Loureda,Arcos de Valdevez,single,60,17.6,1,0.99672,0.0362,0.00353
+160153,União das freguesias de Arcos de Valdevez (São Paio) e Giela,Arcos de Valdevez,single,60,15.3,1,0.99647,0.0202,0.00366
+160154,"União das freguesias de Arcos de Valdevez (Salvador), Vila Fonche e Parada",Arcos de Valdevez,single,58,15.3,1,0.99702,0.0151,0.00287
+160155,União das freguesias de Eiras e Mei,Arcos de Valdevez,single,59,17.6,1,0.99615,0.016,0.00267
+160156,União das freguesias de Grade e Carralcova,Arcos de Valdevez,single,58,53.8,1,0.98924,0.1096,0.00786
+160157,União das freguesias de Guilhadeses e Santar,Arcos de Valdevez,single,59,11.6,1,0.99546,0.0098,0.00252
+160158,União das freguesias de Jolda (Madalena) e Rio Cabrão,Arcos de Valdevez,single,58,11.6,1,0.99729,0.0112,0.00265
+160159,União das freguesias de Padreiro (Salvador e Santa Cristina),Arcos de Valdevez,single,60,20.2,1,0.99661,0.024,0.00542
+160160,União das freguesias de Portela e Extremo,Arcos de Valdevez,single,55,8.7,1,0.99926,0.0147,0.00126
+160161,União das freguesias de São Jorge e Ermelo,Arcos de Valdevez,single,58,46.8,1,0.99387,0.1146,0.00474
+160162,União das freguesias de Souto e Tabaçô,Arcos de Valdevez,single,60,8.7,1,0.9982,0.0082,0.00165
+160163,União das freguesias de Távora (Santa Maria e São Vicente),Arcos de Valdevez,single,59,23.3,1,0.99618,0.0266,0.00394
+160164,"União das freguesias de Vilela, São Cosme e São Damião e Sá",Arcos de Valdevez,single,59,23.3,1,0.99519,0.0302,0.00337
+160221,"União das freguesias de Arga (Baixo, Cima e São João)",Caminha,single,59,40.7,1,0.99547,0.1324,0.00429
+160223,União das freguesias de Gondar e Orbacém,Caminha,single,56,30.8,1,0.99568,0.0776,0.00701
+160301,Alvaredo,Melgaço,single,60,11.6,1,0.99631,0.0109,0.0025
+160304,Cousso,Melgaço,single,60,26.8,1,0.99063,0.0515,0.00712
+160305,Cristoval,Melgaço,single,60,23.3,1,0.99412,0.0228,0.00411
+160307,Fiães,Melgaço,single,56,26.8,1,0.99613,0.032,0.00285
+160308,Gave,Melgaço,single,52,61.9,1,0.98927,0.2064,0.01107
+160311,Paderne,Melgaço,single,60,35.4,1,0.99518,0.1101,0.00857
+160313,Penso,Melgaço,single,59,17.6,1,0.9967,0.029,0.00327
+160317,São Paio,Melgaço,single,55,23.3,1,0.99497,0.0406,0.00408
+160319,União das freguesias de Castro Laboreiro e Lamas de Mouro,Melgaço,single,60,108.2,1,0.99396,0.6479,0.00611
+160320,União das freguesias de Chaviães e Paços,Melgaço,single,55,17.6,1,0.99692,0.0242,0.00285
+160321,União das freguesias de Parada do Monte e Cubalhão,Melgaço,single,57,61.9,1,0.99339,0.1672,0.0056
+160322,União das freguesias de Prado e Remoães,Melgaço,single,55,17.6,1,0.99241,0.0191,0.0052
+160323,União das freguesias de Vila e Roussas,Melgaço,single,55,40.7,1,0.99415,0.0752,0.00653
+160401,Abedim,Monção,single,46,5.0,1,0.99909,0.0037,0.00049
+160404,Barbeita,Monção,single,58,15.3,1,0.99756,0.0232,0.00336
+160405,Barroças e Taias,Monção,single,31,5.0,1,0.99937,0.0013,0.00048
+160406,Bela,Monção,single,53,5.0,1,0.99905,0.003,0.00078
+160407,Cambeses,Monção,single,59,11.6,1,0.99865,0.0129,0.0032
+160410,Lara,Monção,single,50,0.0,1,0.99982,0.0009,0.00018
+160411,Longos Vales,Monção,single,47,5.0,1,0.99982,0.0047,0.00034
+160415,Merufe,Monção,single,56,46.8,1,0.99492,0.1248,0.00438
+160418,Moreira,Monção,single,52,5.0,1,0.9994,0.0028,0.00076
+160420,Pias,Monção,single,54,5.0,1,0.9997,0.0063,0.00056
+160421,Pinheiros,Monção,single,29,5.0,1,0.99909,0.0013,0.00059
+160422,Podame,Monção,single,51,5.0,1,0.99935,0.0037,0.00101
+160423,Portela,Monção,single,56,5.0,1,0.9993,0.0039,0.00048
+160424,Riba de Mouro,Monção,single,57,35.4,1,0.99415,0.0948,0.00675
+160427,Segude,Monção,single,52,5.0,1,0.9983,0.0026,0.00109
+160428,Tangil,Monção,single,59,40.7,1,0.99691,0.1068,0.00467
+160431,Trute,Monção,single,60,5.0,1,0.99936,0.0022,0.00036
+160434,União das freguesias de Anhões e Luzio,Monção,single,55,5.0,1,0.99982,0.0026,0.00018
+160435,União das freguesias de Ceivães e Badim,Monção,single,58,17.6,1,0.99713,0.0186,0.00207
+160436,União das freguesias de Mazedo e Cortes,Monção,single,56,26.8,1,0.99561,0.0497,0.00409
+160437,"União das freguesias de Messegães, Valadares e Sá",Monção,single,55,23.3,1,0.99628,0.0366,0.00444
+160438,União das freguesias de Monção e Troviscoso,Monção,single,58,11.6,1,0.99797,0.0142,0.00164
+160439,"União das freguesias de Sago, Lordelo e Parada",Monção,single,54,5.0,1,0.9996,0.006,0.00072
+160440,União das freguesias de Troporiz e Lapela,Monção,single,57,5.0,1,0.9994,0.0026,0.00066
+160501,Agualonga,Paredes de Coura,single,51,5.0,1,0.99955,0.0017,0.00032
+160503,Castanheira,Paredes de Coura,single,60,26.8,1,0.99612,0.0309,0.00398
+160505,Coura,Paredes de Coura,single,58,13.3,1,0.99791,0.007,0.00106
+160507,Cunha,Paredes de Coura,single,57,20.2,1,0.99763,0.0369,0.0037
+160510,Infesta,Paredes de Coura,single,57,11.6,1,0.99766,0.0089,0.00151
+160513,Mozelos,Paredes de Coura,single,59,7.6,1,0.99734,0.0038,0.00112
+160514,Padornelo,Paredes de Coura,single,60,30.8,1,0.9926,0.0439,0.0066
+160515,Parada,Paredes de Coura,single,50,5.0,1,0.9992,0.0038,0.00065
+160519,Romarigães,Paredes de Coura,single,45,5.0,1,0.99974,0.0011,0.00015
+160520,Rubiães,Paredes de Coura,single,58,17.6,1,0.99775,0.0139,0.00153
+160521,Vascões,Paredes de Coura,single,60,6.6,1,0.99921,0.0051,0.00082
+160522,União das freguesias de Bico e Cristelo,Paredes de Coura,single,58,61.9,1,0.99033,0.1653,0.01415
+160523,União das freguesias de Cossourado e Linhares,Paredes de Coura,single,57,17.6,1,0.99862,0.0307,0.00319
+160524,União das freguesias de Formariz e Ferreira,Paredes de Coura,single,57,30.8,1,0.99779,0.0299,0.00153
+160525,União das freguesias de Insalde e Porreiras,Paredes de Coura,single,57,40.7,1,0.99662,0.0568,0.00323
+160526,União das freguesias de Paredes de Coura e Resende,Paredes de Coura,single,56,20.2,1,0.99489,0.0214,0.00367
+160601,Azias,Ponte da Barca,single,60,15.3,1,0.99903,0.0204,0.00242
+160602,Boivães,Ponte da Barca,single,60,8.7,1,0.99778,0.0065,0.00168
+160603,Bravães,Ponte da Barca,single,57,5.0,1,0.9995,0.004,0.00096
+160604,Britelo,Ponte da Barca,single,58,15.3,1,0.998,0.0126,0.00098
+160606,Cuide de Vila Verde,Ponte da Barca,single,60,8.7,1,0.9978,0.0089,0.00234
+160611,Lavradas,Ponte da Barca,single,59,8.7,1,0.99914,0.0101,0.0015
+160612,Lindoso,Ponte da Barca,single,56,53.8,1,0.99536,0.1913,0.00415
+160613,Nogueira,Ponte da Barca,single,56,5.0,1,0.99848,0.0019,0.00097
+160614,Oleiros,Ponte da Barca,single,54,7.6,1,0.99827,0.0052,0.00152
+160619,Sampriz,Ponte da Barca,single,56,23.3,1,0.9947,0.0341,0.0052
+160623,Vade (São Pedro),Ponte da Barca,single,57,5.0,1,0.99903,0.0033,0.00126
+160624,Vade (São Tomé),Ponte da Barca,single,38,5.0,1,0.99786,0.0015,0.00096
+160626,"União das freguesias de Crasto, Ruivos e Grovelas",Ponte da Barca,single,60,30.8,1,0.9945,0.0571,0.00598
+160627,"União das freguesias de Entre Ambos-os-Rios, Ermida e Germil",Ponte da Barca,single,60,53.8,1,0.99551,0.1564,0.00404
+160628,"União das freguesias de Ponte da Barca, Vila Nova de Muía e Paço Vedro de Magalhães",Ponte da Barca,single,57,26.8,1,0.99325,0.0472,0.00534
+160629,União das freguesias de Touvedo (São Lourenço e Salvador),Ponte da Barca,single,54,5.0,1,0.9994,0.0039,0.00065
+160630,União das freguesias de Vila Chã (São João Baptista e Santiago),Ponte da Barca,single,56,23.3,1,0.99777,0.0705,0.00421
+160701,Anais,Ponte de Lima,single,56,11.6,1,0.99737,0.0127,0.00158
+160707,Beiral do Lima,Ponte de Lima,single,59,17.6,1,0.99764,0.0123,0.00153
+160709,Boalhosa,Ponte de Lima,single,43,5.0,1,0.99897,0.0066,0.00302
+160713,Calheiros,Ponte de Lima,single,59,10.1,1,0.99773,0.0104,0.00123
+160717,Estorãos,Ponte de Lima,single,59,30.8,1,0.9969,0.0562,0.00347
+160724,Friastelas,Ponte de Lima,single,53,5.0,1,0.99918,0.0048,0.00122
+160727,Gemieira,Ponte de Lima,single,57,5.0,1,0.99927,0.0029,0.00068
+160728,Gondufe,Ponte de Lima,single,26,5.0,1,0.99973,0.0014,0.00026
+160729,Labruja,Ponte de Lima,single,55,35.4,1,0.99591,0.0878,0.00626
+160734,Poiares,Ponte de Lima,single,60,26.8,1,0.99623,0.0702,0.00944
+160746,Serdedelo,Ponte de Lima,single,57,20.2,1,0.99643,0.0246,0.00413
+160753,"Ardegão, Freixo e Mato",Ponte de Lima,single,58,26.8,1,0.99793,0.0433,0.00404
+160755,Bárrio e Cepões,Ponte de Lima,single,57,26.8,1,0.99468,0.0246,0.00253
+160756,Cabaços e Fojo Lobal,Ponte de Lima,single,58,13.3,1,0.99898,0.0127,0.00137
+160757,Cabração e Moreira do Lima,Ponte de Lima,single,59,46.8,1,0.99575,0.1335,0.00488
+160759,"Labrujó, Rendufe e Vilar do Monte",Ponte de Lima,single,56,26.8,1,0.99639,0.0548,0.00465
+160760,Navió e Vitorino dos Piães,Ponte de Lima,single,58,11.6,1,0.99922,0.0114,0.00083
+160761,Gaifar,Ponte de Lima,single,39,5.0,1,0.99908,0.0017,0.00074
+160762,Sandiães,Ponte de Lima,single,44,5.0,1,0.9996,0.0028,0.00083
+160763,Vilar das Almas,Ponte de Lima,single,60,13.3,1,0.99843,0.0156,0.00334
+160802,Boivão,Valença,single,55,13.3,1,0.99826,0.0174,0.00219
+160805,Fontoura,Valença,single,58,17.6,1,0.9964,0.0132,0.00144
+160818,União das freguesias de Gondomil e Sanfins,Valença,single,56,30.8,1,0.99422,0.0526,0.00297
+160819,União das freguesias de São Julião e Silva,Valença,single,59,11.6,1,0.99854,0.0194,0.00237
+160920,Montaria,Viana do Castelo,single,56,20.2,1,0.99785,0.0302,0.00135
+161003,Cornes,Vila Nova de Cerveira,single,39,5.0,1,0.9994,0.0039,0.00063
+161004,Covas,Vila Nova de Cerveira,single,51,71.2,1,0.99203,0.2062,0.00721
+161006,Gondarém,Vila Nova de Cerveira,single,58,5.0,1,0.99898,0.0056,0.00082
+161007,Loivo,Vila Nova de Cerveira,single,59,13.3,1,0.99713,0.014,0.00272
+161009,Mentrestido,Vila Nova de Cerveira,single,57,8.7,1,0.99866,0.0077,0.00165
+161012,Sapardos,Vila Nova de Cerveira,single,59,5.0,1,0.99931,0.003,0.00045
+161013,Sopo,Vila Nova de Cerveira,single,57,35.4,1,0.99628,0.0689,0.00465
+161016,União das freguesias de Campos e Vila Meã,Vila Nova de Cerveira,single,59,10.1,1,0.99931,0.0156,0.00178
+161017,União das freguesias de Candemil e Gondar,Vila Nova de Cerveira,single,59,20.2,1,0.99753,0.0366,0.00338
+161018,União das freguesias de Reboreda e Nogueira,Vila Nova de Cerveira,single,54,23.3,1,0.99578,0.0392,0.00437
+161019,União das freguesias de Vila Nova de Cerveira e Lovelhe,Vila Nova de Cerveira,single,57,20.2,1,0.99443,0.0266,0.00386
+170101,Alijó,Alijó,single,53,17.6,1,0.99748,0.0508,0.00173
+170107,Favaios,Alijó,single,55,23.3,1,0.99647,0.0533,0.00249
+170108,Pegarinhos,Alijó,single,57,17.6,1,0.99823,0.049,0.00261
+170109,Pinhão,Alijó,single,49,5.0,1,0.998,0.0051,0.00169
+170112,Sanfins do Douro,Alijó,single,58,71.2,1,0.99066,0.2606,0.01525
+170113,Santa Eugénia,Alijó,single,55,13.3,1,0.99734,0.0202,0.0022
+170114,São Mamede de Ribatua,Alijó,single,55,46.8,1,0.99285,0.131,0.00652
+170116,Vila Chã,Alijó,single,58,35.4,1,0.99573,0.0968,0.00479
+170117,Vila Verde,Alijó,single,57,46.8,1,0.99603,0.2248,0.00534
+170118,Vilar de Maçada,Alijó,single,60,81.8,1,0.98705,0.3082,0.01526
+170120,União das freguesias de Carlão e Amieiro,Alijó,single,55,40.7,1,0.9957,0.2242,0.00679
+170121,União das freguesias de Castedo e Cotas,Alijó,single,59,53.8,1,0.99553,0.219,0.00758
+170122,União das freguesias de Pópulo e Ribalonga,Alijó,single,59,23.3,1,0.99724,0.0684,0.00321
+170123,"União das freguesias de Vale de Mendiz, Casal de Loivos e Vilarinho de Cotas",Alijó,single,60,71.2,1,0.98052,0.1736,0.01341
+170203,Beça,Boticas,single,57,53.8,1,0.99456,0.161,0.00539
+170208,Covas do Barroso,Boticas,single,57,26.8,1,0.99729,0.1162,0.00393
+170210,Dornelas,Boticas,single,51,61.9,1,0.98986,0.1675,0.00458
+170213,Pinho,Boticas,single,59,46.8,1,0.99174,0.1129,0.00505
+170215,Sapiãos,Boticas,single,60,35.4,1,0.99649,0.0963,0.00456
+170217,Alturas do Barroso e Cerdedo,Boticas,single,59,71.2,1,0.99462,0.4104,0.00725
+170218,Ardãos e Bobadela,Boticas,single,57,26.8,1,0.9983,0.0758,0.00204
+170219,Boticas e Granja,Boticas,single,59,13.3,1,0.99877,0.0147,0.00065
+170220,"Codessoso, Curros e Fiães do Tâmega",Boticas,single,54,81.8,1,0.98577,0.2747,0.00781
+170221,Vilar e Viveiro,Boticas,single,57,46.8,1,0.99569,0.1141,0.00369
+170301,Águas Frias,Chaves,single,53,46.8,1,0.99572,0.1482,0.00515
+170302,Anelhe,Chaves,single,58,26.8,1,0.99424,0.0483,0.00387
+170305,Bustelo,Chaves,single,55,17.6,1,0.99726,0.0228,0.00244
+170309,Cimo de Vila da Castanheira,Chaves,single,59,26.8,1,0.99695,0.0537,0.00327
+170310,Curalha,Chaves,single,60,15.3,1,0.9976,0.0142,0.00181
+170312,Ervededo,Chaves,single,57,13.3,1,0.99813,0.0149,0.00074
+170313,Faiões,Chaves,single,55,11.6,1,0.99841,0.0155,0.00191
+170314,Lama de Arcos,Chaves,single,57,17.6,1,0.99803,0.0209,0.00152
+170316,Mairos,Chaves,single,60,13.3,1,0.99902,0.0121,0.00104
+170317,Moreiras,Chaves,single,55,15.3,1,0.99858,0.0285,0.00309
+170318,Nogueira da Montanha,Chaves,single,58,17.6,1,0.99785,0.0234,0.0014
+170320,Oura,Chaves,single,60,11.6,1,0.99929,0.0118,0.00081
+170321,Outeiro Seco,Chaves,single,57,30.8,1,0.9967,0.0612,0.00402
+170322,Paradela,Chaves,single,60,20.2,1,0.99667,0.0249,0.00303
+170324,Redondelo,Chaves,single,60,30.8,1,0.99713,0.1025,0.00548
+170327,Sanfins,Chaves,single,59,40.7,1,0.99344,0.0709,0.00401
+170329,Santa Leocádia,Chaves,single,60,17.6,1,0.99802,0.0299,0.00228
+170330,Santo António de Monforte,Chaves,single,58,20.2,1,0.99756,0.0215,0.00182
+170331,Santo Estêvão,Chaves,single,59,15.3,1,0.99775,0.0137,0.00158
+170333,São Pedro de Agostém,Chaves,single,49,71.2,1,0.99418,0.2106,0.00789
+170334,São Vicente,Chaves,single,59,94.1,1,0.98932,0.3959,0.01267
+170340,Tronco,Chaves,single,57,13.3,1,0.99849,0.0146,0.00171
+170341,Vale de Anta,Chaves,single,58,26.8,1,0.99666,0.0425,0.00417
+170343,Vila Verde da Raia,Chaves,single,59,20.2,1,0.99654,0.0241,0.00246
+170344,Vilar de Nantes,Chaves,single,53,13.3,1,0.99827,0.0167,0.0023
+170345,Vilarelho da Raia,Chaves,single,56,46.8,1,0.99282,0.1605,0.0089
+170347,Vilas Boas,Chaves,single,53,26.8,1,0.99416,0.0442,0.00644
+170348,Vilela Seca,Chaves,single,60,11.6,1,0.99917,0.0236,0.00169
+170349,Vilela do Tâmega,Chaves,single,59,35.4,1,0.99244,0.055,0.00573
+170350,Santa Maria Maior,Chaves,single,55,20.2,1,0.99129,0.0194,0.00344
+170353,Planalto de Monforte (União das freguesias de Oucidres e Bobadela),Chaves,single,58,26.8,1,0.99711,0.0691,0.00364
+170354,União das freguesias da Madalena e Samaiões,Chaves,single,59,61.9,1,0.98417,0.1658,0.01185
+170355,"União das freguesias das Eiras, São Julião de Montenegro e Cela",Chaves,single,52,40.7,1,0.99442,0.1249,0.00548
+170356,União das freguesias de Calvão e Soutelinho da Raia,Chaves,single,59,30.8,1,0.99775,0.1348,0.00475
+170357,União das freguesias de Loivos e Póvoa de Agrações,Chaves,single,57,53.8,1,0.99495,0.1878,0.00988
+170358,União das freguesias de Santa Cruz/Trindade e Sanjurge,Chaves,single,54,40.7,1,0.99344,0.0946,0.00706
+170359,União das freguesias de Soutelo e Seara Velha,Chaves,single,58,23.3,1,0.99634,0.0313,0.00172
+170360,União das freguesias de Travancas e Roriz,Chaves,single,55,61.9,1,0.99312,0.1302,0.00595
+170361,"Vidago (União das freguesias de Vidago, Arcossó, Selhariz e Vilarinho das Paranheiras)",Chaves,single,60,40.7,1,0.99495,0.1623,0.00661
+170401,Barqueiros,Mesão Frio,single,57,17.6,1,0.99371,0.0189,0.00406
+170402,Cidadelhe,Mesão Frio,single,57,26.8,1,0.98914,0.0238,0.00918
+170403,Oliveira,Mesão Frio,single,57,20.2,1,0.9941,0.0204,0.00594
+170407,Vila Marim,Mesão Frio,single,59,61.9,1,0.98603,0.1186,0.01386
+170408,Mesão Frio (Santo André),Mesão Frio,single,60,40.7,1,0.9914,0.08,0.01079
+170501,Atei,Mondim de Basto,single,55,35.4,1,0.99667,0.1044,0.00423
+170502,Bilhó,Mondim de Basto,single,54,40.7,1,0.99552,0.0715,0.00269
+170505,São Cristóvão de Mondim de Basto,Mondim de Basto,single,57,30.8,1,0.99418,0.0629,0.00394
+170508,Vilar de Ferreiros,Mondim de Basto,single,53,40.7,1,0.99746,0.1126,0.00404
+170509,União das freguesias de Campanhó e Paradança,Mondim de Basto,single,58,81.8,1,0.99257,0.3306,0.01101
+170510,União das freguesias de Ermelo e Pardelhas,Mondim de Basto,single,59,30.8,1,0.99739,0.0645,0.00137
+170601,Cabril,Montalegre,single,53,124.5,1,0.99181,0.7303,0.00954
+170603,Cervos,Montalegre,single,54,61.9,1,0.99535,0.1854,0.00563
+170604,Chã,Montalegre,single,59,53.8,1,0.99782,0.1744,0.00342
+170607,Covelo do Gerês,Montalegre,single,57,20.2,1,0.997,0.0361,0.00336
+170609,Ferral,Montalegre,single,56,40.7,1,0.99573,0.0983,0.00643
+170612,Gralhas,Montalegre,single,57,26.8,1,0.99726,0.0662,0.00307
+170616,Morgade,Montalegre,single,60,26.8,1,0.99711,0.0566,0.00268
+170618,Negrões,Montalegre,single,59,13.3,1,0.99952,0.0161,0.00078
+170619,Outeiro,Montalegre,single,56,61.9,1,0.99613,0.2107,0.00403
+170623,Pitões das Junias,Montalegre,single,58,46.8,1,0.9953,0.0848,0.00253
+170625,Reigoso,Montalegre,single,52,40.7,1,0.99433,0.0776,0.0045
+170626,Salto,Montalegre,single,54,94.1,1,0.99091,0.418,0.00532
+170627,Santo André,Montalegre,single,52,40.7,1,0.99498,0.1229,0.00648
+170629,Sarraquinhos,Montalegre,single,55,40.7,1,0.99567,0.0933,0.00279
+170631,Solveira,Montalegre,single,54,17.6,1,0.99827,0.0325,0.00263
+170632,Tourém,Montalegre,single,59,7.6,1,0.99965,0.0106,0.00062
+170635,Vila da Ponte,Montalegre,single,60,30.8,1,0.99664,0.0474,0.00444
+170636,"União das freguesias de Cambeses do Rio, Donões e Mourilhe",Montalegre,single,52,53.8,1,0.9946,0.1736,0.00383
+170637,União das freguesias de Meixedo e Padornelos,Montalegre,single,58,35.4,1,0.99666,0.107,0.00299
+170638,União das freguesias de Montalegre e Padroso,Montalegre,single,56,53.8,1,0.99683,0.2706,0.00842
+170639,"União das freguesias de Paradela, Contim e Fiães",Montalegre,single,60,61.9,1,0.9932,0.1873,0.00607
+170640,União das freguesias de Sezelhe e Covelães,Montalegre,single,54,53.8,1,0.99593,0.153,0.00464
+170641,União das freguesias de Venda Nova e Pondras,Montalegre,single,59,46.8,1,0.9912,0.1255,0.00656
+170642,União das freguesias de Viade de Baixo e Fervidelas,Montalegre,single,54,71.2,1,0.99412,0.1872,0.00387
+170643,União das freguesias de Vilar de Perdizes e Meixide,Montalegre,single,60,71.2,1,0.99224,0.3515,0.00949
+170701,Candedo,Murça,single,57,61.9,1,0.99205,0.2394,0.00832
+170703,Fiolhoso,Murça,single,59,35.4,1,0.99449,0.0646,0.00399
+170704,Jou,Murça,single,60,46.8,1,0.99501,0.2151,0.00577
+170705,Murça,Murça,single,59,23.3,1,0.99646,0.0578,0.00414
+170708,Valongo de Milhais,Murça,single,56,46.8,1,0.99063,0.1808,0.00817
+170710,União das freguesias de Carva e Vilares,Murça,single,60,23.3,1,0.99821,0.053,0.00181
+170711,União das freguesias de Noura e Palheiros,Murça,single,56,61.9,1,0.99254,0.2083,0.00499
+170802,Fontelas,Peso da Régua,single,60,17.6,1,0.99449,0.0182,0.00563
+170805,Loureiro,Peso da Régua,single,53,40.7,1,0.98775,0.0466,0.00959
+170809,Sedielos,Peso da Régua,single,58,40.7,1,0.99647,0.0566,0.00448
+170810,Vilarinho dos Freires,Peso da Régua,single,53,108.2,1,0.96398,0.4186,0.05302
+170813,União das freguesias de Galafura e Covelinhas,Peso da Régua,single,59,81.8,1,0.98764,0.1731,0.01092
+170814,União das freguesias de Moura Morta e Vinhós,Peso da Régua,single,58,81.8,1,0.9796,0.2845,0.02223
+170815,União das freguesias de Peso da Régua e Godim,Peso da Régua,single,59,46.8,1,0.98956,0.1181,0.01166
+170817,Canelas,Peso da Régua,single,60,61.9,1,0.98917,0.1367,0.00902
+170818,Poiares,Peso da Régua,single,59,124.5,1,0.97184,0.3373,0.02743
+170901,Alvadia,Ribeira de Pena,single,60,35.4,1,0.99789,0.0768,0.00228
+170902,Canedo,Ribeira de Pena,single,59,46.8,1,0.99641,0.1626,0.0045
+170906,Santa Marinha,Ribeira de Pena,single,59,61.9,1,0.99402,0.2063,0.00595
+170908,União das freguesias de Cerva e Limões,Ribeira de Pena,single,55,94.1,1,0.99007,0.3911,0.00651
+170909,União das freguesias de Ribeira de Pena (Salvador) e Santo Aleixo de Além-Tâmega,Ribeira de Pena,single,59,94.1,1,0.99257,0.4535,0.00858
+171001,Celeirós,Sabrosa,single,58,26.8,1,0.99099,0.0312,0.00594
+171002,Covas do Douro,Sabrosa,single,59,15.3,1,0.99815,0.0333,0.00169
+171004,Gouvinhas,Sabrosa,single,60,46.8,1,0.99135,0.0916,0.00625
+171005,Parada de Pinhão,Sabrosa,single,60,23.3,1,0.99441,0.0354,0.00618
+171007,Paços,Sabrosa,single,59,40.7,1,0.99295,0.0988,0.00578
+171009,Sabrosa,Sabrosa,single,59,46.8,1,0.98891,0.0665,0.00766
+171011,São Lourenço de Ribapinhão,Sabrosa,single,60,26.8,1,0.99657,0.0763,0.00635
+171013,Souto Maior,Sabrosa,single,55,30.8,1,0.99372,0.0518,0.00564
+171014,Torre do Pinhão,Sabrosa,single,56,15.3,1,0.99813,0.0209,0.00143
+171015,Vilarinho de São Romão,Sabrosa,single,60,30.8,1,0.99132,0.0651,0.0105
+171016,"União das freguesias de Provesende, Gouvães do Douro e São Cristóvão do Douro",Sabrosa,single,51,53.8,1,0.99242,0.1792,0.00975
+171017,União das freguesias de São Martinho de Antas e Paradela de Guiães,Sabrosa,single,60,81.8,1,0.98701,0.2224,0.00874
+171101,Alvações do Corgo,Santa Marta de Penaguião,single,57,46.8,1,0.98207,0.0839,0.01931
+171102,Cumieira,Santa Marta de Penaguião,single,58,81.8,1,0.97734,0.1465,0.01323
+171103,Fontes,Santa Marta de Penaguião,single,50,108.2,1,0.97522,0.3707,0.02365
+171106,Medrões,Santa Marta de Penaguião,single,54,61.9,1,0.98103,0.0998,0.0194
+171110,Sever,Santa Marta de Penaguião,single,57,61.9,1,0.98013,0.1394,0.0226
+171112,União das freguesias de Louredo e Fornelos,Santa Marta de Penaguião,single,59,71.2,1,0.98884,0.2046,0.01682
+171113,Lobrigos (São João Baptista),Santa Marta de Penaguião,single,60,46.8,1,0.98952,0.0799,0.01222
+171114,Lobrigos (São Miguel),Santa Marta de Penaguião,single,53,46.8,1,0.98712,0.0729,0.01591
+171115,Sanhoane,Santa Marta de Penaguião,single,50,35.4,1,0.98861,0.0591,0.01646
+171201,Água Revés e Crasto,Valpaços,single,59,30.8,1,0.99506,0.0444,0.00234
+171203,Algeriz,Valpaços,single,58,35.4,1,0.99784,0.124,0.00593
+171205,Bouçoães,Valpaços,single,54,53.8,1,0.9933,0.1656,0.00637
+171206,Canaveses,Valpaços,single,60,30.8,1,0.99798,0.0444,0.00345
+171209,Ervões,Valpaços,single,59,61.9,1,0.99437,0.2935,0.01343
+171211,Fornos do Pinhal,Valpaços,single,55,26.8,1,0.99554,0.0434,0.00417
+171212,Friões,Valpaços,single,60,26.8,1,0.99825,0.0542,0.00192
+171215,Padrela e Tazem,Valpaços,single,59,26.8,1,0.9974,0.049,0.00212
+171216,Possacos,Valpaços,single,60,23.3,1,0.99743,0.0281,0.00215
+171217,Rio Torto,Valpaços,single,56,61.9,1,0.99421,0.1873,0.0061
+171219,Santa Maria de Emeres,Valpaços,single,57,26.8,1,0.99693,0.0352,0.00212
+171220,Santa Valha,Valpaços,single,57,40.7,1,0.99537,0.0845,0.0031
+171221,Santiago da Ribeira de Alhariz,Valpaços,single,56,40.7,1,0.99351,0.0542,0.00251
+171222,São João da Corveira,Valpaços,single,57,23.3,1,0.99742,0.041,0.00259
+171223,São Pedro de Veiga de Lila,Valpaços,single,57,30.8,1,0.99659,0.0731,0.00377
+171224,Serapicos,Valpaços,single,58,13.3,1,0.99863,0.0157,0.00219
+171227,Vales,Valpaços,single,57,30.8,1,0.99635,0.07,0.00311
+171229,Vassal,Valpaços,single,60,40.7,1,0.99515,0.0888,0.00675
+171230,Veiga de Lila,Valpaços,single,58,46.8,1,0.99147,0.1562,0.01088
+171231,Vilarandelo,Valpaços,single,59,30.8,1,0.99576,0.0519,0.00258
+171232,Carrazedo de Montenegro e Curros,Valpaços,single,54,61.9,1,0.99375,0.168,0.00337
+171233,"Lebução, Fiães e Nozelos",Valpaços,single,60,35.4,1,0.99607,0.0715,0.00241
+171234,Sonim e Barreiros,Valpaços,single,55,20.2,1,0.99807,0.0436,0.00245
+171235,Tinhela e Alvarelhos,Valpaços,single,57,23.3,1,0.9984,0.0467,0.00166
+171236,Valpaços e Sanfins,Valpaços,single,60,71.2,1,0.99095,0.3286,0.00839
+171302,Alfarela de Jales,Vila Pouca de Aguiar,single,58,35.4,1,0.99555,0.0799,0.00581
+171303,Bornes de Aguiar,Vila Pouca de Aguiar,single,59,40.7,1,0.99707,0.0976,0.00215
+171304,Bragado,Vila Pouca de Aguiar,single,58,61.9,1,0.99162,0.1603,0.00614
+171305,Capeludos,Vila Pouca de Aguiar,single,58,20.2,1,0.99765,0.0476,0.00222
+171310,Soutelo de Aguiar,Vila Pouca de Aguiar,single,60,17.6,1,0.99867,0.0404,0.00233
+171311,Telões,Vila Pouca de Aguiar,single,57,23.3,1,0.99829,0.0426,0.00094
+171312,Tresminas,Vila Pouca de Aguiar,single,53,94.1,1,0.98928,0.2908,0.0052
+171313,Valoura,Vila Pouca de Aguiar,single,54,26.8,1,0.99523,0.0328,0.0022
+171314,Vila Pouca de Aguiar,Vila Pouca de Aguiar,single,59,11.6,1,0.99904,0.0157,0.00068
+171315,Vreia de Bornes,Vila Pouca de Aguiar,single,60,30.8,1,0.9982,0.0625,0.00353
+171316,Vreia de Jales,Vila Pouca de Aguiar,single,60,30.8,1,0.99833,0.1016,0.00215
+171317,Sabroso de Aguiar,Vila Pouca de Aguiar,single,56,17.6,1,0.9969,0.0185,0.00211
+171319,Alvão,Vila Pouca de Aguiar,single,57,46.8,1,0.99643,0.1706,0.00321
+171320,União das freguesias de Pensalvos e Parada de Monteiros,Vila Pouca de Aguiar,single,59,61.9,1,0.99343,0.2406,0.0051
+171401,Abaças,Vila Real,single,54,61.9,1,0.99274,0.2091,0.01108
+171403,Andrães,Vila Real,single,54,53.8,1,0.99091,0.11,0.00537
+171404,Arroios,Vila Real,single,53,15.3,1,0.99493,0.0176,0.00608
+171406,Campeã,Vila Real,single,60,53.8,1,0.99533,0.1487,0.00618
+171409,Folhadela,Vila Real,single,58,46.8,1,0.99225,0.0831,0.00518
+171410,Guiães,Vila Real,single,53,35.4,1,0.99094,0.0537,0.00626
+171414,Lordelo,Vila Real,single,60,26.8,1,0.99194,0.0313,0.00606
+171415,Mateus,Vila Real,single,53,15.3,1,0.99472,0.009,0.00217
+171416,Mondrões,Vila Real,single,58,53.8,1,0.98808,0.1437,0.01302
+171420,Parada de Cunhos,Vila Real,single,58,53.8,1,0.98322,0.1083,0.01539
+171426,Torgueda,Vila Real,single,53,94.1,1,0.97949,0.2823,0.01956
+171429,Vila Marim,Vila Real,single,56,61.9,1,0.99112,0.2477,0.01067
+171431,União das freguesias de Adoufe e Vilarinho de Samardã,Vila Real,single,60,61.9,1,0.99518,0.3254,0.00862
+171432,União das freguesias de Borbela e Lamas de Olo,Vila Real,single,58,61.9,1,0.99072,0.2722,0.0066
+171433,União das freguesias de Constantim e Vale de Nogueiras,Vila Real,single,59,35.4,1,0.99676,0.1059,0.00407
+171434,União das freguesias de Mouçós e Lamares,Vila Real,single,56,35.4,1,0.99705,0.1142,0.00354
+171435,União das freguesias de Nogueira e Ermida,Vila Real,single,60,71.2,1,0.98331,0.1691,0.01414
+171436,"União das freguesias de Pena, Quintã e Vila Cova",Vila Real,single,55,53.8,1,0.99544,0.2043,0.00818
+171437,União das freguesias de São Tomé do Castelo e Justes,Vila Real,single,58,46.8,1,0.99622,0.1949,0.00469
+171438,Vila Real,Vila Real,single,60,15.3,1,0.99788,0.0235,0.00332
+180101,Aldeias,Armamar,single,60,13.3,1,0.99698,0.0135,0.0026
+180104,Cimbres,Armamar,single,60,20.2,1,0.99223,0.0121,0.002
+180106,Folgosa,Armamar,single,59,7.6,1,0.99772,0.0079,0.00165
+180107,Fontelo,Armamar,single,57,30.8,1,0.99578,0.0613,0.00816
+180109,Queimada,Armamar,single,57,10.1,1,0.99785,0.0096,0.00226
+180110,Queimadela,Armamar,single,59,13.3,1,0.99488,0.0084,0.0034
+180111,Santa Cruz,Armamar,single,50,40.7,1,0.98872,0.0777,0.00985
+180114,São Cosmado,Armamar,single,58,23.3,1,0.99561,0.0349,0.0025
+180115,São Martinho das Chãs,Armamar,single,50,40.7,1,0.99312,0.1107,0.01145
+180118,Vacalar,Armamar,single,56,26.8,1,0.99621,0.0403,0.00668
+180120,Armamar,Armamar,single,55,61.9,1,0.99227,0.2522,0.01505
+180121,União das freguesias de Aricera e Goujoim,Armamar,single,55,13.3,1,0.99742,0.0176,0.00165
+180122,União das freguesias de São Romão e Santiago,Armamar,single,59,26.8,1,0.99455,0.0353,0.00509
+180123,União das freguesias de Vila Seca e Santo Adrião,Armamar,single,58,40.7,1,0.99272,0.0934,0.00622
+180201,Beijós,Carregal do Sal,single,56,17.6,1,0.99807,0.0326,0.0026
+180202,Cabanas de Viriato,Carregal do Sal,single,56,53.8,1,0.99424,0.1588,0.0074
+180204,Oliveira do Conde,Carregal do Sal,single,54,61.9,1,0.99288,0.194,0.0055
+180206,Parada,Carregal do Sal,single,59,7.6,1,0.99873,0.0114,0.00098
+180208,Carregal do Sal,Carregal do Sal,single,60,46.8,1,0.99454,0.1816,0.00504
+180301,Almofala,Castro Daire,single,59,15.3,1,0.99808,0.0283,0.00152
+180303,Cabril,Castro Daire,single,57,71.2,1,0.99231,0.2802,0.01273
+180304,Castro Daire,Castro Daire,single,58,81.8,1,0.99245,0.2928,0.009
+180305,Cujó,Castro Daire,single,57,7.6,1,0.9991,0.0089,0.00106
+180309,Gosende,Castro Daire,single,58,53.8,1,0.99511,0.1422,0.00695
+180312,Mões,Castro Daire,single,58,81.8,1,0.99522,0.5078,0.0115
+180313,Moledo,Castro Daire,single,56,94.1,1,0.99109,0.297,0.00632
+180314,Monteiras,Castro Daire,single,56,30.8,1,0.99705,0.0453,0.00214
+180317,Pepim,Castro Daire,single,58,15.3,1,0.99871,0.0196,0.00165
+180319,Pinheiro,Castro Daire,single,56,46.8,1,0.99571,0.1226,0.00626
+180322,São Joaninho,Castro Daire,single,57,20.2,1,0.99559,0.0322,0.004
+180323,"União das freguesias de Mamouros, Alva e Ribolhos",Castro Daire,single,55,46.8,1,0.99276,0.0987,0.00417
+180324,União das freguesias de Mezio e Moura Morta,Castro Daire,single,58,46.8,1,0.99372,0.0899,0.00397
+180325,União das freguesias de Parada de Ester e Ester,Castro Daire,single,59,108.2,1,0.99101,0.5221,0.01297
+180326,União das freguesias de Picão e Ermida,Castro Daire,single,55,53.8,1,0.99232,0.1239,0.00777
+180327,União das freguesias de Reriz e Gafanhão,Castro Daire,single,58,71.2,1,0.9868,0.2756,0.01219
+180403,Cinfães,Cinfães,single,52,94.1,1,0.98942,0.3242,0.01275
+180404,Espadanedo,Cinfães,single,57,15.3,1,0.99667,0.0187,0.00352
+180405,Ferreiros de Tendais,Cinfães,single,55,61.9,1,0.9871,0.0833,0.0052
+180406,Fornelos,Cinfães,single,57,53.8,1,0.98716,0.0652,0.00647
+180408,Moimenta,Cinfães,single,57,26.8,1,0.99455,0.0397,0.00607
+180409,Nespereira,Cinfães,single,51,81.8,1,0.9898,0.2774,0.00771
+180410,Oliveira do Douro,Cinfães,single,58,35.4,1,0.99523,0.0805,0.0057
+180412,Santiago de Piães,Cinfães,single,56,61.9,1,0.9905,0.1736,0.00987
+180413,São Cristóvão de Nogueira,Cinfães,single,56,71.2,1,0.98813,0.2154,0.01186
+180414,Souselo,Cinfães,single,60,40.7,1,0.99497,0.1062,0.01157
+180415,Tarouquela,Cinfães,single,58,35.4,1,0.99368,0.0613,0.00922
+180416,Tendais,Cinfães,single,59,71.2,1,0.99212,0.2343,0.00737
+180417,Travanca,Cinfães,single,56,35.4,1,0.98639,0.0594,0.01194
+180418,"União das freguesias de Alhões, Bustelo, Gralheira e Ramires",Cinfães,single,54,124.5,1,0.97964,0.4355,0.01161
+180502,Avões,Lamego,single,55,40.7,1,0.98893,0.0415,0.00852
+180504,Britiande,Lamego,single,56,53.8,1,0.98602,0.092,0.01917
+180505,Cambres,Lamego,single,60,46.8,1,0.99236,0.0855,0.00758
+180507,Ferreirim,Lamego,single,56,35.4,1,0.99349,0.0502,0.00907
+180508,Ferreiros de Avões,Lamego,single,55,26.8,1,0.9904,0.0281,0.01059
+180509,Figueira,Lamego,single,55,30.8,1,0.98901,0.039,0.00856
+180510,Lalim,Lamego,single,56,53.8,1,0.98661,0.0697,0.00966
+180511,Lazarim,Lamego,single,57,46.8,1,0.99438,0.1203,0.00727
+180516,Penajóia,Lamego,single,53,30.8,1,0.99412,0.0524,0.00517
+180517,Penude,Lamego,single,57,53.8,1,0.99191,0.0581,0.00453
+180519,Samodães,Lamego,single,60,15.3,1,0.99475,0.0167,0.0054
+180520,Sande,Lamego,single,55,26.8,1,0.98811,0.0275,0.00878
+180523,Várzea de Abrunhais,Lamego,single,58,46.8,1,0.98412,0.0701,0.01199
+180524,Vila Nova de Souto d'El-Rei,Lamego,single,54,53.8,1,0.98544,0.0948,0.01079
+180525,Lamego (Almacave e Sé),Lamego,single,53,108.2,1,0.98622,0.3727,0.01845
+180526,"União das freguesias de Bigorne, Magueija e Pretarouca",Lamego,single,49,81.8,1,0.98717,0.2964,0.01471
+180527,"União das freguesias de Cepões, Meijinhos e Melcões",Lamego,single,51,81.8,1,0.97778,0.2292,0.02091
+180528,União das freguesias de Parada do Bispo e Valdigem,Lamego,single,52,40.7,1,0.99233,0.1184,0.00918
+180601,Abrunhosa-a-Velha,Mangualde,single,54,46.8,1,0.99244,0.103,0.00595
+180602,Alcafache,Mangualde,single,57,17.6,1,0.99783,0.0427,0.00331
+180605,Cunha Baixa,Mangualde,single,58,23.3,1,0.99652,0.0611,0.00394
+180606,Espinho,Mangualde,single,58,6.6,1,0.99933,0.0166,0.00114
+180607,Fornos de Maceira Dão,Mangualde,single,60,20.2,1,0.99703,0.0526,0.00324
+180608,Freixiosa,Mangualde,single,58,11.6,1,0.99792,0.0228,0.00311
+180614,Quintela de Azurara,Mangualde,single,58,23.3,1,0.99617,0.0461,0.00481
+180616,São João da Fresta,Mangualde,single,59,10.1,1,0.99783,0.0118,0.00159
+180619,"União das freguesias de Mangualde, Mesquitela e Cunha Alta",Mangualde,single,59,71.2,1,0.9941,0.3235,0.007
+180620,União das freguesias de Moimenta de Maceira Dão e Lobelhe do Mato,Mangualde,single,56,5.0,1,0.99949,0.0059,0.00082
+180621,União das freguesias de Santiago de Cassurrães e Póvoa de Cervães,Mangualde,single,60,35.4,1,0.99717,0.1355,0.00451
+180622,"União das freguesias de Tavares (Chãs, Várzea e Travanca)",Mangualde,single,54,46.8,1,0.99522,0.1604,0.00458
+180702,Alvite,Moimenta da Beira,single,42,5.0,1,0.99987,0.0045,0.00024
+180703,Arcozelos,Moimenta da Beira,single,60,10.1,1,0.99917,0.0064,0.00067
+180705,Baldos,Moimenta da Beira,single,47,5.0,1,0.99952,0.0016,0.00036
+180706,Cabaços,Moimenta da Beira,single,59,17.6,1,0.99863,0.0229,0.00204
+180707,Caria,Moimenta da Beira,single,58,35.4,1,0.99568,0.1192,0.00713
+180708,Castelo,Moimenta da Beira,single,56,17.6,1,0.99656,0.0177,0.0019
+180709,Leomil,Moimenta da Beira,single,54,46.8,1,0.99472,0.053,0.00144
+180710,Moimenta da Beira,Moimenta da Beira,single,58,17.6,1,0.99848,0.0252,0.00272
+180713,Passô,Moimenta da Beira,single,58,5.0,1,0.99913,0.0044,0.00102
+180716,Vila da Rua,Moimenta da Beira,single,59,11.6,1,0.99829,0.0129,0.00133
+180717,Sarzedo,Moimenta da Beira,single,60,6.6,1,0.9989,0.0042,0.00084
+180719,Sever,Moimenta da Beira,single,59,7.6,1,0.99946,0.0076,0.00075
+180720,Vilar,Moimenta da Beira,single,56,5.0,1,0.99971,0.0036,0.00042
+180721,União das freguesias de Paradinha e Nagosa,Moimenta da Beira,single,60,26.8,1,0.9964,0.0522,0.00432
+180722,"União das freguesias de Pêra Velha, Aldeia de Nacomba e Ariz",Moimenta da Beira,single,57,46.8,1,0.99642,0.1607,0.00551
+180723,União das freguesias de Peva e Segões,Moimenta da Beira,single,55,30.8,1,0.99558,0.1064,0.00432
+180802,Cercosa,Mortágua,single,58,71.2,1,0.98074,0.1479,0.01698
+180804,Espinho,Mortágua,single,58,108.2,1,0.99032,0.5505,0.01332
+180805,Marmeleira,Mortágua,single,58,94.1,1,0.98014,0.3022,0.01633
+180807,Pala,Mortágua,single,52,108.2,1,0.98726,0.4392,0.00899
+180808,Sobral,Mortágua,single,54,143.1,1,0.99062,0.9072,0.01414
+180809,Trezói,Mortágua,single,59,53.8,1,0.99185,0.1352,0.00772
+180811,"União das freguesias de Mortágua, Vale de Remígio, Cortegaça e Almaça",Mortágua,single,54,217.7,1,0.97166,0.939,0.01802
+180901,Canas de Senhorim,Nelas,single,56,53.8,1,0.99451,0.1791,0.00704
+180903,Nelas,Nelas,single,60,35.4,1,0.99609,0.0899,0.00416
+180905,Senhorim,Nelas,single,59,35.4,1,0.99628,0.0658,0.0021
+180906,Vilar Seco,Nelas,single,59,20.2,1,0.99753,0.037,0.00364
+180908,Lapa do Lobo,Nelas,single,54,17.6,1,0.99829,0.0422,0.00576
+180910,União das freguesias de Carvalhal Redondo e Aguieira,Nelas,single,56,35.4,1,0.99617,0.0887,0.00656
+180911,União das freguesias de Santar e Moreira,Nelas,single,58,46.8,1,0.99121,0.1561,0.00958
+181002,Arcozelo das Maias,Oliveira de Frades,single,59,26.8,1,0.99714,0.0409,0.00187
+181005,Pinheiro,Oliveira de Frades,single,58,30.8,1,0.99727,0.0762,0.00353
+181007,Ribeiradio,Oliveira de Frades,single,56,23.3,1,0.99774,0.0444,0.00283
+181008,São João da Serra,Oliveira de Frades,single,60,26.8,1,0.99385,0.0687,0.00554
+181009,São Vicente de Lafões,Oliveira de Frades,single,59,15.3,1,0.99714,0.0239,0.00292
+181013,União das freguesias de Arca e Varzielas,Oliveira de Frades,single,59,40.7,1,0.99463,0.1117,0.00549
+181014,União das freguesias de Destriz e Reigoso,Oliveira de Frades,single,59,40.7,1,0.99601,0.0829,0.00364
+181015,"União das freguesias de Oliveira de Frades, Souto de Lafões e Sejães",Oliveira de Frades,single,56,61.9,1,0.98704,0.1022,0.00454
+181102,Castelo de Penalva,Penalva do Castelo,single,53,61.9,1,0.99085,0.1918,0.00706
+181103,Esmolfe,Penalva do Castelo,single,57,17.6,1,0.99816,0.0258,0.00237
+181104,Germil,Penalva do Castelo,single,55,20.2,1,0.99415,0.0167,0.00306
+181105,Ínsua,Penalva do Castelo,single,59,10.1,1,0.99848,0.0122,0.00129
+181106,Lusinde,Penalva do Castelo,single,51,5.0,1,0.99832,0.002,0.0007
+181109,Pindo,Penalva do Castelo,single,57,20.2,1,0.99841,0.0422,0.00252
+181110,Real,Penalva do Castelo,single,56,15.3,1,0.99533,0.0121,0.00259
+181111,Sezures,Penalva do Castelo,single,52,40.7,1,0.99603,0.1297,0.00616
+181112,Trancozelos,Penalva do Castelo,single,43,5.0,1,0.99982,0.0025,0.00049
+181114,União das freguesias de Antas e Matela,Penalva do Castelo,single,56,35.4,1,0.99567,0.0551,0.00302
+181115,União das freguesias de Vila Cova do Covelo/Mareco,Penalva do Castelo,single,54,35.4,1,0.99518,0.071,0.00559
+181202,Beselga,Penedono,single,59,5.8,1,0.99961,0.007,0.00047
+181203,Castainço,Penedono,single,57,8.7,1,0.99936,0.009,0.00067
+181207,Penela da Beira,Penedono,single,60,15.3,1,0.99825,0.0187,0.00101
+181208,Póvoa de Penela,Penedono,single,59,40.7,1,0.98922,0.09,0.00921
+181209,Souto,Penedono,single,59,46.8,1,0.99108,0.1441,0.00988
+181210,União das freguesias de Antas e Ourozinho,Penedono,single,57,20.2,1,0.9985,0.0429,0.00143
+181211,União das freguesias de Penedono e Granja,Penedono,single,59,61.9,1,0.99344,0.1761,0.00537
+181302,Barrô,Resende,single,59,23.3,1,0.99576,0.061,0.00607
+181303,Cárquere,Resende,single,56,40.7,1,0.99065,0.0579,0.00772
+181310,Paus,Resende,single,57,26.8,1,0.996,0.0343,0.00256
+181311,Resende,Resende,single,56,46.8,1,0.99096,0.1236,0.01041
+181312,São Cipriano,Resende,single,56,23.3,1,0.99407,0.0245,0.00366
+181313,São João de Fontoura,Resende,single,55,17.6,1,0.99629,0.0201,0.00398
+181314,São Martinho de Mouros,Resende,single,59,23.3,1,0.99572,0.0305,0.00211
+181316,União das freguesias de Anreade e São Romão de Aregos,Resende,single,55,26.8,1,0.99496,0.0594,0.00604
+181317,União das freguesias de Felgueiras e Feirão,Resende,single,57,53.8,1,0.98891,0.1386,0.01044
+181318,União das freguesias de Freigil e Miomães,Resende,single,57,23.3,1,0.99653,0.032,0.0043
+181319,União das freguesias de Ovadas e Panchorra,Resende,single,54,71.2,1,0.99162,0.1844,0.00774
+181403,Pinheiro de Ázere,Santa Comba Dão,single,53,20.2,1,0.9965,0.0436,0.00367
+181405,São Joaninho,Santa Comba Dão,single,60,10.1,1,0.99823,0.0111,0.00114
+181406,São João de Areias,Santa Comba Dão,single,58,46.8,1,0.99235,0.1201,0.00558
+181410,União das freguesias de Ovoa e Vimieiro,Santa Comba Dão,single,58,46.8,1,0.99367,0.186,0.00828
+181411,União das freguesias de Santa Comba Dão e Couto do Mosteiro,Santa Comba Dão,single,55,71.2,1,0.9926,0.2475,0.00926
+181412,União das freguesias de Treixedo e Nagozela,Santa Comba Dão,single,60,23.3,1,0.99708,0.0501,0.00256
+181501,Castanheiro do Sul,São João da Pesqueira,single,53,71.2,1,0.98788,0.1616,0.00792
+181502,Ervedosa do Douro,São João da Pesqueira,single,59,94.1,1,0.9909,0.4185,0.0104
+181504,Nagozelo do Douro,São João da Pesqueira,single,60,8.7,1,0.99915,0.0103,0.0013
+181505,Paredes da Beira,São João da Pesqueira,single,54,20.2,1,0.99818,0.0454,0.00221
+181507,Riodades,São João da Pesqueira,single,59,11.6,1,0.99921,0.0092,0.00046
+181509,Soutelo do Douro,São João da Pesqueira,single,57,26.8,1,0.99638,0.0666,0.00374
+181511,Vale de Figueira,São João da Pesqueira,single,60,40.7,1,0.99486,0.0909,0.00552
+181512,Valongo dos Azeites,São João da Pesqueira,single,59,46.8,1,0.97704,0.0849,0.01863
+181515,União das freguesias de São João da Pesqueira e Várzea de Trevões,São João da Pesqueira,single,59,108.2,1,0.99126,0.513,0.00963
+181516,União das freguesias de Trevões e Espinhosa,São João da Pesqueira,single,58,108.2,1,0.98321,0.3202,0.01063
+181517,União das freguesias de Vilarouco e Pereiros,São João da Pesqueira,single,58,108.2,1,0.9913,0.4635,0.01334
+181602,Bordonhos,São Pedro do Sul,single,58,23.3,1,0.99605,0.0338,0.00568
+181606,Figueiredo de Alva,São Pedro do Sul,single,60,35.4,1,0.99562,0.0652,0.00444
+181607,Manhouce,São Pedro do Sul,single,58,46.8,1,0.99475,0.1393,0.00345
+181608,Pindelo dos Milagres,São Pedro do Sul,single,60,53.8,1,0.99366,0.1197,0.00501
+181609,Pinho,São Pedro do Sul,single,57,61.9,1,0.98448,0.1135,0.00832
+181612,São Félix,São Pedro do Sul,single,57,23.3,1,0.99149,0.0247,0.00774
+181615,Serrazes,São Pedro do Sul,single,56,46.8,1,0.99111,0.0991,0.00749
+181616,Sul,São Pedro do Sul,single,60,124.5,1,0.99103,0.4813,0.00918
+181617,Valadares,São Pedro do Sul,single,56,46.8,1,0.99478,0.1317,0.00634
+181619,Vila Maior,São Pedro do Sul,single,59,40.7,1,0.99258,0.0853,0.00719
+181620,União das freguesias de Carvalhais e Candal,São Pedro do Sul,single,59,124.5,1,0.98903,0.6863,0.01569
+181621,União das freguesias de Santa Cruz da Trapa e São Cristóvão de Lafões,São Pedro do Sul,single,60,71.2,1,0.99002,0.2105,0.00728
+181622,União das freguesias de São Martinho das Moitas e Covas do Rio,São Pedro do Sul,single,60,189.3,1,0.97921,1.3118,0.02444
+181623,"União das freguesias de São Pedro do Sul, Várzea e Baiões",São Pedro do Sul,single,47,94.1,1,0.98563,0.3328,0.01476
+181702,Avelal,Sátão,single,58,35.4,1,0.9923,0.0524,0.00643
+181704,Ferreira de Aves,Sátão,single,53,81.8,1,0.99444,0.4849,0.00733
+181706,Mioma,Sátão,single,56,81.8,1,0.98338,0.2479,0.01616
+181707,Rio de Moinhos,Sátão,single,53,35.4,1,0.9922,0.0543,0.00492
+181709,São Miguel de Vila Boa,Sátão,single,60,35.4,1,0.99392,0.0761,0.0059
+181710,Sátão,Sátão,single,60,46.8,1,0.99199,0.1618,0.00871
+181711,Silvã de Cima,Sátão,single,55,35.4,1,0.99417,0.0625,0.00908
+181713,União das freguesias de Águas Boas e Forles,Sátão,single,51,46.8,1,0.99096,0.1085,0.00684
+181714,"União das freguesias de Romãs, Decermilo e Vila Longa",Sátão,single,58,53.8,1,0.99506,0.1655,0.00352
+181801,Arnas,Sernancelhe,single,60,17.6,1,0.99861,0.0591,0.00278
+181802,Carregal,Sernancelhe,single,58,7.6,1,0.99958,0.0115,0.00055
+181803,Chosendo,Sernancelhe,single,58,13.3,1,0.9993,0.0153,0.00135
+181804,Cunha,Sernancelhe,single,53,40.7,1,0.99483,0.0808,0.00475
+181806,Faia,Sernancelhe,single,42,5.0,1,0.99911,0.0013,0.00036
+181810,Granjal,Sernancelhe,single,57,13.3,1,0.99884,0.0196,0.00142
+181811,Lamosa,Sernancelhe,single,56,13.3,1,0.99722,0.0177,0.00134
+181814,Quintela,Sernancelhe,single,54,5.0,1,0.99953,0.0075,0.00055
+181817,Vila da Ponte,Sernancelhe,single,55,30.8,1,0.99602,0.0536,0.0042
+181818,União das freguesias de Ferreirim e Macieira,Sernancelhe,single,57,35.4,1,0.99626,0.0572,0.00256
+181819,União das freguesias de Fonte Arcada e Escurquela,Sernancelhe,single,55,26.8,1,0.99644,0.0594,0.00299
+181820,União das freguesias de Penso e Freixinho,Sernancelhe,single,57,23.3,1,0.9969,0.0375,0.00265
+181821,União das freguesias de Sernancelhe e Sarzeda,Sernancelhe,single,56,61.9,1,0.9946,0.211,0.00471
+181901,Adorigo,Tabuaço,single,60,23.3,1,0.99654,0.0472,0.00511
+181902,Arcos,Tabuaço,single,58,10.1,1,0.99833,0.0055,0.00069
+181904,Chavães,Tabuaço,single,59,7.6,1,0.99937,0.0044,0.00046
+181905,Desejosa,Tabuaço,single,57,20.2,1,0.99705,0.0335,0.00447
+181906,Granja do Tedo,Tabuaço,single,38,5.0,1,0.99952,0.0057,0.00152
+181908,Longa,Tabuaço,single,60,5.8,1,0.99932,0.0039,0.00058
+181913,Sendim,Tabuaço,single,59,35.4,1,0.99577,0.0967,0.00455
+181914,Tabuaço,Tabuaço,single,56,30.8,1,0.99321,0.0702,0.00654
+181917,Valença do Douro,Tabuaço,single,56,35.4,1,0.99428,0.0791,0.00852
+181918,União das freguesias de Barcos e Santa Leocádia,Tabuaço,single,58,53.8,1,0.99191,0.1608,0.01057
+181919,União das freguesias de Paradela e Granjinha,Tabuaço,single,54,20.2,1,0.99767,0.024,0.00266
+181920,União das freguesias de Pinheiros e Vale de Figueira,Tabuaço,single,58,15.3,1,0.99867,0.021,0.0018
+181921,União das freguesias de Távora e Pereiro,Tabuaço,single,59,23.3,1,0.99651,0.0496,0.00415
+182004,Mondim da Beira,Tarouca,single,59,15.3,1,0.99637,0.0214,0.00302
+182005,Salzedas,Tarouca,single,55,30.8,1,0.99337,0.0673,0.00762
+182006,São João de Tarouca,Tarouca,single,60,15.3,1,0.99936,0.0298,0.0016
+182009,Várzea da Serra,Tarouca,single,56,23.3,1,0.99827,0.0633,0.00299
+182012,União das freguesias de Granja Nova e Vila Chã da Beira,Tarouca,single,59,53.8,1,0.9874,0.111,0.0082
+182014,Dálvares,Tarouca,single,57,11.6,1,0.99647,0.0122,0.00438
+182015,Gouviães,Tarouca,single,59,17.6,1,0.99428,0.0145,0.00409
+182016,Tarouca,Tarouca,single,56,35.4,1,0.99638,0.0876,0.00458
+182017,Ucanha,Tarouca,single,59,17.6,1,0.99513,0.017,0.00316
+182102,Campo de Besteiros,Tondela,single,54,30.8,1,0.99531,0.0381,0.00481
+182103,Canas de Santa Maria,Tondela,single,55,15.3,1,0.99798,0.034,0.00246
+182105,Castelões,Tondela,single,52,26.8,1,0.99719,0.0319,0.00186
+182106,Dardavaz,Tondela,single,52,35.4,1,0.99293,0.1016,0.00742
+182107,Ferreirós do Dão,Tondela,single,60,15.3,1,0.9973,0.0234,0.00283
+182108,Guardão,Tondela,single,57,40.7,1,0.9957,0.1416,0.00747
+182109,Lajeosa do Dão,Tondela,single,57,40.7,1,0.99521,0.0895,0.00364
+182110,Lobão da Beira,Tondela,single,59,15.3,1,0.99764,0.0234,0.00166
+182111,Molelos,Tondela,single,58,30.8,1,0.99541,0.0443,0.00286
+182116,Parada de Gonta,Tondela,single,60,15.3,1,0.99726,0.0217,0.00323
+182118,Santiago de Besteiros,Tondela,single,60,17.6,1,0.99761,0.0225,0.00143
+182122,Tonda,Tondela,single,57,15.3,1,0.9976,0.0147,0.00196
+182128,União das freguesias de Caparrosa e Silvares,Tondela,single,60,40.7,1,0.996,0.0936,0.00381
+182129,União das freguesias de Mouraz e Vila Nova da Rainha,Tondela,single,54,35.4,1,0.99284,0.0539,0.00347
+182130,União das freguesias de São João do Monte e Mosteirinho,Tondela,single,55,81.8,1,0.99491,0.4486,0.00689
+182132,União das freguesias de Tondela e Nandufe,Tondela,single,60,40.7,1,0.99425,0.1438,0.00913
+182134,Barreiro de Besteiros,Tondela,single,60,108.2,1,0.98726,0.4873,0.01317
+182135,Mosteiro de Fráguas,Tondela,single,56,15.3,1,0.99845,0.0267,0.00259
+182136,Sabugosa,Tondela,single,60,10.1,1,0.99822,0.021,0.00294
+182137,São Miguel do Outeiro,Tondela,single,55,30.8,1,0.99585,0.0673,0.00592
+182138,Tourigo,Tondela,single,57,40.7,1,0.98912,0.0798,0.00913
+182139,Vilar de Besteiros,Tondela,single,60,23.3,1,0.99783,0.026,0.00222
+182203,Pendilhe,Vila Nova de Paiva,single,59,40.7,1,0.99629,0.0963,0.00398
+182204,Queiriga,Vila Nova de Paiva,single,55,46.8,1,0.99383,0.1242,0.00389
+182205,Touro,Vila Nova de Paiva,single,59,30.8,1,0.99793,0.0878,0.00175
+182206,Vila Cova à Coelheira,Vila Nova de Paiva,single,57,61.9,1,0.99326,0.2474,0.00773
+182208,"União das freguesias de Vila Nova de Paiva, Alhais e Fráguas",Vila Nova de Paiva,single,57,40.7,1,0.99755,0.1841,0.00495
+182305,Calde,Viseu,single,58,81.8,1,0.99367,0.3308,0.00944
+182307,Cavernães,Viseu,single,59,10.1,1,0.99939,0.0089,0.00068
+182310,Cota,Viseu,single,60,46.8,1,0.99675,0.1412,0.0034
+182322,Ribafeita,Viseu,single,60,35.4,1,0.99672,0.0859,0.00474
+182329,São Pedro de France,Viseu,single,60,26.8,1,0.99694,0.0571,0.00305
+182335,União das freguesias de Barreiros e Cepões,Viseu,single,60,46.8,1,0.99467,0.1422,0.00404
+182401,Alcofra,Vouzela,single,54,35.4,1,0.99605,0.1028,0.00355
+182403,Campia,Vouzela,single,51,53.8,1,0.99436,0.1804,0.00459
+182407,Fornelo do Monte,Vouzela,single,56,6.6,1,0.99917,0.0104,0.00069
+182409,Queirã,Vouzela,single,54,26.8,1,0.99689,0.1429,0.006
+182410,São Miguel do Mato,Vouzela,single,58,10.1,1,0.99881,0.0096,0.00106
+182411,Ventosa,Vouzela,single,54,20.2,1,0.99634,0.0332,0.00181
+182413,União das freguesias de Cambra e Carvalhal de Vermilhas,Vouzela,single,58,26.8,1,0.99763,0.0815,0.0025
+182414,União das freguesias de Fataunços e Figueiredo das Donas,Vouzela,single,57,26.8,1,0.99364,0.049,0.00387
+182415,União das freguesias de Vouzela e Paços de Vilharigues,Vouzela,single,59,30.8,1,0.99624,0.0816,0.00585

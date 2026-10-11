@@ -77,3 +77,20 @@ def parse_shape_param(param: str) -> list[Point]:
 def polygon_url(op: str, kind: str, encoded: str, filters: list[str] | None = None) -> str:
     segment = f"/com-{','.join(filters)}" if filters else ""
     return f"{IDEALISTA}/areas/{op}-{kind}{segment}/mapa-google?shape={shape_param(encoded)}"
+
+
+def concelho_slug(name: str) -> str:
+    """Same rule as concelhoSlug() in web/src/idealista.ts (UNVERIFIED beyond Arouca)."""
+    import re
+    import unicodedata
+
+    s = unicodedata.normalize("NFD", name)
+    s = "".join(c for c in s if not unicodedata.combining(c)).lower()
+    s = re.sub(r"['’]", "", s)
+    return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+
+
+def municipality_url(op: str, kind: str, concelho: str, filters: list[str] | None = None) -> str:
+    """UNVERIFIED: the filter segment position in this URL form is a guess."""
+    segment = f"/com-{','.join(filters)}" if filters else ""
+    return f"{IDEALISTA}/{op}-{kind}/{concelho_slug(concelho)}{segment}/mapa-google"
