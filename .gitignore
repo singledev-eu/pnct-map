@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+.pytest_cache/
+data/external/
+.kiro-logs/
+.DS_Store
+node_modules/
