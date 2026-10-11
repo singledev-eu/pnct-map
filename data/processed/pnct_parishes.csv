@@ -1,0 +1,1862 @@
+dicofre,distrito,concelho,freguesia_official,source_row,match_method,match_score
+010127,Aveiro,Águeda,União das freguesias do Préstimo e Macieira de Alcoba,4,normalized,100.0
+010128,Aveiro,Águeda,Agadão,3,exact,100.0
+010132,Aveiro,Águeda,Belazaima do Chão,1,exact,100.0
+010134,Aveiro,Águeda,Castanheira do Vouga,2,exact,100.0
+010402,Aveiro,Arouca,Alvarenga,5,wildcard,100.0
+010407,Aveiro,Arouca,Chave,5,wildcard,100.0
+010409,Aveiro,Arouca,Escariz,5,wildcard,100.0
+010411,Aveiro,Arouca,Fermedo,5,wildcard,100.0
+010413,Aveiro,Arouca,Mansores,5,wildcard,100.0
+010414,Aveiro,Arouca,Moldes,5,wildcard,100.0
+010415,Aveiro,Arouca,Rossas,5,wildcard,100.0
+010416,Aveiro,Arouca,Santa Eulália,5,wildcard,100.0
+010417,Aveiro,Arouca,São Miguel do Mato,5,wildcard,100.0
+010418,Aveiro,Arouca,Tropeço,5,wildcard,100.0
+010419,Aveiro,Arouca,Urrô,5,wildcard,100.0
+010420,Aveiro,Arouca,Várzea,5,wildcard,100.0
+010421,Aveiro,Arouca,União das freguesias de Arouca e Burgo,5,wildcard,100.0
+010422,Aveiro,Arouca,União das freguesias de Cabreiros e Albergaria da Serra,5,wildcard,100.0
+010423,Aveiro,Arouca,União das freguesias de Canelas e Espiunca,5,wildcard,100.0
+010424,Aveiro,Arouca,União das freguesias de Covelo de Paivó e Janarde,5,wildcard,100.0
+010606,Aveiro,Castelo de Paiva,Real,6,exact,100.0
+010613,Aveiro,Castelo de Paiva,Paraíso,9,exact,100.0
+010614,Aveiro,Castelo de Paiva,Pedorido,8,exact,100.0
+010615,Aveiro,Castelo de Paiva,Raiva,7,exact,100.0
+011702,Aveiro,Sever do Vouga,Couto de Esteves,10,wildcard,100.0
+011704,Aveiro,Sever do Vouga,Pessegueiro do Vouga,10,wildcard,100.0
+011705,Aveiro,Sever do Vouga,Rocas do Vouga,10,wildcard,100.0
+011706,Aveiro,Sever do Vouga,Sever do Vouga,10,wildcard,100.0
+011708,Aveiro,Sever do Vouga,Talhadas,10,wildcard,100.0
+011712,Aveiro,Sever do Vouga,Cedrim,10,wildcard,100.0
+011713,Aveiro,Sever do Vouga,Dornelas,10,wildcard,100.0
+011714,Aveiro,Sever do Vouga,Paradela,10,wildcard,100.0
+011715,Aveiro,Sever do Vouga,Silva Escura,10,wildcard,100.0
+011901,Aveiro,Vale de Cambra,Arões,11,exact,100.0
+011905,Aveiro,Vale de Cambra,Junqueira,12,exact,100.0
+020102,Beja,Aljustrel,Ervidel,13,wildcard,100.0
+020103,Beja,Aljustrel,Messejana,13,wildcard,100.0
+020104,Beja,Aljustrel,São João de Negrilhos,13,wildcard,100.0
+020107,Beja,Aljustrel,Aljustrel,13,wildcard,100.0
+020108,Beja,Aljustrel,Rio de Moinhos,13,wildcard,100.0
+020203,Beja,Almodôvar,Rosário,13,wildcard,100.0
+020205,Beja,Almodôvar,Santa Cruz,13,wildcard,100.0
+020206,Beja,Almodôvar,São Barnabé,13,wildcard,100.0
+020208,Beja,Almodôvar,Aldeia dos Fernandes,13,wildcard,100.0
+020211,Beja,Almodôvar,Almodôvar,13,wildcard,100.0
+020212,Beja,Almodôvar,Gomes Aires,13,wildcard,100.0
+020213,Beja,Almodôvar,Santa Clara-a-Nova,13,wildcard,100.0
+020214,Beja,Almodôvar,Senhora da Graça dos Padrões,13,wildcard,100.0
+020301,Beja,Alvito,Alvito,13,wildcard,100.0
+020302,Beja,Alvito,Vila Nova da Baronia,13,wildcard,100.0
+020401,Beja,Barrancos,Barrancos,13,wildcard,100.0
+020502,Beja,Beja,Baleizão,13,wildcard,100.0
+020503,Beja,Beja,Beringel,13,wildcard,100.0
+020504,Beja,Beja,Cabeça Gorda,13,wildcard,100.0
+020506,Beja,Beja,Nossa Senhora das Neves,13,wildcard,100.0
+020510,Beja,Beja,Santa Clara de Louredo,13,wildcard,100.0
+020516,Beja,Beja,São Matias,13,wildcard,100.0
+020519,Beja,Beja,União das freguesias de Albernoa e Trindade,13,wildcard,100.0
+020520,Beja,Beja,União das freguesias de Beja (Salvador e Santa Maria da Feira),13,wildcard,100.0
+020521,Beja,Beja,União das freguesias de Beja (Santiago Maior e São João Baptista),13,wildcard,100.0
+020522,Beja,Beja,União das freguesias de Salvada e Quintos,13,wildcard,100.0
+020523,Beja,Beja,União das freguesias de Santa Vitória e Mombeja,13,wildcard,100.0
+020524,Beja,Beja,União das freguesias de Trigaches e São Brissos,13,wildcard,100.0
+020603,Beja,Castro Verde,Entradas,13,wildcard,100.0
+020604,Beja,Castro Verde,Santa Bárbara de Padrões,13,wildcard,100.0
+020605,Beja,Castro Verde,São Marcos da Ataboeira,13,wildcard,100.0
+020606,Beja,Castro Verde,União das freguesias de Castro Verde e Casével,13,wildcard,100.0
+020701,Beja,Cuba,Cuba,13,wildcard,100.0
+020702,Beja,Cuba,Faro do Alentejo,13,wildcard,100.0
+020703,Beja,Cuba,Vila Alva,13,wildcard,100.0
+020704,Beja,Cuba,Vila Ruiva,13,wildcard,100.0
+020803,Beja,Ferreira do Alentejo,Figueira dos Cavaleiros,13,wildcard,100.0
+020804,Beja,Ferreira do Alentejo,Odivelas,13,wildcard,100.0
+020809,Beja,Ferreira do Alentejo,Alfundão,13,wildcard,100.0
+020810,Beja,Ferreira do Alentejo,Canhestros,13,wildcard,100.0
+020811,Beja,Ferreira do Alentejo,Ferreira do Alentejo,13,wildcard,100.0
+020812,Beja,Ferreira do Alentejo,Peroguarda,13,wildcard,100.0
+020901,Beja,Mértola,Alcaria Ruiva,13,wildcard,100.0
+020902,Beja,Mértola,Corte do Pinto,13,wildcard,100.0
+020903,Beja,Mértola,Espírito Santo,13,wildcard,100.0
+020904,Beja,Mértola,Mértola,13,wildcard,100.0
+020905,Beja,Mértola,Santana de Cambas,13,wildcard,100.0
+020906,Beja,Mértola,São João dos Caldeireiros,13,wildcard,100.0
+020910,Beja,Mértola,"União das freguesias de São Miguel do Pinheiro, São Pedro de Solis e São Sebastião dos Carros",13,wildcard,100.0
+021001,Beja,Moura,Amareleja,13,wildcard,100.0
+021002,Beja,Moura,Póvoa de São Miguel,13,wildcard,100.0
+021008,Beja,Moura,Sobral da Adiça,13,wildcard,100.0
+021009,Beja,Moura,União das freguesias de Moura (Santo Agostinho e São João Baptista) e Santo Amador,13,wildcard,100.0
+021011,Beja,Moura,Safara,13,wildcard,100.0
+021012,Beja,Moura,Santo Aleixo da Restauração,13,wildcard,100.0
+021102,Beja,Odemira,Relíquias,13,wildcard,100.0
+021103,Beja,Odemira,Sabóia,13,wildcard,100.0
+021106,Beja,Odemira,São Luís,13,wildcard,100.0
+021107,Beja,Odemira,São Martinho das Amoreiras,13,wildcard,100.0
+021111,Beja,Odemira,Vila Nova de Milfontes,13,wildcard,100.0
+021115,Beja,Odemira,Luzianes-Gare,13,wildcard,100.0
+021116,Beja,Odemira,Boavista dos Pinheiros,13,wildcard,100.0
+021117,Beja,Odemira,Longueira/Almograve,13,wildcard,100.0
+021119,Beja,Odemira,Santa Clara-a-Velha,13,wildcard,100.0
+021120,Beja,Odemira,São Salvador e Santa Maria,13,wildcard,100.0
+021121,Beja,Odemira,São Teotónio,13,wildcard,100.0
+021123,Beja,Odemira,Bicos,13,wildcard,100.0
+021124,Beja,Odemira,Colos,13,wildcard,100.0
+021125,Beja,Odemira,Vale de Santiago,13,wildcard,100.0
+021203,Beja,Ourique,Ourique,13,wildcard,100.0
+021206,Beja,Ourique,Santana da Serra,13,wildcard,100.0
+021208,Beja,Ourique,União das freguesias de Panoias e Conceição,13,wildcard,100.0
+021209,Beja,Ourique,Garvão,13,wildcard,100.0
+021210,Beja,Ourique,Santa Luzia,13,wildcard,100.0
+021302,Beja,Serpa,Brinches,13,wildcard,100.0
+021303,Beja,Serpa,Pias,13,wildcard,100.0
+021307,Beja,Serpa,Vila Verde de Ficalho,13,wildcard,100.0
+021308,Beja,Serpa,União das freguesias de Serpa (Salvador e Santa Maria),13,wildcard,100.0
+021310,Beja,Serpa,Vale de Vargo,13,wildcard,100.0
+021311,Beja,Serpa,Vila Nova de São Bento,13,wildcard,100.0
+021401,Beja,Vidigueira,Pedrógão,13,wildcard,100.0
+021402,Beja,Vidigueira,Selmes,13,wildcard,100.0
+021403,Beja,Vidigueira,Vidigueira,13,wildcard,100.0
+021404,Beja,Vidigueira,Vila de Frades,13,wildcard,100.0
+030112,Braga,Amares,Goães,15,exact,100.0
+030120,Braga,Amares,Bouro (Santa Marta),14,exact,100.0
+030126,Braga,Amares,"União das freguesias de Caldelas, Sequeiros e Paranhos",16,normalized,100.0
+030129,Braga,Amares,"União das freguesias de Vilela, Seramil e Paredes Secas",17,normalized,100.0
+030401,Braga,Cabeceiras de Basto,Abadim,18,wildcard,100.0
+030404,Braga,Cabeceiras de Basto,Basto,18,wildcard,100.0
+030405,Braga,Cabeceiras de Basto,Bucos,18,wildcard,100.0
+030406,Braga,Cabeceiras de Basto,Cabeceiras de Basto,18,wildcard,100.0
+030407,Braga,Cabeceiras de Basto,Cavez,18,wildcard,100.0
+030408,Braga,Cabeceiras de Basto,Faia,18,wildcard,100.0
+030413,Braga,Cabeceiras de Basto,Pedraça,18,wildcard,100.0
+030415,Braga,Cabeceiras de Basto,Rio Douro,18,wildcard,100.0
+030418,Braga,Cabeceiras de Basto,União das freguesias de Alvite e Passos,18,wildcard,100.0
+030419,Braga,Cabeceiras de Basto,União das freguesias de Arco de Baúlhe e Vila Nune,18,wildcard,100.0
+030420,Braga,Cabeceiras de Basto,União das freguesias de Gondiães e Vilar de Cunhas,18,wildcard,100.0
+030422,Braga,Cabeceiras de Basto,Outeiro,18,wildcard,100.0
+030423,Braga,Cabeceiras de Basto,Painzela,18,wildcard,100.0
+030424,Braga,Cabeceiras de Basto,Refojos de Basto,18,wildcard,100.0
+030501,Braga,Celorico de Basto,Agilde,19,wildcard,100.0
+030502,Braga,Celorico de Basto,Arnóia,19,wildcard,100.0
+030503,Braga,Celorico de Basto,Borba de Montanha,19,wildcard,100.0
+030508,Braga,Celorico de Basto,Codeçoso,19,wildcard,100.0
+030510,Braga,Celorico de Basto,Fervença,19,wildcard,100.0
+030515,Braga,Celorico de Basto,Moreira do Castelo,19,wildcard,100.0
+030517,Braga,Celorico de Basto,Rego,19,wildcard,100.0
+030518,Braga,Celorico de Basto,Ribas,19,wildcard,100.0
+030520,Braga,Celorico de Basto,Basto (São Clemente),19,wildcard,100.0
+030521,Braga,Celorico de Basto,Vale de Bouro,19,wildcard,100.0
+030523,Braga,Celorico de Basto,"União das freguesias de Britelo, Gémeos e Ourilhe",19,wildcard,100.0
+030524,Braga,Celorico de Basto,União das freguesias de Caçarilhe e Infesta,19,wildcard,100.0
+030525,Braga,Celorico de Basto,União das freguesias de Canedo de Basto e Corgo,19,wildcard,100.0
+030526,Braga,Celorico de Basto,União das freguesias de Carvalho e Basto (Santa Tecla),19,wildcard,100.0
+030527,Braga,Celorico de Basto,"União das freguesias de Veade, Gagos e Molares",19,wildcard,100.0
+030705,Braga,Fafe,Armil,20,wildcard,100.0
+030708,Braga,Fafe,Estorãos,20,wildcard,100.0
+030709,Braga,Fafe,Fafe,20,wildcard,100.0
+030712,Braga,Fafe,Fornelos,20,wildcard,100.0
+030714,Braga,Fafe,Golães,20,wildcard,100.0
+030716,Braga,Fafe,Medelo,20,wildcard,100.0
+030719,Braga,Fafe,Paços,20,wildcard,100.0
+030722,Braga,Fafe,Quinchães,20,wildcard,100.0
+030723,Braga,Fafe,Regadas,20,wildcard,100.0
+030724,Braga,Fafe,Revelhe,20,wildcard,100.0
+030725,Braga,Fafe,Ribeiros,20,wildcard,100.0
+030726,Braga,Fafe,Arões (Santa Cristina),20,wildcard,100.0
+030728,Braga,Fafe,São Gens,20,wildcard,100.0
+030729,Braga,Fafe,Silvares (São Martinho),20,wildcard,100.0
+030730,Braga,Fafe,Arões (São Romão),20,wildcard,100.0
+030733,Braga,Fafe,Travassós,20,wildcard,100.0
+030736,Braga,Fafe,Vinhós,20,wildcard,100.0
+030737,Braga,Fafe,"União de freguesias de Aboim, Felgueiras, Gontim e Pedraído",20,wildcard,100.0
+030738,Braga,Fafe,União de freguesias de Agrela e Serafão,20,wildcard,100.0
+030739,Braga,Fafe,União de freguesias de Antime e Silvares (São Clemente),20,wildcard,100.0
+030740,Braga,Fafe,"União de freguesias de Ardegão, Arnozela e Seidões",20,wildcard,100.0
+030741,Braga,Fafe,União de freguesias de Cepães e Fareja,20,wildcard,100.0
+030742,Braga,Fafe,União de freguesias de Freitas e Vila Cova,20,wildcard,100.0
+030743,Braga,Fafe,União de freguesias de Monte e Queimadela,20,wildcard,100.0
+030744,Braga,Fafe,União de freguesias de Moreira do Rei e Várzea Cova,20,wildcard,100.0
+030877,Braga,Guimarães,União das freguesias de Arosa e Castelões,21,normalized,100.0
+030906,Braga,Póvoa de Lanhoso,Covelas,22,wildcard,100.0
+030908,Braga,Póvoa de Lanhoso,Ferreiros,22,wildcard,100.0
+030912,Braga,Póvoa de Lanhoso,Galegos,22,wildcard,100.0
+030913,Braga,Póvoa de Lanhoso,Garfe,22,wildcard,100.0
+030914,Braga,Póvoa de Lanhoso,Geraz do Minho,22,wildcard,100.0
+030915,Braga,Póvoa de Lanhoso,Lanhoso,22,wildcard,100.0
+030917,Braga,Póvoa de Lanhoso,Monsul,22,wildcard,100.0
+030919,Braga,Póvoa de Lanhoso,Póvoa de Lanhoso (Nossa Senhora do Amparo),22,wildcard,100.0
+030921,Braga,Póvoa de Lanhoso,Rendufinho,22,wildcard,100.0
+030922,Braga,Póvoa de Lanhoso,Santo Emilião,22,wildcard,100.0
+030923,Braga,Póvoa de Lanhoso,São João de Rei,22,wildcard,100.0
+030924,Braga,Póvoa de Lanhoso,Serzedelo,22,wildcard,100.0
+030925,Braga,Póvoa de Lanhoso,Sobradelo da Goma,22,wildcard,100.0
+030926,Braga,Póvoa de Lanhoso,Taíde,22,wildcard,100.0
+030927,Braga,Póvoa de Lanhoso,Travassos,22,wildcard,100.0
+030929,Braga,Póvoa de Lanhoso,Vilela,22,wildcard,100.0
+030930,Braga,Póvoa de Lanhoso,União das freguesias de Águas Santas e Moure,22,wildcard,100.0
+030931,Braga,Póvoa de Lanhoso,União das freguesias de Calvos e Frades,22,wildcard,100.0
+030932,Braga,Póvoa de Lanhoso,União das freguesias de Campos e Louredo,22,wildcard,100.0
+030933,Braga,Póvoa de Lanhoso,União das freguesias de Esperança e Brunhais,22,wildcard,100.0
+030934,Braga,Póvoa de Lanhoso,União das freguesias de Fonte Arcada e Oliveira,22,wildcard,100.0
+030935,Braga,Póvoa de Lanhoso,"União das freguesias de Verim, Friande e Ajude",22,wildcard,100.0
+031001,Braga,Terras de Bouro,Balança,23,wildcard,100.0
+031003,Braga,Terras de Bouro,Campo do Gerês,23,wildcard,100.0
+031004,Braga,Terras de Bouro,Carvalheira,23,wildcard,100.0
+031008,Braga,Terras de Bouro,Covide,23,wildcard,100.0
+031009,Braga,Terras de Bouro,Gondoriz,23,wildcard,100.0
+031010,Braga,Terras de Bouro,Moimenta,23,wildcard,100.0
+031012,Braga,Terras de Bouro,Ribeira,23,wildcard,100.0
+031013,Braga,Terras de Bouro,Rio Caldo,23,wildcard,100.0
+031014,Braga,Terras de Bouro,Souto,23,wildcard,100.0
+031015,Braga,Terras de Bouro,Valdosende,23,wildcard,100.0
+031017,Braga,Terras de Bouro,Vilar da Veiga,23,wildcard,100.0
+031018,Braga,Terras de Bouro,União das freguesias de Chamoim e Vilar,23,wildcard,100.0
+031019,Braga,Terras de Bouro,União das freguesias de Chorense e Monte,23,wildcard,100.0
+031020,Braga,Terras de Bouro,União das freguesias de Cibões e Brufe,23,wildcard,100.0
+031105,Braga,Vieira do Minho,Cantelães,24,wildcard,100.0
+031107,Braga,Vieira do Minho,Eira Vedra,24,wildcard,100.0
+031108,Braga,Vieira do Minho,Guilhofrei,24,wildcard,100.0
+031109,Braga,Vieira do Minho,Louredo,24,wildcard,100.0
+031110,Braga,Vieira do Minho,Mosteiro,24,wildcard,100.0
+031111,Braga,Vieira do Minho,Parada de Bouro,24,wildcard,100.0
+031112,Braga,Vieira do Minho,Pinheiro,24,wildcard,100.0
+031113,Braga,Vieira do Minho,Rossas,24,wildcard,100.0
+031115,Braga,Vieira do Minho,Salamonde,24,wildcard,100.0
+031118,Braga,Vieira do Minho,Tabuaças,24,wildcard,100.0
+031120,Braga,Vieira do Minho,Vieira do Minho,24,wildcard,100.0
+031122,Braga,Vieira do Minho,União das freguesias de Anissó e Soutelo,24,wildcard,100.0
+031123,Braga,Vieira do Minho,União das freguesias de Anjos e Vilar do Chão,24,wildcard,100.0
+031124,Braga,Vieira do Minho,União das freguesias de Caniçada e Soengas,24,wildcard,100.0
+031125,Braga,Vieira do Minho,União das freguesias de Ruivães e Campos,24,wildcard,100.0
+031126,Braga,Vieira do Minho,União das freguesias de Ventosa e Cova,24,wildcard,100.0
+031304,Braga,Vila Verde,Atiães,25,wildcard,100.0
+031308,Braga,Vila Verde,Cabanelas,25,wildcard,100.0
+031309,Braga,Vila Verde,Cervães,25,wildcard,100.0
+031311,Braga,Vila Verde,Coucieiro,25,wildcard,100.0
+031313,Braga,Vila Verde,Dossãos,25,wildcard,100.0
+031316,Braga,Vila Verde,Freiriz,25,wildcard,100.0
+031317,Braga,Vila Verde,Gême,25,wildcard,100.0
+031323,Braga,Vila Verde,Lage,25,wildcard,100.0
+031324,Braga,Vila Verde,Lanhas,25,wildcard,100.0
+031325,Braga,Vila Verde,Loureira,25,wildcard,100.0
+031328,Braga,Vila Verde,Moure,25,wildcard,100.0
+031330,Braga,Vila Verde,Oleiros,25,wildcard,100.0
+031331,Braga,Vila Verde,Parada de Gatim,25,wildcard,100.0
+031335,Braga,Vila Verde,Pico,25,wildcard,100.0
+031337,Braga,Vila Verde,Ponte,25,wildcard,100.0
+031340,Braga,Vila Verde,Sabariz,25,wildcard,100.0
+031342,Braga,Vila Verde,Vila de Prado,25,wildcard,100.0
+031350,Braga,Vila Verde,Prado (São Miguel),25,wildcard,100.0
+031352,Braga,Vila Verde,Soutelo,25,wildcard,100.0
+031354,Braga,Vila Verde,Turiz,25,wildcard,100.0
+031355,Braga,Vila Verde,Valdreu,25,wildcard,100.0
+031359,Braga,Vila Verde,Aboim da Nóbrega e Gondomar,25,wildcard,100.0
+031360,Braga,Vila Verde,União das freguesias da Ribeira do Neiva,25,wildcard,100.0
+031361,Braga,Vila Verde,União das freguesias de Carreiras (São Miguel) e Carreiras (Santiago),25,wildcard,100.0
+031362,Braga,Vila Verde,União das freguesias de Escariz (São Mamede) e Escariz (São Martinho),25,wildcard,100.0
+031363,Braga,Vila Verde,"União das freguesias de Esqueiros, Nevogilde e Travassós",25,wildcard,100.0
+031364,Braga,Vila Verde,União das freguesias de Marrancos e Arcozelo,25,wildcard,100.0
+031365,Braga,Vila Verde,União das freguesias de Oriz (Santa Marinha) e Oriz (São Miguel),25,wildcard,100.0
+031366,Braga,Vila Verde,"União das freguesias de Pico de Regalados, Gondiães e Mós",25,wildcard,100.0
+031367,Braga,Vila Verde,"União das freguesias de Sande, Vilarinho, Barros e Gomide",25,wildcard,100.0
+031368,Braga,Vila Verde,"União das freguesias de Valbom (São Pedro), Passô e Valbom (São Martinho)",25,wildcard,100.0
+031369,Braga,Vila Verde,União das freguesias do Vade,25,wildcard,100.0
+031370,Braga,Vila Verde,Vila Verde e Barbudo,25,wildcard,100.0
+040102,Bragança,Alfândega da Fé,Alfândega da Fé,26,wildcard,100.0
+040103,Bragança,Alfândega da Fé,Cerejais,26,wildcard,100.0
+040111,Bragança,Alfândega da Fé,Sambade,26,wildcard,100.0
+040118,Bragança,Alfândega da Fé,Vilar Chão,26,wildcard,100.0
+040119,Bragança,Alfândega da Fé,Vilarelhos,26,wildcard,100.0
+040120,Bragança,Alfândega da Fé,Vilares de Vilariça,26,wildcard,100.0
+040121,Bragança,Alfândega da Fé,"União das freguesias de Agrobom, Saldonha e Vale Pereiro",26,wildcard,100.0
+040122,Bragança,Alfândega da Fé,"União das freguesias de Eucisia, Gouveia e Valverde",26,wildcard,100.0
+040123,Bragança,Alfândega da Fé,União das freguesias de Ferradosa e Sendim da Serra,26,wildcard,100.0
+040124,Bragança,Alfândega da Fé,União das freguesias de Gebelim e Soeima,26,wildcard,100.0
+040125,Bragança,Alfândega da Fé,União das freguesias de Parada e Sendim da Ribeira,26,wildcard,100.0
+040126,Bragança,Alfândega da Fé,União das freguesias de Pombal e Vales,26,wildcard,100.0
+040201,Bragança,Bragança,Alfaião,26,wildcard,100.0
+040203,Bragança,Bragança,Babe,26,wildcard,100.0
+040204,Bragança,Bragança,Baçal,26,wildcard,100.0
+040206,Bragança,Bragança,Carragosa,26,wildcard,100.0
+040209,Bragança,Bragança,Castro de Avelãs,26,wildcard,100.0
+040210,Bragança,Bragança,Coelhoso,26,wildcard,100.0
+040212,Bragança,Bragança,Donai,26,wildcard,100.0
+040213,Bragança,Bragança,Espinhosela,26,wildcard,100.0
+040215,Bragança,Bragança,França,26,wildcard,100.0
+040216,Bragança,Bragança,Gimonde,26,wildcard,100.0
+040217,Bragança,Bragança,Gondesende,26,wildcard,100.0
+040218,Bragança,Bragança,Gostei,26,wildcard,100.0
+040219,Bragança,Bragança,Grijó de Parada,26,wildcard,100.0
+040221,Bragança,Bragança,Macedo do Mato,26,wildcard,100.0
+040224,Bragança,Bragança,Mós,26,wildcard,100.0
+040225,Bragança,Bragança,Nogueira,26,wildcard,100.0
+040226,Bragança,Bragança,Outeiro,26,wildcard,100.0
+040229,Bragança,Bragança,Parâmio,26,wildcard,100.0
+040230,Bragança,Bragança,Pinela,26,wildcard,100.0
+040232,Bragança,Bragança,Quintanilha,26,wildcard,100.0
+040233,Bragança,Bragança,Quintela de Lampaças,26,wildcard,100.0
+040234,Bragança,Bragança,Rabal,26,wildcard,100.0
+040236,Bragança,Bragança,Rebordãos,26,wildcard,100.0
+040239,Bragança,Bragança,Salsas,26,wildcard,100.0
+040240,Bragança,Bragança,Samil,26,wildcard,100.0
+040241,Bragança,Bragança,Santa Comba de Rossas,26,wildcard,100.0
+040244,Bragança,Bragança,São Pedro de Sarracenos,26,wildcard,100.0
+040246,Bragança,Bragança,Sendas,26,wildcard,100.0
+040247,Bragança,Bragança,Serapicos,26,wildcard,100.0
+040248,Bragança,Bragança,Sortes,26,wildcard,100.0
+040249,Bragança,Bragança,Zoio,26,wildcard,100.0
+040250,Bragança,Bragança,União das freguesias de Aveleda e Rio de Onor,26,wildcard,100.0
+040251,Bragança,Bragança,União das freguesias de Castrelos e Carrazedo,26,wildcard,100.0
+040252,Bragança,Bragança,"União das freguesias de Izeda, Calvelhe e Paradinha Nova",26,wildcard,100.0
+040253,Bragança,Bragança,União das freguesias de Parada e Faílde,26,wildcard,100.0
+040254,Bragança,Bragança,União das freguesias de Rebordainhos e Pombares,26,wildcard,100.0
+040255,Bragança,Bragança,União das freguesias de Rio Frio e Milhão,26,wildcard,100.0
+040256,Bragança,Bragança,União das freguesias de São Julião de Palácios e Deilão,26,wildcard,100.0
+040257,Bragança,Bragança,"União das freguesias de Sé, Santa Maria e Meixedo",26,wildcard,100.0
+040304,Bragança,Carrazeda de Ansiães,Carrazeda de Ansiães,26,wildcard,100.0
+040306,Bragança,Carrazeda de Ansiães,Fonte Longa,26,wildcard,100.0
+040308,Bragança,Carrazeda de Ansiães,Linhares,26,wildcard,100.0
+040309,Bragança,Carrazeda de Ansiães,Marzagão,26,wildcard,100.0
+040311,Bragança,Carrazeda de Ansiães,Parambos,26,wildcard,100.0
+040312,Bragança,Carrazeda de Ansiães,Pereiros,26,wildcard,100.0
+040313,Bragança,Carrazeda de Ansiães,Pinhal do Norte,26,wildcard,100.0
+040314,Bragança,Carrazeda de Ansiães,Pombal,26,wildcard,100.0
+040316,Bragança,Carrazeda de Ansiães,Seixo de Ansiães,26,wildcard,100.0
+040318,Bragança,Carrazeda de Ansiães,Vilarinho da Castanheira,26,wildcard,100.0
+040320,Bragança,Carrazeda de Ansiães,União das freguesias de Amedo e Zedes,26,wildcard,100.0
+040321,Bragança,Carrazeda de Ansiães,União das freguesias de Belver e Mogo de Malta,26,wildcard,100.0
+040322,Bragança,Carrazeda de Ansiães,União das freguesias de Castanheiro do Norte e Ribalonga,26,wildcard,100.0
+040323,Bragança,Carrazeda de Ansiães,"União das freguesias de Lavandeira, Beira Grande e Selores",26,wildcard,100.0
+040404,Bragança,Freixo de Espada à Cinta,Ligares,26,wildcard,100.0
+040406,Bragança,Freixo de Espada à Cinta,Poiares,26,wildcard,100.0
+040407,Bragança,Freixo de Espada à Cinta,União das freguesias de Freixo de Espada à Cinta e Mazouco,26,wildcard,100.0
+040408,Bragança,Freixo de Espada à Cinta,União das freguesias de Lagoaça e Fornos,26,wildcard,100.0
+040502,Bragança,Macedo de Cavaleiros,Amendoeira,26,wildcard,100.0
+040503,Bragança,Macedo de Cavaleiros,Arcas,26,wildcard,100.0
+040507,Bragança,Macedo de Cavaleiros,Carrapatas,26,wildcard,100.0
+040509,Bragança,Macedo de Cavaleiros,Chacim,26,wildcard,100.0
+040510,Bragança,Macedo de Cavaleiros,Cortiços,26,wildcard,100.0
+040511,Bragança,Macedo de Cavaleiros,Corujas,26,wildcard,100.0
+040514,Bragança,Macedo de Cavaleiros,Ferreira,26,wildcard,100.0
+040515,Bragança,Macedo de Cavaleiros,Grijó,26,wildcard,100.0
+040516,Bragança,Macedo de Cavaleiros,Lagoa,26,wildcard,100.0
+040517,Bragança,Macedo de Cavaleiros,Lamalonga,26,wildcard,100.0
+040518,Bragança,Macedo de Cavaleiros,Lamas,26,wildcard,100.0
+040519,Bragança,Macedo de Cavaleiros,Lombo,26,wildcard,100.0
+040520,Bragança,Macedo de Cavaleiros,Macedo de Cavaleiros,26,wildcard,100.0
+040521,Bragança,Macedo de Cavaleiros,Morais,26,wildcard,100.0
+040523,Bragança,Macedo de Cavaleiros,Olmos,26,wildcard,100.0
+040524,Bragança,Macedo de Cavaleiros,Peredo,26,wildcard,100.0
+040526,Bragança,Macedo de Cavaleiros,Salselas,26,wildcard,100.0
+040528,Bragança,Macedo de Cavaleiros,Sezulfe,26,wildcard,100.0
+040530,Bragança,Macedo de Cavaleiros,Talhas,26,wildcard,100.0
+040532,Bragança,Macedo de Cavaleiros,Vale Benfeito,26,wildcard,100.0
+040533,Bragança,Macedo de Cavaleiros,Vale da Porca,26,wildcard,100.0
+040534,Bragança,Macedo de Cavaleiros,Vale de Prados,26,wildcard,100.0
+040536,Bragança,Macedo de Cavaleiros,Vilarinho de Agrochão,26,wildcard,100.0
+040538,Bragança,Macedo de Cavaleiros,Vinhas,26,wildcard,100.0
+040539,Bragança,Macedo de Cavaleiros,União das freguesias de Ala e Vilarinho do Monte,26,wildcard,100.0
+040540,Bragança,Macedo de Cavaleiros,União das freguesias de Bornes e Burga,26,wildcard,100.0
+040541,Bragança,Macedo de Cavaleiros,União das freguesias de Castelãos e Vilar do Monte,26,wildcard,100.0
+040542,Bragança,Macedo de Cavaleiros,"União das freguesias de Espadanedo, Edroso, Murçós e Soutelo Mourisco",26,wildcard,100.0
+040543,Bragança,Macedo de Cavaleiros,União das freguesias de Podence e Santa Combinha,26,wildcard,100.0
+040544,Bragança,Macedo de Cavaleiros,União das freguesias de Talhinhas e Bagueixe,26,wildcard,100.0
+040604,Bragança,Miranda do Douro,Duas Igrejas,26,wildcard,100.0
+040605,Bragança,Miranda do Douro,Genísio,26,wildcard,100.0
+040607,Bragança,Miranda do Douro,Malhadas,26,wildcard,100.0
+040608,Bragança,Miranda do Douro,Miranda do Douro,26,wildcard,100.0
+040609,Bragança,Miranda do Douro,Palaçoulo,26,wildcard,100.0
+040611,Bragança,Miranda do Douro,Picote,26,wildcard,100.0
+040612,Bragança,Miranda do Douro,Póvoa,26,wildcard,100.0
+040613,Bragança,Miranda do Douro,São Martinho de Angueira,26,wildcard,100.0
+040616,Bragança,Miranda do Douro,Vila Chã de Braciosa,26,wildcard,100.0
+040618,Bragança,Miranda do Douro,União das freguesias de Constantim e Cicouro,26,wildcard,100.0
+040619,Bragança,Miranda do Douro,União das freguesias de Ifanes e Paradela,26,wildcard,100.0
+040620,Bragança,Miranda do Douro,União das freguesias de Sendim e Atenor,26,wildcard,100.0
+040621,Bragança,Miranda do Douro,União das freguesias de Silva e Águas Vivas,26,wildcard,100.0
+040701,Bragança,Mirandela,Abambres,26,wildcard,100.0
+040702,Bragança,Mirandela,Abreiro,26,wildcard,100.0
+040703,Bragança,Mirandela,Aguieiras,26,wildcard,100.0
+040704,Bragança,Mirandela,Alvites,26,wildcard,100.0
+040708,Bragança,Mirandela,Bouça,26,wildcard,100.0
+040709,Bragança,Mirandela,Cabanelas,26,wildcard,100.0
+040710,Bragança,Mirandela,Caravelas,26,wildcard,100.0
+040711,Bragança,Mirandela,Carvalhais,26,wildcard,100.0
+040712,Bragança,Mirandela,Cedães,26,wildcard,100.0
+040713,Bragança,Mirandela,Cobro,26,wildcard,100.0
+040714,Bragança,Mirandela,Fradizela,26,wildcard,100.0
+040716,Bragança,Mirandela,Frechas,26,wildcard,100.0
+040718,Bragança,Mirandela,Lamas de Orelhão,26,wildcard,100.0
+040720,Bragança,Mirandela,Mascarenhas,26,wildcard,100.0
+040721,Bragança,Mirandela,Mirandela,26,wildcard,100.0
+040722,Bragança,Mirandela,Múrias,26,wildcard,100.0
+040724,Bragança,Mirandela,Passos,26,wildcard,100.0
+040727,Bragança,Mirandela,São Pedro Velho,26,wildcard,100.0
+040728,Bragança,Mirandela,São Salvador,26,wildcard,100.0
+040729,Bragança,Mirandela,Suçães,26,wildcard,100.0
+040730,Bragança,Mirandela,Torre de Dona Chama,26,wildcard,100.0
+040731,Bragança,Mirandela,Vale de Asnes,26,wildcard,100.0
+040732,Bragança,Mirandela,Vale de Gouvinhas,26,wildcard,100.0
+040733,Bragança,Mirandela,Vale de Salgueiro,26,wildcard,100.0
+040734,Bragança,Mirandela,Vale de Telhas,26,wildcard,100.0
+040738,Bragança,Mirandela,União das freguesias de Avantos e Romeu,26,wildcard,100.0
+040739,Bragança,Mirandela,"União das freguesias de Avidagos, Navalho e Pereira",26,wildcard,100.0
+040740,Bragança,Mirandela,"União das freguesias de Barcel, Marmelos e Valverde da Gestosa",26,wildcard,100.0
+040741,Bragança,Mirandela,União das freguesias de Franco e Vila Boa,26,wildcard,100.0
+040742,Bragança,Mirandela,União das freguesias de Freixeda e Vila Verde,26,wildcard,100.0
+040801,Bragança,Mogadouro,Azinhoso,26,wildcard,100.0
+040802,Bragança,Mogadouro,Bemposta,26,wildcard,100.0
+040803,Bragança,Mogadouro,Bruçó,26,wildcard,100.0
+040804,Bragança,Mogadouro,Brunhoso,26,wildcard,100.0
+040807,Bragança,Mogadouro,Castelo Branco,26,wildcard,100.0
+040808,Bragança,Mogadouro,Castro Vicente,26,wildcard,100.0
+040809,Bragança,Mogadouro,Meirinhos,26,wildcard,100.0
+040811,Bragança,Mogadouro,Paradela,26,wildcard,100.0
+040812,Bragança,Mogadouro,Penas Roias,26,wildcard,100.0
+040813,Bragança,Mogadouro,Peredo da Bemposta,26,wildcard,100.0
+040815,Bragança,Mogadouro,Saldanha,26,wildcard,100.0
+040817,Bragança,Mogadouro,São Martinho do Peso,26,wildcard,100.0
+040819,Bragança,Mogadouro,Tó,26,wildcard,100.0
+040820,Bragança,Mogadouro,Travanca,26,wildcard,100.0
+040821,Bragança,Mogadouro,Urrós,26,wildcard,100.0
+040822,Bragança,Mogadouro,Vale da Madre,26,wildcard,100.0
+040826,Bragança,Mogadouro,Vila de Ala,26,wildcard,100.0
+040829,Bragança,Mogadouro,"União das freguesias de Brunhozinho, Castanheira e Sanhoane",26,wildcard,100.0
+040830,Bragança,Mogadouro,"União das freguesias de Mogadouro, Valverde, Vale de Porco e Vilar de Rei",26,wildcard,100.0
+040831,Bragança,Mogadouro,União das freguesias de Remondes e Soutelo,26,wildcard,100.0
+040832,Bragança,Mogadouro,União das freguesias de Vilarinho dos Galegos e Ventozelo,26,wildcard,100.0
+040901,Bragança,Torre de Moncorvo,Açoreira,26,wildcard,100.0
+040903,Bragança,Torre de Moncorvo,Cabeça Boa,26,wildcard,100.0
+040905,Bragança,Torre de Moncorvo,Carviçais,26,wildcard,100.0
+040906,Bragança,Torre de Moncorvo,Castedo,26,wildcard,100.0
+040909,Bragança,Torre de Moncorvo,Horta da Vilariça,26,wildcard,100.0
+040910,Bragança,Torre de Moncorvo,Larinho,26,wildcard,100.0
+040911,Bragança,Torre de Moncorvo,Lousa,26,wildcard,100.0
+040913,Bragança,Torre de Moncorvo,Mós,26,wildcard,100.0
+040916,Bragança,Torre de Moncorvo,Torre de Moncorvo,26,wildcard,100.0
+040918,Bragança,Torre de Moncorvo,União das freguesias de Adeganha e Cardanha,26,wildcard,100.0
+040919,Bragança,Torre de Moncorvo,União das freguesias de Felgar e Souto da Velha,26,wildcard,100.0
+040920,Bragança,Torre de Moncorvo,União das freguesias de Felgueiras e Maçores,26,wildcard,100.0
+040921,Bragança,Torre de Moncorvo,União das freguesias de Urros e Peredo dos Castelhanos,26,wildcard,100.0
+041002,Bragança,Vila Flor,Benlhevai,26,wildcard,100.0
+041005,Bragança,Vila Flor,Freixiel,26,wildcard,100.0
+041009,Bragança,Vila Flor,Roios,26,wildcard,100.0
+041010,Bragança,Vila Flor,Samões,26,wildcard,100.0
+041011,Bragança,Vila Flor,Sampaio,26,wildcard,100.0
+041012,Bragança,Vila Flor,Santa Comba de Vilariça,26,wildcard,100.0
+041013,Bragança,Vila Flor,Seixo de Manhoses,26,wildcard,100.0
+041014,Bragança,Vila Flor,Trindade,26,wildcard,100.0
+041015,Bragança,Vila Flor,Vale Frechoso,26,wildcard,100.0
+041020,Bragança,Vila Flor,União das freguesias de Assares e Lodões,26,wildcard,100.0
+041021,Bragança,Vila Flor,União das freguesias de Candoso e Carvalho de Egas,26,wildcard,100.0
+041022,Bragança,Vila Flor,União das freguesias de Valtorno e Mourão,26,wildcard,100.0
+041023,Bragança,Vila Flor,União das freguesias de Vila Flor e Nabo,26,wildcard,100.0
+041024,Bragança,Vila Flor,União das freguesias de Vilas Boas e Vilarinho das Azenhas,26,wildcard,100.0
+041103,Bragança,Vimioso,Argozelo,26,wildcard,100.0
+041107,Bragança,Vimioso,Carção,26,wildcard,100.0
+041108,Bragança,Vimioso,Matela,26,wildcard,100.0
+041109,Bragança,Vimioso,Pinelo,26,wildcard,100.0
+041110,Bragança,Vimioso,Santulhão,26,wildcard,100.0
+041113,Bragança,Vimioso,Vilar Seco,26,wildcard,100.0
+041114,Bragança,Vimioso,Vimioso,26,wildcard,100.0
+041115,Bragança,Vimioso,"União das freguesias de Algoso, Campo de Víboras e Uva",26,wildcard,100.0
+041116,Bragança,Vimioso,União das freguesias de Caçarelhos e Angueira,26,wildcard,100.0
+041117,Bragança,Vimioso,União das freguesias de Vale de Frades e Avelanoso,26,wildcard,100.0
+041201,Bragança,Vinhais,Agrochão,26,wildcard,100.0
+041203,Bragança,Vinhais,Candedo,26,wildcard,100.0
+041204,Bragança,Vinhais,Celas,26,wildcard,100.0
+041206,Bragança,Vinhais,Edral,26,wildcard,100.0
+041207,Bragança,Vinhais,Edrosa,26,wildcard,100.0
+041208,Bragança,Vinhais,Ervedosa,26,wildcard,100.0
+041215,Bragança,Vinhais,Paçó,26,wildcard,100.0
+041216,Bragança,Vinhais,Penhas Juntas,26,wildcard,100.0
+041219,Bragança,Vinhais,Rebordelo,26,wildcard,100.0
+041221,Bragança,Vinhais,Santalha,26,wildcard,100.0
+041226,Bragança,Vinhais,Tuizelo,26,wildcard,100.0
+041227,Bragança,Vinhais,Vale das Fontes,26,wildcard,100.0
+041229,Bragança,Vinhais,Vila Boa de Ousilhão,26,wildcard,100.0
+041230,Bragança,Vinhais,Vila Verde,26,wildcard,100.0
+041232,Bragança,Vinhais,Vilar de Ossos,26,wildcard,100.0
+041233,Bragança,Vinhais,Vilar de Peregrinos,26,wildcard,100.0
+041234,Bragança,Vinhais,Vilar Seco de Lomba,26,wildcard,100.0
+041235,Bragança,Vinhais,Vinhais,26,wildcard,100.0
+041236,Bragança,Vinhais,União das freguesias de Curopos e Vale de Janeiro,26,wildcard,100.0
+041237,Bragança,Vinhais,União das freguesias de Moimenta e Montouto,26,wildcard,100.0
+041238,Bragança,Vinhais,União das freguesias de Nunes e Ousilhão,26,wildcard,100.0
+041239,Bragança,Vinhais,União das freguesias de Quirás e Pinheiro Novo,26,wildcard,100.0
+041240,Bragança,Vinhais,União das freguesias de Sobreiro de Baixo e Alvaredos,26,wildcard,100.0
+041241,Bragança,Vinhais,"União das freguesias de Soeira, Fresulfe e Mofreita",26,wildcard,100.0
+041242,Bragança,Vinhais,União das freguesias de Travanca e Santa Cruz,26,wildcard,100.0
+041243,Bragança,Vinhais,União das freguesias de Vilar de Lomba e São Jomil,26,wildcard,100.0
+050102,Castelo Branco,Belmonte,Caria,27,wildcard,100.0
+050104,Castelo Branco,Belmonte,Inguias,27,wildcard,100.0
+050105,Castelo Branco,Belmonte,Maçainhas,27,wildcard,100.0
+050107,Castelo Branco,Belmonte,Belmonte,27,wildcard,100.0
+050108,Castelo Branco,Belmonte,Colmeal da Torre,27,wildcard,100.0
+050201,Castelo Branco,Castelo Branco,Alcains,27,wildcard,100.0
+050202,Castelo Branco,Castelo Branco,Almaceda,27,wildcard,100.0
+050203,Castelo Branco,Castelo Branco,Benquerenças,27,wildcard,100.0
+050205,Castelo Branco,Castelo Branco,Castelo Branco,27,wildcard,100.0
+050211,Castelo Branco,Castelo Branco,Lardosa,27,wildcard,100.0
+050212,Castelo Branco,Castelo Branco,Louriçal do Campo,27,wildcard,100.0
+050214,Castelo Branco,Castelo Branco,Malpica do Tejo,27,wildcard,100.0
+050216,Castelo Branco,Castelo Branco,Monforte da Beira,27,wildcard,100.0
+050220,Castelo Branco,Castelo Branco,Salgueiro do Campo,27,wildcard,100.0
+050221,Castelo Branco,Castelo Branco,Santo André das Tojeiras,27,wildcard,100.0
+050222,Castelo Branco,Castelo Branco,São Vicente da Beira,27,wildcard,100.0
+050223,Castelo Branco,Castelo Branco,Sarzedas,27,wildcard,100.0
+050225,Castelo Branco,Castelo Branco,Tinalhas,27,wildcard,100.0
+050226,Castelo Branco,Castelo Branco,União das freguesias de Cebolais de Cima e Retaxo,27,wildcard,100.0
+050229,Castelo Branco,Castelo Branco,União das freguesias de Freixial e Juncal do Campo,27,wildcard,100.0
+050231,Castelo Branco,Castelo Branco,União das freguesias de Póvoa de Rio de Moinhos e Cafede,27,wildcard,100.0
+050232,Castelo Branco,Castelo Branco,Escalos de Baixo,27,wildcard,100.0
+050233,Castelo Branco,Castelo Branco,Escalos de Cima,27,wildcard,100.0
+050234,Castelo Branco,Castelo Branco,Lousa,27,wildcard,100.0
+050235,Castelo Branco,Castelo Branco,Mata,27,wildcard,100.0
+050236,Castelo Branco,Castelo Branco,Ninho do Açor,27,wildcard,100.0
+050237,Castelo Branco,Castelo Branco,Sobral do Campo,27,wildcard,100.0
+050302,Castelo Branco,Covilhã,Aldeia de São Francisco de Assis,27,wildcard,100.0
+050305,Castelo Branco,Covilhã,Boidobra,27,wildcard,100.0
+050308,Castelo Branco,Covilhã,Cortes do Meio,27,wildcard,100.0
+050309,Castelo Branco,Covilhã,Dominguizo,27,wildcard,100.0
+050310,Castelo Branco,Covilhã,Erada,27,wildcard,100.0
+050311,Castelo Branco,Covilhã,Ferro,27,wildcard,100.0
+050312,Castelo Branco,Covilhã,Orjais,27,wildcard,100.0
+050314,Castelo Branco,Covilhã,Paul,27,wildcard,100.0
+050315,Castelo Branco,Covilhã,Peraboa,27,wildcard,100.0
+050318,Castelo Branco,Covilhã,São Jorge da Beira,27,wildcard,100.0
+050322,Castelo Branco,Covilhã,Sobral de São Miguel,27,wildcard,100.0
+050324,Castelo Branco,Covilhã,Tortosendo,27,wildcard,100.0
+050325,Castelo Branco,Covilhã,Unhais da Serra,27,wildcard,100.0
+050327,Castelo Branco,Covilhã,Verdelhos,27,wildcard,100.0
+050335,Castelo Branco,Covilhã,União das freguesias de Covilhã e Canhoso,27,wildcard,100.0
+050337,Castelo Branco,Covilhã,União das freguesias de Teixoso e Sarzedo,27,wildcard,100.0
+050338,Castelo Branco,Covilhã,União das freguesias de Vale Formoso e Aldeia do Souto,27,wildcard,100.0
+050339,Castelo Branco,Covilhã,Barco,27,wildcard,100.0
+050340,Castelo Branco,Covilhã,Cantar-Galo,27,wildcard,100.0
+050341,Castelo Branco,Covilhã,Casegas,27,wildcard,100.0
+050342,Castelo Branco,Covilhã,Coutada,27,wildcard,100.0
+050343,Castelo Branco,Covilhã,Ourondo,27,wildcard,100.0
+050344,Castelo Branco,Covilhã,Peso,27,wildcard,100.0
+050345,Castelo Branco,Covilhã,Vales do Rio,27,wildcard,100.0
+050346,Castelo Branco,Covilhã,Vila do Carvalho,27,wildcard,100.0
+050401,Castelo Branco,Fundão,Alcaide,27,wildcard,100.0
+050402,Castelo Branco,Fundão,Alcaria,27,wildcard,100.0
+050403,Castelo Branco,Fundão,Alcongosta,27,wildcard,100.0
+050406,Castelo Branco,Fundão,Alpedrinha,27,wildcard,100.0
+050408,Castelo Branco,Fundão,Barroca,27,wildcard,100.0
+050410,Castelo Branco,Fundão,Bogas de Cima,27,wildcard,100.0
+050411,Castelo Branco,Fundão,Capinha,27,wildcard,100.0
+050412,Castelo Branco,Fundão,Castelejo,27,wildcard,100.0
+050413,Castelo Branco,Fundão,Castelo Novo,27,wildcard,100.0
+050416,Castelo Branco,Fundão,Fatela,27,wildcard,100.0
+050419,Castelo Branco,Fundão,Lavacolhos,27,wildcard,100.0
+050420,Castelo Branco,Fundão,Orca,27,wildcard,100.0
+050421,Castelo Branco,Fundão,Pêro Viseu,27,wildcard,100.0
+050424,Castelo Branco,Fundão,Silvares,27,wildcard,100.0
+050425,Castelo Branco,Fundão,Soalheira,27,wildcard,100.0
+050426,Castelo Branco,Fundão,Souto da Casa,27,wildcard,100.0
+050427,Castelo Branco,Fundão,Telhado,27,wildcard,100.0
+050431,Castelo Branco,Fundão,Enxames,27,wildcard,100.0
+050432,Castelo Branco,Fundão,Três Povos,27,wildcard,100.0
+050433,Castelo Branco,Fundão,União das freguesias de Janeiro de Cima e Bogas de Baixo,27,wildcard,100.0
+050434,Castelo Branco,Fundão,"União das freguesias de Fundão, Valverde, Donas, Aldeia de Joanes e Aldeia Nova do Cabo",27,wildcard,100.0
+050435,Castelo Branco,Fundão,União das freguesias de Póvoa de Atalaia e Atalaia do Campo,27,wildcard,100.0
+050436,Castelo Branco,Fundão,União das freguesias de Vale de Prazeres e Mata da Rainha,27,wildcard,100.0
+050502,Castelo Branco,Idanha-a-Nova,Aldeia de Santa Margarida,27,wildcard,100.0
+050505,Castelo Branco,Idanha-a-Nova,Ladoeiro,27,wildcard,100.0
+050506,Castelo Branco,Idanha-a-Nova,Medelim,27,wildcard,100.0
+050509,Castelo Branco,Idanha-a-Nova,Oledo,27,wildcard,100.0
+050510,Castelo Branco,Idanha-a-Nova,Penha Garcia,27,wildcard,100.0
+050511,Castelo Branco,Idanha-a-Nova,Proença-a-Velha,27,wildcard,100.0
+050512,Castelo Branco,Idanha-a-Nova,Rosmaninhal,27,wildcard,100.0
+050514,Castelo Branco,Idanha-a-Nova,São Miguel de Acha,27,wildcard,100.0
+050516,Castelo Branco,Idanha-a-Nova,Toulões,27,wildcard,100.0
+050518,Castelo Branco,Idanha-a-Nova,União das freguesias de Idanha-a-Nova e Alcafozes,27,wildcard,100.0
+050519,Castelo Branco,Idanha-a-Nova,União das freguesias de Monfortinho e Salvaterra do Extremo,27,wildcard,100.0
+050520,Castelo Branco,Idanha-a-Nova,União das freguesias de Monsanto e Idanha-a-Velha,27,wildcard,100.0
+050521,Castelo Branco,Idanha-a-Nova,União das freguesias de Zebreira e Segura,27,wildcard,100.0
+050601,Castelo Branco,Oleiros,Álvaro,27,wildcard,100.0
+050603,Castelo Branco,Oleiros,Cambas,27,wildcard,100.0
+050605,Castelo Branco,Oleiros,Isna,27,wildcard,100.0
+050606,Castelo Branco,Oleiros,Madeirã,27,wildcard,100.0
+050607,Castelo Branco,Oleiros,Mosteiro,27,wildcard,100.0
+050609,Castelo Branco,Oleiros,Orvalho,27,wildcard,100.0
+050610,Castelo Branco,Oleiros,Sarnadas de São Simão,27,wildcard,100.0
+050611,Castelo Branco,Oleiros,Sobral,27,wildcard,100.0
+050613,Castelo Branco,Oleiros,Estreito-Vilar Barroco,27,wildcard,100.0
+050614,Castelo Branco,Oleiros,Oleiros-Amieira,27,wildcard,100.0
+050704,Castelo Branco,Penamacor,Aranhas,27,wildcard,100.0
+050706,Castelo Branco,Penamacor,Benquerença,27,wildcard,100.0
+050707,Castelo Branco,Penamacor,Meimão,27,wildcard,100.0
+050708,Castelo Branco,Penamacor,Meimoa,27,wildcard,100.0
+050710,Castelo Branco,Penamacor,Penamacor,27,wildcard,100.0
+050711,Castelo Branco,Penamacor,Salvador,27,wildcard,100.0
+050712,Castelo Branco,Penamacor,Vale da Senhora da Póvoa,27,wildcard,100.0
+050713,Castelo Branco,Penamacor,"União das freguesias de Aldeia do Bispo, Águas e Aldeia de João Pires",27,wildcard,100.0
+050714,Castelo Branco,Penamacor,União das freguesias de Pedrógão de São Pedro e Bemposta,27,wildcard,100.0
+050802,Castelo Branco,Proença-a-Nova,Montes da Senhora,27,wildcard,100.0
+050805,Castelo Branco,Proença-a-Nova,São Pedro do Esteval,27,wildcard,100.0
+050807,Castelo Branco,Proença-a-Nova,União das freguesias de Proença-a-Nova e Peral,27,wildcard,100.0
+050808,Castelo Branco,Proença-a-Nova,União das freguesias de Sobreira Formosa e Alvito da Beira,27,wildcard,100.0
+050901,Castelo Branco,Sertã,Cabeçudo,27,wildcard,100.0
+050902,Castelo Branco,Sertã,Carvalhal,27,wildcard,100.0
+050903,Castelo Branco,Sertã,Castelo,27,wildcard,100.0
+050911,Castelo Branco,Sertã,Pedrógão Pequeno,27,wildcard,100.0
+050912,Castelo Branco,Sertã,Sertã,27,wildcard,100.0
+050913,Castelo Branco,Sertã,Troviscal,27,wildcard,100.0
+050914,Castelo Branco,Sertã,Várzea dos Cavaleiros,27,wildcard,100.0
+050915,Castelo Branco,Sertã,"União das freguesias de Cernache do Bonjardim, Nesperal e Palhais",27,wildcard,100.0
+050916,Castelo Branco,Sertã,União das freguesias de Cumeada e Marmeleiro,27,wildcard,100.0
+050917,Castelo Branco,Sertã,União das freguesias de Ermida e Figueiredo,27,wildcard,100.0
+051001,Castelo Branco,Vila de Rei,Fundada,27,wildcard,100.0
+051002,Castelo Branco,Vila de Rei,São João do Peso,27,wildcard,100.0
+051003,Castelo Branco,Vila de Rei,Vila de Rei,27,wildcard,100.0
+051101,Castelo Branco,Vila Velha de Ródão,Fratel,27,wildcard,100.0
+051102,Castelo Branco,Vila Velha de Ródão,Perais,27,wildcard,100.0
+051103,Castelo Branco,Vila Velha de Ródão,Sarnadas de Ródão,27,wildcard,100.0
+051104,Castelo Branco,Vila Velha de Ródão,Vila Velha de Ródão,27,wildcard,100.0
+060102,Coimbra,Arganil,Arganil,28,wildcard,100.0
+060104,Coimbra,Arganil,Benfeita,28,wildcard,100.0
+060105,Coimbra,Arganil,Celavisa,28,wildcard,100.0
+060109,Coimbra,Arganil,Folques,28,wildcard,100.0
+060111,Coimbra,Arganil,Piódão,28,wildcard,100.0
+060112,Coimbra,Arganil,Pomares,28,wildcard,100.0
+060113,Coimbra,Arganil,Pombeiro da Beira,28,wildcard,100.0
+060114,Coimbra,Arganil,São Martinho da Cortiça,28,wildcard,100.0
+060115,Coimbra,Arganil,Sarzedo,28,wildcard,100.0
+060116,Coimbra,Arganil,Secarias,28,wildcard,100.0
+060119,Coimbra,Arganil,União das freguesias de Cepos e Teixeira,28,wildcard,100.0
+060120,Coimbra,Arganil,União das freguesias de Cerdeira e Moura da Serra,28,wildcard,100.0
+060121,Coimbra,Arganil,União das freguesias de Côja e Barril de Alva,28,wildcard,100.0
+060122,Coimbra,Arganil,União das freguesias de Vila Cova de Alva e Anseriz,28,wildcard,100.0
+060407,Coimbra,Condeixa-a-Nova,Furadouro,29,exact,100.0
+060601,Coimbra,Góis,Alvares,30,wildcard,100.0
+060604,Coimbra,Góis,Góis,30,wildcard,100.0
+060605,Coimbra,Góis,Vila Nova do Ceira,30,wildcard,100.0
+060606,Coimbra,Góis,União das freguesias de Cadafaz e Colmeal,30,wildcard,100.0
+060704,Coimbra,Lousã,Serpins,31,wildcard,100.0
+060706,Coimbra,Lousã,Gândaras,31,wildcard,100.0
+060707,Coimbra,Lousã,União das freguesias de Foz de Arouce e Casal de Ermio,31,wildcard,100.0
+060709,Coimbra,Lousã,Lousã,31,wildcard,100.0
+060710,Coimbra,Lousã,Vilarinho,31,wildcard,100.0
+060901,Coimbra,Miranda do Corvo,Lamas,32,wildcard,100.0
+060902,Coimbra,Miranda do Corvo,Miranda do Corvo,32,wildcard,100.0
+060905,Coimbra,Miranda do Corvo,Vila Nova,32,wildcard,100.0
+060906,Coimbra,Miranda do Corvo,União das freguesias de Semide e Rio Vide,32,wildcard,100.0
+061101,Coimbra,Oliveira do Hospital,Aldeia das Dez,33,wildcard,100.0
+061102,Coimbra,Oliveira do Hospital,Alvoco das Várzeas,33,wildcard,100.0
+061103,Coimbra,Oliveira do Hospital,Avô,33,wildcard,100.0
+061104,Coimbra,Oliveira do Hospital,Bobadela,33,wildcard,100.0
+061106,Coimbra,Oliveira do Hospital,Lagares,33,wildcard,100.0
+061109,Coimbra,Oliveira do Hospital,Lourosa,33,wildcard,100.0
+061110,Coimbra,Oliveira do Hospital,Meruge,33,wildcard,100.0
+061111,Coimbra,Oliveira do Hospital,Nogueira do Cravo,33,wildcard,100.0
+061115,Coimbra,Oliveira do Hospital,São Gião,33,wildcard,100.0
+061118,Coimbra,Oliveira do Hospital,Seixo da Beira,33,wildcard,100.0
+061119,Coimbra,Oliveira do Hospital,Travanca de Lagos,33,wildcard,100.0
+061123,Coimbra,Oliveira do Hospital,União das freguesias de Lagos da Beira e Lajeosa,33,wildcard,100.0
+061124,Coimbra,Oliveira do Hospital,União das freguesias de Oliveira do Hospital e São Paio de Gramaços,33,wildcard,100.0
+061125,Coimbra,Oliveira do Hospital,União das freguesias de Penalva de Alva e São Sebastião da Feira,33,wildcard,100.0
+061126,Coimbra,Oliveira do Hospital,União das freguesias de Santa Ovaia e Vila Pouca da Beira,33,wildcard,100.0
+061127,Coimbra,Oliveira do Hospital,Ervedal,33,wildcard,100.0
+061128,Coimbra,Oliveira do Hospital,Vila Franca da Beira,33,wildcard,100.0
+061201,Coimbra,Pampilhosa da Serra,Cabril,34,wildcard,100.0
+061202,Coimbra,Pampilhosa da Serra,Dornelas do Zêzere,34,wildcard,100.0
+061204,Coimbra,Pampilhosa da Serra,Janeiro de Baixo,34,wildcard,100.0
+061206,Coimbra,Pampilhosa da Serra,Pampilhosa da Serra,34,wildcard,100.0
+061207,Coimbra,Pampilhosa da Serra,Pessegueiro,34,wildcard,100.0
+061209,Coimbra,Pampilhosa da Serra,Unhais-o-Velho,34,wildcard,100.0
+061211,Coimbra,Pampilhosa da Serra,Fajão-Vidual,34,wildcard,100.0
+061212,Coimbra,Pampilhosa da Serra,Portela do Fojo-Machio,34,wildcard,100.0
+061301,Coimbra,Penacova,Carvalho,35,wildcard,100.0
+061302,Coimbra,Penacova,Figueira de Lorvão,35,wildcard,100.0
+061304,Coimbra,Penacova,Lorvão,35,wildcard,100.0
+061307,Coimbra,Penacova,Penacova,35,wildcard,100.0
+061310,Coimbra,Penacova,Sazes do Lorvão,35,wildcard,100.0
+061312,Coimbra,Penacova,União das freguesias de Friúmes e Paradela,35,wildcard,100.0
+061313,Coimbra,Penacova,União das freguesias de Oliveira do Mondego e Travanca do Mondego,35,wildcard,100.0
+061314,Coimbra,Penacova,União das freguesias de São Pedro de Alva e São Paio de Mondego,35,wildcard,100.0
+061401,Coimbra,Penela,Cumeeira,36,wildcard,100.0
+061402,Coimbra,Penela,Espinhal,36,wildcard,100.0
+061403,Coimbra,Penela,Podentes,36,wildcard,100.0
+061407,Coimbra,Penela,"União das freguesias de São Miguel, Santa Eufémia e Rabaçal",36,wildcard,100.0
+061501,Coimbra,Soure,Alfarelos,37,wildcard,100.0
+061504,Coimbra,Soure,Figueiró do Campo,37,wildcard,100.0
+061506,Coimbra,Soure,Granja do Ulmeiro,37,wildcard,100.0
+061508,Coimbra,Soure,Samuel,37,wildcard,100.0
+061509,Coimbra,Soure,Soure,37,wildcard,100.0
+061510,Coimbra,Soure,Tapéus,37,wildcard,100.0
+061511,Coimbra,Soure,Vila Nova de Anços,37,wildcard,100.0
+061512,Coimbra,Soure,Vinha da Rainha,37,wildcard,100.0
+061513,Coimbra,Soure,União das freguesias de Degracias e Pombalinho,37,wildcard,100.0
+061514,Coimbra,Soure,União das freguesias de Gesteira e Brunhós,37,wildcard,100.0
+061602,Coimbra,Tábua,Candosa,38,wildcard,100.0
+061603,Coimbra,Tábua,Carapinha,38,wildcard,100.0
+061608,Coimbra,Tábua,Midões,38,wildcard,100.0
+061609,Coimbra,Tábua,Mouronho,38,wildcard,100.0
+061611,Coimbra,Tábua,Póvoa de Midões,38,wildcard,100.0
+061612,Coimbra,Tábua,São João da Boa Vista,38,wildcard,100.0
+061614,Coimbra,Tábua,Tábua,38,wildcard,100.0
+061616,Coimbra,Tábua,União das freguesias de Ázere e Covelo,38,wildcard,100.0
+061617,Coimbra,Tábua,União das freguesias de Covas e Vila Nova de Oliveirinha,38,wildcard,100.0
+061618,Coimbra,Tábua,União das freguesias de Espariz e Sinde,38,wildcard,100.0
+061619,Coimbra,Tábua,União das freguesias de Pinheiro de Coja e Meda de Mouros,38,wildcard,100.0
+061701,Coimbra,Vila Nova de Poiares,Arrifana,39,wildcard,100.0
+061702,Coimbra,Vila Nova de Poiares,Lavegadas,39,wildcard,100.0
+061703,Coimbra,Vila Nova de Poiares,Poiares (Santo André),39,wildcard,100.0
+061704,Coimbra,Vila Nova de Poiares,São Miguel de Poiares,39,wildcard,100.0
+070103,Évora,Alandroal,Santiago Maior,40,wildcard,100.0
+070104,Évora,Alandroal,Capelins (Santo António),40,wildcard,100.0
+070105,Évora,Alandroal,Terena (São Pedro),40,wildcard,100.0
+070107,Évora,Alandroal,"União das freguesias de Alandroal (Nossa Senhora da Conceição), São Brás dos Matos (Mina do Bugalho) e Juromenha (Nossa Senhora do Loreto)",40,wildcard,100.0
+070201,Évora,Arraiolos,Arraiolos,40,wildcard,100.0
+070202,Évora,Arraiolos,Igrejinha,40,wildcard,100.0
+070206,Évora,Arraiolos,Vimieiro,40,wildcard,100.0
+070209,Évora,Arraiolos,União das freguesias de São Gregório e Santa Justa,40,wildcard,100.0
+070210,Évora,Arraiolos,Gafanhoeira (São Pedro),40,wildcard,100.0
+070211,Évora,Arraiolos,Sabugueiro,40,wildcard,100.0
+070301,Évora,Borba,Borba (Matriz),40,wildcard,100.0
+070302,Évora,Borba,Orada,40,wildcard,100.0
+070303,Évora,Borba,Rio de Moinhos,40,wildcard,100.0
+070304,Évora,Borba,Borba (São Bartolomeu),40,wildcard,100.0
+070401,Évora,Estremoz,Arcos,40,wildcard,100.0
+070402,Évora,Estremoz,Glória,40,wildcard,100.0
+070404,Évora,Estremoz,Évora Monte (Santa Maria),40,wildcard,100.0
+070411,Évora,Estremoz,São Domingos de Ana Loura,40,wildcard,100.0
+070413,Évora,Estremoz,Veiros,40,wildcard,100.0
+070414,Évora,Estremoz,União das freguesias de Estremoz (Santa Maria e Santo André),40,wildcard,100.0
+070415,Évora,Estremoz,União das freguesias de São Bento do Cortiço e Santo Estêvão,40,wildcard,100.0
+070416,Évora,Estremoz,União das freguesias de São Lourenço de Mamporcão e São Bento de Ana Loura,40,wildcard,100.0
+070417,Évora,Estremoz,União das freguesias do Ameixial (Santa Vitória e São Bento),40,wildcard,100.0
+070502,Évora,Évora,Nossa Senhora da Graça do Divor,40,wildcard,100.0
+070503,Évora,Évora,Nossa Senhora de Machede,40,wildcard,100.0
+070506,Évora,Évora,São Bento do Mato,40,wildcard,100.0
+070509,Évora,Évora,São Miguel de Machede,40,wildcard,100.0
+070513,Évora,Évora,Torre de Coelheiros,40,wildcard,100.0
+070515,Évora,Évora,Canaviais,40,wildcard,100.0
+070522,Évora,Évora,União das freguesias de Bacelo e Senhora da Saúde,40,wildcard,100.0
+070523,Évora,Évora,"União das freguesias de Évora (São Mamede, Sé, São Pedro e Santo Antão)",40,wildcard,100.0
+070524,Évora,Évora,União das freguesias de Malagueira e Horta das Figueiras,40,wildcard,100.0
+070525,Évora,Évora,União das freguesias de Nossa Senhora da Tourega e Nossa Senhora de Guadalupe,40,wildcard,100.0
+070526,Évora,Évora,União das freguesias de São Manços e São Vicente do Pigeiro,40,wildcard,100.0
+070527,Évora,Évora,União das freguesias de São Sebastião da Giesteira e Nossa Senhora da Boa Fé,40,wildcard,100.0
+070601,Évora,Montemor-o-Novo,Cabrela,40,wildcard,100.0
+070605,Évora,Montemor-o-Novo,Santiago do Escoural,40,wildcard,100.0
+070606,Évora,Montemor-o-Novo,São Cristóvão,40,wildcard,100.0
+070607,Évora,Montemor-o-Novo,Ciborro,40,wildcard,100.0
+070610,Évora,Montemor-o-Novo,Foros de Vale de Figueira,40,wildcard,100.0
+070613,Évora,Montemor-o-Novo,Cortiçadas de Lavre,40,wildcard,100.0
+070614,Évora,Montemor-o-Novo,Lavre,40,wildcard,100.0
+070615,Évora,Montemor-o-Novo,Nossa Senhora da Vila,40,wildcard,100.0
+070616,Évora,Montemor-o-Novo,Nossa Senhora do Bispo,40,wildcard,100.0
+070617,Évora,Montemor-o-Novo,Silveiras,40,wildcard,100.0
+070701,Évora,Mora,Brotas,40,wildcard,100.0
+070702,Évora,Mora,Cabeção,40,wildcard,100.0
+070703,Évora,Mora,Mora,40,wildcard,100.0
+070704,Évora,Mora,Pavia,40,wildcard,100.0
+070801,Évora,Mourão,Granja,40,wildcard,100.0
+070802,Évora,Mourão,Luz,40,wildcard,100.0
+070803,Évora,Mourão,Mourão,40,wildcard,100.0
+070903,Évora,Portel,Monte do Trigo,40,wildcard,100.0
+070905,Évora,Portel,Portel,40,wildcard,100.0
+070906,Évora,Portel,Santana,40,wildcard,100.0
+070908,Évora,Portel,Vera Cruz,40,wildcard,100.0
+070911,Évora,Portel,Alqueva,40,wildcard,100.0
+070912,Évora,Portel,Amieira,40,wildcard,100.0
+070913,Évora,Portel,Oriola,40,wildcard,100.0
+070914,Évora,Portel,São Bartolomeu do Outeiro,40,wildcard,100.0
+071001,Évora,Redondo,Montoito,40,wildcard,100.0
+071002,Évora,Redondo,Redondo,40,wildcard,100.0
+071102,Évora,Reguengos de Monsaraz,Corval,40,wildcard,100.0
+071103,Évora,Reguengos de Monsaraz,Monsaraz,40,wildcard,100.0
+071104,Évora,Reguengos de Monsaraz,Reguengos de Monsaraz,40,wildcard,100.0
+071106,Évora,Reguengos de Monsaraz,União das freguesias de Campo e Campinho,40,wildcard,100.0
+071201,Évora,Vendas Novas,Vendas Novas,40,wildcard,100.0
+071202,Évora,Vendas Novas,Landeira,40,wildcard,100.0
+071301,Évora,Viana do Alentejo,Alcáçovas,40,wildcard,100.0
+071302,Évora,Viana do Alentejo,Viana do Alentejo,40,wildcard,100.0
+071303,Évora,Viana do Alentejo,Aguiar,40,wildcard,100.0
+071401,Évora,Vila Viçosa,Bencatel,40,wildcard,100.0
+071402,Évora,Vila Viçosa,Ciladas,40,wildcard,100.0
+071404,Évora,Vila Viçosa,Pardais,40,wildcard,100.0
+071406,Évora,Vila Viçosa,Nossa Senhora da Conceição e São Bartolomeu,40,wildcard,100.0
+080202,Faro,Alcoutim,Giões,41,wildcard,100.0
+080203,Faro,Alcoutim,Martim Longo,41,wildcard,100.0
+080205,Faro,Alcoutim,Vaqueiros,41,wildcard,100.0
+080206,Faro,Alcoutim,União das freguesias de Alcoutim e Pereiro,41,wildcard,100.0
+080301,Faro,Aljezur,Aljezur,42,wildcard,100.0
+080302,Faro,Aljezur,Bordeira,42,wildcard,100.0
+080303,Faro,Aljezur,Odeceixe,42,wildcard,100.0
+080304,Faro,Aljezur,Rogil,42,wildcard,100.0
+080401,Faro,Castro Marim,Azinhal,43,wildcard,100.0
+080402,Faro,Castro Marim,Castro Marim,43,wildcard,100.0
+080403,Faro,Castro Marim,Odeleite,43,wildcard,100.0
+080404,Faro,Castro Marim,Altura,43,wildcard,100.0
+080802,Faro,Loulé,Alte,44,exact,100.0
+080803,Faro,Loulé,Ameixial,45,exact,100.0
+080807,Faro,Loulé,Salir,46,exact,100.0
+080813,Faro,Loulé,Benafim,49,exact,100.0
+080814,Faro,Loulé,Querença,47,exact,100.0
+080815,Faro,Loulé,Tôr,48,exact,100.0
+080901,Faro,Monchique,Alferce,50,wildcard,100.0
+080902,Faro,Monchique,Marmelete,50,wildcard,100.0
+080903,Faro,Monchique,Monchique,50,wildcard,100.0
+081306,Faro,Silves,São Marcos da Serra,51,exact,100.0
+081401,Faro,Tavira,Cachopo,52,exact,100.0
+081404,Faro,Tavira,Santa Catarina da Fonte do Bispo,53,exact,100.0
+081501,Faro,Vila do Bispo,Barão de São Miguel,54,wildcard,100.0
+081502,Faro,Vila do Bispo,Budens,54,wildcard,100.0
+081504,Faro,Vila do Bispo,Sagres,54,wildcard,100.0
+081506,Faro,Vila do Bispo,Vila do Bispo e Raposeira,54,wildcard,100.0
+090102,Guarda,Aguiar da Beira,Carapito,55,wildcard,100.0
+090103,Guarda,Aguiar da Beira,Cortiçada,55,wildcard,100.0
+090105,Guarda,Aguiar da Beira,Dornelas,55,wildcard,100.0
+090106,Guarda,Aguiar da Beira,Eirado,55,wildcard,100.0
+090107,Guarda,Aguiar da Beira,Forninhos,55,wildcard,100.0
+090109,Guarda,Aguiar da Beira,Pena Verde,55,wildcard,100.0
+090110,Guarda,Aguiar da Beira,Pinheiro,55,wildcard,100.0
+090114,Guarda,Aguiar da Beira,União das freguesias de Aguiar da Beira e Coruche,55,wildcard,100.0
+090115,Guarda,Aguiar da Beira,União das freguesias de Sequeiros e Gradiz,55,wildcard,100.0
+090116,Guarda,Aguiar da Beira,União das freguesias de Souto de Aguiar da Beira e Valverde,55,wildcard,100.0
+090203,Guarda,Almeida,Almeida,55,wildcard,100.0
+090207,Guarda,Almeida,Castelo Bom,55,wildcard,100.0
+090209,Guarda,Almeida,Freineda,55,wildcard,100.0
+090210,Guarda,Almeida,Freixo,55,wildcard,100.0
+090213,Guarda,Almeida,Malhada Sorda,55,wildcard,100.0
+090219,Guarda,Almeida,Nave de Haver,55,wildcard,100.0
+090224,Guarda,Almeida,São Pedro de Rio Seco,55,wildcard,100.0
+090227,Guarda,Almeida,Vale da Mula,55,wildcard,100.0
+090229,Guarda,Almeida,Vilar Formoso,55,wildcard,100.0
+090230,Guarda,Almeida,"União das freguesias de Amoreira, Parada e Cabreira",55,wildcard,100.0
+090231,Guarda,Almeida,"União das freguesias de Azinhal, Peva e Valverde",55,wildcard,100.0
+090232,Guarda,Almeida,"União das freguesias de Castelo Mendo, Ade, Monteperobolso e Mesquitela",55,wildcard,100.0
+090233,Guarda,Almeida,União das freguesias de Junça e Naves,55,wildcard,100.0
+090234,Guarda,Almeida,"União das freguesias de Leomil, Mido, Senouras e Aldeia Nova",55,wildcard,100.0
+090235,Guarda,Almeida,União das freguesias de Malpartida e Vale de Coelha,55,wildcard,100.0
+090236,Guarda,Almeida,União das freguesias de Miuzela e Porto de Ovelha,55,wildcard,100.0
+090302,Guarda,Celorico da Beira,Baraçal,55,wildcard,100.0
+090304,Guarda,Celorico da Beira,Carrapichana,55,wildcard,100.0
+090306,Guarda,Celorico da Beira,Forno Telheiro,55,wildcard,100.0
+090307,Guarda,Celorico da Beira,Lajeosa do Mondego,55,wildcard,100.0
+090308,Guarda,Celorico da Beira,Linhares,55,wildcard,100.0
+090309,Guarda,Celorico da Beira,Maçal do Chão,55,wildcard,100.0
+090310,Guarda,Celorico da Beira,Mesquitela,55,wildcard,100.0
+090311,Guarda,Celorico da Beira,Minhocal,55,wildcard,100.0
+090312,Guarda,Celorico da Beira,Prados,55,wildcard,100.0
+090314,Guarda,Celorico da Beira,Ratoeira,55,wildcard,100.0
+090318,Guarda,Celorico da Beira,Vale de Azares,55,wildcard,100.0
+090322,Guarda,Celorico da Beira,Casas do Soeiro,55,wildcard,100.0
+090323,Guarda,Celorico da Beira,União das freguesias de Açores e Velosa,55,wildcard,100.0
+090324,Guarda,Celorico da Beira,União das freguesias de Celorico (São Pedro e Santa Maria) e Vila Boa do Mondego,55,wildcard,100.0
+090325,Guarda,Celorico da Beira,"União das freguesias de Cortiçô da Serra, Vide entre Vinhas e Salgueirais",55,wildcard,100.0
+090326,Guarda,Celorico da Beira,União das freguesias de Rapa e Cadafaz,55,wildcard,100.0
+090403,Guarda,Figueira de Castelo Rodrigo,Castelo Rodrigo,55,wildcard,100.0
+090406,Guarda,Figueira de Castelo Rodrigo,Escalhão,55,wildcard,100.0
+090408,Guarda,Figueira de Castelo Rodrigo,Figueira de Castelo Rodrigo,55,wildcard,100.0
+090410,Guarda,Figueira de Castelo Rodrigo,Mata de Lobos,55,wildcard,100.0
+090415,Guarda,Figueira de Castelo Rodrigo,Vermiosa,55,wildcard,100.0
+090418,Guarda,Figueira de Castelo Rodrigo,"União das freguesias de Algodres, Vale de Afonsinho e Vilar de Amargo",55,wildcard,100.0
+090419,Guarda,Figueira de Castelo Rodrigo,União das freguesias de Almofala e Escarigo,55,wildcard,100.0
+090420,Guarda,Figueira de Castelo Rodrigo,União das freguesias de Cinco Vilas e Reigada,55,wildcard,100.0
+090421,Guarda,Figueira de Castelo Rodrigo,"União das freguesias de Freixeda do Torrão, Quintã de Pêro Martins e Penha de Águia",55,wildcard,100.0
+090422,Guarda,Figueira de Castelo Rodrigo,União das freguesias do Colmeal e Vilar Torpim,55,wildcard,100.0
+090501,Guarda,Fornos de Algodres,Algodres,55,wildcard,100.0
+090502,Guarda,Fornos de Algodres,Casal Vasco,55,wildcard,100.0
+090504,Guarda,Fornos de Algodres,Figueiró da Granja,55,wildcard,100.0
+090505,Guarda,Fornos de Algodres,Fornos de Algodres,55,wildcard,100.0
+090507,Guarda,Fornos de Algodres,Infias,55,wildcard,100.0
+090509,Guarda,Fornos de Algodres,Maceira,55,wildcard,100.0
+090510,Guarda,Fornos de Algodres,Matança,55,wildcard,100.0
+090511,Guarda,Fornos de Algodres,Muxagata,55,wildcard,100.0
+090512,Guarda,Fornos de Algodres,Queiriz,55,wildcard,100.0
+090517,Guarda,Fornos de Algodres,União das freguesias de Cortiçô e Vila Chã,55,wildcard,100.0
+090518,Guarda,Fornos de Algodres,"União das freguesias de Juncais, Vila Ruiva e Vila Soeiro do Chão",55,wildcard,100.0
+090519,Guarda,Fornos de Algodres,União das freguesias de Sobral Pichorro e Fuinhas,55,wildcard,100.0
+090602,Guarda,Gouveia,Arcozelo,55,wildcard,100.0
+090603,Guarda,Gouveia,Cativelos,55,wildcard,100.0
+090605,Guarda,Gouveia,Folgosinho,55,wildcard,100.0
+090612,Guarda,Gouveia,Nespereira,55,wildcard,100.0
+090613,Guarda,Gouveia,Paços da Serra,55,wildcard,100.0
+090614,Guarda,Gouveia,Ribamondego,55,wildcard,100.0
+090617,Guarda,Gouveia,São Paio,55,wildcard,100.0
+090619,Guarda,Gouveia,Vila Cortês da Serra,55,wildcard,100.0
+090620,Guarda,Gouveia,Vila Franca da Serra,55,wildcard,100.0
+090621,Guarda,Gouveia,Vila Nova de Tazem,55,wildcard,100.0
+090623,Guarda,Gouveia,União das freguesias de Aldeias e Mangualde da Serra,55,wildcard,100.0
+090624,Guarda,Gouveia,União das freguesias de Figueiró da Serra e Freixo da Serra,55,wildcard,100.0
+090625,Guarda,Gouveia,Gouveia,55,wildcard,100.0
+090626,Guarda,Gouveia,União das freguesias de Melo e Nabais,55,wildcard,100.0
+090627,Guarda,Gouveia,União das freguesias de Moimenta da Serra e Vinhó,55,wildcard,100.0
+090628,Guarda,Gouveia,União das freguesias de Rio Torto e Lagarinhos,55,wildcard,100.0
+090703,Guarda,Guarda,Aldeia do Bispo,55,wildcard,100.0
+090704,Guarda,Guarda,Aldeia Viçosa,55,wildcard,100.0
+090705,Guarda,Guarda,Alvendre,55,wildcard,100.0
+090706,Guarda,Guarda,Arrifana,55,wildcard,100.0
+090708,Guarda,Guarda,Avelãs da Ribeira,55,wildcard,100.0
+090709,Guarda,Guarda,Benespera,55,wildcard,100.0
+090711,Guarda,Guarda,Casal de Cinza,55,wildcard,100.0
+090712,Guarda,Guarda,Castanheira,55,wildcard,100.0
+090713,Guarda,Guarda,Cavadoude,55,wildcard,100.0
+090714,Guarda,Guarda,Codesseiro,55,wildcard,100.0
+090716,Guarda,Guarda,Faia,55,wildcard,100.0
+090717,Guarda,Guarda,Famalicão,55,wildcard,100.0
+090718,Guarda,Guarda,Fernão Joanes,55,wildcard,100.0
+090721,Guarda,Guarda,Gonçalo Bocas,55,wildcard,100.0
+090722,Guarda,Guarda,João Antão,55,wildcard,100.0
+090723,Guarda,Guarda,Maçainhas,55,wildcard,100.0
+090724,Guarda,Guarda,Marmeleiro,55,wildcard,100.0
+090725,Guarda,Guarda,Meios,55,wildcard,100.0
+090728,Guarda,Guarda,Panoias de Cima,55,wildcard,100.0
+090729,Guarda,Guarda,Pega,55,wildcard,100.0
+090730,Guarda,Guarda,Pêra do Moço,55,wildcard,100.0
+090732,Guarda,Guarda,Porto da Carne,55,wildcard,100.0
+090734,Guarda,Guarda,Ramela,55,wildcard,100.0
+090738,Guarda,Guarda,Santana da Azinha,55,wildcard,100.0
+090744,Guarda,Guarda,Sobral da Serra,55,wildcard,100.0
+090746,Guarda,Guarda,Vale de Estrela,55,wildcard,100.0
+090747,Guarda,Guarda,Valhelhas,55,wildcard,100.0
+090748,Guarda,Guarda,Vela,55,wildcard,100.0
+090749,Guarda,Guarda,Videmonte,55,wildcard,100.0
+090750,Guarda,Guarda,Vila Cortês do Mondego,55,wildcard,100.0
+090751,Guarda,Guarda,Vila Fernando,55,wildcard,100.0
+090752,Guarda,Guarda,Vila Franca do Deão,55,wildcard,100.0
+090753,Guarda,Guarda,Vila Garcia,55,wildcard,100.0
+090757,Guarda,Guarda,Gonçalo,55,wildcard,100.0
+090758,Guarda,Guarda,Guarda,55,wildcard,100.0
+090759,Guarda,Guarda,Jarmelo São Miguel,55,wildcard,100.0
+090760,Guarda,Guarda,Jarmelo São Pedro,55,wildcard,100.0
+090761,Guarda,Guarda,União de freguesias de Avelãs de Ambom e Rocamondo,55,wildcard,100.0
+090762,Guarda,Guarda,União de freguesias de Corujeira e Trinta,55,wildcard,100.0
+090763,Guarda,Guarda,"União de freguesias de Mizarela, Pêro Soares e Vila Soeiro",55,wildcard,100.0
+090764,Guarda,Guarda,União de freguesias de Pousade e Albardo,55,wildcard,100.0
+090765,Guarda,Guarda,União de freguesias de Rochoso e Monte Margarida,55,wildcard,100.0
+090766,Guarda,Guarda,Adão,55,wildcard,100.0
+090801,Guarda,Manteigas,Sameiro,55,wildcard,100.0
+090802,Guarda,Manteigas,Manteigas (Santa Maria),55,wildcard,100.0
+090803,Guarda,Manteigas,Manteigas (São Pedro),55,wildcard,100.0
+090804,Guarda,Manteigas,Vale de Amoreira,55,wildcard,100.0
+090901,Guarda,Mêda,Aveloso,55,wildcard,100.0
+090902,Guarda,Mêda,Barreira,55,wildcard,100.0
+090905,Guarda,Mêda,Coriscada,55,wildcard,100.0
+090907,Guarda,Mêda,Longroiva,55,wildcard,100.0
+090908,Guarda,Mêda,Marialva,55,wildcard,100.0
+090912,Guarda,Mêda,Poço do Canto,55,wildcard,100.0
+090914,Guarda,Mêda,Rabaçal,55,wildcard,100.0
+090915,Guarda,Mêda,Ranhados,55,wildcard,100.0
+090917,Guarda,Mêda,"Mêda, Outeiro de Gatos e Fonte Longa",55,wildcard,100.0
+090918,Guarda,Mêda,Prova e Casteição,55,wildcard,100.0
+090919,Guarda,Mêda,"União das freguesias de Vale Flor, Carvalhal e Pai Penela",55,wildcard,100.0
+091009,Guarda,Pinhel,Ervedosa,55,wildcard,100.0
+091010,Guarda,Pinhel,Freixedas,55,wildcard,100.0
+091012,Guarda,Pinhel,Lamegal,55,wildcard,100.0
+091013,Guarda,Pinhel,Lameiras,55,wildcard,100.0
+091014,Guarda,Pinhel,Manigoto,55,wildcard,100.0
+091015,Guarda,Pinhel,Pala,55,wildcard,100.0
+091017,Guarda,Pinhel,Pinhel,55,wildcard,100.0
+091018,Guarda,Pinhel,Pínzio,55,wildcard,100.0
+091024,Guarda,Pinhel,Souro Pires,55,wildcard,100.0
+091027,Guarda,Pinhel,Vascoveiro,55,wildcard,100.0
+091028,Guarda,Pinhel,Agregação das freguesias Sul de Pinhel,55,wildcard,100.0
+091029,Guarda,Pinhel,Alverca da Beira/Bouça Cova,55,wildcard,100.0
+091030,Guarda,Pinhel,Terras de Massueime,55,wildcard,100.0
+091031,Guarda,Pinhel,Valbom/Bogalhal,55,wildcard,100.0
+091032,Guarda,Pinhel,Alto do Palurdo,55,wildcard,100.0
+091033,Guarda,Pinhel,Vale do Côa,55,wildcard,100.0
+091034,Guarda,Pinhel,Vale do Massueime,55,wildcard,100.0
+091035,Guarda,Pinhel,União das freguesias de Atalaia e Safurdão,55,wildcard,100.0
+091101,Guarda,Sabugal,Águas Belas,55,wildcard,100.0
+091102,Guarda,Sabugal,Aldeia do Bispo,55,wildcard,100.0
+091103,Guarda,Sabugal,Aldeia da Ponte,55,wildcard,100.0
+091106,Guarda,Sabugal,Aldeia Velha,55,wildcard,100.0
+091107,Guarda,Sabugal,Alfaiates,55,wildcard,100.0
+091109,Guarda,Sabugal,Baraçal,55,wildcard,100.0
+091110,Guarda,Sabugal,Bendada,55,wildcard,100.0
+091111,Guarda,Sabugal,Bismula,55,wildcard,100.0
+091112,Guarda,Sabugal,Casteleiro,55,wildcard,100.0
+091113,Guarda,Sabugal,Cerdeira,55,wildcard,100.0
+091114,Guarda,Sabugal,Fóios,55,wildcard,100.0
+091118,Guarda,Sabugal,Malcata,55,wildcard,100.0
+091120,Guarda,Sabugal,Nave,55,wildcard,100.0
+091123,Guarda,Sabugal,Quadrazais,55,wildcard,100.0
+091124,Guarda,Sabugal,Quintas de São Bartolomeu,55,wildcard,100.0
+091125,Guarda,Sabugal,Rapoula do Côa,55,wildcard,100.0
+091126,Guarda,Sabugal,Rebolosa,55,wildcard,100.0
+091127,Guarda,Sabugal,Rendo,55,wildcard,100.0
+091133,Guarda,Sabugal,Sortelha,55,wildcard,100.0
+091134,Guarda,Sabugal,Souto,55,wildcard,100.0
+091136,Guarda,Sabugal,Vale de Espinho,55,wildcard,100.0
+091138,Guarda,Sabugal,Vila Boa,55,wildcard,100.0
+091139,Guarda,Sabugal,Vila do Touro,55,wildcard,100.0
+091141,Guarda,Sabugal,"União das freguesias de Aldeia da Ribeira, Vilar Maior e Badamalos",55,wildcard,100.0
+091142,Guarda,Sabugal,União das freguesias de Lajeosa e Forcalhos,55,wildcard,100.0
+091143,Guarda,Sabugal,"União das freguesias de Pousafoles do Bispo, Pena Lobo e Lomba",55,wildcard,100.0
+091144,Guarda,Sabugal,"União das freguesias de Ruvina, Ruivós e Vale das Éguas",55,wildcard,100.0
+091145,Guarda,Sabugal,União das freguesias do Sabugal e Aldeia de Santo António,55,wildcard,100.0
+091146,Guarda,Sabugal,União das freguesias de Santo Estêvão e Moita,55,wildcard,100.0
+091147,Guarda,Sabugal,União das freguesias de Seixo do Côa e Vale Longo,55,wildcard,100.0
+091201,Guarda,Seia,Alvoco da Serra,55,wildcard,100.0
+091205,Guarda,Seia,Girabolhos,55,wildcard,100.0
+091207,Guarda,Seia,Loriga,55,wildcard,100.0
+091208,Guarda,Seia,Paranhos,55,wildcard,100.0
+091209,Guarda,Seia,Pinhanços,55,wildcard,100.0
+091210,Guarda,Seia,Sabugueiro,55,wildcard,100.0
+091212,Guarda,Seia,Sandomil,55,wildcard,100.0
+091213,Guarda,Seia,Santa Comba,55,wildcard,100.0
+091216,Guarda,Seia,Santiago,55,wildcard,100.0
+091219,Guarda,Seia,Sazes da Beira,55,wildcard,100.0
+091221,Guarda,Seia,Teixeira,55,wildcard,100.0
+091224,Guarda,Seia,Travancinha,55,wildcard,100.0
+091225,Guarda,Seia,Valezim,55,wildcard,100.0
+091228,Guarda,Seia,Vila Cova à Coelheira,55,wildcard,100.0
+091230,Guarda,Seia,União das freguesias de Carragozela e Várzea de Meruge,55,wildcard,100.0
+091231,Guarda,Seia,União das freguesias de Sameice e Santa Eulália,55,wildcard,100.0
+091234,Guarda,Seia,União das freguesias de Torrozelo e Folhadosa,55,wildcard,100.0
+091235,Guarda,Seia,União das freguesias de Tourais e Lajes,55,wildcard,100.0
+091236,Guarda,Seia,União das freguesias de Vide e Cabeça,55,wildcard,100.0
+091237,Guarda,Seia,Lapa dos Dinheiros,55,wildcard,100.0
+091238,Guarda,Seia,Santa Marinha,55,wildcard,100.0
+091239,Guarda,Seia,São Martinho,55,wildcard,100.0
+091240,Guarda,Seia,São Romão,55,wildcard,100.0
+091241,Guarda,Seia,Seia,55,wildcard,100.0
+091301,Guarda,Trancoso,Aldeia Nova,55,wildcard,100.0
+091303,Guarda,Trancoso,Castanheira,55,wildcard,100.0
+091304,Guarda,Trancoso,Cogula,55,wildcard,100.0
+091305,Guarda,Trancoso,Cótimos,55,wildcard,100.0
+091307,Guarda,Trancoso,Fiães,55,wildcard,100.0
+091309,Guarda,Trancoso,Granja,55,wildcard,100.0
+091310,Guarda,Trancoso,Guilheiro,55,wildcard,100.0
+091311,Guarda,Trancoso,Moimentinha,55,wildcard,100.0
+091312,Guarda,Trancoso,Moreira de Rei,55,wildcard,100.0
+091313,Guarda,Trancoso,Palhais,55,wildcard,100.0
+091314,Guarda,Trancoso,Póvoa do Concelho,55,wildcard,100.0
+091315,Guarda,Trancoso,Reboleiro,55,wildcard,100.0
+091316,Guarda,Trancoso,Rio de Mel,55,wildcard,100.0
+091321,Guarda,Trancoso,Tamanhos,55,wildcard,100.0
+091325,Guarda,Trancoso,Valdujo,55,wildcard,100.0
+091330,Guarda,Trancoso,União das freguesias de Freches e Torres,55,wildcard,100.0
+091331,Guarda,Trancoso,"União das freguesias de Torre do Terrenho, Sebadelhe da Serra e Terrenho",55,wildcard,100.0
+091332,Guarda,Trancoso,União das freguesias de Trancoso (São Pedro e Santa Maria) e Souto Maior,55,wildcard,100.0
+091333,Guarda,Trancoso,União das freguesias de Vale do Seixo e Vila Garcia,55,wildcard,100.0
+091334,Guarda,Trancoso,União das freguesias de Vila Franca das Naves e Feital,55,wildcard,100.0
+091335,Guarda,Trancoso,União das freguesias de Vilares e Carnicães,55,wildcard,100.0
+091401,Guarda,Vila Nova de Foz Côa,Almendra,55,wildcard,100.0
+091402,Guarda,Vila Nova de Foz Côa,Castelo Melhor,55,wildcard,100.0
+091403,Guarda,Vila Nova de Foz Côa,Cedovim,55,wildcard,100.0
+091404,Guarda,Vila Nova de Foz Côa,Chãs,55,wildcard,100.0
+091405,Guarda,Vila Nova de Foz Côa,Custóias,55,wildcard,100.0
+091407,Guarda,Vila Nova de Foz Côa,Horta,55,wildcard,100.0
+091410,Guarda,Vila Nova de Foz Côa,Muxagata,55,wildcard,100.0
+091411,Guarda,Vila Nova de Foz Côa,Numão,55,wildcard,100.0
+091412,Guarda,Vila Nova de Foz Côa,Santa Comba,55,wildcard,100.0
+091414,Guarda,Vila Nova de Foz Côa,Sebadelhe,55,wildcard,100.0
+091415,Guarda,Vila Nova de Foz Côa,Seixas,55,wildcard,100.0
+091416,Guarda,Vila Nova de Foz Côa,Touça,55,wildcard,100.0
+091418,Guarda,Vila Nova de Foz Côa,Freixo de Numão,55,wildcard,100.0
+091419,Guarda,Vila Nova de Foz Côa,Vila Nova de Foz Côa,55,wildcard,100.0
+100201,Leiria,Alvaiázere,Almoster,56,wildcard,100.0
+100204,Leiria,Alvaiázere,Maçãs de Dona Maria,56,wildcard,100.0
+100205,Leiria,Alvaiázere,Pelmá,56,wildcard,100.0
+100208,Leiria,Alvaiázere,Alvaiázere,56,wildcard,100.0
+100209,Leiria,Alvaiázere,Pussos São Pedro,56,wildcard,100.0
+100301,Leiria,Ansião,Alvorge,57,wildcard,100.0
+100303,Leiria,Ansião,Avelar,57,wildcard,100.0
+100304,Leiria,Ansião,Chão de Couce,57,wildcard,100.0
+100306,Leiria,Ansião,Pousaflores,57,wildcard,100.0
+100307,Leiria,Ansião,Santiago da Guarda,57,wildcard,100.0
+100309,Leiria,Ansião,Ansião,57,wildcard,100.0
+100703,Leiria,Castanheira de Pêra,União das freguesias de Castanheira de Pêra e Coentral,58,wildcard,100.0
+100801,Leiria,Figueiró dos Vinhos,Aguda,59,wildcard,100.0
+100802,Leiria,Figueiró dos Vinhos,Arega,59,wildcard,100.0
+100803,Leiria,Figueiró dos Vinhos,Campelo,59,wildcard,100.0
+100806,Leiria,Figueiró dos Vinhos,União das freguesias de Figueiró dos Vinhos e Bairradas,59,wildcard,100.0
+101301,Leiria,Pedrógão Grande,Graça,60,wildcard,100.0
+101302,Leiria,Pedrógão Grande,Pedrógão Grande,60,wildcard,100.0
+101303,Leiria,Pedrógão Grande,Vila Facaia,60,wildcard,100.0
+101501,Leiria,Pombal,Abiul,61,exact,100.0
+120101,Portalegre,Alter do Chão,Alter do Chão,62,wildcard,100.0
+120102,Portalegre,Alter do Chão,Chancelaria,62,wildcard,100.0
+120103,Portalegre,Alter do Chão,Seda,62,wildcard,100.0
+120104,Portalegre,Alter do Chão,Cunheira,62,wildcard,100.0
+120201,Portalegre,Arronches,Assunção,62,wildcard,100.0
+120202,Portalegre,Arronches,Esperança,62,wildcard,100.0
+120203,Portalegre,Arronches,Mosteiros,62,wildcard,100.0
+120302,Portalegre,Avis,Aldeia Velha,62,wildcard,100.0
+120303,Portalegre,Avis,Avis,62,wildcard,100.0
+120305,Portalegre,Avis,Ervedal,62,wildcard,100.0
+120306,Portalegre,Avis,Figueira e Barros,62,wildcard,100.0
+120309,Portalegre,Avis,União das freguesias de Alcórrego e Maranhão,62,wildcard,100.0
+120310,Portalegre,Avis,União das freguesias de Benavila e Valongo,62,wildcard,100.0
+120401,Portalegre,Campo Maior,Nossa Senhora da Expectação,62,wildcard,100.0
+120402,Portalegre,Campo Maior,Nossa Senhora da Graça dos Degolados,62,wildcard,100.0
+120403,Portalegre,Campo Maior,São João Baptista,62,wildcard,100.0
+120501,Portalegre,Castelo de Vide,Nossa Senhora da Graça de Póvoa e Meadas,62,wildcard,100.0
+120502,Portalegre,Castelo de Vide,Santa Maria da Devesa,62,wildcard,100.0
+120503,Portalegre,Castelo de Vide,Santiago Maior,62,wildcard,100.0
+120504,Portalegre,Castelo de Vide,São João Baptista,62,wildcard,100.0
+120601,Portalegre,Crato,Aldeia da Mata,62,wildcard,100.0
+120604,Portalegre,Crato,Gáfete,62,wildcard,100.0
+120605,Portalegre,Crato,Monte da Pedra,62,wildcard,100.0
+120607,Portalegre,Crato,"União das freguesias de Crato e Mártires, Flor da Rosa e Vale do Peso",62,wildcard,100.0
+120706,Portalegre,Elvas,Santa Eulália,62,wildcard,100.0
+120707,Portalegre,Elvas,São Brás e São Lourenço,62,wildcard,100.0
+120708,Portalegre,Elvas,São Vicente e Ventosa,62,wildcard,100.0
+120712,Portalegre,Elvas,"Assunção, Ajuda, Salvador e Santo Ildefonso",62,wildcard,100.0
+120713,Portalegre,Elvas,"Caia, São Pedro e Alcáçova",62,wildcard,100.0
+120714,Portalegre,Elvas,União das freguesias de Barbacena e Vila Fernando,62,wildcard,100.0
+120716,Portalegre,Elvas,Terrugem,62,wildcard,100.0
+120717,Portalegre,Elvas,Vila Boim,62,wildcard,100.0
+120801,Portalegre,Fronteira,Cabeço de Vide,62,wildcard,100.0
+120802,Portalegre,Fronteira,Fronteira,62,wildcard,100.0
+120803,Portalegre,Fronteira,São Saturnino,62,wildcard,100.0
+120902,Portalegre,Gavião,Belver,62,wildcard,100.0
+120903,Portalegre,Gavião,Comenda,62,wildcard,100.0
+120905,Portalegre,Gavião,Margem,62,wildcard,100.0
+120906,Portalegre,Gavião,União das freguesias de Gavião e Atalaia,62,wildcard,100.0
+121001,Portalegre,Marvão,Beirã,62,wildcard,100.0
+121002,Portalegre,Marvão,Santa Maria de Marvão,62,wildcard,100.0
+121003,Portalegre,Marvão,Santo António das Areias,62,wildcard,100.0
+121004,Portalegre,Marvão,São Salvador da Aramenha,62,wildcard,100.0
+121101,Portalegre,Monforte,Assumar,62,wildcard,100.0
+121102,Portalegre,Monforte,Monforte,62,wildcard,100.0
+121103,Portalegre,Monforte,Santo Aleixo,62,wildcard,100.0
+121104,Portalegre,Monforte,Vaiamonte,62,wildcard,100.0
+121201,Portalegre,Nisa,Alpalhão,62,wildcard,100.0
+121205,Portalegre,Nisa,Montalvão,62,wildcard,100.0
+121207,Portalegre,Nisa,Santana,62,wildcard,100.0
+121208,Portalegre,Nisa,São Matias,62,wildcard,100.0
+121210,Portalegre,Nisa,Tolosa,62,wildcard,100.0
+121211,Portalegre,Nisa,União das freguesias de Arez e Amieira do Tejo,62,wildcard,100.0
+121212,Portalegre,Nisa,"União das freguesias de Espírito Santo, Nossa Senhora da Graça e São Simão",62,wildcard,100.0
+121301,Portalegre,Ponte de Sor,Galveias,62,wildcard,100.0
+121302,Portalegre,Ponte de Sor,Montargil,62,wildcard,100.0
+121304,Portalegre,Ponte de Sor,Foros de Arrão,62,wildcard,100.0
+121305,Portalegre,Ponte de Sor,Longomel,62,wildcard,100.0
+121309,Portalegre,Ponte de Sor,Ponte de Sor,62,wildcard,100.0
+121310,Portalegre,Ponte de Sor,Tramaga,62,wildcard,100.0
+121311,Portalegre,Ponte de Sor,Vale de Açor,62,wildcard,100.0
+121401,Portalegre,Portalegre,Alagoa,62,wildcard,100.0
+121402,Portalegre,Portalegre,Alegrete,62,wildcard,100.0
+121404,Portalegre,Portalegre,Fortios,62,wildcard,100.0
+121410,Portalegre,Portalegre,Urra,62,wildcard,100.0
+121411,Portalegre,Portalegre,União das freguesias da Sé e São Lourenço,62,wildcard,100.0
+121412,Portalegre,Portalegre,União das freguesias de Reguengo e São Julião,62,wildcard,100.0
+121413,Portalegre,Portalegre,União das freguesias de Ribeira de Nisa e Carreiras,62,wildcard,100.0
+121501,Portalegre,Sousel,Cano,62,wildcard,100.0
+121502,Portalegre,Sousel,Casa Branca,62,wildcard,100.0
+121503,Portalegre,Sousel,Santo Amaro,62,wildcard,100.0
+121504,Portalegre,Sousel,Sousel,62,wildcard,100.0
+130103,Porto,Amarante,Ansiães,63,exact,100.0
+130107,Porto,Amarante,Candemil,64,exact,100.0
+130118,Porto,Amarante,Jazente,66,exact,100.0
+130128,Porto,Amarante,Rebordelo,67,exact,100.0
+130129,Porto,Amarante,Salvador do Monte,68,exact,100.0
+130134,Porto,Amarante,Gouveia (São Simão),65,exact,100.0
+130139,Porto,Amarante,Vila Chã do Marão,72,exact,100.0
+130141,Porto,Amarante,"União das freguesias de Aboadela, Sanche e Várzea",69,normalized,100.0
+130143,Porto,Amarante,"União das freguesias de Bustelo, Carneiro e Carvalho de Rei",70,normalized,100.0
+130146,Porto,Amarante,União das freguesias de Olo e Canadelo,71,normalized,100.0
+130204,Porto,Baião,Frende,73,wildcard,100.0
+130205,Porto,Baião,Gestaçô,73,wildcard,100.0
+130206,Porto,Baião,Gove,73,wildcard,100.0
+130207,Porto,Baião,Grilo,73,wildcard,100.0
+130208,Porto,Baião,Loivos do Monte,73,wildcard,100.0
+130215,Porto,Baião,Santa Marinha do Zêzere,73,wildcard,100.0
+130219,Porto,Baião,Valadares,73,wildcard,100.0
+130220,Porto,Baião,Viariz,73,wildcard,100.0
+130221,Porto,Baião,União das freguesias de Ancede e Ribadouro,73,wildcard,100.0
+130222,Porto,Baião,União das freguesias de Baião (Santa Leocádia) e Mesquinhata,73,wildcard,100.0
+130223,Porto,Baião,União das freguesias de Campelo e Ovil,73,wildcard,100.0
+130224,Porto,Baião,União das freguesias de Loivos da Ribeira e Tresouras,73,wildcard,100.0
+130225,Porto,Baião,União das freguesias de Santa Cruz do Douro e São Tomé de Covelas,73,wildcard,100.0
+130226,Porto,Baião,União das freguesias de Teixeira e Teixeiró,73,wildcard,100.0
+130740,Porto,Marco de Canaveses,"Várzea, Aliviada e Folhada",74,override,100.0
+140104,Santarém,Abrantes,Bemposta,75,wildcard,100.0
+140105,Santarém,Abrantes,Martinchel,75,wildcard,100.0
+140106,Santarém,Abrantes,Mouriscas,75,wildcard,100.0
+140107,Santarém,Abrantes,Pego,75,wildcard,100.0
+140108,Santarém,Abrantes,Rio de Moinhos,75,wildcard,100.0
+140115,Santarém,Abrantes,Tramagal,75,wildcard,100.0
+140118,Santarém,Abrantes,Fontes,75,wildcard,100.0
+140119,Santarém,Abrantes,Carvalhal,75,wildcard,100.0
+140120,Santarém,Abrantes,União das freguesias de Abrantes (São Vicente e São João) e Alferrarede,75,wildcard,100.0
+140121,Santarém,Abrantes,União das freguesias de Aldeia do Mato e Souto,75,wildcard,100.0
+140122,Santarém,Abrantes,União das freguesias de Alvega e Concavada,75,wildcard,100.0
+140123,Santarém,Abrantes,União das freguesias de São Facundo e Vale das Mós,75,wildcard,100.0
+140124,Santarém,Abrantes,União das freguesias de São Miguel do Rio Torto e Rossio ao Sul do Tejo,75,wildcard,100.0
+140704,Santarém,Chamusca,Ulme,76,wildcard,100.0
+140705,Santarém,Chamusca,Vale de Cavalos,76,wildcard,100.0
+140707,Santarém,Chamusca,Carregueira,76,wildcard,100.0
+140708,Santarém,Chamusca,União das freguesias da Chamusca e Pinheiro Grande,76,wildcard,100.0
+140709,Santarém,Chamusca,União das freguesias de Parreira e Chouto,76,wildcard,100.0
+140801,Santarém,Constância,Constância,77,wildcard,100.0
+140802,Santarém,Constância,Montalvo,77,wildcard,100.0
+140803,Santarém,Constância,Santa Margarida da Coutada,77,wildcard,100.0
+140902,Santarém,Coruche,Couço,78,wildcard,100.0
+140903,Santarém,Coruche,São José da Lamarosa,78,wildcard,100.0
+140905,Santarém,Coruche,Branca,78,wildcard,100.0
+140907,Santarém,Coruche,Biscainho,78,wildcard,100.0
+140908,Santarém,Coruche,Santana do Mato,78,wildcard,100.0
+140910,Santarém,Coruche,Coruche,78,wildcard,100.0
+140911,Santarém,Coruche,Erra,78,wildcard,100.0
+140912,Santarém,Coruche,Fajarda,78,wildcard,100.0
+141101,Santarém,Ferreira do Zêzere,Águas Belas,79,wildcard,100.0
+141103,Santarém,Ferreira do Zêzere,Beco,79,wildcard,100.0
+141104,Santarém,Ferreira do Zêzere,Chãos,79,wildcard,100.0
+141106,Santarém,Ferreira do Zêzere,Ferreira do Zêzere,79,wildcard,100.0
+141107,Santarém,Ferreira do Zêzere,Igreja Nova do Sobral,79,wildcard,100.0
+141110,Santarém,Ferreira do Zêzere,Nossa Senhora do Pranto,79,wildcard,100.0
+141111,Santarém,Ferreira do Zêzere,União das freguesias de Areias e Pias,79,wildcard,100.0
+141302,Santarém,Mação,Amêndoa,80,wildcard,100.0
+141303,Santarém,Mação,Cardigos,80,wildcard,100.0
+141304,Santarém,Mação,Carvoeiro,80,wildcard,100.0
+141305,Santarém,Mação,Envendos,80,wildcard,100.0
+141307,Santarém,Mação,Ortiga,80,wildcard,100.0
+141309,Santarém,Mação,"União das freguesias de Mação, Penhascoso e Aboboreira",80,wildcard,100.0
+141631,Santarém,Santarém,União das freguesias de Casével e Vaqueiros,87,normalized,100.0
+141701,Santarém,Sardoal,Alcaravela,88,wildcard,100.0
+141702,Santarém,Sardoal,Santiago de Montalegre,88,wildcard,100.0
+141703,Santarém,Sardoal,Sardoal,88,wildcard,100.0
+141704,Santarém,Sardoal,Valhascos,88,wildcard,100.0
+141808,Santarém,Tomar,Olalhas,89,exact,100.0
+141814,Santarém,Tomar,Sabacheira,90,exact,100.0
+141817,Santarém,Tomar,União das freguesias de Além da Ribeira e Pedreira,91,normalized,100.0
+141818,Santarém,Tomar,União das freguesias de Casais e Alviobeira,92,normalized,100.0
+141822,Santarém,Tomar,Junceira,94,exact,100.0
+141823,Santarém,Tomar,Serra,93,exact,100.0
+142001,Santarém,Vila Nova da Barquinha,Atalaia,95,wildcard,100.0
+142002,Santarém,Vila Nova da Barquinha,Praia do Ribatejo,95,wildcard,100.0
+142003,Santarém,Vila Nova da Barquinha,Tancos,95,wildcard,100.0
+142006,Santarém,Vila Nova da Barquinha,Vila Nova da Barquinha,95,wildcard,100.0
+142105,Santarém,Ourém,Espite,81,exact,100.0
+142119,Santarém,Ourém,"União das freguesias de Freixianda, Ribeira do Fárrio e Formigais",86,normalized,100.0
+142123,Santarém,Ourém,Casal dos Bernardos,85,exact,100.0
+142124,Santarém,Ourém,Cercal,83,exact,100.0
+142126,Santarém,Ourém,Matas,82,exact,100.0
+142128,Santarém,Ourém,Rio de Couros,84,exact,100.0
+150104,Setúbal,Alcácer do Sal,Torrão,96,wildcard,100.0
+150105,Setúbal,Alcácer do Sal,São Martinho,96,wildcard,100.0
+150106,Setúbal,Alcácer do Sal,Comporta,96,wildcard,100.0
+150108,Setúbal,Alcácer do Sal,Alcácer do Sal (Santa Maria do Castelo),96,wildcard,100.0
+150109,Setúbal,Alcácer do Sal,Alcácer do Sal (Santiago),96,wildcard,100.0
+150110,Setúbal,Alcácer do Sal,Santa Susana,96,wildcard,100.0
+150501,Setúbal,Grândola,Azinheira dos Barros e São Mamede do Sádão,97,wildcard,100.0
+150503,Setúbal,Grândola,Melides,97,wildcard,100.0
+150505,Setúbal,Grândola,Carvalhal,97,wildcard,100.0
+150506,Setúbal,Grândola,União das freguesias de Grândola e Santa Margarida da Serra,97,wildcard,100.0
+150901,Setúbal,Santiago do Cacém,Abela,98,wildcard,100.0
+150902,Setúbal,Santiago do Cacém,Alvalade,98,wildcard,100.0
+150903,Setúbal,Santiago do Cacém,Cercal,98,wildcard,100.0
+150904,Setúbal,Santiago do Cacém,Ermidas-Sado,98,wildcard,100.0
+150907,Setúbal,Santiago do Cacém,Santo André,98,wildcard,100.0
+150910,Setúbal,Santiago do Cacém,São Francisco da Serra,98,wildcard,100.0
+150912,Setúbal,Santiago do Cacém,"União das freguesias de Santiago do Cacém, Santa Cruz e São Bartolomeu da Serra",98,wildcard,100.0
+150914,Setúbal,Santiago do Cacém,São Domingos,98,wildcard,100.0
+150915,Setúbal,Santiago do Cacém,Vale de Água,98,wildcard,100.0
+160101,Viana do Castelo,Arcos de Valdevez,Aboim das Choças,99,wildcard,100.0
+160102,Viana do Castelo,Arcos de Valdevez,Aguiã,99,wildcard,100.0
+160104,Viana do Castelo,Arcos de Valdevez,Ázere,99,wildcard,100.0
+160105,Viana do Castelo,Arcos de Valdevez,Cabana Maior,99,wildcard,100.0
+160106,Viana do Castelo,Arcos de Valdevez,Cabreiro,99,wildcard,100.0
+160108,Viana do Castelo,Arcos de Valdevez,Cendufe,99,wildcard,100.0
+160109,Viana do Castelo,Arcos de Valdevez,Couto,99,wildcard,100.0
+160113,Viana do Castelo,Arcos de Valdevez,Gavieira,99,wildcard,100.0
+160115,Viana do Castelo,Arcos de Valdevez,Gondoriz,99,wildcard,100.0
+160121,Viana do Castelo,Arcos de Valdevez,Miranda,99,wildcard,100.0
+160122,Viana do Castelo,Arcos de Valdevez,Monte Redondo,99,wildcard,100.0
+160123,Viana do Castelo,Arcos de Valdevez,Oliveira,99,wildcard,100.0
+160124,Viana do Castelo,Arcos de Valdevez,Paçô,99,wildcard,100.0
+160125,Viana do Castelo,Arcos de Valdevez,Padroso,99,wildcard,100.0
+160128,Viana do Castelo,Arcos de Valdevez,Prozelo,99,wildcard,100.0
+160130,Viana do Castelo,Arcos de Valdevez,Rio Frio,99,wildcard,100.0
+160131,Viana do Castelo,Arcos de Valdevez,Rio de Moinhos,99,wildcard,100.0
+160133,Viana do Castelo,Arcos de Valdevez,Sabadim,99,wildcard,100.0
+160142,Viana do Castelo,Arcos de Valdevez,Jolda (São Paio),99,wildcard,100.0
+160144,Viana do Castelo,Arcos de Valdevez,Senharei,99,wildcard,100.0
+160145,Viana do Castelo,Arcos de Valdevez,Sistelo,99,wildcard,100.0
+160146,Viana do Castelo,Arcos de Valdevez,Soajo,99,wildcard,100.0
+160149,Viana do Castelo,Arcos de Valdevez,Vale,99,wildcard,100.0
+160152,Viana do Castelo,Arcos de Valdevez,União das freguesias de Alvora e Loureda,99,wildcard,100.0
+160153,Viana do Castelo,Arcos de Valdevez,União das freguesias de Arcos de Valdevez (São Paio) e Giela,99,wildcard,100.0
+160154,Viana do Castelo,Arcos de Valdevez,"União das freguesias de Arcos de Valdevez (Salvador), Vila Fonche e Parada",99,wildcard,100.0
+160155,Viana do Castelo,Arcos de Valdevez,União das freguesias de Eiras e Mei,99,wildcard,100.0
+160156,Viana do Castelo,Arcos de Valdevez,União das freguesias de Grade e Carralcova,99,wildcard,100.0
+160157,Viana do Castelo,Arcos de Valdevez,União das freguesias de Guilhadeses e Santar,99,wildcard,100.0
+160158,Viana do Castelo,Arcos de Valdevez,União das freguesias de Jolda (Madalena) e Rio Cabrão,99,wildcard,100.0
+160159,Viana do Castelo,Arcos de Valdevez,União das freguesias de Padreiro (Salvador e Santa Cristina),99,wildcard,100.0
+160160,Viana do Castelo,Arcos de Valdevez,União das freguesias de Portela e Extremo,99,wildcard,100.0
+160161,Viana do Castelo,Arcos de Valdevez,União das freguesias de São Jorge e Ermelo,99,wildcard,100.0
+160162,Viana do Castelo,Arcos de Valdevez,União das freguesias de Souto e Tabaçô,99,wildcard,100.0
+160163,Viana do Castelo,Arcos de Valdevez,União das freguesias de Távora (Santa Maria e São Vicente),99,wildcard,100.0
+160164,Viana do Castelo,Arcos de Valdevez,"União das freguesias de Vilela, São Cosme e São Damião e Sá",99,wildcard,100.0
+160221,Viana do Castelo,Caminha,"União das freguesias de Arga (Baixo, Cima e São João)",100,normalized,100.0
+160223,Viana do Castelo,Caminha,União das freguesias de Gondar e Orbacém,101,normalized,100.0
+160301,Viana do Castelo,Melgaço,Alvaredo,102,wildcard,100.0
+160304,Viana do Castelo,Melgaço,Cousso,102,wildcard,100.0
+160305,Viana do Castelo,Melgaço,Cristoval,102,wildcard,100.0
+160307,Viana do Castelo,Melgaço,Fiães,102,wildcard,100.0
+160308,Viana do Castelo,Melgaço,Gave,102,wildcard,100.0
+160311,Viana do Castelo,Melgaço,Paderne,102,wildcard,100.0
+160313,Viana do Castelo,Melgaço,Penso,102,wildcard,100.0
+160317,Viana do Castelo,Melgaço,São Paio,102,wildcard,100.0
+160319,Viana do Castelo,Melgaço,União das freguesias de Castro Laboreiro e Lamas de Mouro,102,wildcard,100.0
+160320,Viana do Castelo,Melgaço,União das freguesias de Chaviães e Paços,102,wildcard,100.0
+160321,Viana do Castelo,Melgaço,União das freguesias de Parada do Monte e Cubalhão,102,wildcard,100.0
+160322,Viana do Castelo,Melgaço,União das freguesias de Prado e Remoães,102,wildcard,100.0
+160323,Viana do Castelo,Melgaço,União das freguesias de Vila e Roussas,102,wildcard,100.0
+160401,Viana do Castelo,Monção,Abedim,103,wildcard,100.0
+160404,Viana do Castelo,Monção,Barbeita,103,wildcard,100.0
+160405,Viana do Castelo,Monção,Barroças e Taias,103,wildcard,100.0
+160406,Viana do Castelo,Monção,Bela,103,wildcard,100.0
+160407,Viana do Castelo,Monção,Cambeses,103,wildcard,100.0
+160410,Viana do Castelo,Monção,Lara,103,wildcard,100.0
+160411,Viana do Castelo,Monção,Longos Vales,103,wildcard,100.0
+160415,Viana do Castelo,Monção,Merufe,103,wildcard,100.0
+160418,Viana do Castelo,Monção,Moreira,103,wildcard,100.0
+160420,Viana do Castelo,Monção,Pias,103,wildcard,100.0
+160421,Viana do Castelo,Monção,Pinheiros,103,wildcard,100.0
+160422,Viana do Castelo,Monção,Podame,103,wildcard,100.0
+160423,Viana do Castelo,Monção,Portela,103,wildcard,100.0
+160424,Viana do Castelo,Monção,Riba de Mouro,103,wildcard,100.0
+160427,Viana do Castelo,Monção,Segude,103,wildcard,100.0
+160428,Viana do Castelo,Monção,Tangil,103,wildcard,100.0
+160431,Viana do Castelo,Monção,Trute,103,wildcard,100.0
+160434,Viana do Castelo,Monção,União das freguesias de Anhões e Luzio,103,wildcard,100.0
+160435,Viana do Castelo,Monção,União das freguesias de Ceivães e Badim,103,wildcard,100.0
+160436,Viana do Castelo,Monção,União das freguesias de Mazedo e Cortes,103,wildcard,100.0
+160437,Viana do Castelo,Monção,"União das freguesias de Messegães, Valadares e Sá",103,wildcard,100.0
+160438,Viana do Castelo,Monção,União das freguesias de Monção e Troviscoso,103,wildcard,100.0
+160439,Viana do Castelo,Monção,"União das freguesias de Sago, Lordelo e Parada",103,wildcard,100.0
+160440,Viana do Castelo,Monção,União das freguesias de Troporiz e Lapela,103,wildcard,100.0
+160501,Viana do Castelo,Paredes de Coura,Agualonga,104,wildcard,100.0
+160503,Viana do Castelo,Paredes de Coura,Castanheira,104,wildcard,100.0
+160505,Viana do Castelo,Paredes de Coura,Coura,104,wildcard,100.0
+160507,Viana do Castelo,Paredes de Coura,Cunha,104,wildcard,100.0
+160510,Viana do Castelo,Paredes de Coura,Infesta,104,wildcard,100.0
+160513,Viana do Castelo,Paredes de Coura,Mozelos,104,wildcard,100.0
+160514,Viana do Castelo,Paredes de Coura,Padornelo,104,wildcard,100.0
+160515,Viana do Castelo,Paredes de Coura,Parada,104,wildcard,100.0
+160519,Viana do Castelo,Paredes de Coura,Romarigães,104,wildcard,100.0
+160520,Viana do Castelo,Paredes de Coura,Rubiães,104,wildcard,100.0
+160521,Viana do Castelo,Paredes de Coura,Vascões,104,wildcard,100.0
+160522,Viana do Castelo,Paredes de Coura,União das freguesias de Bico e Cristelo,104,wildcard,100.0
+160523,Viana do Castelo,Paredes de Coura,União das freguesias de Cossourado e Linhares,104,wildcard,100.0
+160524,Viana do Castelo,Paredes de Coura,União das freguesias de Formariz e Ferreira,104,wildcard,100.0
+160525,Viana do Castelo,Paredes de Coura,União das freguesias de Insalde e Porreiras,104,wildcard,100.0
+160526,Viana do Castelo,Paredes de Coura,União das freguesias de Paredes de Coura e Resende,104,wildcard,100.0
+160601,Viana do Castelo,Ponte da Barca,Azias,105,wildcard,100.0
+160602,Viana do Castelo,Ponte da Barca,Boivães,105,wildcard,100.0
+160603,Viana do Castelo,Ponte da Barca,Bravães,105,wildcard,100.0
+160604,Viana do Castelo,Ponte da Barca,Britelo,105,wildcard,100.0
+160606,Viana do Castelo,Ponte da Barca,Cuide de Vila Verde,105,wildcard,100.0
+160611,Viana do Castelo,Ponte da Barca,Lavradas,105,wildcard,100.0
+160612,Viana do Castelo,Ponte da Barca,Lindoso,105,wildcard,100.0
+160613,Viana do Castelo,Ponte da Barca,Nogueira,105,wildcard,100.0
+160614,Viana do Castelo,Ponte da Barca,Oleiros,105,wildcard,100.0
+160619,Viana do Castelo,Ponte da Barca,Sampriz,105,wildcard,100.0
+160623,Viana do Castelo,Ponte da Barca,Vade (São Pedro),105,wildcard,100.0
+160624,Viana do Castelo,Ponte da Barca,Vade (São Tomé),105,wildcard,100.0
+160626,Viana do Castelo,Ponte da Barca,"União das freguesias de Crasto, Ruivos e Grovelas",105,wildcard,100.0
+160627,Viana do Castelo,Ponte da Barca,"União das freguesias de Entre Ambos-os-Rios, Ermida e Germil",105,wildcard,100.0
+160628,Viana do Castelo,Ponte da Barca,"União das freguesias de Ponte da Barca, Vila Nova de Muía e Paço Vedro de Magalhães",105,wildcard,100.0
+160629,Viana do Castelo,Ponte da Barca,União das freguesias de Touvedo (São Lourenço e Salvador),105,wildcard,100.0
+160630,Viana do Castelo,Ponte da Barca,União das freguesias de Vila Chã (São João Baptista e Santiago),105,wildcard,100.0
+160701,Viana do Castelo,Ponte de Lima,Anais,106,exact,100.0
+160707,Viana do Castelo,Ponte de Lima,Beiral do Lima,112,exact,100.0
+160709,Viana do Castelo,Ponte de Lima,Boalhosa,113,exact,100.0
+160713,Viana do Castelo,Ponte de Lima,Calheiros,116,exact,100.0
+160717,Viana do Castelo,Ponte de Lima,Estorãos,117,exact,100.0
+160724,Viana do Castelo,Ponte de Lima,Friastelas,118,exact,100.0
+160727,Viana do Castelo,Ponte de Lima,Gemieira,119,exact,100.0
+160728,Viana do Castelo,Ponte de Lima,Gondufe,120,exact,100.0
+160729,Viana do Castelo,Ponte de Lima,Labruja,121,exact,100.0
+160734,Viana do Castelo,Ponte de Lima,Poiares,124,exact,100.0
+160746,Viana do Castelo,Ponte de Lima,Serdedelo,125,exact,100.0
+160753,Viana do Castelo,Ponte de Lima,"Ardegão, Freixo e Mato",107,exact,100.0
+160755,Viana do Castelo,Ponte de Lima,Bárrio e Cepões,111,exact,100.0
+160756,Viana do Castelo,Ponte de Lima,Cabaços e Fojo Lobal,114,exact,100.0
+160757,Viana do Castelo,Ponte de Lima,Cabração e Moreira do Lima,115,exact,100.0
+160759,Viana do Castelo,Ponte de Lima,"Labrujó, Rendufe e Vilar do Monte",122,exact,100.0
+160760,Viana do Castelo,Ponte de Lima,Navió e Vitorino dos Piães,123,exact,100.0
+160761,Viana do Castelo,Ponte de Lima,Gaifar,108,exact,100.0
+160762,Viana do Castelo,Ponte de Lima,Sandiães,109,exact,100.0
+160763,Viana do Castelo,Ponte de Lima,Vilar das Almas,110,override,100.0
+160802,Viana do Castelo,Valença,Boivão,126,exact,100.0
+160805,Viana do Castelo,Valença,Fontoura,127,exact,100.0
+160818,Viana do Castelo,Valença,União das freguesias de Gondomil e Sanfins,128,normalized,100.0
+160819,Viana do Castelo,Valença,União das freguesias de São Julião e Silva,129,normalized,100.0
+160920,Viana do Castelo,Viana do Castelo,Montaria,130,exact,100.0
+161003,Viana do Castelo,Vila Nova de Cerveira,Cornes,131,wildcard,100.0
+161004,Viana do Castelo,Vila Nova de Cerveira,Covas,131,wildcard,100.0
+161006,Viana do Castelo,Vila Nova de Cerveira,Gondarém,131,wildcard,100.0
+161007,Viana do Castelo,Vila Nova de Cerveira,Loivo,131,wildcard,100.0
+161009,Viana do Castelo,Vila Nova de Cerveira,Mentrestido,131,wildcard,100.0
+161012,Viana do Castelo,Vila Nova de Cerveira,Sapardos,131,wildcard,100.0
+161013,Viana do Castelo,Vila Nova de Cerveira,Sopo,131,wildcard,100.0
+161016,Viana do Castelo,Vila Nova de Cerveira,União das freguesias de Campos e Vila Meã,131,wildcard,100.0
+161017,Viana do Castelo,Vila Nova de Cerveira,União das freguesias de Candemil e Gondar,131,wildcard,100.0
+161018,Viana do Castelo,Vila Nova de Cerveira,União das freguesias de Reboreda e Nogueira,131,wildcard,100.0
+161019,Viana do Castelo,Vila Nova de Cerveira,União das freguesias de Vila Nova de Cerveira e Lovelhe,131,wildcard,100.0
+170101,Vila Real,Alijó,Alijó,132,wildcard,100.0
+170107,Vila Real,Alijó,Favaios,132,wildcard,100.0
+170108,Vila Real,Alijó,Pegarinhos,132,wildcard,100.0
+170109,Vila Real,Alijó,Pinhão,132,wildcard,100.0
+170112,Vila Real,Alijó,Sanfins do Douro,132,wildcard,100.0
+170113,Vila Real,Alijó,Santa Eugénia,132,wildcard,100.0
+170114,Vila Real,Alijó,São Mamede de Ribatua,132,wildcard,100.0
+170116,Vila Real,Alijó,Vila Chã,132,wildcard,100.0
+170117,Vila Real,Alijó,Vila Verde,132,wildcard,100.0
+170118,Vila Real,Alijó,Vilar de Maçada,132,wildcard,100.0
+170120,Vila Real,Alijó,União das freguesias de Carlão e Amieiro,132,wildcard,100.0
+170121,Vila Real,Alijó,União das freguesias de Castedo e Cotas,132,wildcard,100.0
+170122,Vila Real,Alijó,União das freguesias de Pópulo e Ribalonga,132,wildcard,100.0
+170123,Vila Real,Alijó,"União das freguesias de Vale de Mendiz, Casal de Loivos e Vilarinho de Cotas",132,wildcard,100.0
+170203,Vila Real,Boticas,Beça,132,wildcard,100.0
+170208,Vila Real,Boticas,Covas do Barroso,132,wildcard,100.0
+170210,Vila Real,Boticas,Dornelas,132,wildcard,100.0
+170213,Vila Real,Boticas,Pinho,132,wildcard,100.0
+170215,Vila Real,Boticas,Sapiãos,132,wildcard,100.0
+170217,Vila Real,Boticas,Alturas do Barroso e Cerdedo,132,wildcard,100.0
+170218,Vila Real,Boticas,Ardãos e Bobadela,132,wildcard,100.0
+170219,Vila Real,Boticas,Boticas e Granja,132,wildcard,100.0
+170220,Vila Real,Boticas,"Codessoso, Curros e Fiães do Tâmega",132,wildcard,100.0
+170221,Vila Real,Boticas,Vilar e Viveiro,132,wildcard,100.0
+170301,Vila Real,Chaves,Águas Frias,132,wildcard,100.0
+170302,Vila Real,Chaves,Anelhe,132,wildcard,100.0
+170305,Vila Real,Chaves,Bustelo,132,wildcard,100.0
+170309,Vila Real,Chaves,Cimo de Vila da Castanheira,132,wildcard,100.0
+170310,Vila Real,Chaves,Curalha,132,wildcard,100.0
+170312,Vila Real,Chaves,Ervededo,132,wildcard,100.0
+170313,Vila Real,Chaves,Faiões,132,wildcard,100.0
+170314,Vila Real,Chaves,Lama de Arcos,132,wildcard,100.0
+170316,Vila Real,Chaves,Mairos,132,wildcard,100.0
+170317,Vila Real,Chaves,Moreiras,132,wildcard,100.0
+170318,Vila Real,Chaves,Nogueira da Montanha,132,wildcard,100.0
+170320,Vila Real,Chaves,Oura,132,wildcard,100.0
+170321,Vila Real,Chaves,Outeiro Seco,132,wildcard,100.0
+170322,Vila Real,Chaves,Paradela,132,wildcard,100.0
+170324,Vila Real,Chaves,Redondelo,132,wildcard,100.0
+170327,Vila Real,Chaves,Sanfins,132,wildcard,100.0
+170329,Vila Real,Chaves,Santa Leocádia,132,wildcard,100.0
+170330,Vila Real,Chaves,Santo António de Monforte,132,wildcard,100.0
+170331,Vila Real,Chaves,Santo Estêvão,132,wildcard,100.0
+170333,Vila Real,Chaves,São Pedro de Agostém,132,wildcard,100.0
+170334,Vila Real,Chaves,São Vicente,132,wildcard,100.0
+170340,Vila Real,Chaves,Tronco,132,wildcard,100.0
+170341,Vila Real,Chaves,Vale de Anta,132,wildcard,100.0
+170343,Vila Real,Chaves,Vila Verde da Raia,132,wildcard,100.0
+170344,Vila Real,Chaves,Vilar de Nantes,132,wildcard,100.0
+170345,Vila Real,Chaves,Vilarelho da Raia,132,wildcard,100.0
+170347,Vila Real,Chaves,Vilas Boas,132,wildcard,100.0
+170348,Vila Real,Chaves,Vilela Seca,132,wildcard,100.0
+170349,Vila Real,Chaves,Vilela do Tâmega,132,wildcard,100.0
+170350,Vila Real,Chaves,Santa Maria Maior,132,wildcard,100.0
+170353,Vila Real,Chaves,Planalto de Monforte (União das freguesias de Oucidres e Bobadela),132,wildcard,100.0
+170354,Vila Real,Chaves,União das freguesias da Madalena e Samaiões,132,wildcard,100.0
+170355,Vila Real,Chaves,"União das freguesias das Eiras, São Julião de Montenegro e Cela",132,wildcard,100.0
+170356,Vila Real,Chaves,União das freguesias de Calvão e Soutelinho da Raia,132,wildcard,100.0
+170357,Vila Real,Chaves,União das freguesias de Loivos e Póvoa de Agrações,132,wildcard,100.0
+170358,Vila Real,Chaves,União das freguesias de Santa Cruz/Trindade e Sanjurge,132,wildcard,100.0
+170359,Vila Real,Chaves,União das freguesias de Soutelo e Seara Velha,132,wildcard,100.0
+170360,Vila Real,Chaves,União das freguesias de Travancas e Roriz,132,wildcard,100.0
+170361,Vila Real,Chaves,"Vidago (União das freguesias de Vidago, Arcossó, Selhariz e Vilarinho das Paranheiras)",132,wildcard,100.0
+170401,Vila Real,Mesão Frio,Barqueiros,132,wildcard,100.0
+170402,Vila Real,Mesão Frio,Cidadelhe,132,wildcard,100.0
+170403,Vila Real,Mesão Frio,Oliveira,132,wildcard,100.0
+170407,Vila Real,Mesão Frio,Vila Marim,132,wildcard,100.0
+170408,Vila Real,Mesão Frio,Mesão Frio (Santo André),132,wildcard,100.0
+170501,Vila Real,Mondim de Basto,Atei,132,wildcard,100.0
+170502,Vila Real,Mondim de Basto,Bilhó,132,wildcard,100.0
+170505,Vila Real,Mondim de Basto,São Cristóvão de Mondim de Basto,132,wildcard,100.0
+170508,Vila Real,Mondim de Basto,Vilar de Ferreiros,132,wildcard,100.0
+170509,Vila Real,Mondim de Basto,União das freguesias de Campanhó e Paradança,132,wildcard,100.0
+170510,Vila Real,Mondim de Basto,União das freguesias de Ermelo e Pardelhas,132,wildcard,100.0
+170601,Vila Real,Montalegre,Cabril,132,wildcard,100.0
+170603,Vila Real,Montalegre,Cervos,132,wildcard,100.0
+170604,Vila Real,Montalegre,Chã,132,wildcard,100.0
+170607,Vila Real,Montalegre,Covelo do Gerês,132,wildcard,100.0
+170609,Vila Real,Montalegre,Ferral,132,wildcard,100.0
+170612,Vila Real,Montalegre,Gralhas,132,wildcard,100.0
+170616,Vila Real,Montalegre,Morgade,132,wildcard,100.0
+170618,Vila Real,Montalegre,Negrões,132,wildcard,100.0
+170619,Vila Real,Montalegre,Outeiro,132,wildcard,100.0
+170623,Vila Real,Montalegre,Pitões das Junias,132,wildcard,100.0
+170625,Vila Real,Montalegre,Reigoso,132,wildcard,100.0
+170626,Vila Real,Montalegre,Salto,132,wildcard,100.0
+170627,Vila Real,Montalegre,Santo André,132,wildcard,100.0
+170629,Vila Real,Montalegre,Sarraquinhos,132,wildcard,100.0
+170631,Vila Real,Montalegre,Solveira,132,wildcard,100.0
+170632,Vila Real,Montalegre,Tourém,132,wildcard,100.0
+170635,Vila Real,Montalegre,Vila da Ponte,132,wildcard,100.0
+170636,Vila Real,Montalegre,"União das freguesias de Cambeses do Rio, Donões e Mourilhe",132,wildcard,100.0
+170637,Vila Real,Montalegre,União das freguesias de Meixedo e Padornelos,132,wildcard,100.0
+170638,Vila Real,Montalegre,União das freguesias de Montalegre e Padroso,132,wildcard,100.0
+170639,Vila Real,Montalegre,"União das freguesias de Paradela, Contim e Fiães",132,wildcard,100.0
+170640,Vila Real,Montalegre,União das freguesias de Sezelhe e Covelães,132,wildcard,100.0
+170641,Vila Real,Montalegre,União das freguesias de Venda Nova e Pondras,132,wildcard,100.0
+170642,Vila Real,Montalegre,União das freguesias de Viade de Baixo e Fervidelas,132,wildcard,100.0
+170643,Vila Real,Montalegre,União das freguesias de Vilar de Perdizes e Meixide,132,wildcard,100.0
+170701,Vila Real,Murça,Candedo,132,wildcard,100.0
+170703,Vila Real,Murça,Fiolhoso,132,wildcard,100.0
+170704,Vila Real,Murça,Jou,132,wildcard,100.0
+170705,Vila Real,Murça,Murça,132,wildcard,100.0
+170708,Vila Real,Murça,Valongo de Milhais,132,wildcard,100.0
+170710,Vila Real,Murça,União das freguesias de Carva e Vilares,132,wildcard,100.0
+170711,Vila Real,Murça,União das freguesias de Noura e Palheiros,132,wildcard,100.0
+170802,Vila Real,Peso da Régua,Fontelas,132,wildcard,100.0
+170805,Vila Real,Peso da Régua,Loureiro,132,wildcard,100.0
+170809,Vila Real,Peso da Régua,Sedielos,132,wildcard,100.0
+170810,Vila Real,Peso da Régua,Vilarinho dos Freires,132,wildcard,100.0
+170813,Vila Real,Peso da Régua,União das freguesias de Galafura e Covelinhas,132,wildcard,100.0
+170814,Vila Real,Peso da Régua,União das freguesias de Moura Morta e Vinhós,132,wildcard,100.0
+170815,Vila Real,Peso da Régua,União das freguesias de Peso da Régua e Godim,132,wildcard,100.0
+170817,Vila Real,Peso da Régua,Canelas,132,wildcard,100.0
+170818,Vila Real,Peso da Régua,Poiares,132,wildcard,100.0
+170901,Vila Real,Ribeira de Pena,Alvadia,132,wildcard,100.0
+170902,Vila Real,Ribeira de Pena,Canedo,132,wildcard,100.0
+170906,Vila Real,Ribeira de Pena,Santa Marinha,132,wildcard,100.0
+170908,Vila Real,Ribeira de Pena,União das freguesias de Cerva e Limões,132,wildcard,100.0
+170909,Vila Real,Ribeira de Pena,União das freguesias de Ribeira de Pena (Salvador) e Santo Aleixo de Além-Tâmega,132,wildcard,100.0
+171001,Vila Real,Sabrosa,Celeirós,132,wildcard,100.0
+171002,Vila Real,Sabrosa,Covas do Douro,132,wildcard,100.0
+171004,Vila Real,Sabrosa,Gouvinhas,132,wildcard,100.0
+171005,Vila Real,Sabrosa,Parada de Pinhão,132,wildcard,100.0
+171007,Vila Real,Sabrosa,Paços,132,wildcard,100.0
+171009,Vila Real,Sabrosa,Sabrosa,132,wildcard,100.0
+171011,Vila Real,Sabrosa,São Lourenço de Ribapinhão,132,wildcard,100.0
+171013,Vila Real,Sabrosa,Souto Maior,132,wildcard,100.0
+171014,Vila Real,Sabrosa,Torre do Pinhão,132,wildcard,100.0
+171015,Vila Real,Sabrosa,Vilarinho de São Romão,132,wildcard,100.0
+171016,Vila Real,Sabrosa,"União das freguesias de Provesende, Gouvães do Douro e São Cristóvão do Douro",132,wildcard,100.0
+171017,Vila Real,Sabrosa,União das freguesias de São Martinho de Antas e Paradela de Guiães,132,wildcard,100.0
+171101,Vila Real,Santa Marta de Penaguião,Alvações do Corgo,132,wildcard,100.0
+171102,Vila Real,Santa Marta de Penaguião,Cumieira,132,wildcard,100.0
+171103,Vila Real,Santa Marta de Penaguião,Fontes,132,wildcard,100.0
+171106,Vila Real,Santa Marta de Penaguião,Medrões,132,wildcard,100.0
+171110,Vila Real,Santa Marta de Penaguião,Sever,132,wildcard,100.0
+171112,Vila Real,Santa Marta de Penaguião,União das freguesias de Louredo e Fornelos,132,wildcard,100.0
+171113,Vila Real,Santa Marta de Penaguião,Lobrigos (São João Baptista),132,wildcard,100.0
+171114,Vila Real,Santa Marta de Penaguião,Lobrigos (São Miguel),132,wildcard,100.0
+171115,Vila Real,Santa Marta de Penaguião,Sanhoane,132,wildcard,100.0
+171201,Vila Real,Valpaços,Água Revés e Crasto,132,wildcard,100.0
+171203,Vila Real,Valpaços,Algeriz,132,wildcard,100.0
+171205,Vila Real,Valpaços,Bouçoães,132,wildcard,100.0
+171206,Vila Real,Valpaços,Canaveses,132,wildcard,100.0
+171209,Vila Real,Valpaços,Ervões,132,wildcard,100.0
+171211,Vila Real,Valpaços,Fornos do Pinhal,132,wildcard,100.0
+171212,Vila Real,Valpaços,Friões,132,wildcard,100.0
+171215,Vila Real,Valpaços,Padrela e Tazem,132,wildcard,100.0
+171216,Vila Real,Valpaços,Possacos,132,wildcard,100.0
+171217,Vila Real,Valpaços,Rio Torto,132,wildcard,100.0
+171219,Vila Real,Valpaços,Santa Maria de Emeres,132,wildcard,100.0
+171220,Vila Real,Valpaços,Santa Valha,132,wildcard,100.0
+171221,Vila Real,Valpaços,Santiago da Ribeira de Alhariz,132,wildcard,100.0
+171222,Vila Real,Valpaços,São João da Corveira,132,wildcard,100.0
+171223,Vila Real,Valpaços,São Pedro de Veiga de Lila,132,wildcard,100.0
+171224,Vila Real,Valpaços,Serapicos,132,wildcard,100.0
+171227,Vila Real,Valpaços,Vales,132,wildcard,100.0
+171229,Vila Real,Valpaços,Vassal,132,wildcard,100.0
+171230,Vila Real,Valpaços,Veiga de Lila,132,wildcard,100.0
+171231,Vila Real,Valpaços,Vilarandelo,132,wildcard,100.0
+171232,Vila Real,Valpaços,Carrazedo de Montenegro e Curros,132,wildcard,100.0
+171233,Vila Real,Valpaços,"Lebução, Fiães e Nozelos",132,wildcard,100.0
+171234,Vila Real,Valpaços,Sonim e Barreiros,132,wildcard,100.0
+171235,Vila Real,Valpaços,Tinhela e Alvarelhos,132,wildcard,100.0
+171236,Vila Real,Valpaços,Valpaços e Sanfins,132,wildcard,100.0
+171302,Vila Real,Vila Pouca de Aguiar,Alfarela de Jales,132,wildcard,100.0
+171303,Vila Real,Vila Pouca de Aguiar,Bornes de Aguiar,132,wildcard,100.0
+171304,Vila Real,Vila Pouca de Aguiar,Bragado,132,wildcard,100.0
+171305,Vila Real,Vila Pouca de Aguiar,Capeludos,132,wildcard,100.0
+171310,Vila Real,Vila Pouca de Aguiar,Soutelo de Aguiar,132,wildcard,100.0
+171311,Vila Real,Vila Pouca de Aguiar,Telões,132,wildcard,100.0
+171312,Vila Real,Vila Pouca de Aguiar,Tresminas,132,wildcard,100.0
+171313,Vila Real,Vila Pouca de Aguiar,Valoura,132,wildcard,100.0
+171314,Vila Real,Vila Pouca de Aguiar,Vila Pouca de Aguiar,132,wildcard,100.0
+171315,Vila Real,Vila Pouca de Aguiar,Vreia de Bornes,132,wildcard,100.0
+171316,Vila Real,Vila Pouca de Aguiar,Vreia de Jales,132,wildcard,100.0
+171317,Vila Real,Vila Pouca de Aguiar,Sabroso de Aguiar,132,wildcard,100.0
+171319,Vila Real,Vila Pouca de Aguiar,Alvão,132,wildcard,100.0
+171320,Vila Real,Vila Pouca de Aguiar,União das freguesias de Pensalvos e Parada de Monteiros,132,wildcard,100.0
+171401,Vila Real,Vila Real,Abaças,132,wildcard,100.0
+171403,Vila Real,Vila Real,Andrães,132,wildcard,100.0
+171404,Vila Real,Vila Real,Arroios,132,wildcard,100.0
+171406,Vila Real,Vila Real,Campeã,132,wildcard,100.0
+171409,Vila Real,Vila Real,Folhadela,132,wildcard,100.0
+171410,Vila Real,Vila Real,Guiães,132,wildcard,100.0
+171414,Vila Real,Vila Real,Lordelo,132,wildcard,100.0
+171415,Vila Real,Vila Real,Mateus,132,wildcard,100.0
+171416,Vila Real,Vila Real,Mondrões,132,wildcard,100.0
+171420,Vila Real,Vila Real,Parada de Cunhos,132,wildcard,100.0
+171426,Vila Real,Vila Real,Torgueda,132,wildcard,100.0
+171429,Vila Real,Vila Real,Vila Marim,132,wildcard,100.0
+171431,Vila Real,Vila Real,União das freguesias de Adoufe e Vilarinho de Samardã,132,wildcard,100.0
+171432,Vila Real,Vila Real,União das freguesias de Borbela e Lamas de Olo,132,wildcard,100.0
+171433,Vila Real,Vila Real,União das freguesias de Constantim e Vale de Nogueiras,132,wildcard,100.0
+171434,Vila Real,Vila Real,União das freguesias de Mouçós e Lamares,132,wildcard,100.0
+171435,Vila Real,Vila Real,União das freguesias de Nogueira e Ermida,132,wildcard,100.0
+171436,Vila Real,Vila Real,"União das freguesias de Pena, Quintã e Vila Cova",132,wildcard,100.0
+171437,Vila Real,Vila Real,União das freguesias de São Tomé do Castelo e Justes,132,wildcard,100.0
+171438,Vila Real,Vila Real,Vila Real,132,wildcard,100.0
+180101,Viseu,Armamar,Aldeias,133,wildcard,100.0
+180104,Viseu,Armamar,Cimbres,133,wildcard,100.0
+180106,Viseu,Armamar,Folgosa,133,wildcard,100.0
+180107,Viseu,Armamar,Fontelo,133,wildcard,100.0
+180109,Viseu,Armamar,Queimada,133,wildcard,100.0
+180110,Viseu,Armamar,Queimadela,133,wildcard,100.0
+180111,Viseu,Armamar,Santa Cruz,133,wildcard,100.0
+180114,Viseu,Armamar,São Cosmado,133,wildcard,100.0
+180115,Viseu,Armamar,São Martinho das Chãs,133,wildcard,100.0
+180118,Viseu,Armamar,Vacalar,133,wildcard,100.0
+180120,Viseu,Armamar,Armamar,133,wildcard,100.0
+180121,Viseu,Armamar,União das freguesias de Aricera e Goujoim,133,wildcard,100.0
+180122,Viseu,Armamar,União das freguesias de São Romão e Santiago,133,wildcard,100.0
+180123,Viseu,Armamar,União das freguesias de Vila Seca e Santo Adrião,133,wildcard,100.0
+180201,Viseu,Carregal do Sal,Beijós,134,wildcard,100.0
+180202,Viseu,Carregal do Sal,Cabanas de Viriato,134,wildcard,100.0
+180204,Viseu,Carregal do Sal,Oliveira do Conde,134,wildcard,100.0
+180206,Viseu,Carregal do Sal,Parada,134,wildcard,100.0
+180208,Viseu,Carregal do Sal,Carregal do Sal,134,wildcard,100.0
+180301,Viseu,Castro Daire,Almofala,135,wildcard,100.0
+180303,Viseu,Castro Daire,Cabril,135,wildcard,100.0
+180304,Viseu,Castro Daire,Castro Daire,135,wildcard,100.0
+180305,Viseu,Castro Daire,Cujó,135,wildcard,100.0
+180309,Viseu,Castro Daire,Gosende,135,wildcard,100.0
+180312,Viseu,Castro Daire,Mões,135,wildcard,100.0
+180313,Viseu,Castro Daire,Moledo,135,wildcard,100.0
+180314,Viseu,Castro Daire,Monteiras,135,wildcard,100.0
+180317,Viseu,Castro Daire,Pepim,135,wildcard,100.0
+180319,Viseu,Castro Daire,Pinheiro,135,wildcard,100.0
+180322,Viseu,Castro Daire,São Joaninho,135,wildcard,100.0
+180323,Viseu,Castro Daire,"União das freguesias de Mamouros, Alva e Ribolhos",135,wildcard,100.0
+180324,Viseu,Castro Daire,União das freguesias de Mezio e Moura Morta,135,wildcard,100.0
+180325,Viseu,Castro Daire,União das freguesias de Parada de Ester e Ester,135,wildcard,100.0
+180326,Viseu,Castro Daire,União das freguesias de Picão e Ermida,135,wildcard,100.0
+180327,Viseu,Castro Daire,União das freguesias de Reriz e Gafanhão,135,wildcard,100.0
+180403,Viseu,Cinfães,Cinfães,136,wildcard,100.0
+180404,Viseu,Cinfães,Espadanedo,136,wildcard,100.0
+180405,Viseu,Cinfães,Ferreiros de Tendais,136,wildcard,100.0
+180406,Viseu,Cinfães,Fornelos,136,wildcard,100.0
+180408,Viseu,Cinfães,Moimenta,136,wildcard,100.0
+180409,Viseu,Cinfães,Nespereira,136,wildcard,100.0
+180410,Viseu,Cinfães,Oliveira do Douro,136,wildcard,100.0
+180412,Viseu,Cinfães,Santiago de Piães,136,wildcard,100.0
+180413,Viseu,Cinfães,São Cristóvão de Nogueira,136,wildcard,100.0
+180414,Viseu,Cinfães,Souselo,136,wildcard,100.0
+180415,Viseu,Cinfães,Tarouquela,136,wildcard,100.0
+180416,Viseu,Cinfães,Tendais,136,wildcard,100.0
+180417,Viseu,Cinfães,Travanca,136,wildcard,100.0
+180418,Viseu,Cinfães,"União das freguesias de Alhões, Bustelo, Gralheira e Ramires",136,wildcard,100.0
+180502,Viseu,Lamego,Avões,137,wildcard,100.0
+180504,Viseu,Lamego,Britiande,137,wildcard,100.0
+180505,Viseu,Lamego,Cambres,137,wildcard,100.0
+180507,Viseu,Lamego,Ferreirim,137,wildcard,100.0
+180508,Viseu,Lamego,Ferreiros de Avões,137,wildcard,100.0
+180509,Viseu,Lamego,Figueira,137,wildcard,100.0
+180510,Viseu,Lamego,Lalim,137,wildcard,100.0
+180511,Viseu,Lamego,Lazarim,137,wildcard,100.0
+180516,Viseu,Lamego,Penajóia,137,wildcard,100.0
+180517,Viseu,Lamego,Penude,137,wildcard,100.0
+180519,Viseu,Lamego,Samodães,137,wildcard,100.0
+180520,Viseu,Lamego,Sande,137,wildcard,100.0
+180523,Viseu,Lamego,Várzea de Abrunhais,137,wildcard,100.0
+180524,Viseu,Lamego,Vila Nova de Souto d'El-Rei,137,wildcard,100.0
+180525,Viseu,Lamego,Lamego (Almacave e Sé),137,wildcard,100.0
+180526,Viseu,Lamego,"União das freguesias de Bigorne, Magueija e Pretarouca",137,wildcard,100.0
+180527,Viseu,Lamego,"União das freguesias de Cepões, Meijinhos e Melcões",137,wildcard,100.0
+180528,Viseu,Lamego,União das freguesias de Parada do Bispo e Valdigem,137,wildcard,100.0
+180601,Viseu,Mangualde,Abrunhosa-a-Velha,138,wildcard,100.0
+180602,Viseu,Mangualde,Alcafache,138,wildcard,100.0
+180605,Viseu,Mangualde,Cunha Baixa,138,wildcard,100.0
+180606,Viseu,Mangualde,Espinho,138,wildcard,100.0
+180607,Viseu,Mangualde,Fornos de Maceira Dão,138,wildcard,100.0
+180608,Viseu,Mangualde,Freixiosa,138,wildcard,100.0
+180614,Viseu,Mangualde,Quintela de Azurara,138,wildcard,100.0
+180616,Viseu,Mangualde,São João da Fresta,138,wildcard,100.0
+180619,Viseu,Mangualde,"União das freguesias de Mangualde, Mesquitela e Cunha Alta",138,wildcard,100.0
+180620,Viseu,Mangualde,União das freguesias de Moimenta de Maceira Dão e Lobelhe do Mato,138,wildcard,100.0
+180621,Viseu,Mangualde,União das freguesias de Santiago de Cassurrães e Póvoa de Cervães,138,wildcard,100.0
+180622,Viseu,Mangualde,"União das freguesias de Tavares (Chãs, Várzea e Travanca)",138,wildcard,100.0
+180702,Viseu,Moimenta da Beira,Alvite,139,wildcard,100.0
+180703,Viseu,Moimenta da Beira,Arcozelos,139,wildcard,100.0
+180705,Viseu,Moimenta da Beira,Baldos,139,wildcard,100.0
+180706,Viseu,Moimenta da Beira,Cabaços,139,wildcard,100.0
+180707,Viseu,Moimenta da Beira,Caria,139,wildcard,100.0
+180708,Viseu,Moimenta da Beira,Castelo,139,wildcard,100.0
+180709,Viseu,Moimenta da Beira,Leomil,139,wildcard,100.0
+180710,Viseu,Moimenta da Beira,Moimenta da Beira,139,wildcard,100.0
+180713,Viseu,Moimenta da Beira,Passô,139,wildcard,100.0
+180716,Viseu,Moimenta da Beira,Vila da Rua,139,wildcard,100.0
+180717,Viseu,Moimenta da Beira,Sarzedo,139,wildcard,100.0
+180719,Viseu,Moimenta da Beira,Sever,139,wildcard,100.0
+180720,Viseu,Moimenta da Beira,Vilar,139,wildcard,100.0
+180721,Viseu,Moimenta da Beira,União das freguesias de Paradinha e Nagosa,139,wildcard,100.0
+180722,Viseu,Moimenta da Beira,"União das freguesias de Pêra Velha, Aldeia de Nacomba e Ariz",139,wildcard,100.0
+180723,Viseu,Moimenta da Beira,União das freguesias de Peva e Segões,139,wildcard,100.0
+180802,Viseu,Mortágua,Cercosa,140,wildcard,100.0
+180804,Viseu,Mortágua,Espinho,140,wildcard,100.0
+180805,Viseu,Mortágua,Marmeleira,140,wildcard,100.0
+180807,Viseu,Mortágua,Pala,140,wildcard,100.0
+180808,Viseu,Mortágua,Sobral,140,wildcard,100.0
+180809,Viseu,Mortágua,Trezói,140,wildcard,100.0
+180811,Viseu,Mortágua,"União das freguesias de Mortágua, Vale de Remígio, Cortegaça e Almaça",140,wildcard,100.0
+180901,Viseu,Nelas,Canas de Senhorim,141,wildcard,100.0
+180903,Viseu,Nelas,Nelas,141,wildcard,100.0
+180905,Viseu,Nelas,Senhorim,141,wildcard,100.0
+180906,Viseu,Nelas,Vilar Seco,141,wildcard,100.0
+180908,Viseu,Nelas,Lapa do Lobo,141,wildcard,100.0
+180910,Viseu,Nelas,União das freguesias de Carvalhal Redondo e Aguieira,141,wildcard,100.0
+180911,Viseu,Nelas,União das freguesias de Santar e Moreira,141,wildcard,100.0
+181002,Viseu,Oliveira de Frades,Arcozelo das Maias,142,wildcard,100.0
+181005,Viseu,Oliveira de Frades,Pinheiro,142,wildcard,100.0
+181007,Viseu,Oliveira de Frades,Ribeiradio,142,wildcard,100.0
+181008,Viseu,Oliveira de Frades,São João da Serra,142,wildcard,100.0
+181009,Viseu,Oliveira de Frades,São Vicente de Lafões,142,wildcard,100.0
+181013,Viseu,Oliveira de Frades,União das freguesias de Arca e Varzielas,142,wildcard,100.0
+181014,Viseu,Oliveira de Frades,União das freguesias de Destriz e Reigoso,142,wildcard,100.0
+181015,Viseu,Oliveira de Frades,"União das freguesias de Oliveira de Frades, Souto de Lafões e Sejães",142,wildcard,100.0
+181102,Viseu,Penalva do Castelo,Castelo de Penalva,143,wildcard,100.0
+181103,Viseu,Penalva do Castelo,Esmolfe,143,wildcard,100.0
+181104,Viseu,Penalva do Castelo,Germil,143,wildcard,100.0
+181105,Viseu,Penalva do Castelo,Ínsua,143,wildcard,100.0
+181106,Viseu,Penalva do Castelo,Lusinde,143,wildcard,100.0
+181109,Viseu,Penalva do Castelo,Pindo,143,wildcard,100.0
+181110,Viseu,Penalva do Castelo,Real,143,wildcard,100.0
+181111,Viseu,Penalva do Castelo,Sezures,143,wildcard,100.0
+181112,Viseu,Penalva do Castelo,Trancozelos,143,wildcard,100.0
+181114,Viseu,Penalva do Castelo,União das freguesias de Antas e Matela,143,wildcard,100.0
+181115,Viseu,Penalva do Castelo,União das freguesias de Vila Cova do Covelo/Mareco,143,wildcard,100.0
+181202,Viseu,Penedono,Beselga,144,wildcard,100.0
+181203,Viseu,Penedono,Castainço,144,wildcard,100.0
+181207,Viseu,Penedono,Penela da Beira,144,wildcard,100.0
+181208,Viseu,Penedono,Póvoa de Penela,144,wildcard,100.0
+181209,Viseu,Penedono,Souto,144,wildcard,100.0
+181210,Viseu,Penedono,União das freguesias de Antas e Ourozinho,144,wildcard,100.0
+181211,Viseu,Penedono,União das freguesias de Penedono e Granja,144,wildcard,100.0
+181302,Viseu,Resende,Barrô,145,wildcard,100.0
+181303,Viseu,Resende,Cárquere,145,wildcard,100.0
+181310,Viseu,Resende,Paus,145,wildcard,100.0
+181311,Viseu,Resende,Resende,145,wildcard,100.0
+181312,Viseu,Resende,São Cipriano,145,wildcard,100.0
+181313,Viseu,Resende,São João de Fontoura,145,wildcard,100.0
+181314,Viseu,Resende,São Martinho de Mouros,145,wildcard,100.0
+181316,Viseu,Resende,União das freguesias de Anreade e São Romão de Aregos,145,wildcard,100.0
+181317,Viseu,Resende,União das freguesias de Felgueiras e Feirão,145,wildcard,100.0
+181318,Viseu,Resende,União das freguesias de Freigil e Miomães,145,wildcard,100.0
+181319,Viseu,Resende,União das freguesias de Ovadas e Panchorra,145,wildcard,100.0
+181403,Viseu,Santa Comba Dão,Pinheiro de Ázere,146,wildcard,100.0
+181405,Viseu,Santa Comba Dão,São Joaninho,146,wildcard,100.0
+181406,Viseu,Santa Comba Dão,São João de Areias,146,wildcard,100.0
+181410,Viseu,Santa Comba Dão,União das freguesias de Ovoa e Vimieiro,146,wildcard,100.0
+181411,Viseu,Santa Comba Dão,União das freguesias de Santa Comba Dão e Couto do Mosteiro,146,wildcard,100.0
+181412,Viseu,Santa Comba Dão,União das freguesias de Treixedo e Nagozela,146,wildcard,100.0
+181501,Viseu,São João da Pesqueira,Castanheiro do Sul,147,wildcard,100.0
+181502,Viseu,São João da Pesqueira,Ervedosa do Douro,147,wildcard,100.0
+181504,Viseu,São João da Pesqueira,Nagozelo do Douro,147,wildcard,100.0
+181505,Viseu,São João da Pesqueira,Paredes da Beira,147,wildcard,100.0
+181507,Viseu,São João da Pesqueira,Riodades,147,wildcard,100.0
+181509,Viseu,São João da Pesqueira,Soutelo do Douro,147,wildcard,100.0
+181511,Viseu,São João da Pesqueira,Vale de Figueira,147,wildcard,100.0
+181512,Viseu,São João da Pesqueira,Valongo dos Azeites,147,wildcard,100.0
+181515,Viseu,São João da Pesqueira,União das freguesias de São João da Pesqueira e Várzea de Trevões,147,wildcard,100.0
+181516,Viseu,São João da Pesqueira,União das freguesias de Trevões e Espinhosa,147,wildcard,100.0
+181517,Viseu,São João da Pesqueira,União das freguesias de Vilarouco e Pereiros,147,wildcard,100.0
+181602,Viseu,São Pedro do Sul,Bordonhos,148,wildcard,100.0
+181606,Viseu,São Pedro do Sul,Figueiredo de Alva,148,wildcard,100.0
+181607,Viseu,São Pedro do Sul,Manhouce,148,wildcard,100.0
+181608,Viseu,São Pedro do Sul,Pindelo dos Milagres,148,wildcard,100.0
+181609,Viseu,São Pedro do Sul,Pinho,148,wildcard,100.0
+181612,Viseu,São Pedro do Sul,São Félix,148,wildcard,100.0
+181615,Viseu,São Pedro do Sul,Serrazes,148,wildcard,100.0
+181616,Viseu,São Pedro do Sul,Sul,148,wildcard,100.0
+181617,Viseu,São Pedro do Sul,Valadares,148,wildcard,100.0
+181619,Viseu,São Pedro do Sul,Vila Maior,148,wildcard,100.0
+181620,Viseu,São Pedro do Sul,União das freguesias de Carvalhais e Candal,148,wildcard,100.0
+181621,Viseu,São Pedro do Sul,União das freguesias de Santa Cruz da Trapa e São Cristóvão de Lafões,148,wildcard,100.0
+181622,Viseu,São Pedro do Sul,União das freguesias de São Martinho das Moitas e Covas do Rio,148,wildcard,100.0
+181623,Viseu,São Pedro do Sul,"União das freguesias de São Pedro do Sul, Várzea e Baiões",148,wildcard,100.0
+181702,Viseu,Sátão,Avelal,149,wildcard,100.0
+181704,Viseu,Sátão,Ferreira de Aves,149,wildcard,100.0
+181706,Viseu,Sátão,Mioma,149,wildcard,100.0
+181707,Viseu,Sátão,Rio de Moinhos,149,wildcard,100.0
+181709,Viseu,Sátão,São Miguel de Vila Boa,149,wildcard,100.0
+181710,Viseu,Sátão,Sátão,149,wildcard,100.0
+181711,Viseu,Sátão,Silvã de Cima,149,wildcard,100.0
+181713,Viseu,Sátão,União das freguesias de Águas Boas e Forles,149,wildcard,100.0
+181714,Viseu,Sátão,"União das freguesias de Romãs, Decermilo e Vila Longa",149,wildcard,100.0
+181801,Viseu,Sernancelhe,Arnas,150,wildcard,100.0
+181802,Viseu,Sernancelhe,Carregal,150,wildcard,100.0
+181803,Viseu,Sernancelhe,Chosendo,150,wildcard,100.0
+181804,Viseu,Sernancelhe,Cunha,150,wildcard,100.0
+181806,Viseu,Sernancelhe,Faia,150,wildcard,100.0
+181810,Viseu,Sernancelhe,Granjal,150,wildcard,100.0
+181811,Viseu,Sernancelhe,Lamosa,150,wildcard,100.0
+181814,Viseu,Sernancelhe,Quintela,150,wildcard,100.0
+181817,Viseu,Sernancelhe,Vila da Ponte,150,wildcard,100.0
+181818,Viseu,Sernancelhe,União das freguesias de Ferreirim e Macieira,150,wildcard,100.0
+181819,Viseu,Sernancelhe,União das freguesias de Fonte Arcada e Escurquela,150,wildcard,100.0
+181820,Viseu,Sernancelhe,União das freguesias de Penso e Freixinho,150,wildcard,100.0
+181821,Viseu,Sernancelhe,União das freguesias de Sernancelhe e Sarzeda,150,wildcard,100.0
+181901,Viseu,Tabuaço,Adorigo,151,wildcard,100.0
+181902,Viseu,Tabuaço,Arcos,151,wildcard,100.0
+181904,Viseu,Tabuaço,Chavães,151,wildcard,100.0
+181905,Viseu,Tabuaço,Desejosa,151,wildcard,100.0
+181906,Viseu,Tabuaço,Granja do Tedo,151,wildcard,100.0
+181908,Viseu,Tabuaço,Longa,151,wildcard,100.0
+181913,Viseu,Tabuaço,Sendim,151,wildcard,100.0
+181914,Viseu,Tabuaço,Tabuaço,151,wildcard,100.0
+181917,Viseu,Tabuaço,Valença do Douro,151,wildcard,100.0
+181918,Viseu,Tabuaço,União das freguesias de Barcos e Santa Leocádia,151,wildcard,100.0
+181919,Viseu,Tabuaço,União das freguesias de Paradela e Granjinha,151,wildcard,100.0
+181920,Viseu,Tabuaço,União das freguesias de Pinheiros e Vale de Figueira,151,wildcard,100.0
+181921,Viseu,Tabuaço,União das freguesias de Távora e Pereiro,151,wildcard,100.0
+182004,Viseu,Tarouca,Mondim da Beira,152,wildcard,100.0
+182005,Viseu,Tarouca,Salzedas,152,wildcard,100.0
+182006,Viseu,Tarouca,São João de Tarouca,152,wildcard,100.0
+182009,Viseu,Tarouca,Várzea da Serra,152,wildcard,100.0
+182012,Viseu,Tarouca,União das freguesias de Granja Nova e Vila Chã da Beira,152,wildcard,100.0
+182014,Viseu,Tarouca,Dálvares,152,wildcard,100.0
+182015,Viseu,Tarouca,Gouviães,152,wildcard,100.0
+182016,Viseu,Tarouca,Tarouca,152,wildcard,100.0
+182017,Viseu,Tarouca,Ucanha,152,wildcard,100.0
+182102,Viseu,Tondela,Campo de Besteiros,153,wildcard,100.0
+182103,Viseu,Tondela,Canas de Santa Maria,153,wildcard,100.0
+182105,Viseu,Tondela,Castelões,153,wildcard,100.0
+182106,Viseu,Tondela,Dardavaz,153,wildcard,100.0
+182107,Viseu,Tondela,Ferreirós do Dão,153,wildcard,100.0
+182108,Viseu,Tondela,Guardão,153,wildcard,100.0
+182109,Viseu,Tondela,Lajeosa do Dão,153,wildcard,100.0
+182110,Viseu,Tondela,Lobão da Beira,153,wildcard,100.0
+182111,Viseu,Tondela,Molelos,153,wildcard,100.0
+182116,Viseu,Tondela,Parada de Gonta,153,wildcard,100.0
+182118,Viseu,Tondela,Santiago de Besteiros,153,wildcard,100.0
+182122,Viseu,Tondela,Tonda,153,wildcard,100.0
+182128,Viseu,Tondela,União das freguesias de Caparrosa e Silvares,153,wildcard,100.0
+182129,Viseu,Tondela,União das freguesias de Mouraz e Vila Nova da Rainha,153,wildcard,100.0
+182130,Viseu,Tondela,União das freguesias de São João do Monte e Mosteirinho,153,wildcard,100.0
+182132,Viseu,Tondela,União das freguesias de Tondela e Nandufe,153,wildcard,100.0
+182134,Viseu,Tondela,Barreiro de Besteiros,153,wildcard,100.0
+182135,Viseu,Tondela,Mosteiro de Fráguas,153,wildcard,100.0
+182136,Viseu,Tondela,Sabugosa,153,wildcard,100.0
+182137,Viseu,Tondela,São Miguel do Outeiro,153,wildcard,100.0
+182138,Viseu,Tondela,Tourigo,153,wildcard,100.0
+182139,Viseu,Tondela,Vilar de Besteiros,153,wildcard,100.0
+182203,Viseu,Vila Nova de Paiva,Pendilhe,154,wildcard,100.0
+182204,Viseu,Vila Nova de Paiva,Queiriga,154,wildcard,100.0
+182205,Viseu,Vila Nova de Paiva,Touro,154,wildcard,100.0
+182206,Viseu,Vila Nova de Paiva,Vila Cova à Coelheira,154,wildcard,100.0
+182208,Viseu,Vila Nova de Paiva,"União das freguesias de Vila Nova de Paiva, Alhais e Fráguas",154,wildcard,100.0
+182305,Viseu,Viseu,Calde,155,exact,100.0
+182307,Viseu,Viseu,Cavernães,156,exact,100.0
+182310,Viseu,Viseu,Cota,157,exact,100.0
+182322,Viseu,Viseu,Ribafeita,158,exact,100.0
+182329,Viseu,Viseu,São Pedro de France,159,exact,100.0
+182335,Viseu,Viseu,União das freguesias de Barreiros e Cepões,160,normalized,100.0
+182401,Viseu,Vouzela,Alcofra,161,wildcard,100.0
+182403,Viseu,Vouzela,Campia,161,wildcard,100.0
+182407,Viseu,Vouzela,Fornelo do Monte,161,wildcard,100.0
+182409,Viseu,Vouzela,Queirã,161,wildcard,100.0
+182410,Viseu,Vouzela,São Miguel do Mato,161,wildcard,100.0
+182411,Viseu,Vouzela,Ventosa,161,wildcard,100.0
+182413,Viseu,Vouzela,União das freguesias de Cambra e Carvalhal de Vermilhas,161,wildcard,100.0
+182414,Viseu,Vouzela,União das freguesias de Fataunços e Figueiredo das Donas,161,wildcard,100.0
+182415,Viseu,Vouzela,União das freguesias de Vouzela e Paços de Vilharigues,161,wildcard,100.0

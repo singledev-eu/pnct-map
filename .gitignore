@@ -5,3 +5,5 @@ data/external/
 .kiro-logs/
 .DS_Store
 node_modules/
+.npm-cache/
+data/interim/parishes_full_4326.geojson

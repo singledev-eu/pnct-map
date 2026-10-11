@@ -1,3 +1,4 @@
 distrito,concelho,freguesia,target_concelho,target_dicofre,note
 LEIRIA,CASTANHEIRA DE PERA,*,Castanheira de Pêra,,"Concelho alias: PDF omits the circumflex; official name is Castanheira de Pêra"
 PORTO,MARCO DE CANAVESES,"VÁRZEA, ALIVIADA E FOLHADA",Marco de Canaveses,130740,"PDF lacks the U.F. prefix. Pinned to the CAOP 2025 parish 130740, whose official name is also just 'Várzea, Aliviada e Folhada'"
+VIANA DO CASTELO,PONTE DE LIMA,VILAR ALMAS,Ponte de Lima,160763,"PDF typo (missing das): fuzzy score 84.6 < 90 so not auto-accepted; only candidate is 160763 Vilar das Almas (runner-up 48.3)"
