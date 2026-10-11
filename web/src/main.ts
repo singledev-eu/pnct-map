@@ -224,6 +224,15 @@ function start(data: MapData): void {
   });
 }
 
+// If the basemap style cannot be fetched, "load" never fires; say so instead of spinning.
+map.on("error", (e) => {
+  if (!map.isStyleLoaded() && document.body.dataset.ready !== "true") {
+    console.error(e.error);
+    status.textContent = "Could not load the basemap. Please check your connection and reload.";
+    status.classList.add("status-error");
+  }
+});
+
 Promise.all([loadData(DATA_URL), new Promise<void>((resolve) => map.once("load", () => resolve()))])
   .then(([data]) => start(data))
   .catch((err: unknown) => {
