@@ -137,3 +137,62 @@ def test_concelhos_layer():
         features = json.load(f)["features"]
     assert len(features) == 278
     assert {"concelho", "distrito"} <= set(features[0]["properties"])
+
+
+TOPO = ROOT / "web/public/data/pnct.topo.json"
+
+
+@pytest.fixture(scope="module")
+def topo():
+    with TOPO.open(encoding="utf-8") as f:
+        return json.load(f)
+
+
+def decode_arc(topo, index):
+    """Decode one delta-encoded, quantized TopoJSON arc into lon/lat pairs."""
+    (sx, sy), (tx, ty) = topo["transform"]["scale"], topo["transform"]["translate"]
+    arc = topo["arcs"][index if index >= 0 else ~index]
+    x = y = 0
+    points = []
+    for dx, dy in arc:
+        x += dx
+        y += dy
+        points.append((x * sx + tx, y * sy + ty))
+    return points if index >= 0 else points[::-1]
+
+
+def test_topojson_objects(topo, pnct):
+    parishes = topo["objects"]["parishes"]["geometries"]
+    concelhos = topo["objects"]["concelhos"]["geometries"]
+    assert len(parishes) == 3049
+    assert len(concelhos) == 278
+    props = [g["properties"] for g in parishes]
+    assert set(props[0]) == {"dicofre", "freguesia", "concelho", "distrito", "pnct"}
+    flagged = {p["dicofre"] for p in props if p["pnct"] is True}
+    assert len(flagged) == 1861
+    assert flagged == set(pnct.dicofre)
+    cprops = [g["properties"] for g in concelhos]
+    assert set(cprops[0]) == {"name", "distrito", "pnct_count", "parish_count"}
+    assert sum(c["parish_count"] for c in cprops) == 3049
+    assert sum(c["pnct_count"] for c in cprops) == 1861
+    loule = next(c for c in cprops if c["name"] == "Loulé")
+    assert loule["pnct_count"] == 6
+
+
+def test_topojson_decodes_to_mainland(topo):
+    for index in (0, len(topo["arcs"]) // 2, -1):
+        for lon, lat in decode_arc(topo, index if index >= 0 else len(topo["arcs"]) - 1):
+            assert -9.6 < lon < -6.1 and 36.9 < lat < 42.2
+    for geom in topo["objects"]["parishes"]["geometries"]:
+        assert geom["type"] in {"Polygon", "MultiPolygon"}
+        rings = geom["arcs"] if geom["type"] == "Polygon" else [r for p in geom["arcs"] for r in p]
+        for ring in rings:
+            pts = [pt for i in ring for pt in decode_arc(topo, i)]
+            assert pts[0] == pytest.approx(pts[-1])
+
+
+def test_topojson_quantization_below_zoom12_pixel(topo):
+    # One pixel at zoom 12 with 512 px tiles is ~19 m at 40°N; keep steps < 5 m.
+    sx, sy = topo["transform"]["scale"]
+    assert sy * 111_320 < 5
+    assert sx * 111_320 * 0.766 < 5

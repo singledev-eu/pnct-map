@@ -4,9 +4,9 @@ CAOP_ZIP := data/external/CAOP_Continente_2025-gpkg.zip
 CAOP_GPKG := data/external/CAOP_Continente_2025-gpkg/Continente_CAOP2025.gpkg
 PY := uv run python
 
-.PHONY: all download parse match geo test clean
+.PHONY: all download parse match geo web-data test clean
 
-all: geo test
+all: web-data test
 
 download: $(CAOP_GPKG)
 
@@ -32,8 +32,12 @@ geo: data/processed/parishes_all.geojson
 data/processed/parishes_all.geojson: scripts/build_geo.py data/processed/pnct_parishes.csv $(CAOP_GPKG)
 	$(PY) scripts/build_geo.py
 
+web-data: web/public/data/pnct.topo.json
+web/public/data/pnct.topo.json: scripts/build_topo.py data/processed/parishes_all.geojson
+	$(PY) scripts/build_topo.py
+
 test:
 	uv run pytest -q
 
 clean:
-	rm -rf data/interim data/processed
+	rm -rf data/interim data/processed web/public/data
