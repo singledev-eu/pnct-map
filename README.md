@@ -4,6 +4,7 @@ Interactive map of the PNCT territories (Programa Nacional para a Coesão Territ
 
 - Phase 1: data pipeline (Python; `scripts/`, `data/`).
 - Phase 2: static map app (`web/`: Vite, TypeScript, MapLibre GL JS).
+- Phase 3: Idealista property-search links per PNCT parish. The links are generated only; nothing ever requests idealista.pt.
 
 ## Run end to end
 
@@ -21,8 +22,9 @@ uv run make all      # download CAOP (checksum-verified) → parse → match →
 | `make match` | `scripts/build_parishes.py` → `data/processed/pnct_parishes.csv`, `data/processed/unmatched.csv` |
 | `make geo` | `scripts/build_geo.py` → `data/processed/parishes_all.geojson`, `data/processed/concelhos.geojson` |
 | `make web-data` | `scripts/build_topo.py` → `web/public/data/pnct.topo.json` (one TopoJSON, objects `parishes` + `concelhos`) |
-| `make test` | `pytest` (`tests/test_pipeline.py`) |
-| `make web` | `npm ci && npm run build` in `web/` → static `web/dist/` |
+| `make shapes` | `scripts/build_shapes.py` → `web/public/data/shapes.json` (one search polygon per PNCT parish) and `data/processed/shapes_quality.csv` |
+| `make test` | `pytest` (`tests/test_pipeline.py`, `tests/test_shapes.py`) |
+| `make web` | `npm ci && npm test && npm run build` in `web/` → static `web/dist/` |
 | `make e2e` | Builds, then runs the Playwright smoke tests (`web/tests/e2e`), writing screenshots to `docs/screenshots/` |
 | `make clean` | Removes `data/interim` and `data/processed` |
 
@@ -115,6 +117,35 @@ npm run test:e2e                   # build + Playwright smoke tests
   - `c`: selected concelho (4-digit code).
   - `d`: district filter.
   - `pnct=1`: show only PNCT parishes.
-- **Property search:** `src/links.ts` `getLinks(parish)` supplies the panel's links. It returns `[]` until phase 3.
+- **Property search:**
+  - `src/links.ts` `getLinks(parish, concelho, options)` lazy-loads `data/shapes.json` on first use and caches it.
+  - It returns `{label, url, description?, note?}` links: an Idealista polygon search for the parish, plus the municipality page when the whole concelho is PNCT.
+  - The selector (Comprar/Arrendar, Terrenos/Casas/Prédios, land filters) persists in the hash (`op`, `t`, `land`) and in localStorage.
+  - Unit tests: `npm test` (Vitest).
 - **Local installs:** npm's cache (`../.npm-cache`, set in `web/.npmrc`) and Playwright's browsers (`PLAYWRIGHT_BROWSERS_PATH=0`, i.e. inside `node_modules`) stay inside the project.
   - If `npx playwright install chromium` times out, download Chrome for Testing with curl and unpack it to `node_modules/playwright-core/.local-browsers/chromium-<rev>/`.
+
+## Idealista search shapes (phase 3)
+
+URL format, from manually captured Idealista URLs:
+
+```
+https://www.idealista.pt/areas/{comprar|arrendar}-{terrenos|casas|predios}[/com-{filters}]/mapa-google?shape=<escaped "((" + polyline + "))">
+```
+
+- **Encoding:** Google Encoded Polyline, precision 1e5, lat/lng order, closed ring.
+  - Escaping is `encodeURIComponent` plus `( ) ~ ! * '`.
+  - Implemented twice: `scripts/polyline.py` (pipeline) and `web/src/idealista.ts` (app). Both are tested against the same captured fixtures.
+  - A Vitest test re-encodes every Python-built shape byte for byte.
+- **Shapes:** built from full-resolution CAOP 2025.
+  - Single-part parish: its outline.
+  - Multipart where every minor part is under 5%: the largest part, unless that drops coverage below 0.95.
+  - Otherwise: the convex hull, flagged `approx`.
+  - Holes are ignored.
+  - Topology-preserving simplification to at most `MAX_VERTICES` = 60 unique points (`--max-vertices`). The build fails if any coverage is below 0.95.
+- **Unverified:**
+  - The `terreno-nao-urbanizavel` slug.
+  - The municipality slug rule beyond Arouca, and the filter position in that URL form.
+  - Arrendar + terrenos.
+  - Idealista's real vertex limit.
+- **Manual checks:** `docs/link-samples.md` (regenerate with `uv run python scripts/link_samples.py`).
