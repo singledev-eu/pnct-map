@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { fileURLToPath } from "node:url";
+import { parseShapeParam } from "../../src/idealista";
 
 const SHOTS = fileURLToPath(new URL("../../../docs/screenshots/", import.meta.url));
 
@@ -78,6 +79,78 @@ test("selecting 130740 opens Várzea, Aliviada e Folhada and survives a reload",
   expect(errors).toEqual([]);
 });
 
+test("130740 gets an Idealista polygon link that follows the search selector", async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.goto("/#f=130740");
+  await waitForMap(page);
+  const panel = page.getByTestId("panel");
+  await expect(panel.getByTestId("panel-title")).toHaveText("Várzea, Aliviada e Folhada");
+
+  const link = panel.getByTestId("property-link").first();
+  await expect(link).toHaveText(/Search this parish on Idealista/);
+  await expect(link).toHaveAttribute("target", "_blank");
+  await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  // Partial concelho (Marco de Canaveses): the polygon link is the only one.
+  await expect(panel.getByTestId("property-link")).toHaveCount(1);
+
+  const href = (await link.getAttribute("href"))!;
+  expect(href).toMatch(/^https:\/\/www\.idealista\.pt\/areas\/comprar-terrenos\/mapa-google\?shape=%28%28/);
+  // The shape decodes to a closed ring inside 130740's bounding box (CAOP 2025, full resolution).
+  const ring = parseShapeParam(new URL(href).search.replace(/^\?shape=/, ""));
+  expect(ring.length).toBeGreaterThanOrEqual(4);
+  expect(ring[0]).toEqual(ring[ring.length - 1]);
+  for (const [lat, lng] of ring) {
+    expect(lat).toBeGreaterThanOrEqual(41.18031 - 1e-5);
+    expect(lat).toBeLessThanOrEqual(41.22584 + 1e-5);
+    expect(lng).toBeGreaterThanOrEqual(-8.14416 - 1e-5);
+    expect(lng).toBeLessThanOrEqual(-8.04128 + 1e-5);
+  }
+
+  // Land filters only show for Terrenos and add a /com-... segment.
+  const options = panel.getByTestId("search-options");
+  await options.getByRole("checkbox", { name: "Urbanizável", exact: true }).check();
+  await expect(link).toHaveAttribute("href", /\/areas\/comprar-terrenos\/com-terreno-urbanizavel\/mapa-google\?shape=/);
+
+  await options.getByRole("radio", { name: "Arrendar" }).check();
+  await options.getByRole("radio", { name: "Casas" }).check();
+  await expect(options.getByRole("checkbox", { name: "Urbanizável", exact: true })).toBeHidden();
+  await expect(link).toHaveAttribute("href", /^https:\/\/www\.idealista\.pt\/areas\/arrendar-casas\/mapa-google\?shape=/);
+  const shapeOf = (u: string | null) => new URL(u!).search;
+  expect(shapeOf(await link.getAttribute("href"))).toBe(shapeOf(href));
+  await expect(page).toHaveURL(/[#&]op=arrendar(&|$)/);
+  await expect(page).toHaveURL(/[#&]t=casas(&|$)/);
+
+  // The selector survives a reload via the hash.
+  await page.reload();
+  await waitForMap(page);
+  await expect(page.getByTestId("property-link").first()).toHaveAttribute("href", /\/areas\/arrendar-casas\/mapa-google/);
+  expect(errors).toEqual([]);
+});
+
+test("whole-PNCT concelho shows the municipality link; non-PNCT parish shows none", async ({ page }) => {
+  await page.goto("/#f=010402"); // Alvarenga, Arouca: the whole concelho is PNCT
+  await waitForMap(page);
+  const panel = page.getByTestId("panel");
+  await expect(panel.getByTestId("panel-title")).toHaveText("Alvarenga");
+  await expect(panel.getByTestId("property-link")).toHaveCount(2);
+  await expect(panel.getByTestId("property-link").nth(1)).toHaveAttribute("href", "https://www.idealista.pt/comprar-terrenos/arouca/mapa-google");
+
+  await panel.getByRole("button", { name: "Show all of Arouca" }).click();
+  await expect(panel.getByTestId("panel-title")).toHaveText("Arouca");
+  await expect(panel.getByTestId("pnct-count")).toHaveText(/^All \d+ parishes are PNCT\.$/);
+  await expect(panel.getByTestId("pnct-parish-list")).toBeHidden();
+  await panel.getByText("Show all", { exact: true }).click();
+  await expect(panel.getByTestId("pnct-parish-list")).toBeVisible();
+  await expect(panel.getByTestId("property-link")).toHaveCount(1);
+
+  await page.goto("/#f=110601"); // Ajuda, Lisboa: not PNCT
+  await page.reload();
+  await waitForMap(page);
+  await expect(panel.getByTestId("panel-title")).toHaveText("Ajuda");
+  await expect(panel.getByTestId("property-link")).toHaveCount(0);
+  await expect(panel.getByTestId("property-search")).toContainText("isn't in the PNCT list");
+});
+
 test("a parish link with only a dicofre in the hash opens and frames it", async ({ page }) => {
   await page.goto("/#f=130740");
   await waitForMap(page);
@@ -119,6 +192,8 @@ test.describe("mobile", () => {
     await expect(panel.getByTestId("panel-title")).toHaveText("Vilar das Almas");
     const box = await panel.boundingBox();
     expect(box && box.y > 844 / 3).toBeTruthy();
+    await expect(panel.locator(".sheet-credit")).toBeVisible();
+    await expect(panel.locator(".sheet-credit")).toContainText("CC BY 4.0");
     await waitForIdle(page);
     await page.screenshot({ path: `${SHOTS}mobile-panel.png` });
     expect(errors).toEqual([]);

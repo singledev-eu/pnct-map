@@ -6,6 +6,7 @@ import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./
 import { MAP_HASH_KEY, readHash, writeHash } from "./hash";
 import { addLayers, applyFilter, PARISH_FILL, PARISH_SOURCE, type FilterState } from "./layers";
 import { h, Panel } from "./panel";
+import { loadOptions, saveOptions } from "./prefs";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
 
 setWorkerUrl(workerUrl);
@@ -82,11 +83,19 @@ function start(data: MapData): void {
     map.fitBounds(b as LngLatBoundsLike, { padding: fitPadding(selection !== null), maxZoom, duration: animate ? 900 : 0 });
   };
 
-  const panel = new Panel($("panel"), {
-    onClose: () => select(null),
-    onSelectParish: (dicofre) => select({ kind: "parish", dicofre }, { fly: true }),
-    onSelectConcelho: (code) => select({ kind: "concelho", code }, { fly: true }),
-  });
+  // Property-search selector: hash > localStorage > defaults; written back so shared links carry it.
+  const searchOptions = loadOptions();
+  saveOptions(searchOptions);
+  const panel = new Panel(
+    $("panel"),
+    {
+      onClose: () => select(null),
+      onSelectParish: (dicofre) => select({ kind: "parish", dicofre }, { fly: true }),
+      onSelectConcelho: (code) => select({ kind: "concelho", code }, { fly: true }),
+      onOptionsChange: saveOptions,
+    },
+    searchOptions,
+  );
 
   function select(next: Selection, opts: { fly?: boolean; animate?: boolean } = {}): void {
     selection = next;

@@ -4,6 +4,7 @@
  *   #map=...&c=0808                 selected concelho (code)
  *   #...&d=Faro                     district filter
  *   #...&pnct=1                     "show only PNCT"
+ *   #...&op=arrendar&t=casas&land=urbano   property-search selector (see prefs.ts)
  */
 export const MAP_HASH_KEY = "map";
 
@@ -32,14 +33,14 @@ export function readHash(): HashState {
   };
 }
 
-export function writeHash(update: Partial<Record<"f" | "c" | "d" | "pnct", string | null>>): void {
+export function writeHash(update: Partial<Record<"f" | "c" | "d" | "pnct" | "op" | "t" | "land", string | null>>): void {
   const p = params();
   for (const [k, v] of Object.entries(update)) {
     if (v === null || v === undefined || v === "") p.delete(k);
     else p.set(k, v);
   }
-  // URLSearchParams encodes "/" in map=z/lat/lng; keep it readable.
-  const hash = p.toString().replace(/%2F/g, "/");
+  // URLSearchParams encodes "/" (map=z/lat/lng) and "," (land=a,b); keep them readable.
+  const hash = p.toString().replace(/%2F/g, "/").replace(/%2C/g, ",");
   const url = `${window.location.pathname}${window.location.search}${hash ? `#${hash}` : ""}`;
   window.history.replaceState(window.history.state, "", url);
 }
