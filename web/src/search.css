@@ -1,0 +1,104 @@
+.search-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 4px 0 0;
+  padding: 4px 0;
+  list-style: none;
+  max-height: 60vh;
+  overflow: auto;
+  background: var(--panel-bg, #fff);
+  color: var(--text, #1f2328);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  z-index: 20;
+}
+
+.search-list[hidden] {
+  display: none;
+}
+
+.search-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  min-height: 40px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.search-list li[aria-selected="true"] {
+  background: var(--hover, #f1f5f4);
+  box-shadow: inset 3px 0 0 var(--accent, #0f766e);
+}
+
+.search-list .search-empty {
+  cursor: default;
+  color: var(--muted, #6b7280);
+}
+
+.search-list .search-tag {
+  flex: none;
+  min-width: 4.6em;
+  padding: 1px 6px;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 4px;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--muted, #6b7280);
+}
+
+.search-list .search-tag-concelho {
+  color: var(--accent, #0f766e);
+  border-color: currentColor;
+}
+
+.search-list .search-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.search-list .search-label {
+  overflow-wrap: anywhere;
+}
+
+.search-list .search-sub {
+  font-size: 0.8em;
+  color: var(--muted, #6b7280);
+}
+
+.search-list mark {
+  background: transparent;
+  color: inherit;
+  font-weight: 600;
+}
+
+.search-list .pnct {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: var(--accent, #0f766e);
+  vertical-align: middle;
+}
+
+.search-list .search-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

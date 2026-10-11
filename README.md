@@ -2,7 +2,8 @@
 
 Interactive map of the PNCT territories (Programa Nacional para a Coesão Territorial) in mainland Portugal.
 
-**Phase 1 (this repo state): data pipeline only.** There is no map UI yet.
+- Phase 1: data pipeline (Python; `scripts/`, `data/`).
+- Phase 2: static map app (`web/`: Vite, TypeScript, MapLibre GL JS).
 
 ## Run end to end
 
@@ -19,7 +20,10 @@ uv run make all      # download CAOP (checksum-verified) → parse → match →
 | `make parse` | `scripts/parse_pdf.py` → `data/interim/pnct_raw.csv` |
 | `make match` | `scripts/build_parishes.py` → `data/processed/pnct_parishes.csv`, `data/processed/unmatched.csv` |
 | `make geo` | `scripts/build_geo.py` → `data/processed/parishes_all.geojson`, `data/processed/concelhos.geojson` |
+| `make web-data` | `scripts/build_topo.py` → `web/public/data/pnct.topo.json` (one TopoJSON, objects `parishes` + `concelhos`) |
 | `make test` | `pytest` (`tests/test_pipeline.py`) |
+| `make web` | `npm ci && npm run build` in `web/` → static `web/dist/` |
+| `make e2e` | Builds, then runs the Playwright smoke tests (`web/tests/e2e`), writing screenshots to `docs/screenshots/` |
 | `make clean` | Removes `data/interim` and `data/processed` |
 
 mapshaper is run through `npx` at a pinned version (`mapshaper@0.7.68`), with its npm cache in `./.npm-cache`.
@@ -92,3 +96,25 @@ Known PDF quirks:
   - EPSG:4326, 5-decimal precision, about 4.7 MB.
   - Simplified with mapshaper (`-simplify 6% keep-shapes`).
 - `data/processed/concelhos.geojson`: 278 municipality outlines. They are dissolved from the simplified parishes, so the borders line up exactly.
+
+## Web app (`web/`)
+
+```sh
+cd web
+npm ci
+npm run dev                        # local dev server
+npm run build                      # type-check + static build into web/dist/
+BASE_PATH=/pnct-map/ npm run build # build for a sub-path, e.g. GitHub Pages
+npm run test:e2e                   # build + Playwright smoke tests
+```
+
+- **Base path:** the default `./` makes `dist/` work from any directory.
+- **Static data:** the app reads only `data/pnct.topo.json` plus the OpenFreeMap "positron" basemap. There is no backend.
+- **Shareable state:** the URL hash holds the view, e.g. `#map=10/41.79/-8.58&f=160763`.
+  - `f`: selected parish (dicofre).
+  - `c`: selected concelho (4-digit code).
+  - `d`: district filter.
+  - `pnct=1`: show only PNCT parishes.
+- **Property search:** `src/links.ts` `getLinks(parish)` supplies the panel's links. It returns `[]` until phase 3.
+- **Local installs:** npm's cache (`../.npm-cache`, set in `web/.npmrc`) and Playwright's browsers (`PLAYWRIGHT_BROWSERS_PATH=0`, i.e. inside `node_modules`) stay inside the project.
+  - If `npx playwright install chromium` times out, download Chrome for Testing with curl and unpack it to `node_modules/playwright-core/.local-browsers/chromium-<rev>/`.

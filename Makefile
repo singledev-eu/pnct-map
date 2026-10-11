@@ -4,7 +4,7 @@ CAOP_ZIP := data/external/CAOP_Continente_2025-gpkg.zip
 CAOP_GPKG := data/external/CAOP_Continente_2025-gpkg/Continente_CAOP2025.gpkg
 PY := uv run python
 
-.PHONY: all download parse match geo web-data test clean
+.PHONY: all download parse match geo web-data test web e2e clean
 
 all: web-data test
 
@@ -38,6 +38,12 @@ web/public/data/pnct.topo.json: scripts/build_topo.py data/processed/parishes_al
 
 test:
 	uv run pytest -q
+
+web: web-data
+	cd web && npm ci && npm run build
+
+e2e: web-data
+	cd web && npm ci && npm run test:e2e
 
 clean:
 	rm -rf data/interim data/processed web/public/data
