@@ -34,7 +34,7 @@ mapshaper is run through `npx` at a pinned version (`mapshaper@0.7.68`), with it
 
 | Source | Edition | URL | Downloaded |
 |---|---|---|---|
-| PNCT territories list | PDF dated 2026-02-04 (5 pages) | Not committed. Place it at `data/raw/territorios-pnct-2026-02-04.pdf` (SHA-256 `c286ef77…e7cffc`) to rerun `make parse` | provided |
+| PNCT territories list | IEFP, "Lista dos territórios PNCT", PDF dated 2026-02-04 (5 pages) | https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf. Not committed. Place it at `data/raw/territorios-pnct-2026-02-04.pdf` (SHA-256 `c286ef77…e7cffc`) to rerun `make parse` | provided |
 | CAOP – Carta Administrativa Oficial de Portugal, DGT, Continente | **CAOP 2025** (approved 2026-01-28; Aviso n.º 3502/2026/2, DR 2.ª série, 2026-02-18), GeoPackage, layer `cont_freguesias`, EPSG:3763 | https://geo2.dgterritorio.gov.pt/caop/CAOP_Continente_2025-gpkg.zip (SHA-256 `87cd67f4…3ecd1d`) | 2026-10-11 |
 
 The CAOP landing page is https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop. CAOP is licensed CC-BY-4.0. Attribution: *"Informação geográfica cedida pela Direção-Geral do Território"*. More background is in `docs/caop_research.md`.
