@@ -97,9 +97,25 @@ Against a build of the previous `main`, both new tests fail, so they catch the o
 - `after-collapsed.png`: the new state on load, with just the ⓘ.
 - `after-expanded.png`: the new state after one tap, with the text wrapped beside the legend and above the zoom buttons.
 
-## Not changed (for a later task)
+## Bottom-sheet credit (follow-up, approved)
 
-While the parish panel is open in portrait, the bottom sheet hides the attribution control, as before. The sheet's own credit line reads "Boundaries CAOP 2025 © DGT, CC BY 4.0 · OpenFreeMap / © OpenStreetMap", which leaves out "© OpenMapTiles". Adding it would make the attribution complete in that state too. I left the text alone because this task said to keep the attribution text exactly as it is.
+While the parish panel is open in portrait, the bottom sheet hides the map attribution, as before. Its credit line used to read "Boundaries CAOP 2025 © DGT, CC BY 4.0 · OpenFreeMap / © OpenStreetMap", as plain text without "© OpenMapTiles".
+
+It now matches the map attribution, with all four credits linked:
+
+> Boundaries [CAOP 2025](https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop) © DGT, CC BY 4.0 · [OpenFreeMap](https://openfreemap.org/) · © [OpenMapTiles](https://www.openmaptiles.org/) · © [OpenStreetMap](https://www.openstreetmap.org/copyright)
+
+- **Links:** they use the same URLs as the map attribution and the About panel, open in a new tab (`rel="noopener noreferrer"`), and inherit the muted credit colour.
+- **Wrapping:** at 360–390 px the line wraps to two lines. Non-breaking spaces keep each "©" with its name; without them, "©" was left stranded at the end of the first line.
+- **Test:** the phone-portrait e2e test now opens a parish too. It checks that the map attribution is hidden, that the sheet credit is visible with exactly this text, and that it has the four links with the right text, `href`, `target` and `rel`.
+- **Results:**
+  - Full suite: pytest 34, Vitest 21 (link snapshot at 0 differences), Playwright 17.
+  - Merged into `main`, pushed, and deployed to https://preview.pnct-map.pages.dev (deployment `b6366e17`). Production doesn't have it yet.
+  - Against the preview: 3 consecutive full e2e runs passed 17 of 17.
+- **Flaky waits:** across this follow-up, 2 of the 6 full e2e runs had one timeout each, in different tests. Each passed again straight away: the focus-mode Lisboa test 10 of 10, and the phone-portrait test 3 of 3 alone plus 3 full runs.
+  - The first failure was a 30-second timeout on a `data-ready`/`data-map-idle` wait. The tests wait for MapLibre's first full idle, which includes every basemap tile and glyph from tiles.openfreemap.org, so a slow tile response can trip them.
+  - The second was a 15-second `toBeVisible` timeout whose failing line I didn't capture, so its cause isn't confirmed.
+  - If the waits keep failing intermittently, a follow-up could wait for `data-parishes-loaded` instead where the basemap doesn't matter, or give those waits a longer timeout.
 
 ## Please check on your phone
 
@@ -110,5 +126,7 @@ Use https://preview.pnct-map.pages.dev:
 3. Rotate to landscape. The full credit line should sit beside the legend. Open a parish: the toolbar should wrap to the left of the panel, so search, the district select and "Only PNCT" stay reachable.
 4. Rotate back to portrait. The attribution should be collapsed again.
 5. Turn on "Only PNCT", which hides one legend row, and expand ⓘ again. It should still sit beside the legend.
+
+6. Open a parish in portrait and check the credit line at the bottom of the sheet: four credits, each link opening its site.
 
 When it looks right, `cd web && npm run deploy` publishes this and focus mode to production.
