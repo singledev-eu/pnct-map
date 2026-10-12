@@ -139,6 +139,7 @@ The code is under the MIT licence (see `LICENSE`). The data keeps its own licenc
 - `docs/reports/deploy-cloudflare.md`: the Cloudflare Pages deploy and the checks run on production.
 - `docs/reports/github-publish.md`: repo cleanup, history rewrite and the first push to GitHub.
 - `docs/reports/focus-mode.md`: the "Only PNCT" focus mode: behaviour, URL handling, tests and toggle timing.
+- `docs/reports/mobile-attribution.md`: keeping the map attribution clear of the legend on phones.
 - `docs/caop_research.md`: research on CAOP editions, download URLs and the 2025 parish split.
 - `docs/link-samples.md`: Idealista link samples for manual checking. Regenerate with `uv run python scripts/link_samples.py`.
 - `docs/perf/`: load-timing JSON files (baseline, after, production, Cloudflare preview) and side-by-side comparison sheets in `docs/perf/screenshots/compare/`.
