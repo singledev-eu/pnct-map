@@ -28,7 +28,7 @@ Release `v0.1.0` (2026-10-12) covers all of the above; see [CHANGELOG.md](../CHA
 2. **Camera limits.**
    - A dynamic min zoom, so that mainland Portugal just fits the viewport. It's recomputed on resize and rotation.
    - `maxBounds` with a margin of about 1–1.5°.
-   - Verify in the perf harness (`web/scripts/perf.mjs`) that the Arabic and Tifinagh glyph ranges (`1536-1791`, `11520-11775`, `65024-65279`), which come from Moroccan labels in the z6 basemap tiles, are no longer requested.
+   - Verify in the perf harness (`web/scripts/perf.mjs`) that the Arabic glyph ranges (`1536-1791`, and Presentation Forms-B `65024-65279`) and the Tifinagh range (`11520-11775`), which come from Moroccan labels in the z6 basemap tiles, are no longer requested.
 
 ## Backlog
 
