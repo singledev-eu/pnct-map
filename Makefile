@@ -32,12 +32,12 @@ geo: data/processed/parishes_all.geojson
 data/processed/parishes_all.geojson: scripts/build_geo.py data/processed/pnct_parishes.csv $(CAOP_GPKG)
 	$(PY) scripts/build_geo.py
 
-web-data: web/public/data/pnct.topo.json
-web/public/data/pnct.topo.json: scripts/build_topo.py data/processed/parishes_all.geojson
+web-data: web/data/pnct.topo.json
+web/data/pnct.topo.json: scripts/build_topo.py data/processed/parishes_all.geojson
 	$(PY) scripts/build_topo.py
 
-shapes: web/public/data/shapes.json
-web/public/data/shapes.json: scripts/build_shapes.py scripts/polyline.py data/processed/pnct_parishes.csv $(CAOP_GPKG)
+shapes: web/data/shapes.json
+web/data/shapes.json: scripts/build_shapes.py scripts/polyline.py data/processed/pnct_parishes.csv $(CAOP_GPKG)
 	$(PY) scripts/build_shapes.py
 
 test:
@@ -50,4 +50,4 @@ e2e: web-data shapes
 	cd web && npm ci && npm run test:e2e
 
 clean:
-	rm -rf data/interim data/processed web/public/data
+	rm -rf data/interim data/processed web/data

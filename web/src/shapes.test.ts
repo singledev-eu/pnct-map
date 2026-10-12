@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { decodePolyline, encodePolyline } from "./idealista";
-import shapesJson from "../public/data/shapes.json?raw";
+import shapesJson from "../data/shapes.json?raw";
 
 // shapes.json is written by the Python pipeline (scripts/build_shapes.py); the
 // TypeScript codec must agree with it on every shape, byte for byte.

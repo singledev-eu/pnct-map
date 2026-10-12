@@ -1,7 +1,7 @@
 """Build the web map's single TopoJSON file from the simplified parish layer.
 
 Input:  data/processed/parishes_all.geojson (already simplified by build_geo.py)
-Output: web/public/data/pnct.topo.json with two objects:
+Output: web/data/pnct.topo.json with two objects:
   parishes   dicofre, freguesia, concelho, distrito, pnct
   concelhos  name, distrito, pnct_count, parish_count
 """
@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 IN_PARISHES = ROOT / "data/processed/parishes_all.geojson"
-OUT_TOPO = ROOT / "web/public/data/pnct.topo.json"
+OUT_TOPO = ROOT / "web/data/pnct.topo.json"
 
 MAPSHAPER = "mapshaper@0.7.68"
 # 1.2e5 steps over mainland Portugal (~5.2° of latitude in the data) is ~4.8 m

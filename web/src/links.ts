@@ -1,5 +1,6 @@
 import type { Concelho, Parish } from "./data";
 import { municipalityUrl, polygonUrl, type SearchOptions } from "./idealista";
+import SHAPES_URL from "../data/shapes.json?url"; // content-hashed by Vite
 
 export interface PropertyLink {
   label: string;
@@ -18,7 +19,6 @@ export interface ParishShape {
 
 export type Shapes = Record<string, ParishShape>;
 
-const SHAPES_URL = `${import.meta.env.BASE_URL}data/shapes.json`;
 let shapesPromise: Promise<Shapes> | null = null;
 
 /** Fetches shapes.json once (on first use) and caches it; a failed fetch is retried next time. */

@@ -8,7 +8,12 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --strictPort --port 4173",
     "test:e2e": "npm run build && PLAYWRIGHT_BROWSERS_PATH=0 playwright test",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e:remote": "PLAYWRIGHT_BROWSERS_PATH=0 playwright test",
+    "test:py": "cd .. && uv run pytest -q",
+    "test:all": "npm run test:py && npm test && npm run test:e2e",
+    "deploy": "npm run test:all && npm run build && npx -y wrangler@4.149.0 pages deploy dist --project-name pnct-map --commit-dirty=true --branch main",
+    "deploy:preview": "npm run test:all && npm run build && npx -y wrangler@4.149.0 pages deploy dist --project-name pnct-map --commit-dirty=true --branch preview"
   },
   "dependencies": {
     "maplibre-gl": "6.11.2",

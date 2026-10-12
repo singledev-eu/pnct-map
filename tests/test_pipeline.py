@@ -139,7 +139,7 @@ def test_concelhos_layer():
     assert {"concelho", "distrito"} <= set(features[0]["properties"])
 
 
-TOPO = ROOT / "web/public/data/pnct.topo.json"
+TOPO = ROOT / "web/data/pnct.topo.json"
 
 
 @pytest.fixture(scope="module")

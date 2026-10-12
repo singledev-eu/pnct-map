@@ -8,11 +8,12 @@ import { addLayers, applyFilter, PARISH_FILL, PARISH_SOURCE, type FilterState } 
 import { h, Panel } from "./panel";
 import { loadOptions, saveOptions } from "./prefs";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
+// ?url makes Vite emit the file content-hashed under assets/; index.html preloads the same file.
+import DATA_URL from "../data/pnct.topo.json?url";
 
 setWorkerUrl(workerUrl);
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
-const DATA_URL = `${import.meta.env.BASE_URL}data/pnct.topo.json`;
 const MAINLAND: Bounds = [-9.53, 36.95, -6.18, 42.16];
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;

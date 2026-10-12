@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from polyline import concelho_slug, decode, encode, parse_shape_param, polygon_url, shape_param  # noqa: E402
 
-SHAPES = ROOT / "web/public/data/shapes.json"
+SHAPES = ROOT / "web/data/shapes.json"
 QUALITY = ROOT / "data/processed/shapes_quality.csv"
 PNCT = ROOT / "data/processed/pnct_parishes.csv"
 PARISHES_GEOJSON = ROOT / "data/processed/parishes_all.geojson"

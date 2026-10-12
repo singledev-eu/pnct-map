@@ -21,8 +21,8 @@ uv run make all      # download CAOP (checksum-verified) → parse → match →
 | `make parse` | `scripts/parse_pdf.py` → `data/interim/pnct_raw.csv` |
 | `make match` | `scripts/build_parishes.py` → `data/processed/pnct_parishes.csv`, `data/processed/unmatched.csv` |
 | `make geo` | `scripts/build_geo.py` → `data/processed/parishes_all.geojson`, `data/processed/concelhos.geojson` |
-| `make web-data` | `scripts/build_topo.py` → `web/public/data/pnct.topo.json` (one TopoJSON, objects `parishes` + `concelhos`) |
-| `make shapes` | `scripts/build_shapes.py` → `web/public/data/shapes.json` (one search polygon per PNCT parish) and `data/processed/shapes_quality.csv` |
+| `make web-data` | `scripts/build_topo.py` → `web/data/pnct.topo.json` (one TopoJSON, objects `parishes` + `concelhos`) |
+| `make shapes` | `scripts/build_shapes.py` → `web/data/shapes.json` (one search polygon per PNCT parish) and `data/processed/shapes_quality.csv` |
 | `make test` | `pytest` (`tests/test_pipeline.py`, `tests/test_shapes.py`) |
 | `make web` | `npm ci && npm test && npm run build` in `web/` → static `web/dist/` |
 | `make e2e` | Builds, then runs the Playwright smoke tests (`web/tests/e2e`), writing screenshots to `docs/screenshots/` |

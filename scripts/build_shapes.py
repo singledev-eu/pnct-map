@@ -1,4 +1,4 @@
-"""Build Idealista search shapes for PNCT parishes -> web/public/data/shapes.json.
+"""Build Idealista search shapes for PNCT parishes -> web/data/shapes.json.
 
 For every PNCT parish, from FULL-resolution CAOP 2025 geometry:
   * single-part parish             -> its exterior ring        (method=single)
@@ -39,7 +39,7 @@ from polyline import encode  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 CAOP_GPKG = ROOT / "data/external/CAOP_Continente_2025-gpkg/Continente_CAOP2025.gpkg"
 PNCT_CSV = ROOT / "data/processed/pnct_parishes.csv"
-OUT_JSON = ROOT / "web/public/data/shapes.json"
+OUT_JSON = ROOT / "web/data/shapes.json"
 OUT_QUALITY = ROOT / "data/processed/shapes_quality.csv"
 
 MAX_VERTICES = 60

@@ -3,10 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="description" content="Map of the PNCT territories (Programa Nacional para a Coesão Territorial) in mainland Portugal, by parish." />
-    <title>PNCT Map</title>
-    <link rel="preload" href="%BASE_URL%data/pnct.topo.json" as="fetch" crossorigin />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect x=%224%22 y=%224%22 width=%2224%22 height=%2224%22 rx=%226%22 fill=%22%230f8a7e%22/%3E%3C/svg%3E" />
+    <title>Mapa PNCT · Territórios de Coesão Territorial | PNCT map of Portugal</title>
+    <meta name="description" content="Mapa das freguesias abrangidas pelo Programa Nacional para a Coesão Territorial (PNCT) em Portugal continental, com ligações de pesquisa de imóveis no Idealista. Ferramenta não oficial. Map of the parishes covered by Portugal's PNCT territorial cohesion programme. Unofficial tool." />
+    <link rel="canonical" href="https://pnct.singledev.eu/" />
+    <meta name="theme-color" content="#0f8a7e" />
+    <link rel="preload" href="/data/pnct.topo.json" as="fetch" crossorigin />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mapa PNCT" />
+    <meta property="og:title" content="Mapa PNCT · Territórios de Coesão Territorial | PNCT map of Portugal" />
+    <meta property="og:description" content="Freguesias do PNCT em Portugal continental, com pesquisa de imóveis no Idealista. / Map of Portugal's PNCT parishes with Idealista property-search links." />
+    <meta property="og:url" content="https://pnct.singledev.eu/" />
+    <meta property="og:image" content="https://pnct.singledev.eu/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Mapa de Portugal continental com as freguesias do PNCT destacadas" />
+    <meta property="og:locale" content="pt_PT" />
+    <meta property="og:locale:alternate" content="en_GB" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Mapa PNCT · Territórios de Coesão Territorial | PNCT map of Portugal" />
+    <meta name="twitter:description" content="Freguesias do PNCT em Portugal continental, com pesquisa de imóveis no Idealista. / Map of Portugal's PNCT parishes with Idealista property-search links." />
+    <meta name="twitter:image" content="https://pnct.singledev.eu/og-image.png" />
+    <meta name="twitter:image:alt" content="Mapa de Portugal continental com as freguesias do PNCT destacadas" />
   </head>
   <body>
     <div id="map" aria-label="Map of mainland Portugal with PNCT parishes"></div>
@@ -47,22 +68,24 @@
         <p>
           Shaded parishes are territories covered by the <strong>Programa Nacional para a Coesão Territorial (PNCT)</strong>.
         </p>
+        <p><strong>Unofficial tool.</strong> Always confirm eligibility with the official sources.</p>
         <h3>Data sources</h3>
         <ul>
-          <li><strong>PNCT territories:</strong> official list dated 4 February 2026.</li>
+          <li><strong>PNCT territories:</strong> official list dated 4 February 2026 (PNCT_SOURCE_PENDING).</li>
           <li>
-            <strong>Parish and municipality boundaries:</strong>
+            <strong>Boundaries:</strong>
             <a href="https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" target="_blank" rel="noopener noreferrer">CAOP 2025</a>
-            (Carta Administrativa Oficial de Portugal), Direção-Geral do Território, licensed
+            © Direção-Geral do Território,
             <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
-            “Informação geográfica cedida pela Direção-Geral do Território.” Boundaries simplified for the web.
+            “Informação geográfica cedida pela Direção-Geral do Território.” Simplified for the web.
           </li>
           <li>
             <strong>Basemap:</strong> <a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer">OpenFreeMap</a>,
+            © <a href="https://openmaptiles.org" target="_blank" rel="noopener noreferrer">OpenMapTiles</a>,
             © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors.
           </li>
         </ul>
-        <p class="muted">Unofficial visualisation. Check the official list before relying on it.</p>
+        <p class="muted">Property-search links open idealista.pt. This site is not affiliated with Idealista.</p>
         <button type="submit" class="button">Close</button>
       </form>
     </dialog>

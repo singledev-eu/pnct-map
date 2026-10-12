@@ -2,8 +2,8 @@ import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { loadData, type MapData } from "./data";
 import { getConcelhoLinks, getLinks } from "./links";
 import { LAND_FILTERS, type LandFilter, type Operation, type PropertyType, type SearchOptions } from "./idealista";
-import topoJson from "../public/data/pnct.topo.json?raw";
-import shapesJson from "../public/data/shapes.json?raw";
+import topoJson from "../data/pnct.topo.json?raw";
+import shapesJson from "../data/shapes.json?raw";
 
 // Regenerates every Idealista link the panel can show, for every parish and concelho and every
 // search option, from the real data files, and compares a SHA-256 per parish/concelho against
