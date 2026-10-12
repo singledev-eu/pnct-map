@@ -224,11 +224,15 @@ function start(data: MapData): void {
     if ((s.parish ?? s.concelho) !== current) restore(true);
   });
 
-  // data-parishes-loaded marks the first frame with the parish layer drawn (used by scripts/perf.mjs).
+  // The map is usable once the parishes are drawn; basemap labels may still be loading.
+  // data-parishes-loaded marks that frame (used by scripts/perf.mjs).
   const onParishData = (e: MapSourceDataEvent) => {
     if (e.sourceId !== PARISH_SOURCE || !map.isSourceLoaded(PARISH_SOURCE)) return;
     map.off("sourcedata", onParishData);
-    map.once("render", () => (document.body.dataset.parishesLoaded = "true"));
+    map.once("render", () => {
+      status.hidden = true;
+      document.body.dataset.parishesLoaded = "true";
+    });
   };
   map.on("sourcedata", onParishData);
 
@@ -241,16 +245,18 @@ function start(data: MapData): void {
   });
 }
 
-// If the basemap style cannot be fetched, "load" never fires; say so instead of spinning.
+// If the basemap style cannot be fetched, "style.load" never fires; say so instead of spinning.
 map.on("error", (e) => {
-  if (!map.isStyleLoaded() && document.body.dataset.ready !== "true") {
+  if (!map.isStyleLoaded() && document.body.dataset.parishesLoaded !== "true") {
     console.error(e.error);
     status.textContent = "Could not load the basemap. Please check your connection and reload.";
     status.classList.add("status-error");
   }
 });
 
-Promise.all([loadData(DATA_URL), new Promise<void>((resolve) => map.once("load", () => resolve()))])
+// Add the parish layers as soon as the style (layers + sprite) is in. The "load" event would also
+// wait for every basemap tile and label glyph, which on a slow connection is seconds later.
+Promise.all([loadData(DATA_URL), new Promise<void>((resolve) => map.once("style.load", () => resolve()))])
   .then(([data]) => start(data))
   .catch((err: unknown) => {
     console.error(err);

@@ -18,10 +18,12 @@ IN_PARISHES = ROOT / "data/processed/parishes_all.geojson"
 OUT_TOPO = ROOT / "web/public/data/pnct.topo.json"
 
 MAPSHAPER = "mapshaper@0.7.68"
-# 2e5 steps over mainland Portugal (~5.6° of latitude) is ~3 m per step, below a
-# pixel at zoom 12 (~19 m/px at 512px tiles) and well beyond the 5-decimal
-# (~1 m) source precision once the shared arcs are delta-encoded.
-QUANTIZATION = "200000"
+# 1.2e5 steps over mainland Portugal (~5.2° of latitude in the data) is ~4.8 m
+# per step, inside the 5 m budget tests/test_pipeline.py enforces and far below
+# a pixel at zoom 12 (~15 m/px at 40°N, 512px tiles). It is ~9% smaller gzipped
+# than the previous 2e5 (~3 m) with no visible difference; the 6% simplification
+# in build_geo.py removes far more detail than either.
+QUANTIZATION = "120000"
 
 
 def main() -> None:
