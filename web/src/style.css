@@ -647,6 +647,10 @@ dialog a {
     color: var(--muted);
   }
 
+  .sheet-credit a {
+    color: inherit;
+  }
+
   .legend {
     left: 8px;
     bottom: 8px;

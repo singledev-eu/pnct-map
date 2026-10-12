@@ -79,6 +79,27 @@ function renderLinks(list: HTMLElement, links: PropertyLink[]): void {
   );
 }
 
+const creditLink = (href: string, text: string) => h("a", { href, target: "_blank", rel: "noopener noreferrer" }, text);
+
+/**
+ * Credit line shown in the phone bottom sheet, which covers the map attribution while it is open.
+ * Same credits and links as the map attribution and the About panel.
+ */
+function sheetCredit(): HTMLElement {
+  return h(
+    "p",
+    { class: "sheet-credit", "data-testid": "sheet-credit" },
+    "Boundaries ",
+    creditLink("https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop", "CAOP 2025"),
+    " ©\u00a0DGT, CC\u00a0BY\u00a04.0 · ", // non-breaking spaces keep each "©" with its name when the line wraps
+    creditLink("https://openfreemap.org/", "OpenFreeMap"),
+    " · ©\u00a0",
+    creditLink("https://www.openmaptiles.org/", "OpenMapTiles"),
+    " · ©\u00a0",
+    creditLink("https://www.openstreetmap.org/copyright", "OpenStreetMap"),
+  );
+}
+
 export class Panel {
   private options: SearchOptions;
   /** Re-renders the current links list after a selector change. */
@@ -99,7 +120,7 @@ export class Panel {
     this.root.replaceChildren(
       h("header", { class: "panel-header" }, h("div", {}, h("p", { class: "kicker" }, kicker), h("h2", { "data-testid": "panel-title" }, title)), close),
       h("div", { class: "panel-body" }, ...body),
-      h("p", { class: "sheet-credit" }, "Boundaries CAOP 2025 © DGT, CC BY 4.0 · OpenFreeMap / © OpenStreetMap"),
+      sheetCredit(),
     );
     this.root.hidden = false;
     document.body.classList.add("panel-open");

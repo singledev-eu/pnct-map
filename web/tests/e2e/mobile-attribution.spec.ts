@@ -5,6 +5,14 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 
 const ATTRIBUTION_TEXT = "Boundaries: CAOP 2025 © DGT (CC BY 4.0) | OpenFreeMap © OpenMapTiles Data from OpenStreetMap";
 const ATTRIBUTION_LINKS = ["https://openfreemap.org/", "https://www.openmaptiles.org/", "https://www.openstreetmap.org/copyright"];
+// The bottom sheet covers the map attribution while it is open, so it carries the same credits.
+const SHEET_CREDIT_TEXT = "Boundaries CAOP 2025 © DGT, CC BY 4.0 · OpenFreeMap · © OpenMapTiles · © OpenStreetMap";
+const SHEET_CREDIT_LINKS: [string, string][] = [
+  ["CAOP 2025", "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop"],
+  ["OpenFreeMap", "https://openfreemap.org/"],
+  ["OpenMapTiles", "https://www.openmaptiles.org/"],
+  ["OpenStreetMap", "https://www.openstreetmap.org/copyright"],
+];
 
 function trackErrors(page: Page): string[] {
   const errors: string[] = [];
@@ -66,6 +74,18 @@ test.describe("phone portrait (390×844)", () => {
     await button.tap();
     await expect(attribution).not.toHaveClass(/maplibregl-compact-show/);
     await expect(attribution.locator(".maplibregl-ctrl-attrib-inner")).toBeHidden();
+
+    // With a parish open, the bottom sheet hides the map controls; its credit line has all four credits.
+    await page.goto("/#f=170810");
+    await expect(page.getByTestId("panel-title")).toHaveText("Vilarinho dos Freires");
+    await expect(attribution).toBeHidden();
+    const credit = page.getByTestId("sheet-credit");
+    await expect(credit).toBeVisible();
+    await expect(credit).toHaveText(SHEET_CREDIT_TEXT);
+    const links = await credit
+      .locator("a")
+      .evaluateAll((as) => as.map((a) => [a.textContent, (a as HTMLAnchorElement).href, (a as HTMLAnchorElement).target, (a as HTMLAnchorElement).rel]));
+    expect(links).toEqual(SHEET_CREDIT_LINKS.map(([text, href]) => [text, href, "_blank", "noopener noreferrer"]));
 
     expect(errors).toEqual([]);
   });
