@@ -19,11 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-This licence covers the source code only. The data in this repository and on
-the site keeps its own licences; see "Data and attribution" in README.md:
-CAOP 2025 boundaries © Direção-Geral do Território (CC BY 4.0), the PNCT
-territory list published by IEFP, and the OpenFreeMap / OpenMapTiles /
-OpenStreetMap basemap (© OpenStreetMap contributors, ODbL).
