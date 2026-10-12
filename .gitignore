@@ -21,3 +21,6 @@ data/external/
 data/raw/*.pdf
 data/interim/parishes_full_4326.geojson
 data/processed/*.geojson
+
+# Local screenshots and other throwaway outputs
+.artifacts/

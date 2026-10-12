@@ -6,7 +6,8 @@
 //   parishes = body.dataset.parishesLoaded: first frame after the parish source has loaded (polygons drawn)
 //   ready    = body.dataset.ready: first full map idle (also waits for basemap tiles and label glyphs)
 //
-// Usage: node scripts/perf.mjs [--runs 3] [--url http://localhost:4173/] [--label baseline] [--out path.json]
+// Usage: node scripts/perf.mjs [--runs 3] [--url http://localhost:4173/] [--label baseline] [--out path.json] [--toggles 0]
+// --toggles N: after the map is ready, click "Only PNCT" N times and time each click to the next map idle.
 process.env.PLAYWRIGHT_BROWSERS_PATH ??= "0"; // Chromium lives in node_modules; must precede the import
 const { chromium, devices } = await import("@playwright/test");
 import { writeFileSync } from "node:fs";
@@ -18,9 +19,11 @@ const { values: args } = parseArgs({
     url: { type: "string", default: "http://localhost:4173/" },
     label: { type: "string", default: "baseline" },
     out: { type: "string" },
+    toggles: { type: "string", default: "0" },
   },
 });
 const RUNS = Math.max(1, Number(args.runs) || 3);
+const TOGGLES = Math.max(0, Number(args.toggles) || 0);
 const URL_ = args.url;
 const TIMEOUT_MS = 120_000;
 const NETWORK = { offline: false, latency: 562.5, downloadThroughput: 180000, uploadThroughput: 84375 };
@@ -123,13 +126,36 @@ async function runOnce(origin) {
       errors.push(`timeout: not ready after ${TIMEOUT_MS / 1000}s`);
     }
 
+    // Focus-mode toggle: click → next MapLibre idle, measured in the page (CPU throttling still applies).
+    const toggles = [];
+    for (let i = 0; i < TOGGLES && !timedOut; i++) {
+      await page.waitForFunction(() => document.body.dataset.mapIdle === "true", null, { timeout: TIMEOUT_MS });
+      toggles.push(
+        await page.evaluate(
+          () =>
+            new Promise((resolve) => {
+              const input = document.getElementById("only-pnct");
+              const t0 = performance.now();
+              input.click(); // synchronously sets data-map-idle="false"; "idle" sets it back
+              const obs = new MutationObserver(() => {
+                if (document.body.dataset.mapIdle === "true") {
+                  obs.disconnect();
+                  resolve({ on: input.checked, ms: Math.round(performance.now() - t0) });
+                }
+              });
+              obs.observe(document.body, { attributes: true, attributeFilter: ["data-map-idle"] });
+            }),
+        ),
+      );
+    }
+
     const t = await page.evaluate(collectTimings).catch(() => ({ entries: [] }));
     const resources = t.entries.map((e) => ({
       ...e,
       name: e.name.startsWith(origin) ? e.name.slice(origin.length) || "/" : e.name,
       sameOrigin: e.name.startsWith(origin),
     }));
-    result = { parishes_ms: t.parishes_ms ?? null, ready_ms: t.ready_ms ?? null, dcl_ms: t.dcl_ms ?? null, load_ms: t.load_ms ?? null, resources, cdp_bytes: cdpBytes, requests: pwRequests };
+    result = { parishes_ms: t.parishes_ms ?? null, ready_ms: t.ready_ms ?? null, dcl_ms: t.dcl_ms ?? null, load_ms: t.load_ms ?? null, resources, cdp_bytes: cdpBytes, requests: pwRequests, toggles };
   } finally {
     await browser.close();
   }
@@ -194,6 +220,14 @@ if (median) {
 
 const failures = runs.flatMap((r, i) => r.errors.map((e) => `run ${i + 1}: ${e}`));
 if (failures.length) console.error(`\nProblems:\n  ${failures.join("\n  ")}`);
+
+if (TOGGLES) {
+  const all = runs.flatMap((r) => r.toggles ?? []);
+  for (const on of [true, false]) {
+    const ms = all.filter((t) => t.on === on).map((t) => t.ms).sort((a, b) => a - b);
+    if (ms.length) console.log(`toggle ${on ? "on " : "off"}: median ${ms[Math.floor((ms.length - 1) / 2)]} ms  min ${ms[0]}  max ${ms.at(-1)}  (n=${ms.length})`);
+  }
+}
 
 if (args.out) {
   const json = { label: args.label, url: URL_, profile, runs, median_parishes_ms: medianOf("parishes_ms"), median_ready_ms: medianOf("ready_ms") };
