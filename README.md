@@ -2,7 +2,18 @@
 
 Interactive map of the parishes in mainland Portugal that the PNCT covers (Programa Nacional para a Coesão Territorial). For each PNCT parish it also builds Idealista property-search links. The links are generated only; nothing ever requests idealista.pt.
 
-Live site: https://pnct.singledev.eu. This is an unofficial tool.
+Live site: https://pnct.singledev.eu. This is an unofficial tool. What's done and what's next: [docs/ROADMAP.md](docs/ROADMAP.md). Changes: [CHANGELOG.md](CHANGELOG.md).
+
+Features:
+
+- **Parish map:** all 3,049 mainland parishes, with the 1,861 PNCT parishes shaded, and concelho boundaries.
+- **Interaction:** hover tooltip, and a click opens a panel (side panel on desktop, bottom sheet on phones).
+- **Search and filters:**
+  - Search across parishes and concelhos.
+  - A district filter.
+  - **Only PNCT** (focus mode): it hides everything outside PNCT territory, and those parishes don't respond to hover, clicks or search.
+- **Idealista links:** for each PNCT parish, a polygon search link, with a selector for buying or renting, property type and land filters. When the whole concelho is PNCT, the municipality page is linked too.
+- **Shareable views:** the map view, the selection, the filters and the selector all live in the URL (see [URL parameters](#url-parameters)).
 
 ![The national map view, with PNCT parishes shaded](docs/screenshots/desktop-national.png)
 
@@ -134,6 +145,10 @@ The code is under the MIT licence (see `LICENSE`). The data keeps its own licenc
 
 ## Project docs
 
+- `docs/ROADMAP.md`: what's done, what's next, the backlog, past decisions and open items.
+- `CHANGELOG.md`: releases.
+- `CLAUDE.md`: starting context for Claude Code sessions (commands, invariants, conventions).
+
 - `docs/reports/phase1-pipeline.md`: the data pipeline, and why CAOP 2025 was chosen over 2024.
 - `docs/reports/phase2-map.md`: the map UI, with test results.
 - `docs/reports/phase3-idealista-links.md`: the Idealista search shapes and link builder.
@@ -217,21 +232,35 @@ npm ci
 npm run dev                        # local dev server
 npm run build                      # type-check + static build into web/dist/
 BASE_PATH=/pnct-map/ npm run build # build for a sub-path, e.g. GitHub Pages
-npm run test:e2e                   # build + Playwright smoke tests
+npm run test:e2e                   # build + Playwright e2e tests
 ```
 
 - **Base path:** the default is `/` (the site is served from the domain root). Set `BASE_PATH` for a sub-path build.
-- **Static data:** the app reads only `web/data/pnct.topo.json`, `web/data/shapes.json` (loaded when the first PNCT panel opens) and the OpenFreeMap "positron" basemap. There is no backend.
-- **Shareable state:** the URL hash holds the view, e.g. `#map=10/41.79/-8.58&f=160763`.
-  - `f`: selected parish (dicofre).
-  - `c`: selected concelho (4-digit code).
-  - `d`: district filter.
-  - `pnct=1`: show only PNCT parishes.
+- **Static data:** the app reads only `web/data/pnct.topo.json`, `web/data/shapes.json` (loaded when the first PNCT panel opens) and the OpenFreeMap "positron" basemap. There is no backend. Vite content-hashes both data files into `/assets/`.
+- **Shareable state:** the URL hash holds the view; see [URL parameters](#url-parameters).
 - **Property search:**
   - `src/links.ts` `getLinks(parish, concelho, options)` lazy-loads `data/shapes.json` on first use and caches it.
   - It returns `{label, url, description?, note?}` links: an Idealista polygon search for the parish, plus the municipality page when the whole concelho is PNCT.
   - The selector (Comprar/Arrendar, Terrenos/Casas/Prédios, land filters) persists in the hash (`op`, `t`, `land`) and in localStorage.
   - Unit tests: `npm test` (Vitest).
+
+#### URL parameters
+
+All state is in the hash, e.g. `https://pnct.singledev.eu/#map=10/41.79/-8.58&f=160763&focus=1`.
+
+| Parameter | Meaning |
+|---|---|
+| `map=zoom/lat/lng` | Map view, written by MapLibre after each camera move. Without it, the app frames mainland Portugal, or the selected parish or concelho. |
+| `f=<dicofre>` | Selected parish, 6 digits, e.g. `f=170810`. |
+| `c=<code>` | Selected concelho, 4 digits, e.g. `c=0808`. |
+| `d=<district>` | District filter, e.g. `d=Porto`. |
+| `focus=1` | Focus mode ("Only PNCT"). It's turned off, and removed from the URL, when the link targets a parish or concelho it would hide. |
+| `pnct=1` | Legacy name for `focus=1`; it's still read and rewritten to `focus=1`. |
+| `op=arrendar` | Property-search operation (default `comprar`, which is omitted). |
+| `t=casas` / `t=predios` | Property type (default `terrenos`, which is omitted). |
+| `land=urbano,urbanizavel,nao-urbanizavel` | Land filters, only for `terrenos`, comma-separated. |
+
+`op`, `t` and `land` are also remembered in `localStorage`; the hash wins when both are set.
 
 ### Idealista search shapes
 
