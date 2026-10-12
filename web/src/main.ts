@@ -1,6 +1,6 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
-import { AttributionControl, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapLayerMouseEvent } from "maplibre-gl";
+import { AttributionControl, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapLayerMouseEvent, type MapSourceDataEvent } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash } from "./hash";
@@ -223,6 +223,14 @@ function start(data: MapData): void {
     const current = selection?.kind === "parish" ? selection.dicofre : selection?.kind === "concelho" ? selection.code : null;
     if ((s.parish ?? s.concelho) !== current) restore(true);
   });
+
+  // data-parishes-loaded marks the first frame with the parish layer drawn (used by scripts/perf.mjs).
+  const onParishData = (e: MapSourceDataEvent) => {
+    if (e.sourceId !== PARISH_SOURCE || !map.isSourceLoaded(PARISH_SOURCE)) return;
+    map.off("sourcedata", onParishData);
+    map.once("render", () => (document.body.dataset.parishesLoaded = "true"));
+  };
+  map.on("sourcedata", onParishData);
 
   // data-ready / data-map-idle let the e2e tests wait for a settled map.
   map.on("movestart", () => (document.body.dataset.mapIdle = "false"));

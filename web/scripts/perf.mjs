@@ -2,8 +2,9 @@
 //
 // Profile per run: fresh Chromium + fresh context (cold cache, cache disabled), Pixel 7 device
 // emulation, DevTools "Fast 3G" (562.5 ms latency, 180000 B/s down, 84375 B/s up) and 4x CPU slowdown.
-// "ready" = body.dataset.ready === "true", set by the app on the first map idle after the parish
-// layers are added. Measured from navigation start via performance.now().
+// Two milestones, both from navigation start (performance.now()):
+//   parishes = body.dataset.parishesLoaded: first frame after the parish source has loaded (polygons drawn)
+//   ready    = body.dataset.ready: first full map idle (also waits for basemap tiles and label glyphs)
 //
 // Usage: node scripts/perf.mjs [--runs 3] [--url http://localhost:4173/] [--label baseline] [--out path.json]
 process.env.PLAYWRIGHT_BROWSERS_PATH ??= "0"; // Chromium lives in node_modules; must precede the import
@@ -26,21 +27,20 @@ const NETWORK = { offline: false, latency: 562.5, downloadThroughput: 180000, up
 const CPU_RATE = 4;
 const profile = { device: "Pixel 7", network: "Fast 3G", ...NETWORK, cpuThrottlingRate: CPU_RATE };
 
-// Runs in the page before any script: records when body.dataset.ready first becomes "true".
+// Runs in the page before any script: records when each milestone attribute first becomes "true".
 function installReadyObserver() {
   window.__perf = {};
   const check = () => {
-    if (window.__perf.ready === undefined && document.body?.dataset.ready === "true") {
-      window.__perf.ready = performance.now();
-      return true;
-    }
-    return false;
+    const d = document.body?.dataset ?? {};
+    if (window.__perf.parishes === undefined && d.parishesLoaded === "true") window.__perf.parishes = performance.now();
+    if (window.__perf.ready === undefined && d.ready === "true") window.__perf.ready = performance.now();
+    return window.__perf.parishes !== undefined && window.__perf.ready !== undefined;
   };
   const start = () => {
     if (check()) return;
     new MutationObserver((_, obs) => check() && obs.disconnect()).observe(document.body, {
       attributes: true,
-      attributeFilter: ["data-ready"],
+      attributeFilter: ["data-ready", "data-parishes-loaded"],
     });
   };
   if (document.body) start();
@@ -61,6 +61,7 @@ function collectTimings() {
   });
   return {
     ready_ms: window.__perf.ready,
+    parishes_ms: window.__perf.parishes,
     dcl_ms: nav.domContentLoadedEventEnd,
     load_ms: nav.loadEventEnd,
     entries: [nav, ...performance.getEntriesByType("resource")].map(pick),
@@ -81,7 +82,7 @@ async function runOnce(origin) {
   const browser = await chromium.launch({ channel: "chromium" });
   const errors = [];
   let timedOut = false;
-  let result = { ready_ms: null, dcl_ms: null, load_ms: null, resources: [], cdp_bytes: {}, requests: [] };
+  let result = { parishes_ms: null, ready_ms: null, dcl_ms: null, load_ms: null, resources: [], cdp_bytes: {}, requests: [] };
   try {
     const context = await browser.newContext({ ...devices["Pixel 7"] });
     const page = await context.newPage();
@@ -116,7 +117,7 @@ async function runOnce(origin) {
     await page.addInitScript(installReadyObserver);
     await page.goto(URL_, { waitUntil: "commit" });
     try {
-      await page.waitForFunction(() => window.__perf?.ready !== undefined, null, { timeout: TIMEOUT_MS });
+      await page.waitForFunction(() => window.__perf?.ready !== undefined && window.__perf?.parishes !== undefined, null, { timeout: TIMEOUT_MS });
     } catch {
       timedOut = true;
       errors.push(`timeout: not ready after ${TIMEOUT_MS / 1000}s`);
@@ -128,7 +129,7 @@ async function runOnce(origin) {
       name: e.name.startsWith(origin) ? e.name.slice(origin.length) || "/" : e.name,
       sameOrigin: e.name.startsWith(origin),
     }));
-    result = { ready_ms: t.ready_ms ?? null, dcl_ms: t.dcl_ms ?? null, load_ms: t.load_ms ?? null, resources, cdp_bytes: cdpBytes, requests: pwRequests };
+    result = { parishes_ms: t.parishes_ms ?? null, ready_ms: t.ready_ms ?? null, dcl_ms: t.dcl_ms ?? null, load_ms: t.load_ms ?? null, resources, cdp_bytes: cdpBytes, requests: pwRequests };
   } finally {
     await browser.close();
   }
@@ -158,23 +159,30 @@ if (!(await reachable(URL_))) {
 const origin = new URL(URL_).origin;
 
 console.log(`profile: ${JSON.stringify(profile)}\nurl: ${URL_}  label: ${args.label}\n`);
-console.log("run  ready_ms  dcl_ms  same KB (cdp)  cross KB (cdp)");
+console.log("run  parishes_ms  ready_ms  dcl_ms  same KB (cdp)  cross KB (cdp)");
 const runs = [];
 for (let i = 1; i <= RUNS; i++) {
   const r = await runOnce(origin);
   runs.push(r);
   console.log(
-    `${String(i).padEnd(4)} ${String(fmt(r.ready_ms)).padStart(8)} ${String(fmt(r.dcl_ms)).padStart(7)}  ` +
+    `${String(i).padEnd(4)} ${String(fmt(r.parishes_ms)).padStart(11)} ${String(fmt(r.ready_ms)).padStart(9)} ${String(fmt(r.dcl_ms)).padStart(7)}  ` +
       `${kb(r.transfer_same_origin).padStart(7)} (${kb(r.cdp_same_origin)})  ${kb(r.transfer_cross_origin).padStart(7)} (${kb(r.cdp_cross_origin)})` +
       `  tiles ${r.tiles.length} / ${kb(r.tiles.reduce((s, t) => s + (t.bytes ?? 0), 0))} KB` +
       (r.errors.length ? `  ERRORS: ${r.errors.length}` : ""),
   );
 }
 
-const done = runs.filter((r) => r.ready_ms != null).sort((a, b) => a.ready_ms - b.ready_ms);
-const median = done.length ? done[Math.floor((done.length - 1) / 2)] : null; // lower median for even counts
+const done = runs.filter((r) => r.ready_ms != null && r.parishes_ms != null).sort((a, b) => a.parishes_ms - b.parishes_ms);
+const median = done.length ? done[Math.floor((done.length - 1) / 2)] : null; // lower median for even counts; by parishes_ms
+const medianOf = (key) => {
+  const v = done.map((r) => r[key]).sort((a, b) => a - b);
+  return v.length ? v[Math.floor((v.length - 1) / 2)] : null;
+};
 if (median) {
-  console.log(`\nready_ms median ${fmt(median.ready_ms)}  min ${fmt(done[0].ready_ms)}  max ${fmt(done.at(-1).ready_ms)}`);
+  for (const key of ["parishes_ms", "ready_ms"]) {
+    const v = done.map((r) => r[key]);
+    console.log(`${key} median ${fmt(medianOf(key))}  min ${fmt(Math.min(...v))}  max ${fmt(Math.max(...v))}`);
+  }
   console.log(`\nTop same-origin resources (median run), transferSize / responseEnd:`);
   const top = median.resources.filter((r) => r.sameOrigin).sort((a, b) => b.transferSize - a.transferSize).slice(0, 10);
   for (const r of top) {
@@ -188,7 +196,7 @@ const failures = runs.flatMap((r, i) => r.errors.map((e) => `run ${i + 1}: ${e}`
 if (failures.length) console.error(`\nProblems:\n  ${failures.join("\n  ")}`);
 
 if (args.out) {
-  const json = { label: args.label, url: URL_, profile, runs, median_ready_ms: median?.ready_ms ?? null };
+  const json = { label: args.label, url: URL_, profile, runs, median_parishes_ms: medianOf("parishes_ms"), median_ready_ms: medianOf("ready_ms") };
   writeFileSync(args.out, JSON.stringify(json, null, 2));
   console.log(`\nwrote ${args.out}`);
 }
