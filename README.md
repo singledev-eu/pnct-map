@@ -97,6 +97,8 @@ Not committed (ignored, rebuilt by `make`):
 
 The link snapshot is `web/src/__snapshots__/links.sha256.json`. It holds a SHA-256 for every Idealista link the panel can show. It must stay at 0 differences. If a link change is intended, update it deliberately with `npx vitest run -u` (from `web/`) and review the diff.
 
+Playwright retries a failed test once. A test that passes only on the retry is reported as **flaky**: `npm run test:e2e`, `test:e2e:remote` and `deploy` then print a yellow warning with the first error and a `npx playwright show-trace …` command. It doesn't block a deploy, but a test that fails both attempts does. The e2e tests wait for the parish layer (`tests/e2e/helpers.ts`), not the basemap, except for screenshots. To check that, `E2E_SLOW_BASEMAP_MS=4000 npm run test:e2e` delays every tiles.openfreemap.org request by up to 4 s.
+
 For throttled load timing, start the preview server (`npm run preview` in one terminal), then run `node scripts/perf.mjs` from `web/` in another. Results from earlier runs are in `docs/perf/`.
 
 ## Deploy

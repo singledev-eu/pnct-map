@@ -1,13 +1,8 @@
-import { expect, test, type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test, trackErrors, waitForParishes, waitForParishView } from "./helpers";
 
 // Focus mode ("Only PNCT"): layer filters, hover/click, search, hash handling, district select.
 // The map is exposed as window.pnctMap (MapLibre Map); it is only inspected inside page.evaluate.
-declare global {
-  interface Window {
-    pnctMap: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  }
-}
-
 const AROUND_AMARANTE = "/#map=11/41.27/-8.07"; // PNCT and non-PNCT parishes in view
 const FREGIM = "130112"; // non-PNCT parish, Amarante (partly PNCT: 10 of 26)
 const VILARINHO = "170810"; // PNCT parish: Vilarinho dos Freires
@@ -15,36 +10,17 @@ const PARISH_LAYERS = ["parish-fill", "parish-line", "parish-highlight"];
 const PNCT_FILTER = ["==", ["get", "pnct"], true];
 const CONCELHO_FILTER = [">", ["get", "pnct_count"], 0];
 
-function trackErrors(page: Page): string[] {
-  const errors: string[] = [];
-  page.on("console", (msg) => {
-    if (msg.type() === "error") errors.push(msg.text());
-  });
-  page.on("pageerror", (err) => errors.push(err.message));
-  return errors;
-}
-
-async function waitForMap(page: Page): Promise<void> {
-  await expect(page.locator("body")).toHaveAttribute("data-ready", "true", { timeout: 30_000 });
-}
-
-async function waitForIdle(page: Page): Promise<void> {
-  // Let any camera animation start, then wait for MapLibre's idle event.
-  await page.waitForTimeout(250);
-  await expect(page.locator("body")).toHaveAttribute("data-map-idle", "true", { timeout: 30_000 });
-}
-
-/** Opens the app at `url` and waits until the map has settled. */
+/** Opens the app at `url` and waits until the parishes in view are drawn (not the basemap). */
 async function openMap(page: Page, url: string): Promise<void> {
   await page.goto(url);
-  await waitForMap(page);
-  await waitForIdle(page);
+  await waitForParishView(page);
 }
 
-/** Clicks the "Only PNCT" checkbox to `on` and waits for the filtered map to finish drawing. */
+/** Clicks the "Only PNCT" checkbox to `on` and waits until the filter is applied and the parish tiles have been re-drawn. */
 async function setFocus(page: Page, on: boolean): Promise<void> {
   await page.locator("#only-pnct").setChecked(on);
-  await waitForIdle(page);
+  await expect.poll(() => filterOf(page, "parish-fill")).toEqual(on ? PNCT_FILTER : undefined);
+  await waitForParishView(page);
 }
 
 const hash = (page: Page): string => new URL(page.url()).hash;
@@ -110,22 +86,23 @@ test("toggling focus mode hides non-PNCT fill and outlines", async ({ page }) =>
   await openMap(page, AROUND_AMARANTE);
 
   for (const id of [...PARISH_LAYERS, "concelho-line"]) expect(await filterOf(page, id), id).toBeUndefined();
-  expect(await renderedPnctFlags(page)).toContain(false);
+  await expect.poll(() => renderedPnctFlags(page)).toContain(false);
   await expect(page.locator(".legend-row-other")).toBeVisible();
 
   await setFocus(page, true);
   for (const id of PARISH_LAYERS) expect(await filterOf(page, id), id).toEqual(PNCT_FILTER);
   expect(await filterOf(page, "concelho-line")).toEqual(CONCELHO_FILTER);
-  const flags = await renderedPnctFlags(page);
-  expect(flags.length).toBeGreaterThan(0);
-  expect(flags).not.toContain(false);
+  await expect.poll(async () => {
+    const flags = await renderedPnctFlags(page);
+    return flags.length > 0 && !flags.includes(false);
+  }).toBe(true);
   expect(hash(page)).toContain("focus=1");
   await expect(page.locator("body")).toHaveClass(/focus-mode/);
   await expect(page.locator(".legend-row-other")).toBeHidden();
 
   await setFocus(page, false);
   for (const id of [...PARISH_LAYERS, "concelho-line"]) expect(await filterOf(page, id), id).toBeUndefined();
-  expect(await renderedPnctFlags(page)).toContain(false);
+  await expect.poll(() => renderedPnctFlags(page)).toContain(false);
   expect(hash(page)).not.toContain("focus=1");
   await expect(page.locator(".legend-row-other")).toBeVisible();
   expect(errors).toEqual([]);
@@ -172,7 +149,7 @@ test("hover and click on a non-PNCT parish are ignored in focus mode, and work a
 test("search excludes non-PNCT parishes and PNCT-less concelhos in focus mode", async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto("/");
-  await waitForMap(page);
+  await waitForParishes(page);
   const input = page.locator("#search-input");
 
   await input.fill("Fregim");
@@ -197,7 +174,7 @@ test("search excludes non-PNCT parishes and PNCT-less concelhos in focus mode", 
 test("a link to a non-PNCT parish with focus=1 opens with focus off", async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto(`/#f=${FREGIM}&focus=1`);
-  await waitForMap(page);
+  await waitForParishes(page);
   await expect(page.getByTestId("panel-title")).toHaveText("Fregim");
   await expect(page.locator("#only-pnct")).not.toBeChecked();
   expect(hash(page)).not.toContain("focus=1");
@@ -208,7 +185,7 @@ test("a link to a non-PNCT parish with focus=1 opens with focus off", async ({ p
 test("focus mode survives a reload", async ({ page }) => {
   const errors = trackErrors(page);
   const expectFocusOn = async () => {
-    await waitForMap(page);
+    await waitForParishes(page);
     await expect(page.locator("#only-pnct")).toBeChecked();
     await expect(page.locator("body")).toHaveClass(/focus-mode/);
     expect(await filterOf(page, "parish-fill")).toEqual(PNCT_FILTER);
@@ -230,7 +207,7 @@ test("focus mode survives a reload", async ({ page }) => {
 test("the district list disables Lisboa in focus mode and drops it from the hash", async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto("/#focus=1&d=Lisboa");
-  await waitForMap(page);
+  await waitForParishes(page);
   await expect(page.locator("#only-pnct")).toBeChecked();
   await expect(page.locator("#district-select")).toHaveValue("");
   expect(hash(page)).not.toMatch(/[#&]d=/);
@@ -244,7 +221,7 @@ test("the district list disables Lisboa in focus mode and drops it from the hash
 test("legacy #pnct=1 turns focus mode on and is rewritten to focus=1", async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto("/#pnct=1");
-  await waitForMap(page);
+  await waitForParishes(page);
   await expect(page.locator("#only-pnct")).toBeChecked();
   await expect(page.locator("body")).toHaveClass(/focus-mode/);
   expect(hash(page)).toContain("focus=1");

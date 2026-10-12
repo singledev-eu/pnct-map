@@ -1,4 +1,5 @@
-import { expect, test, type Locator, type Page } from "@playwright/test";
+import type { Locator } from "@playwright/test";
+import { expect, test, trackErrors, waitForParishes } from "./helpers";
 
 // The MapLibre attribution must never cover the legend on phones: compact (ⓘ) and collapsed by
 // default at ≤ 640 px, the full text one tap away, and the expanded text kept beside the legend.
@@ -14,19 +15,6 @@ const SHEET_CREDIT_LINKS: [string, string][] = [
   ["OpenStreetMap", "https://www.openstreetmap.org/copyright"],
 ];
 
-function trackErrors(page: Page): string[] {
-  const errors: string[] = [];
-  page.on("console", (msg) => {
-    if (msg.type() === "error") errors.push(msg.text());
-  });
-  page.on("pageerror", (err) => errors.push(err.message));
-  return errors;
-}
-
-async function waitForMap(page: Page): Promise<void> {
-  await expect(page.locator("body")).toHaveAttribute("data-ready", "true", { timeout: 30_000 });
-}
-
 async function expectApart(a: Locator, b: Locator): Promise<void> {
   const [ra, rb] = [await a.boundingBox(), await b.boundingBox()];
   expect(ra, "first element visible").not.toBeNull();
@@ -39,7 +27,9 @@ async function expectApart(a: Locator, b: Locator): Promise<void> {
 async function expectAttributionContent(attribution: Locator): Promise<void> {
   const inner = attribution.locator(".maplibregl-ctrl-attrib-inner");
   await expect(inner).toBeVisible();
-  await expect(inner).toHaveText(ATTRIBUTION_TEXT);
+  // The OpenFreeMap/OpenMapTiles/OSM part comes from the basemap's TileJSON, so allow it the same
+  // time as the other map waits; basemap tiles and glyphs are not needed.
+  await expect(inner).toHaveText(ATTRIBUTION_TEXT, { timeout: 30_000 });
   const hrefs = await inner.locator("a").evaluateAll((links) => links.map((a) => (a as HTMLAnchorElement).href));
   expect(hrefs).toEqual(ATTRIBUTION_LINKS);
 }
@@ -50,7 +40,7 @@ test.describe("phone portrait (390×844)", () => {
   test("attribution is compact and collapsed, expands on tap, and never covers the legend", async ({ page }) => {
     const errors = trackErrors(page);
     await page.goto("/");
-    await waitForMap(page);
+    await waitForParishes(page);
 
     const attribution = page.locator(".maplibregl-ctrl-attrib");
     const legend = page.locator(".legend");
@@ -97,7 +87,7 @@ test.describe("phone landscape (844×390)", () => {
   test("the full attribution line stays clear of the legend, also with the panel open", async ({ page }) => {
     const errors = trackErrors(page);
     await page.goto("/#f=170810");
-    await waitForMap(page);
+    await waitForParishes(page);
     await expect(page.getByTestId("panel")).toBeVisible();
 
     const attribution = page.locator(".maplibregl-ctrl-attrib");

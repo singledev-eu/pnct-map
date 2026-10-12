@@ -10,10 +10,16 @@ export default defineConfig({
   expect: { timeout: 15_000 },
   fullyParallel: false,
   workers: 1,
-  reporter: [["list"]],
+  // One retry, so a one-off timeout doesn't block a deploy. A test that passes only on the retry is
+  // reported as "flaky": the list reporter counts it, and scripts/e2e-flaky-report.mjs (run after
+  // the tests by npm run test:e2e / test:e2e:remote / deploy) prints a warning with its trace.
+  // A test that fails both attempts still fails the run. (--fail-on-flaky-tests would also fail on
+  // flaky tests; deliberately not used.)
+  retries: 1,
+  reporter: [["list"], ["json", { outputFile: "playwright-report/e2e-results.json" }]],
   use: {
     baseURL: remote ?? "http://localhost:4173/",
-    trace: "retain-on-failure",
+    trace: "on-first-retry",
   },
   projects: [
     {

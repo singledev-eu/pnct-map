@@ -1,42 +1,16 @@
-import { expect, test, type Page } from "@playwright/test";
 import { fileURLToPath } from "node:url";
 import { parseShapeParam } from "../../src/idealista";
+import { expect, hashZoom, searchAndPick, test, trackErrors, waitForFullIdle, waitForParishes, waitForParishView } from "./helpers";
 
 // Screenshots go to the ignored test-results/ folder (cleared by Playwright on each run), so tests
 // never dirty the tree. docs/screenshots/ holds hand-picked copies for the docs.
 const SHOTS = fileURLToPath(new URL("../../test-results/screenshots/", import.meta.url));
 
-function trackErrors(page: Page): string[] {
-  const errors: string[] = [];
-  page.on("console", (msg) => {
-    if (msg.type() === "error") errors.push(msg.text());
-  });
-  page.on("pageerror", (err) => errors.push(err.message));
-  return errors;
-}
-
-async function waitForMap(page: Page): Promise<void> {
-  await expect(page.locator("body")).toHaveAttribute("data-ready", "true", { timeout: 30_000 });
-}
-
-async function waitForIdle(page: Page): Promise<void> {
-  // Let any camera animation start, then wait for MapLibre's idle event.
-  await page.waitForTimeout(250);
-  await expect(page.locator("body")).toHaveAttribute("data-map-idle", "true", { timeout: 30_000 });
-}
-
-async function searchAndPick(page: Page, query: string, optionText: RegExp): Promise<void> {
-  const input = page.locator("#search-input");
-  await input.fill(query);
-  await page.getByRole("option").filter({ hasText: optionText }).first().click();
-}
-
 test("map loads without console errors", async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto("/");
-  await waitForMap(page);
   await expect(page.locator("#map canvas")).toBeVisible();
-  await waitForIdle(page);
+  await waitForFullIdle(page); // screenshot: needs the basemap
   await page.screenshot({ path: `${SHOTS}desktop-national.png` });
   expect(errors).toEqual([]);
 });
@@ -44,7 +18,7 @@ test("map loads without console errors", async ({ page }) => {
 test("searching Loulé selects the concelho with 6 PNCT parishes", async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto("/");
-  await waitForMap(page);
+  await waitForParishes(page);
   await searchAndPick(page, "Loulé", /Concelho/);
 
   const panel = page.getByTestId("panel");
@@ -60,7 +34,7 @@ test("searching Loulé selects the concelho with 6 PNCT parishes", async ({ page
 test("selecting 130740 opens Várzea, Aliviada e Folhada and survives a reload", async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto("/");
-  await waitForMap(page);
+  await waitForParishes(page);
   await searchAndPick(page, "Várzea, Aliviada", /Marco de Canaveses/);
 
   const panel = page.getByTestId("panel");
@@ -68,12 +42,12 @@ test("selecting 130740 opens Várzea, Aliviada e Folhada and survives a reload",
   await expect(panel).toContainText("130740");
   await expect(panel.getByTestId("pnct-status")).toHaveText("PNCT territory");
   await expect(page).toHaveURL(/[#&]f=130740(&|$)/);
-  await waitForIdle(page);
+  await waitForParishView(page); // the fly-to has finished
   await expect(page).toHaveURL(/map=/);
 
   const before = new URL(page.url()).hash;
   await page.reload();
-  await waitForMap(page);
+  await waitForParishView(page);
   await expect(page.getByTestId("panel").getByTestId("panel-title")).toHaveText("Várzea, Aliviada e Folhada");
   // The restored map view matches the shared one.
   const mapParam = (hash: string) => new URLSearchParams(hash.slice(1)).get("map");
@@ -84,7 +58,7 @@ test("selecting 130740 opens Várzea, Aliviada e Folhada and survives a reload",
 test("130740 gets an Idealista polygon link that follows the search selector", async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto("/#f=130740");
-  await waitForMap(page);
+  await waitForParishes(page);
   const panel = page.getByTestId("panel");
   await expect(panel.getByTestId("panel-title")).toHaveText("Várzea, Aliviada e Folhada");
 
@@ -124,14 +98,14 @@ test("130740 gets an Idealista polygon link that follows the search selector", a
 
   // The selector survives a reload via the hash.
   await page.reload();
-  await waitForMap(page);
+  await waitForParishes(page);
   await expect(page.getByTestId("property-link").first()).toHaveAttribute("href", /\/areas\/arrendar-casas\/mapa-google/);
   expect(errors).toEqual([]);
 });
 
 test("whole-PNCT concelho shows the municipality link; non-PNCT parish shows none", async ({ page }) => {
   await page.goto("/#f=010402"); // Alvarenga, Arouca: the whole concelho is PNCT
-  await waitForMap(page);
+  await waitForParishes(page);
   const panel = page.getByTestId("panel");
   await expect(panel.getByTestId("panel-title")).toHaveText("Alvarenga");
   await expect(panel.getByTestId("property-link")).toHaveCount(2);
@@ -147,7 +121,7 @@ test("whole-PNCT concelho shows the municipality link; non-PNCT parish shows non
 
   await page.goto("/#f=110601"); // Ajuda, Lisboa: not PNCT
   await page.reload();
-  await waitForMap(page);
+  await waitForParishes(page);
   await expect(panel.getByTestId("panel-title")).toHaveText("Ajuda");
   await expect(panel.getByTestId("property-link")).toHaveCount(0);
   await expect(panel.getByTestId("property-search")).toContainText("isn't in the PNCT list");
@@ -155,19 +129,17 @@ test("whole-PNCT concelho shows the municipality link; non-PNCT parish shows non
 
 test("a parish link with only a dicofre in the hash opens and frames it", async ({ page }) => {
   await page.goto("/#f=130740");
-  await waitForMap(page);
+  await waitForParishes(page);
   await expect(page.getByTestId("panel").getByTestId("panel-title")).toHaveText("Várzea, Aliviada e Folhada");
-  await waitForIdle(page);
-  const zoom = Number(new URLSearchParams(new URL(page.url()).hash.slice(1)).get("map")?.split("/")[0]);
-  expect(zoom).toBeGreaterThan(10);
+  await expect.poll(() => hashZoom(page)).toBeGreaterThan(10);
 });
 
 test("clicking a parish on the map selects it (Ponte de Lima screenshot)", async ({ page }) => {
   await page.goto("/");
-  await waitForMap(page);
+  await waitForParishes(page);
   await searchAndPick(page, "Gaifar", /Ponte de Lima/);
   await expect(page.getByTestId("panel-title")).toHaveText("Gaifar");
-  await waitForIdle(page);
+  await waitForParishView(page); // fitBounds finished and Gaifar's tiles loaded before clicking a pixel
 
   // Close the panel (camera stays), then click where fitBounds centred the parish:
   // the middle of the padded area {top: 80, left: 40, bottom: 40, right: 400}.
@@ -179,7 +151,7 @@ test("clicking a parish on the map selects it (Ponte de Lima screenshot)", async
 
   await page.mouse.move(1250, 600); // over the panel: no hover state, no tooltip
   await expect(page.locator("#tooltip")).toBeHidden();
-  await waitForIdle(page);
+  await waitForFullIdle(page); // screenshot: needs the basemap
   await page.screenshot({ path: `${SHOTS}desktop-ponte-de-lima.png` });
 });
 
@@ -189,14 +161,14 @@ test.describe("mobile", () => {
   test("screenshot: bottom sheet open", async ({ page }) => {
     const errors = trackErrors(page);
     await page.goto("/#f=160763");
-    await waitForMap(page);
+    await waitForParishes(page);
     const panel = page.getByTestId("panel");
     await expect(panel.getByTestId("panel-title")).toHaveText("Vilar das Almas");
     const box = await panel.boundingBox();
     expect(box && box.y > 844 / 3).toBeTruthy();
     await expect(panel.locator(".sheet-credit")).toBeVisible();
     await expect(panel.locator(".sheet-credit")).toContainText("CC BY 4.0");
-    await waitForIdle(page);
+    await waitForFullIdle(page); // screenshot: needs the basemap
     await page.screenshot({ path: `${SHOTS}mobile-panel.png` });
     expect(errors).toEqual([]);
   });
