@@ -48,13 +48,26 @@ const map = new MapLibreMap({
 });
 map.touchZoomRotate.disableRotation();
 map.addControl(new NavigationControl({ showCompass: false }), "bottom-right");
-map.addControl(
-  new AttributionControl({
-    compact: true,
-    customAttribution: "Boundaries: CAOP 2025 © DGT (CC BY 4.0)",
-  }),
-  "bottom-right",
-);
+// No `compact` option: MapLibre shows the full line on wide maps and the compact ⓘ button at
+// ≤ 640 px. It opens the compact view on load, so start it collapsed; the text is one tap away.
+map.addControl(new AttributionControl({ customAttribution: "Boundaries: CAOP 2025 © DGT (CC BY 4.0)" }), "bottom-right");
+const attribution = map.getContainer().querySelector<HTMLElement>(".maplibregl-ctrl-attrib")!;
+const isCompact = () => attribution.classList.contains("maplibregl-compact");
+const collapseAttribution = () => attribution.classList.remove("maplibregl-compact-show"); // as MapLibre does on drag
+collapseAttribution();
+let wasCompact = isCompact();
+map.on("resize", () => {
+  // Rotating or resizing into the compact layout re-opens it; keep it collapsed.
+  if (isCompact() && !wasCompact) collapseAttribution();
+  wasCompact = isCompact();
+});
+
+// The attribution shares the bottom edge with the legend. style.css limits its width to the
+// space right of the legend, so the expanded text wraps upwards instead of covering it.
+const legendEl = document.querySelector<HTMLElement>(".legend")!;
+const trackLegend = () => document.documentElement.style.setProperty("--legend-right", `${Math.ceil(legendEl.getBoundingClientRect().right)}px`);
+new ResizeObserver(trackLegend).observe(legendEl);
+window.addEventListener("resize", trackLegend);
 
 type Selection = { kind: "parish"; dicofre: string } | { kind: "concelho"; code: string } | null;
 

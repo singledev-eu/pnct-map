@@ -413,6 +413,15 @@ select {
 
 /* ---- legend ---------------------------------------------------------------- */
 
+/* Keep the bottom-right attribution (full line, or the expanded compact view) clear of the
+   legend in the bottom-left: --legend-right is the legend's right edge, set in main.ts;
+   --controls-right is how far the controls are pushed left by the open side panel.
+   10px is MapLibre's control margin, 8px the gap to the legend. */
+.maplibregl-ctrl-bottom-right .maplibregl-ctrl-attrib {
+  box-sizing: border-box; /* MapLibre pads it; include that in the limit */
+  max-width: calc(100vw - var(--controls-right, 0px) - var(--legend-right, 0px) - 10px - 8px);
+}
+
 .legend {
   position: absolute;
   z-index: 5;
@@ -559,8 +568,17 @@ dialog a {
 
 /* Keep attribution and zoom controls clear of the open side panel. */
 @media (min-width: 641px) {
+  .panel-open {
+    --controls-right: 384px;
+  }
+
   .panel-open .maplibregl-ctrl-bottom-right {
-    right: 384px;
+    right: var(--controls-right);
+  }
+
+  /* Same for the toolbar: on short landscape phones it would otherwise run under the panel. */
+  .panel-open .toolbar {
+    max-width: calc(100% - var(--controls-right) - 24px);
   }
 }
 
