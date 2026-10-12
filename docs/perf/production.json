@@ -1,0 +1,1394 @@
+{
+  "label": "production",
+  "url": "https://pnct.singledev.eu/",
+  "profile": {
+    "device": "Pixel 7",
+    "network": "Fast 3G",
+    "offline": false,
+    "latency": 562.5,
+    "downloadThroughput": 180000,
+    "uploadThroughput": 84375,
+    "cpuThrottlingRate": 4
+  },
+  "runs": [
+    {
+      "parishes_ms": 7603.300000011921,
+      "ready_ms": 12399.40000000596,
+      "dcl_ms": 4524.699999988079,
+      "load_ms": 4542.699999988079,
+      "resources": [
+        {
+          "name": "/",
+          "transferSize": 2107,
+          "encodedBodySize": 1807,
+          "decodedBodySize": 5875,
+          "startTime": 0,
+          "responseEnd": 620,
+          "initiatorType": "navigation",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/pnct.topo-BHDbcw4T.json",
+          "transferSize": 531478,
+          "encodedBodySize": 531178,
+          "decodedBodySize": 1809940,
+          "startTime": 624,
+          "responseEnd": 7028,
+          "initiatorType": "link",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/index-DSW3RBUi.js",
+          "transferSize": 281511,
+          "encodedBodySize": 281211,
+          "decodedBodySize": 1045980,
+          "startTime": 624,
+          "responseEnd": 4404,
+          "initiatorType": "script",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/index-Cqj1v18x.css",
+          "transferSize": 12453,
+          "encodedBodySize": 12153,
+          "decodedBodySize": 91633,
+          "startTime": 625,
+          "responseEnd": 1395,
+          "initiatorType": "link",
+          "sameOrigin": true
+        },
+        {
+          "name": "https://tiles.openfreemap.org/styles/positron",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 4524,
+          "responseEnd": 5204,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "/favicon.svg",
+          "transferSize": 404,
+          "encodedBodySize": 104,
+          "decodedBodySize": 131,
+          "startTime": 4546,
+          "responseEnd": 5128,
+          "initiatorType": "other",
+          "sameOrigin": true
+        },
+        {
+          "name": "/favicon.svg",
+          "transferSize": 404,
+          "encodedBodySize": 104,
+          "decodedBodySize": 131,
+          "startTime": 4762,
+          "responseEnd": 5345,
+          "initiatorType": "other",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/maplibre-gl-worker-DYiEsT8h.js",
+          "transferSize": 143346,
+          "encodedBodySize": 143046,
+          "decodedBodySize": 509725,
+          "startTime": 5048,
+          "responseEnd": 7103,
+          "initiatorType": "other",
+          "sameOrigin": true
+        },
+        {
+          "name": "https://tiles.openfreemap.org/planet",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 5239,
+          "responseEnd": 5862,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.json",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 5240,
+          "responseEnd": 5905,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.png",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 5243,
+          "responseEnd": 7345,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9073,
+          "responseEnd": 12145,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9074,
+          "responseEnd": 12236,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9074,
+          "responseEnd": 12344,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9074,
+          "responseEnd": 11770,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9074,
+          "responseEnd": 11820,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9074,
+          "responseEnd": 12195,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9074,
+          "responseEnd": 12336,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9075,
+          "responseEnd": 12271,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9075,
+          "responseEnd": 12328,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9075,
+          "responseEnd": 11979,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9075,
+          "responseEnd": 12321,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        }
+      ],
+      "cdp_bytes": {
+        "https://pnct.singledev.eu/": 2680,
+        "https://pnct.singledev.eu/assets/index-Cqj1v18x.css": 13048,
+        "https://pnct.singledev.eu/assets/index-DSW3RBUi.js": 282146,
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2229%22%20height%3D%2229%22%20fill%3D%22%23333%22%20viewBox%3D%220%200%2029%2029%22%3E%3Cpath%20d%3D%22M14.5%208.5c-.75%200-1.5.75-1.5%201.5v3h-3c-.75%200-1.5.75-1.5%201.5S9.25%2016%2010%2016h3v3c0%20.75.75%201.5%201.5%201.5S16%2019.75%2016%2019v-3h3c.75%200%201.5-.75%201.5-1.5S19.75%2013%2019%2013h-3v-3c0-.75-.75-1.5-1.5-1.5%22%2F%3E%3C%2Fsvg%3E": 0,
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2229%22%20height%3D%2229%22%20fill%3D%22%23333%22%20viewBox%3D%220%200%2029%2029%22%3E%3Cpath%20d%3D%22M10%2013c-.75%200-1.5.75-1.5%201.5S9.25%2016%2010%2016h9c.75%200%201.5-.75%201.5-1.5S19.75%2013%2019%2013z%22%2F%3E%3C%2Fsvg%3E": 0,
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20fill-rule%3D%22evenodd%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20d%3D%22M4%2010a6%206%200%201%200%2012%200%206%206%200%201%200-12%200m5-3a1%201%200%201%200%202%200%201%201%200%201%200-2%200m0%203a1%201%200%201%201%202%200v3a1%201%200%201%201-2%200%22%2F%3E%3C%2Fsvg%3E": 0,
+        "https://pnct.singledev.eu/favicon.svg": 1970,
+        "https://tiles.openfreemap.org/styles/positron": 4160,
+        "https://tiles.openfreemap.org/planet": 2399,
+        "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.json": 4056,
+        "https://pnct.singledev.eu/assets/pnct.topo-BHDbcw4T.json": 532483,
+        "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.png": 119483,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf": 35512,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf": 35509,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf": 38188,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf": 43207,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf": 43817,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf": 43819,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf": 45573,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf": 47078,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf": 48180,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf": 48175,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf": 48178
+      },
+      "requests": [
+        {
+          "url": "https://pnct.singledev.eu/",
+          "end_ms": 634,
+          "bytes": 2680
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/index-Cqj1v18x.css",
+          "end_ms": 1403,
+          "bytes": 13048
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/index-DSW3RBUi.js",
+          "end_ms": 4417,
+          "bytes": 282146
+        },
+        {
+          "url": "https://pnct.singledev.eu/favicon.svg",
+          "end_ms": 5137,
+          "bytes": 985
+        },
+        {
+          "url": "https://tiles.openfreemap.org/styles/positron",
+          "end_ms": 5211,
+          "bytes": 4160
+        },
+        {
+          "url": "https://pnct.singledev.eu/favicon.svg",
+          "end_ms": 5354,
+          "bytes": 985
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet",
+          "end_ms": 5869,
+          "bytes": 2399
+        },
+        {
+          "url": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.json",
+          "end_ms": 5911,
+          "bytes": 4056
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/pnct.topo-BHDbcw4T.json",
+          "end_ms": 7067,
+          "bytes": 532483
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/maplibre-gl-worker-DYiEsT8h.js",
+          "end_ms": 7116,
+          "bytes": 867
+        },
+        {
+          "url": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.png",
+          "end_ms": 7414,
+          "bytes": 119483
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/25.pbf",
+          "end_ms": 9068,
+          "bytes": 64315
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/23.pbf",
+          "end_ms": 9518,
+          "bytes": 104148
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/24.pbf",
+          "end_ms": 9567,
+          "bytes": 112178
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf",
+          "end_ms": 11776,
+          "bytes": 35512
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf",
+          "end_ms": 11826,
+          "bytes": 35509
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf",
+          "end_ms": 11985,
+          "bytes": 38188
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf",
+          "end_ms": 12151,
+          "bytes": 43207
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf",
+          "end_ms": 12202,
+          "bytes": 43817
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf",
+          "end_ms": 12242,
+          "bytes": 43819
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf",
+          "end_ms": 12277,
+          "bytes": 45573
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf",
+          "end_ms": 12327,
+          "bytes": 47078
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf",
+          "end_ms": 12335,
+          "bytes": 48180
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf",
+          "end_ms": 12343,
+          "bytes": 48175
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf",
+          "end_ms": 12351,
+          "bytes": 48178
+        }
+      ],
+      "transfer_same_origin": 971703,
+      "transfer_cross_origin": 0,
+      "cdp_same_origin": 832327,
+      "cdp_cross_origin": 607334,
+      "cdp_total": 1439661,
+      "tiles": [
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/25.pbf",
+          "end_ms": 9068,
+          "bytes": 64315
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/23.pbf",
+          "end_ms": 9518,
+          "bytes": 104148
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/24.pbf",
+          "end_ms": 9567,
+          "bytes": 112178
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf",
+          "end_ms": 11776,
+          "bytes": 35512
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf",
+          "end_ms": 11826,
+          "bytes": 35509
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf",
+          "end_ms": 11985,
+          "bytes": 38188
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf",
+          "end_ms": 12151,
+          "bytes": 43207
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf",
+          "end_ms": 12202,
+          "bytes": 43817
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf",
+          "end_ms": 12242,
+          "bytes": 43819
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf",
+          "end_ms": 12277,
+          "bytes": 45573
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf",
+          "end_ms": 12327,
+          "bytes": 47078
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf",
+          "end_ms": 12335,
+          "bytes": 48180
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf",
+          "end_ms": 12343,
+          "bytes": 48175
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf",
+          "end_ms": 12351,
+          "bytes": 48178
+        }
+      ],
+      "errors": [],
+      "timedOut": false
+    },
+    {
+      "parishes_ms": 7602.300000011921,
+      "ready_ms": 12401.40000000596,
+      "dcl_ms": 4515.300000011921,
+      "load_ms": 4532.9000000059605,
+      "resources": [
+        {
+          "name": "/",
+          "transferSize": 2107,
+          "encodedBodySize": 1807,
+          "decodedBodySize": 5875,
+          "startTime": 0,
+          "responseEnd": 611,
+          "initiatorType": "navigation",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/pnct.topo-BHDbcw4T.json",
+          "transferSize": 531497,
+          "encodedBodySize": 531197,
+          "decodedBodySize": 1809940,
+          "startTime": 616,
+          "responseEnd": 7019,
+          "initiatorType": "link",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/index-DSW3RBUi.js",
+          "transferSize": 281511,
+          "encodedBodySize": 281211,
+          "decodedBodySize": 1045980,
+          "startTime": 616,
+          "responseEnd": 4394,
+          "initiatorType": "script",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/index-Cqj1v18x.css",
+          "transferSize": 12453,
+          "encodedBodySize": 12153,
+          "decodedBodySize": 91633,
+          "startTime": 616,
+          "responseEnd": 1395,
+          "initiatorType": "link",
+          "sameOrigin": true
+        },
+        {
+          "name": "https://tiles.openfreemap.org/styles/positron",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 4513,
+          "responseEnd": 5194,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "/favicon.svg",
+          "transferSize": 404,
+          "encodedBodySize": 104,
+          "decodedBodySize": 131,
+          "startTime": 4536,
+          "responseEnd": 5120,
+          "initiatorType": "other",
+          "sameOrigin": true
+        },
+        {
+          "name": "/favicon.svg",
+          "transferSize": 404,
+          "encodedBodySize": 104,
+          "decodedBodySize": 131,
+          "startTime": 4751,
+          "responseEnd": 5337,
+          "initiatorType": "other",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/maplibre-gl-worker-DYiEsT8h.js",
+          "transferSize": 143346,
+          "encodedBodySize": 143046,
+          "decodedBodySize": 509725,
+          "startTime": 5038,
+          "responseEnd": 7094,
+          "initiatorType": "other",
+          "sameOrigin": true
+        },
+        {
+          "name": "https://tiles.openfreemap.org/planet",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 5228,
+          "responseEnd": 5853,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.json",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 5229,
+          "responseEnd": 5894,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.png",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 5233,
+          "responseEnd": 7335,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9073,
+          "responseEnd": 12126,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9073,
+          "responseEnd": 12236,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9073,
+          "responseEnd": 12327,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9073,
+          "responseEnd": 11777,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9073,
+          "responseEnd": 11794,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9073,
+          "responseEnd": 12336,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9073,
+          "responseEnd": 12244,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9073,
+          "responseEnd": 12344,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9074,
+          "responseEnd": 11961,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9074,
+          "responseEnd": 12277,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9074,
+          "responseEnd": 12294,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        }
+      ],
+      "cdp_bytes": {
+        "https://pnct.singledev.eu/": 2680,
+        "https://pnct.singledev.eu/assets/index-Cqj1v18x.css": 13051,
+        "https://pnct.singledev.eu/assets/index-DSW3RBUi.js": 282144,
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2229%22%20height%3D%2229%22%20fill%3D%22%23333%22%20viewBox%3D%220%200%2029%2029%22%3E%3Cpath%20d%3D%22M14.5%208.5c-.75%200-1.5.75-1.5%201.5v3h-3c-.75%200-1.5.75-1.5%201.5S9.25%2016%2010%2016h3v3c0%20.75.75%201.5%201.5%201.5S16%2019.75%2016%2019v-3h3c.75%200%201.5-.75%201.5-1.5S19.75%2013%2019%2013h-3v-3c0-.75-.75-1.5-1.5-1.5%22%2F%3E%3C%2Fsvg%3E": 0,
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2229%22%20height%3D%2229%22%20fill%3D%22%23333%22%20viewBox%3D%220%200%2029%2029%22%3E%3Cpath%20d%3D%22M10%2013c-.75%200-1.5.75-1.5%201.5S9.25%2016%2010%2016h9c.75%200%201.5-.75%201.5-1.5S19.75%2013%2019%2013z%22%2F%3E%3C%2Fsvg%3E": 0,
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20fill-rule%3D%22evenodd%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20d%3D%22M4%2010a6%206%200%201%200%2012%200%206%206%200%201%200-12%200m5-3a1%201%200%201%200%202%200%201%201%200%201%200-2%200m0%203a1%201%200%201%201%202%200v3a1%201%200%201%201-2%200%22%2F%3E%3C%2Fsvg%3E": 0,
+        "https://pnct.singledev.eu/favicon.svg": 1970,
+        "https://tiles.openfreemap.org/styles/positron": 4155,
+        "https://tiles.openfreemap.org/planet": 2401,
+        "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.json": 4059,
+        "https://pnct.singledev.eu/assets/pnct.topo-BHDbcw4T.json": 532510,
+        "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.png": 119470,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf": 35516,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf": 35510,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf": 38187,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf": 43207,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf": 43819,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf": 43818,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf": 45570,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf": 47072,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf": 48170,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf": 48175,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf": 48181
+      },
+      "requests": [
+        {
+          "url": "https://pnct.singledev.eu/",
+          "end_ms": 625,
+          "bytes": 2680
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/index-Cqj1v18x.css",
+          "end_ms": 1401,
+          "bytes": 13051
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/index-DSW3RBUi.js",
+          "end_ms": 4406,
+          "bytes": 282144
+        },
+        {
+          "url": "https://pnct.singledev.eu/favicon.svg",
+          "end_ms": 5128,
+          "bytes": 985
+        },
+        {
+          "url": "https://tiles.openfreemap.org/styles/positron",
+          "end_ms": 5200,
+          "bytes": 4155
+        },
+        {
+          "url": "https://pnct.singledev.eu/favicon.svg",
+          "end_ms": 5345,
+          "bytes": 985
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet",
+          "end_ms": 5860,
+          "bytes": 2401
+        },
+        {
+          "url": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.json",
+          "end_ms": 5900,
+          "bytes": 4059
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/pnct.topo-BHDbcw4T.json",
+          "end_ms": 7056,
+          "bytes": 532510
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/maplibre-gl-worker-DYiEsT8h.js",
+          "end_ms": 7107,
+          "bytes": 867
+        },
+        {
+          "url": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.png",
+          "end_ms": 7400,
+          "bytes": 119470
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/25.pbf",
+          "end_ms": 9066,
+          "bytes": 64319
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/23.pbf",
+          "end_ms": 9508,
+          "bytes": 104151
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/24.pbf",
+          "end_ms": 9558,
+          "bytes": 112173
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf",
+          "end_ms": 11783,
+          "bytes": 35516
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf",
+          "end_ms": 11799,
+          "bytes": 35510
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf",
+          "end_ms": 11966,
+          "bytes": 38187
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf",
+          "end_ms": 12133,
+          "bytes": 43207
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf",
+          "end_ms": 12242,
+          "bytes": 43819
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf",
+          "end_ms": 12254,
+          "bytes": 43818
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf",
+          "end_ms": 12283,
+          "bytes": 45570
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf",
+          "end_ms": 12299,
+          "bytes": 47072
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf",
+          "end_ms": 12333,
+          "bytes": 48170
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf",
+          "end_ms": 12342,
+          "bytes": 48175
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf",
+          "end_ms": 12350,
+          "bytes": 48181
+        }
+      ],
+      "transfer_same_origin": 971722,
+      "transfer_cross_origin": 0,
+      "cdp_same_origin": 832355,
+      "cdp_cross_origin": 607310,
+      "cdp_total": 1439665,
+      "tiles": [
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/25.pbf",
+          "end_ms": 9066,
+          "bytes": 64319
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/23.pbf",
+          "end_ms": 9508,
+          "bytes": 104151
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/24.pbf",
+          "end_ms": 9558,
+          "bytes": 112173
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf",
+          "end_ms": 11783,
+          "bytes": 35516
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf",
+          "end_ms": 11799,
+          "bytes": 35510
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf",
+          "end_ms": 11966,
+          "bytes": 38187
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf",
+          "end_ms": 12133,
+          "bytes": 43207
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf",
+          "end_ms": 12242,
+          "bytes": 43819
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf",
+          "end_ms": 12254,
+          "bytes": 43818
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf",
+          "end_ms": 12283,
+          "bytes": 45570
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf",
+          "end_ms": 12299,
+          "bytes": 47072
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf",
+          "end_ms": 12333,
+          "bytes": 48170
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf",
+          "end_ms": 12342,
+          "bytes": 48175
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf",
+          "end_ms": 12350,
+          "bytes": 48181
+        }
+      ],
+      "errors": [],
+      "timedOut": false
+    },
+    {
+      "parishes_ms": 7618,
+      "ready_ms": 12420,
+      "dcl_ms": 4527,
+      "load_ms": 4545.0999999940395,
+      "resources": [
+        {
+          "name": "/",
+          "transferSize": 2107,
+          "encodedBodySize": 1807,
+          "decodedBodySize": 5875,
+          "startTime": 0,
+          "responseEnd": 616,
+          "initiatorType": "navigation",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/pnct.topo-BHDbcw4T.json",
+          "transferSize": 532181,
+          "encodedBodySize": 531881,
+          "decodedBodySize": 1809940,
+          "startTime": 621,
+          "responseEnd": 7043,
+          "initiatorType": "link",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/index-DSW3RBUi.js",
+          "transferSize": 281511,
+          "encodedBodySize": 281211,
+          "decodedBodySize": 1045980,
+          "startTime": 622,
+          "responseEnd": 4409,
+          "initiatorType": "script",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/index-Cqj1v18x.css",
+          "transferSize": 12453,
+          "encodedBodySize": 12153,
+          "decodedBodySize": 91633,
+          "startTime": 622,
+          "responseEnd": 1401,
+          "initiatorType": "link",
+          "sameOrigin": true
+        },
+        {
+          "name": "https://tiles.openfreemap.org/styles/positron",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 4525,
+          "responseEnd": 5209,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "/favicon.svg",
+          "transferSize": 404,
+          "encodedBodySize": 104,
+          "decodedBodySize": 131,
+          "startTime": 4549,
+          "responseEnd": 5133,
+          "initiatorType": "other",
+          "sameOrigin": true
+        },
+        {
+          "name": "/favicon.svg",
+          "transferSize": 404,
+          "encodedBodySize": 104,
+          "decodedBodySize": 131,
+          "startTime": 4764,
+          "responseEnd": 5349,
+          "initiatorType": "other",
+          "sameOrigin": true
+        },
+        {
+          "name": "/assets/maplibre-gl-worker-DYiEsT8h.js",
+          "transferSize": 143346,
+          "encodedBodySize": 143046,
+          "decodedBodySize": 509725,
+          "startTime": 5045,
+          "responseEnd": 7108,
+          "initiatorType": "other",
+          "sameOrigin": true
+        },
+        {
+          "name": "https://tiles.openfreemap.org/planet",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 5243,
+          "responseEnd": 5876,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.json",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 5243,
+          "responseEnd": 5909,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.png",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 5247,
+          "responseEnd": 7349,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9096,
+          "responseEnd": 12150,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9096,
+          "responseEnd": 12224,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9096,
+          "responseEnd": 12359,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9097,
+          "responseEnd": 11808,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9097,
+          "responseEnd": 12350,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9097,
+          "responseEnd": 11816,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9097,
+          "responseEnd": 12240,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9097,
+          "responseEnd": 12300,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9097,
+          "responseEnd": 12367,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9097,
+          "responseEnd": 12000,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        },
+        {
+          "name": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf",
+          "transferSize": 0,
+          "encodedBodySize": 0,
+          "decodedBodySize": 0,
+          "startTime": 9097,
+          "responseEnd": 12342,
+          "initiatorType": "fetch",
+          "sameOrigin": false
+        }
+      ],
+      "cdp_bytes": {
+        "https://pnct.singledev.eu/": 2676,
+        "https://pnct.singledev.eu/assets/index-Cqj1v18x.css": 13048,
+        "https://pnct.singledev.eu/assets/index-DSW3RBUi.js": 282143,
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2229%22%20height%3D%2229%22%20fill%3D%22%23333%22%20viewBox%3D%220%200%2029%2029%22%3E%3Cpath%20d%3D%22M14.5%208.5c-.75%200-1.5.75-1.5%201.5v3h-3c-.75%200-1.5.75-1.5%201.5S9.25%2016%2010%2016h3v3c0%20.75.75%201.5%201.5%201.5S16%2019.75%2016%2019v-3h3c.75%200%201.5-.75%201.5-1.5S19.75%2013%2019%2013h-3v-3c0-.75-.75-1.5-1.5-1.5%22%2F%3E%3C%2Fsvg%3E": 0,
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2229%22%20height%3D%2229%22%20fill%3D%22%23333%22%20viewBox%3D%220%200%2029%2029%22%3E%3Cpath%20d%3D%22M10%2013c-.75%200-1.5.75-1.5%201.5S9.25%2016%2010%2016h9c.75%200%201.5-.75%201.5-1.5S19.75%2013%2019%2013z%22%2F%3E%3C%2Fsvg%3E": 0,
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20fill-rule%3D%22evenodd%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20d%3D%22M4%2010a6%206%200%201%200%2012%200%206%206%200%201%200-12%200m5-3a1%201%200%201%200%202%200%201%201%200%201%200-2%200m0%203a1%201%200%201%201%202%200v3a1%201%200%201%201-2%200%22%2F%3E%3C%2Fsvg%3E": 0,
+        "https://pnct.singledev.eu/favicon.svg": 1971,
+        "https://tiles.openfreemap.org/styles/positron": 4160,
+        "https://tiles.openfreemap.org/planet": 2400,
+        "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.json": 4057,
+        "https://pnct.singledev.eu/assets/pnct.topo-BHDbcw4T.json": 533187,
+        "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.png": 119476,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf": 35510,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf": 35516,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf": 38186,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf": 43201,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf": 43813,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf": 43817,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf": 45570,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf": 47071,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf": 48173,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf": 48174,
+        "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf": 48186
+      },
+      "requests": [
+        {
+          "url": "https://pnct.singledev.eu/",
+          "end_ms": 635,
+          "bytes": 2676
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/index-Cqj1v18x.css",
+          "end_ms": 1412,
+          "bytes": 13048
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/index-DSW3RBUi.js",
+          "end_ms": 4425,
+          "bytes": 282143
+        },
+        {
+          "url": "https://pnct.singledev.eu/favicon.svg",
+          "end_ms": 5147,
+          "bytes": 985
+        },
+        {
+          "url": "https://tiles.openfreemap.org/styles/positron",
+          "end_ms": 5219,
+          "bytes": 4160
+        },
+        {
+          "url": "https://pnct.singledev.eu/favicon.svg",
+          "end_ms": 5362,
+          "bytes": 986
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet",
+          "end_ms": 5887,
+          "bytes": 2400
+        },
+        {
+          "url": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.json",
+          "end_ms": 5919,
+          "bytes": 4057
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/pnct.topo-BHDbcw4T.json",
+          "end_ms": 7088,
+          "bytes": 533187
+        },
+        {
+          "url": "https://pnct.singledev.eu/assets/maplibre-gl-worker-DYiEsT8h.js",
+          "end_ms": 7125,
+          "bytes": 867
+        },
+        {
+          "url": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm@2x.png",
+          "end_ms": 7435,
+          "bytes": 119476
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/25.pbf",
+          "end_ms": 9093,
+          "bytes": 64332
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/23.pbf",
+          "end_ms": 9551,
+          "bytes": 104158
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/24.pbf",
+          "end_ms": 9593,
+          "bytes": 112171
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf",
+          "end_ms": 11818,
+          "bytes": 35510
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf",
+          "end_ms": 11826,
+          "bytes": 35516
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf",
+          "end_ms": 12010,
+          "bytes": 38186
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf",
+          "end_ms": 12160,
+          "bytes": 43201
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf",
+          "end_ms": 12234,
+          "bytes": 43813
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf",
+          "end_ms": 12250,
+          "bytes": 43817
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf",
+          "end_ms": 12310,
+          "bytes": 45570
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf",
+          "end_ms": 12351,
+          "bytes": 47071
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf",
+          "end_ms": 12361,
+          "bytes": 48173
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf",
+          "end_ms": 12369,
+          "bytes": 48174
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf",
+          "end_ms": 12376,
+          "bytes": 48186
+        }
+      ],
+      "transfer_same_origin": 972406,
+      "transfer_cross_origin": 0,
+      "cdp_same_origin": 833025,
+      "cdp_cross_origin": 607310,
+      "cdp_total": 1440335,
+      "tiles": [
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/25.pbf",
+          "end_ms": 9093,
+          "bytes": 64332
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/23.pbf",
+          "end_ms": 9551,
+          "bytes": 104158
+        },
+        {
+          "url": "https://tiles.openfreemap.org/planet/20261004_113936_pt/6/30/24.pbf",
+          "end_ms": 9593,
+          "bytes": 112171
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/11520-11775.pbf",
+          "end_ms": 11818,
+          "bytes": 35510
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/11520-11775.pbf",
+          "end_ms": 11826,
+          "bytes": 35516
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/11520-11775.pbf",
+          "end_ms": 12010,
+          "bytes": 38186
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/0-255.pbf",
+          "end_ms": 12160,
+          "bytes": 43201
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/65024-65279.pbf",
+          "end_ms": 12234,
+          "bytes": 43813
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/65024-65279.pbf",
+          "end_ms": 12250,
+          "bytes": 43817
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/0-255.pbf",
+          "end_ms": 12310,
+          "bytes": 45570
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Bold/65024-65279.pbf",
+          "end_ms": 12351,
+          "bytes": 47071
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/0-255.pbf",
+          "end_ms": 12361,
+          "bytes": 48173
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Regular/1536-1791.pbf",
+          "end_ms": 12369,
+          "bytes": 48174
+        },
+        {
+          "url": "https://tiles.openfreemap.org/fonts/Noto%20Sans%20Italic/1536-1791.pbf",
+          "end_ms": 12376,
+          "bytes": 48186
+        }
+      ],
+      "errors": [],
+      "timedOut": false
+    }
+  ],
+  "median_parishes_ms": 7603.300000011921,
+  "median_ready_ms": 12401.40000000596
+}

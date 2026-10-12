@@ -30,6 +30,17 @@ uv run make all      # download CAOP (checksum-verified) → parse → match →
 
 mapshaper is run through `npx` at a pinned version (`mapshaper@0.7.68`), with its npm cache in `./.npm-cache`.
 
+## Deploy (Cloudflare Pages)
+
+Live at https://pnct.singledev.eu (Pages project `pnct-map`, production branch `main`, direct upload).
+
+- `cd web && npm run deploy` runs pytest, Vitest and e2e, builds, then deploys to production.
+- `npm run deploy:preview` does the same but deploys to https://preview.pnct-map.pages.dev.
+- `E2E_BASE_URL=https://pnct.singledev.eu/ npm run test:e2e:remote` runs the e2e suite against a deployed site.
+- Wrangler runs through `npx` at a pinned version. Log in once with `npx -y wrangler@4.149.0 login`.
+- The deploy needs no Python pipeline or source data, but its pytest step reads the local pipeline outputs in `data/processed/`. On a fresh clone, run `make` first.
+- `web/public/_headers` sets the caching and security headers. Everything under `/assets/` (including both data files) is content-hashed and cached as immutable.
+
 ## Data sources
 
 | Source | Edition | URL | Downloaded |
