@@ -43,8 +43,8 @@
         <select id="district-select">
           <option value="">All districts</option>
         </select>
-        <label class="toggle">
-          <input id="only-pnct" type="checkbox" />
+        <label class="toggle" title="Hide parishes outside PNCT territory">
+          <input id="only-pnct" type="checkbox" aria-label="Only PNCT: hide parishes outside PNCT territory" />
           <span>Only PNCT</span>
         </label>
       </div>
@@ -54,7 +54,7 @@
 
     <div class="legend" aria-label="Legend">
       <div class="legend-row"><span class="swatch swatch-pnct"></span>PNCT parish</div>
-      <div class="legend-row"><span class="swatch swatch-other"></span>Other parish</div>
+      <div class="legend-row legend-row-other"><span class="swatch swatch-other"></span>Other parish</div>
       <div class="legend-row"><span class="swatch swatch-line"></span>Concelho boundary</div>
       <button id="about-open" type="button" class="link-button">About</button>
     </div>

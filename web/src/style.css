@@ -118,6 +118,18 @@ select {
   margin: 0;
 }
 
+/* Focus mode on: make the active state obvious, since it hides most of the map. */
+.toggle:has(input:checked) {
+  border-color: var(--accent);
+  background: #e6f2f0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.focus-mode .legend-row-other {
+  display: none;
+}
+
 /* ---- side panel / bottom sheet -------------------------------------------- */
 
 .panel {
@@ -573,6 +585,12 @@ dialog a {
   .filters select {
     flex: 1;
     min-width: 0;
+  }
+
+  /* Comfortable tap targets on phones. */
+  .filters select,
+  .toggle {
+    height: 44px;
   }
 
   .panel {

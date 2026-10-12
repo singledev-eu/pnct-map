@@ -3,7 +3,7 @@ import "./style.css";
 import { AttributionControl, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapLayerMouseEvent, type MapSourceDataEvent } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
-import { MAP_HASH_KEY, readHash, writeHash } from "./hash";
+import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
 import { addLayers, applyFilter, PARISH_FILL, PARISH_SOURCE, type FilterState } from "./layers";
 import { h, Panel } from "./panel";
 import { loadOptions, saveOptions } from "./prefs";
@@ -59,10 +59,25 @@ map.addControl(
 type Selection = { kind: "parish"; dicofre: string } | { kind: "concelho"; code: string } | null;
 
 function start(data: MapData): void {
-  const filter: FilterState = { district: null, onlyPnct: initial.onlyPnct };
+  const filter: FilterState = { district: null, focus: initial.focus };
   if (initial.district && data.districtBounds.has(initial.district)) filter.district = initial.district;
 
+  // Focus mode hides everything outside PNCT territory. A link to something it would hide
+  // (a non-PNCT parish, or a concelho without PNCT parishes) turns it off instead, so the
+  // target stays visible and selectable. Hash writes use replaceState, so this cannot loop.
+  const hiddenByFocus = (s: Pick<HashState, "parish" | "concelho">) =>
+    (s.parish !== null && data.parishes.get(s.parish)?.pnct === false) ||
+    (s.concelho !== null && data.concelhos.get(s.concelho)?.pnctCount === 0);
+  if (filter.focus && hiddenByFocus(initial)) filter.focus = false;
+  const districtsWithPnct = new Set([...data.parishes.values()].filter((p) => p.pnct).map((p) => p.distrito));
+  if (filter.focus && filter.district && !districtsWithPnct.has(filter.district)) {
+    filter.district = null;
+    writeHash({ d: null });
+  }
+
   addLayers(map, data, filter);
+  // Lets the e2e tests inspect layer filters and rendered features.
+  (window as unknown as { pnctMap: MapLibreMap }).pnctMap = map;
 
   // ---- selection --------------------------------------------------------------
   let selection: Selection = null;
@@ -110,7 +125,8 @@ function start(data: MapData): void {
     } else if (next?.kind === "concelho") {
       const c = data.concelhos.get(next.code);
       if (!c) return select(null);
-      setSelectedIds([], c.parishes.map((p) => featureId(p.dicofre)));
+      // In focus mode a partly-PNCT concelho highlights only its PNCT parishes.
+      setSelectedIds([], c.parishes.filter((p) => p.pnct || !filter.focus).map((p) => featureId(p.dicofre)));
       panel.showConcelho(c);
       writeHash({ c: c.code, f: null });
       if (opts.fly) fit(data.concelhoBounds.get(c.code), 11, opts.animate);
@@ -134,7 +150,9 @@ function start(data: MapData): void {
     const f = e.features?.[0];
     if (!f) return;
     const p = data.parishes.get(f.properties.dicofre as string);
-    if (!p) return;
+    // The layer filter already drops non-PNCT parishes in focus mode; this also covers
+    // the moment between toggling and the filtered tiles being drawn.
+    if (!p || (filter.focus && !p.pnct)) return clearHover();
     setHover(featureId(p.dicofre));
     map.getCanvas().style.cursor = "pointer";
     tooltip.replaceChildren(
@@ -157,7 +175,8 @@ function start(data: MapData): void {
   map.on("click", (e) => {
     const f = map.queryRenderedFeatures(e.point, { layers: [PARISH_FILL] })[0];
     const dicofre = f?.properties.dicofre as string | undefined;
-    if (dicofre) select({ kind: "parish", dicofre });
+    const hidden = dicofre !== undefined && filter.focus && !data.parishes.get(dicofre)?.pnct;
+    if (dicofre && !hidden) select({ kind: "parish", dicofre });
     else select(null);
   });
 
@@ -178,10 +197,12 @@ function start(data: MapData): void {
       pnct: p.pnct,
     })),
   ];
+  const allIndex = createSearchIndex(items);
+  const pnctIndex = createSearchIndex(items.filter((item) => item.pnct)); // concelhos: at least one PNCT parish
   const search = mountSearch({
     input: $("search-input"),
     list: $("search-list"),
-    index: createSearchIndex(items),
+    index: { query: (q, limit) => (filter.focus ? pnctIndex : allIndex).query(q, limit) },
     onSelect: (item) => {
       $<HTMLInputElement>("search-input").blur();
       select(item.kind === "parish" ? { kind: "parish", dicofre: item.id } : { kind: "concelho", code: item.id }, { fly: true });
@@ -189,9 +210,9 @@ function start(data: MapData): void {
   });
 
   // ---- filters ----------------------------------------------------------------
-  districtSelect.append(...data.districts.map((d) => h("option", { value: d }, d)));
+  const districtOptions = data.districts.map((d) => h("option", { value: d }, d));
+  districtSelect.append(...districtOptions);
   districtSelect.value = filter.district ?? "";
-  onlyPnctInput.checked = filter.onlyPnct;
 
   districtSelect.addEventListener("change", () => {
     filter.district = districtSelect.value || null;
@@ -199,18 +220,37 @@ function start(data: MapData): void {
     writeHash({ d: filter.district });
     fit(filter.district ? data.districtBounds.get(filter.district) : MAINLAND, 10);
   });
-  onlyPnctInput.addEventListener("change", () => {
-    filter.onlyPnct = onlyPnctInput.checked;
-    applyFilter(map, filter);
-    writeHash({ pnct: filter.onlyPnct ? "1" : null });
-  });
+  onlyPnctInput.addEventListener("change", () => setFocus(onlyPnctInput.checked));
+
+  /** Switches focus mode: layer filters only (no refetch, no layer rebuild), plus UI state. */
+  function setFocus(on: boolean): void {
+    filter.focus = on;
+    onlyPnctInput.checked = on;
+    document.body.classList.toggle("focus-mode", on);
+    // Districts without PNCT parishes stay listed but cannot be picked in focus mode.
+    for (const o of districtOptions) o.disabled = on && !districtsWithPnct.has(o.value);
+    if (on && filter.district && !districtsWithPnct.has(filter.district)) {
+      filter.district = null;
+      districtSelect.value = "";
+      writeHash({ d: null });
+    }
+    if (map.getLayer(PARISH_FILL)) {
+      document.body.dataset.mapIdle = "false"; // the filter change re-renders; "idle" sets it back
+      applyFilter(map, filter);
+    }
+    writeHash({ focus: on ? "1" : null, pnct: null });
+    if (on && hoverId !== null && !data.parishes.get(String(hoverId).padStart(6, "0"))?.pnct) clearHover();
+    if (on && selection?.kind === "parish" && !data.parishes.get(selection.dicofre)?.pnct) select(null);
+    else if (on && selection?.kind === "concelho" && !data.concelhos.get(selection.code)?.pnctCount) select(null);
+    else if (selection?.kind === "concelho") select(selection); // refresh which parishes are highlighted
+  }
+  setFocus(filter.focus);
 
   // ---- about ------------------------------------------------------------------
   $("about-open").addEventListener("click", () => aboutDialog.showModal());
 
   // ---- restore from hash ----------------------------------------------------------
-  const restore = (fly: boolean) => {
-    const s = readHash();
+  const restore = (fly: boolean, s: HashState = readHash()) => {
     if (s.parish) select({ kind: "parish", dicofre: s.parish }, { fly, animate: false });
     else if (s.concelho) select({ kind: "concelho", code: s.concelho }, { fly, animate: false });
     if (s.parish || s.concelho) {
@@ -221,8 +261,10 @@ function start(data: MapData): void {
   restore(!initial.hasMapView);
   window.addEventListener("hashchange", () => {
     const s = readHash();
+    const focus = s.focus && !hiddenByFocus(s);
+    if (focus !== filter.focus || s.focus !== focus) setFocus(focus);
     const current = selection?.kind === "parish" ? selection.dicofre : selection?.kind === "concelho" ? selection.code : null;
-    if ((s.parish ?? s.concelho) !== current) restore(true);
+    if ((s.parish ?? s.concelho) !== current) restore(true, s);
   });
 
   // The map is usable once the parishes are drawn; basemap labels may still be loading.
