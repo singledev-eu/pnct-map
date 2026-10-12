@@ -2,7 +2,9 @@ import { expect, test, type Page } from "@playwright/test";
 import { fileURLToPath } from "node:url";
 import { parseShapeParam } from "../../src/idealista";
 
-const SHOTS = fileURLToPath(new URL("../../../docs/screenshots/", import.meta.url));
+// Screenshots go to the ignored test-results/ folder (cleared by Playwright on each run), so tests
+// never dirty the tree. docs/screenshots/ holds hand-picked copies for the docs.
+const SHOTS = fileURLToPath(new URL("../../test-results/screenshots/", import.meta.url));
 
 function trackErrors(page: Page): string[] {
   const errors: string[] = [];

@@ -94,7 +94,7 @@ I didn't measure the gain. I'd only pursue it if 7 s is still too slow on your p
 - **TopoJSON quantization:** now 120,000 (was 200,000).
 - **Concelho outlines:** dissolved from the same simplified parishes, as before.
 
-**Screenshots** (1200×800 @2x): `docs/perf/screenshots/before/`, `docs/perf/screenshots/after/`, and side-by-side sheets in `docs/perf/screenshots/compare/`:
+**Screenshots** (1200×800 @2x): side-by-side before/after sheets in `docs/perf/screenshots/compare/`. The individual before/after PNGs were removed later to keep the repo small; `web/scripts/shots.mjs` regenerates them.
 - `1-country.png`
 - `2-district-viana.png`: district zoom, with the district filter
 - `3-concelho-peso-da-regua.png`
