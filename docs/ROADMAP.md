@@ -14,13 +14,13 @@ Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-m
 | 2026-10-12 | GitHub publish: repo cleanup, one-time history rewrite (36 MB → 9.9 MB), MIT licence, `main` protected, Dependabot alerts | [github-publish](reports/github-publish.md) |
 | 2026-10-12 | Focus mode ("Only PNCT"): hides everything outside PNCT territory, with no hover, clicks or search results there; `focus=1` in the URL | [focus-mode](reports/focus-mode.md) |
 | 2026-10-12 | Mobile attribution: compact ⓘ on phones, kept clear of the legend; bottom-sheet credit with all four linked credits | [mobile-attribution](reports/mobile-attribution.md) |
+| 2026-10-14 | Zoom levels (concelhos at country zoom, parishes inside, cross-fade) and camera limits (dynamic min zoom, maxBounds). Released as 0.2.0 | [zoom-levels](reports/zoom-levels.md) |
 | 2026-10-12 | E2E flakiness: one retry; flaky tests warn with a trace but don't block deploys; tests wait for the parish layer, not the basemap | [e2e-flakiness](reports/e2e-flakiness.md) |
 
-Release `v0.1.0` (2026-10-12) covers all of the above; see [CHANGELOG.md](../CHANGELOG.md).
+Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; see [CHANGELOG.md](../CHANGELOG.md).
 
 ## Next
 
-- **Review and ship `feat/zoom-levels`:** check preview on a phone, then production. See [zoom-levels](reports/zoom-levels.md).
 - **Basemap glyphs:** the Arabic (`1536-1791`, `65024-65279`) and Tifinagh (`11520-11775`) glyph ranges are still requested. At the phone min zoom, the view reaches below 36.6°N, which loads the z6 basemap tile with northern Morocco. Camera limits alone don't avoid this. A fix would need a smaller bottom fit padding on phones, or style filters on the basemap label layers.
 - **Phone legend:** at country zoom on a 390×844 phone, the 4-row concelho legend covers part of the Algarve. Consider a collapsible legend.
 
