@@ -1,9 +1,9 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
-import { AttributionControl, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent } from "maplibre-gl";
+import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { latinLabels } from "./basemap";
-import { cameraLimits, fitCenter, fitZoom, MAINLAND, type CameraLimits } from "./camera";
+import { cameraLimits, CENTER_BOX, constrainView, fitCenter, fitZoom, MAINLAND, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
 import { addLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, PARISH_FILL, PARISH_SOURCE, type FilterState } from "./layers";
@@ -54,6 +54,21 @@ const map = new MapLibreMap({
 });
 // Set here rather than as the `style` option so the label patch (basemap.ts) applies before any tile is parsed.
 map.setStyle(STYLE_URL, { transformStyle: latinLabels });
+// Keep the camera centre near mainland at every zoom, not just the viewport inside maxBounds
+// (camera.ts: constrainView, CENTER_BOX). MapLibre runs this on every camera change (drag, pinch,
+// inertia, easeTo, the hash), so a pan stops smoothly at the edge instead of bouncing back. It reads
+// the limits set below (setMinZoom/setMaxBounds), so min zoom and the country view are unchanged.
+map.setTransformConstrain((lngLat, zoom) => {
+  const container = map.getContainer();
+  const view = constrainView([lngLat.lng, lngLat.lat], zoom ?? map.getZoom(), {
+    size: { width: container.clientWidth, height: container.clientHeight },
+    minZoom: map.getMinZoom(),
+    maxZoom: map.getMaxZoom(),
+    maxBounds: (map.getMaxBounds()?.toArray().flat() ?? limits.maxBounds) as Bounds,
+    centerBox: CENTER_BOX,
+  });
+  return { center: new LngLat(...view.center), zoom: view.zoom };
+});
 map.touchZoomRotate.disableRotation();
 map.addControl(new NavigationControl({ showCompass: false }), "bottom-right");
 // No `compact` option: MapLibre shows the full line on wide maps and the compact ⓘ button at

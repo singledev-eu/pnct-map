@@ -79,3 +79,50 @@ export function cameraLimits(size: Size, pad: Padding): CameraLimits {
   ];
   return { minZoom, maxBounds, levelZoom: minZoom + LEVEL_OFFSET };
 }
+
+/**
+ * Margin around mainland for the camera *centre*, in degrees. maxBounds only keeps the viewport
+ * inside mainland ± BOUNDS_MARGIN, which at high zoom still lets the centre wander to Tangier or
+ * deep into Spain. 0.25° (~25 km) still centres Sagres, the Minho and the border parishes, and keeps
+ * the off-centre fits (the panel on desktop, the bottom sheet on phones) of edge concelhos.
+ */
+export const CENTER_MARGIN = 0.25;
+export const CENTER_BOX: Bounds = [
+  MAINLAND[0] - CENTER_MARGIN,
+  MAINLAND[1] - CENTER_MARGIN,
+  MAINLAND[2] + CENTER_MARGIN,
+  MAINLAND[3] + CENTER_MARGIN,
+];
+
+/** The point of `box` nearest to `center`, per axis (lng/lat are monotonic in Mercator, so this is also the nearest on screen axes). */
+export function clampCenter([lng, lat]: [number, number], box: Bounds = CENTER_BOX): [number, number] {
+  return [Math.min(box[2], Math.max(box[0], lng)), Math.min(box[3], Math.max(box[1], lat))];
+}
+
+export interface ViewLimits {
+  size: Size;
+  minZoom: number;
+  maxZoom: number;
+  /** maxBounds: the viewport stays inside it. */
+  maxBounds: Bounds;
+  /** The camera centre stays inside it. */
+  centerBox: Bounds;
+}
+
+/**
+ * Camera constrain for MapLibre's transformConstrain hook, which replaces the built-in one, so this
+ * also does its job: clamp the zoom, then keep the viewport inside maxBounds (the same rule as
+ * MapLibre's default), then keep the centre inside centerBox. Per-axis clamping keeps the viewport
+ * rule satisfied, because both ranges contain the country-view centre. If the viewport is wider than
+ * maxBounds (only for a moment, while a resize hasn't recomputed the limits yet), it is centred on
+ * them; MapLibre would zoom in instead.
+ */
+export function constrainView(center: [number, number], zoom: number, limits: ViewLimits): { center: [number, number]; zoom: number } {
+  const z = Math.min(limits.maxZoom, Math.max(limits.minZoom, zoom));
+  const world = TILE_SIZE * 2 ** z;
+  const b = limits.maxBounds;
+  const fit = (v: number, lo: number, hi: number, half: number) => (hi - lo < 2 * half ? (lo + hi) / 2 : Math.min(hi - half, Math.max(lo + half, v)));
+  const x = fit(mercX(center[0]), mercX(b[0]), mercX(b[2]), limits.size.width / 2 / world);
+  const y = fit(mercY(center[1]), mercY(b[3]), mercY(b[1]), limits.size.height / 2 / world);
+  return { center: clampCenter([lngOf(x), latOf(y)], limits.centerBox), zoom: z };
+}

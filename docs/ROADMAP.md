@@ -22,7 +22,8 @@ Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (20
 
 ## Next
 
-Nothing agreed yet. Pick from the backlog below.
+- **Ship `fix/camera-center`** (camera centre kept near mainland at every zoom): it's on preview; check it on a phone, then merge and deploy. See [camera-center](reports/camera-center.md).
+- **Min-zoom vertical slack (pre-existing since 0.2.0):** on height-limited screens (desktop), maxBounds at min zoom is taller than the view (lat 35.45–43.66 vs a 6° view), so a cursor-anchored zoom-out from the Algarve ends about 1.2° south of the country view, with the north of the Minho cut off. A fix: on the axis that limits the fit, set maxBounds to the min-zoom view instead of mainland ± 1.5°.
 
 ## Backlog
 

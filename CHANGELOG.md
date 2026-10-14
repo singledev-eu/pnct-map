@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### For users
+
+- **The camera stays over Portugal:** at any zoom, the map centre stays within mainland Portugal plus about 0.25° (~25 km), so panning or flying can no longer drift to Tangier or deep into Spain. Sagres, the Minho and the border parishes can still be centred. Edges stop smoothly, with no bounce-back. Zooming out and the country view are unchanged.
+
 ## 0.2.1 (2026-10-14)
 
 ### For users

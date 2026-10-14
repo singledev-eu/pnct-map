@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BOUNDS_MARGIN, cameraLimits, fitCenter, fitZoom, LEVEL_OFFSET, MAINLAND } from "./camera";
+import { BOUNDS_MARGIN, cameraLimits, CENTER_BOX, CENTER_MARGIN, clampCenter, constrainView, fitCenter, fitZoom, LEVEL_OFFSET, MAINLAND } from "./camera";
 
 const DESKTOP = { width: 1440, height: 900 };
 const PHONE = { width: 390, height: 844 };
@@ -64,5 +64,88 @@ describe("cameraLimits", () => {
     const { maxBounds } = cameraLimits(PHONE, PHONE_PAD);
     expect(maxBounds[0]).toBeCloseTo(MAINLAND[0] - BOUNDS_MARGIN, 6);
     expect(maxBounds[2]).toBeCloseTo(MAINLAND[2] + BOUNDS_MARGIN, 6);
+  });
+});
+
+describe("clampCenter", () => {
+  const [w, s, e, n] = CENTER_BOX;
+
+  it("keeps centres inside the box, edges included", () => {
+    for (const c of [[-8, 40], [w, s], [e, n], [-9.0, 37.0]] as [number, number][]) expect(clampCenter(c)).toEqual(c);
+  });
+
+  it("clamps each side separately", () => {
+    expect(clampCenter([-12, 40])).toEqual([w, 40]); // Atlantic
+    expect(clampCenter([-3.7, 40.4])).toEqual([e, 40.4]); // Madrid
+    expect(clampCenter([-8, 35.77])).toEqual([-8, s]); // south of the Algarve
+    expect(clampCenter([-8, 43.4])).toEqual([-8, n]); // Galician coast
+    expect(clampCenter([-5.81, 35.77])).toEqual([e, s]); // Tangier: a corner
+  });
+
+  it("handles the extremes of the Mercator world", () => {
+    expect(clampCenter([-180, -85.05])).toEqual([w, s]);
+    expect(clampCenter([180, 85.05])).toEqual([e, n]);
+  });
+
+  it("is mainland plus the margin, and the country view centre is inside it", () => {
+    expect(CENTER_BOX).toEqual([MAINLAND[0] - CENTER_MARGIN, MAINLAND[1] - CENTER_MARGIN, MAINLAND[2] + CENTER_MARGIN, MAINLAND[3] + CENTER_MARGIN]);
+    for (const [size, pad] of [[DESKTOP, DESKTOP_PAD], [PHONE, PHONE_PAD], [{ width: 3440, height: 1440 }, DESKTOP_PAD], [{ width: 844, height: 390 }, DESKTOP_PAD]] as const) {
+      const c = fitCenter(MAINLAND, fitZoom(MAINLAND, size, pad), pad);
+      expect(clampCenter(c)).toEqual(c); // so the clamp never moves the min-zoom view
+    }
+  });
+});
+
+describe("constrainView", () => {
+  const limitsFor = (size: { width: number; height: number }, pad: typeof DESKTOP_PAD) => {
+    const { minZoom, maxBounds } = cameraLimits(size, pad);
+    return { minZoom, view: { size, minZoom, maxZoom: 15, maxBounds, centerBox: CENTER_BOX } };
+  };
+
+  for (const [name, size, pad] of [["desktop", DESKTOP, DESKTOP_PAD], ["phone", PHONE, PHONE_PAD], ["ultra-wide", { width: 3440, height: 1440 }, DESKTOP_PAD]] as const) {
+    it(`${name}: leaves the country view at min zoom where it is (no jump)`, () => {
+      const { minZoom, view } = limitsFor(size, pad);
+      const c = fitCenter(MAINLAND, minZoom, pad);
+      const out = constrainView(c, minZoom, view);
+      expect(out.zoom).toBe(minZoom);
+      expect(out.center[0]).toBeCloseTo(c[0], 9);
+      expect(out.center[1]).toBeCloseTo(c[1], 9);
+    });
+  }
+
+  it("clamps the zoom to [minZoom, maxZoom] and never blocks zooming out to minZoom", () => {
+    const { minZoom, view } = limitsFor(PHONE, PHONE_PAD);
+    expect(constrainView([-8.9, 37.0], minZoom - 3, view).zoom).toBe(minZoom);
+    expect(constrainView([-8.9, 37.0], 20, view).zoom).toBe(15);
+    const sagres = constrainView([-8.9, 37.0], 12, view); // Sagres is allowed
+    expect(sagres.zoom).toBe(12);
+    expect(sagres.center[0]).toBeCloseTo(-8.9, 9);
+    expect(sagres.center[1]).toBeCloseTo(37.0, 9);
+  });
+
+  it("keeps the centre in the box at high zoom (Tangier, Madrid)", () => {
+    const { view } = limitsFor(PHONE, PHONE_PAD);
+    expect(constrainView([-5.81, 35.77], 10, view).center).toEqual([CENTER_BOX[2], CENTER_BOX[1]]);
+    const madrid = constrainView([-3.7, 40.4], 11, limitsFor(DESKTOP, DESKTOP_PAD).view).center;
+    expect(madrid[0]).toBeCloseTo(CENTER_BOX[2], 9);
+    expect(madrid[1]).toBeCloseTo(40.4, 9);
+  });
+
+  it("keeps the viewport inside maxBounds at low zoom, as MapLibre's default does", () => {
+    const { minZoom, view } = limitsFor(DESKTOP, DESKTOP_PAD);
+    const z = minZoom + 0.5;
+    const [lng, lat] = constrainView([-5.9, 36.7], z, view).center; // box corner, but the view would leave maxBounds
+    const world = 512 * 2 ** z;
+    const halfLng = (DESKTOP.width / 2 / world) * 360;
+    expect(lng + halfLng).toBeLessThanOrEqual(view.maxBounds[2] + 1e-9);
+    expect(lng).toBeLessThanOrEqual(CENTER_BOX[2]);
+    expect(lat).toBeGreaterThanOrEqual(CENTER_BOX[1]);
+  });
+
+  it("centres instead of zooming in when the viewport is wider than maxBounds (mid-resize)", () => {
+    const { view } = limitsFor(PHONE, PHONE_PAD);
+    const out = constrainView([-8, 39.5], view.minZoom, { ...view, size: { width: 4000, height: 844 } });
+    expect(out.zoom).toBe(view.minZoom);
+    expect(out.center[0]).toBeCloseTo((view.maxBounds[0] + view.maxBounds[2]) / 2, 6);
   });
 });
