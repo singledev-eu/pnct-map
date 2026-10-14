@@ -15,13 +15,14 @@ Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-m
 | 2026-10-12 | Focus mode ("Only PNCT"): hides everything outside PNCT territory, with no hover, clicks or search results there; `focus=1` in the URL | [focus-mode](reports/focus-mode.md) |
 | 2026-10-12 | Mobile attribution: compact ⓘ on phones, kept clear of the legend; bottom-sheet credit with all four linked credits | [mobile-attribution](reports/mobile-attribution.md) |
 | 2026-10-14 | Zoom levels (concelhos at country zoom, parishes inside, cross-fade) and camera limits (dynamic min zoom, maxBounds). Released as 0.2.0 | [zoom-levels](reports/zoom-levels.md) |
+| 2026-10-14 | Phone polish: collapsible phone legend; Latin-only basemap labels, so no Arabic/Tifinagh glyph requests (full idle 12.0 → 10.1 s). Released as 0.2.1 | [phone-polish](reports/phone-polish.md) |
 | 2026-10-12 | E2E flakiness: one retry; flaky tests warn with a trace but don't block deploys; tests wait for the parish layer, not the basemap | [e2e-flakiness](reports/e2e-flakiness.md) |
 
-Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; see [CHANGELOG.md](../CHANGELOG.md).
+Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; see [CHANGELOG.md](../CHANGELOG.md).
 
 ## Next
 
-- **Ship `fix/phone-polish`** (collapsible phone legend, Latin-only basemap labels): it's on preview; check it on a phone, then merge and deploy. See [phone-polish](reports/phone-polish.md).
+Nothing agreed yet. Pick from the backlog below.
 
 ## Backlog
 

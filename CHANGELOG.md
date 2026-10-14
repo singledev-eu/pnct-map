@@ -1,11 +1,17 @@
 # Changelog
 
-## Unreleased
+## 0.2.1 (2026-10-14)
 
 ### For users
 
-- **Phones:** the legend starts as a small "Legend" chip, so it no longer covers the Algarve at the country view. A tap expands it, and the choice is remembered on this device. Desktop keeps the full legend.
-- **Basemap labels are Latin-only:** places with a non-Latin name, such as northern Morocco at the map's southern edge, show their Latin name ("Tanger"). This removes three Arabic/Tifinagh font downloads (about 330 KB). On the throttled phone profile, the map settles about 1.9 s sooner.
+- **Collapsible legend on phones:** on screens up to 640 px wide, the legend starts as a small "Legend" chip, so it no longer covers the Algarve at the country view. A tap (or Enter/Space) expands it, and the choice is remembered on this device; the page also works without storage. Desktop keeps the full legend.
+- **No more non-Latin glyph downloads:** basemap labels now show only the Latin name of places that also have a non-Latin one, such as northern Morocco at the map's southern edge ("Tanger"). The Arabic (`1536-1791`, `65024-65279`) and Tifinagh (`11520-11775`) glyph ranges are no longer requested, at any camera position.
+- **Faster on phones:** on the throttled phone profile (Pixel 7, Fast 3G, 4× CPU), the map is fully idle after **10.1 s instead of 12.0 s**, and cross-origin bytes drop from **593 KB to 261 KB**. Parishes still appear after about 7.3 s.
+
+### Infrastructure
+
+- e2e: `basemap-glyphs.spec.ts` asserts that no Arabic/Tifinagh glyph range is requested on a phone viewport, with a tile containing Tangier loaded. `legend.spec.ts` covers the collapsed default, tap, keyboard, persistence, blocked storage, desktop, and overlap with the controls and attribution.
+- `scripts/perf.mjs` prints the glyph ranges requested per run.
 
 ## 0.2.0 (2026-10-14)
 
