@@ -1,10 +1,11 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
-import { AttributionControl, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapLayerMouseEvent, type MapSourceDataEvent } from "maplibre-gl";
+import { AttributionControl, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
+import { cameraLimits, fitCenter, fitZoom, MAINLAND, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
-import { addLayers, applyFilter, PARISH_FILL, PARISH_SOURCE, type FilterState } from "./layers";
+import { addLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, PARISH_FILL, PARISH_SOURCE, type FilterState } from "./layers";
 import { h, Panel } from "./panel";
 import { loadOptions, saveOptions } from "./prefs";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
@@ -14,7 +15,6 @@ import DATA_URL from "../data/pnct.topo.json?url";
 setWorkerUrl(workerUrl);
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
-const MAINLAND: Bounds = [-9.53, 36.95, -6.18, 42.16];
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const status = $<HTMLDivElement>("status");
@@ -33,14 +33,19 @@ function fitPadding(withPanel: boolean) {
   return { top: 80, left: 40, bottom: 40, right: withPanel ? 400 : 40 };
 }
 
+/** Camera limits for the current map size: mainland just fits at minZoom (see camera.ts). */
+const limitsFor = (el: HTMLElement): CameraLimits => cameraLimits({ width: el.clientWidth, height: el.clientHeight }, fitPadding(false));
+
 const initial = readHash();
+let limits = limitsFor($("map"));
 const map = new MapLibreMap({
   container: "map",
   style: STYLE_URL,
   hash: MAP_HASH_KEY,
   bounds: initial.hasMapView ? undefined : (MAINLAND as LngLatBoundsLike),
   fitBoundsOptions: { padding: fitPadding(false) },
-  minZoom: 4,
+  minZoom: limits.minZoom,
+  maxBounds: limits.maxBounds as LngLatBoundsLike,
   maxZoom: 15,
   attributionControl: false,
   dragRotate: false,
@@ -61,6 +66,18 @@ map.on("resize", () => {
   if (isCompact() && !wasCompact) collapseAttribution();
   wasCompact = isCompact();
 });
+
+// Recompute the camera limits for the new size (window resize, phone rotation). A map that showed
+// the whole country keeps showing it; otherwise MapLibre clamps the view into the new limits.
+map.on("resize", () => {
+  const atCountryView = map.getZoom() <= limits.minZoom + 0.01;
+  limits = limitsFor(map.getContainer());
+  map.setMaxBounds(limits.maxBounds as LngLatBoundsLike);
+  map.setMinZoom(limits.minZoom);
+  if (atCountryView) map.jumpTo({ center: fitCenter(MAINLAND, limits.minZoom, fitPadding(false)), zoom: limits.minZoom });
+  onLimits();
+});
+let onLimits = () => {};
 
 // The attribution shares the bottom edge with the legend. style.css limits its width to the
 // space right of the legend, so the expanded text wraps upwards instead of covering it.
@@ -88,17 +105,20 @@ function start(data: MapData): void {
     writeHash({ d: null });
   }
 
-  addLayers(map, data, filter);
+  addLayers(map, data, filter, limits.levelZoom);
   // Lets the e2e tests inspect layer filters and rendered features.
   (window as unknown as { pnctMap: MapLibreMap }).pnctMap = map;
 
   // ---- selection --------------------------------------------------------------
   let selection: Selection = null;
   let selectedIds: number[] = [];
-
   let groupIds: number[] = [];
+  let selectedConcelhoId: number | null = null;
 
-  const setSelectedIds = (ids: number[], group: number[] = []) => {
+  const setSelectedIds = (ids: number[], group: number[] = [], concelhoId: number | null = null) => {
+    if (selectedConcelhoId !== null) map.setFeatureState({ source: CONCELHO_SOURCE, id: selectedConcelhoId }, { selected: false });
+    if (concelhoId !== null) map.setFeatureState({ source: CONCELHO_SOURCE, id: concelhoId }, { selected: true });
+    selectedConcelhoId = concelhoId;
     for (const id of selectedIds) map.setFeatureState({ source: PARISH_SOURCE, id }, { selected: false });
     for (const id of groupIds) map.setFeatureState({ source: PARISH_SOURCE, id }, { group: false });
     for (const id of ids) map.setFeatureState({ source: PARISH_SOURCE, id }, { selected: true });
@@ -107,9 +127,14 @@ function start(data: MapData): void {
     groupIds = group;
   };
 
-  const fit = (b: Bounds | undefined, maxZoom: number, animate = true) => {
+  /** Fits `b` into the padded view, no further in than `maxZoom` and no further out than `minZoom`. */
+  const fit = (b: Bounds | undefined, maxZoom: number, animate = true, minZoom = 0) => {
     if (!b) return;
-    map.fitBounds(b as LngLatBoundsLike, { padding: fitPadding(selection !== null), maxZoom, duration: animate ? 900 : 0 });
+    const padding = fitPadding(selection !== null);
+    const canvas = map.getCanvas();
+    const fitted = fitZoom(b, { width: canvas.clientWidth, height: canvas.clientHeight }, padding);
+    const zoom = Math.min(maxZoom, Math.max(minZoom, fitted));
+    map.easeTo({ center: fitCenter(b, zoom, padding), zoom, duration: animate ? 900 : 0 });
   };
 
   // Property-search selector: hash > localStorage > defaults; written back so shared links carry it.
@@ -139,10 +164,11 @@ function start(data: MapData): void {
       const c = data.concelhos.get(next.code);
       if (!c) return select(null);
       // In focus mode a partly-PNCT concelho highlights only its PNCT parishes.
-      setSelectedIds([], c.parishes.filter((p) => p.pnct || !filter.focus).map((p) => featureId(p.dicofre)));
+      setSelectedIds([], c.parishes.filter((p) => p.pnct || !filter.focus).map((p) => featureId(p.dicofre)), featureId(c.code));
       panel.showConcelho(c);
       writeHash({ c: c.code, f: null });
-      if (opts.fly) fit(data.concelhoBounds.get(c.code), 11, opts.animate);
+      // Always past the concelho level (and its fade), so the parishes inside become clickable.
+      if (opts.fly) fit(data.concelhoBounds.get(c.code), 11, opts.animate, limits.levelZoom + 0.5);
     } else {
       setSelectedIds([]);
       panel.close();
@@ -150,46 +176,88 @@ function start(data: MapData): void {
     }
   }
 
-  // ---- hover + tooltip ----------------------------------------------------------
-  let hoverId: number | null = null;
-  const setHover = (id: number | null) => {
-    if (id === hoverId) return;
-    if (hoverId !== null) map.setFeatureState({ source: PARISH_SOURCE, id: hoverId }, { hover: false });
-    if (id !== null) map.setFeatureState({ source: PARISH_SOURCE, id }, { hover: true });
-    hoverId = id;
+  // ---- zoom level -------------------------------------------------------------
+  // Below limits.levelZoom the map is at concelho level: concelhos are drawn and hit-tested, and a
+  // click zooms into one. Above it, parishes are (layers.ts cross-fades the fills around the threshold).
+  type Level = "concelho" | "parish";
+  const levelOf = (): Level => (map.getZoom() < limits.levelZoom ? "concelho" : "parish");
+  let level = levelOf();
+  const updateLevel = () => {
+    const next = levelOf();
+    document.body.dataset.level = next;
+    if (next === level) return;
+    level = next;
+    clearHover();
+  };
+  document.body.dataset.level = level;
+  map.on("zoom", updateLevel);
+  onLimits = () => {
+    applyFilter(map, filter, limits.levelZoom);
+    updateLevel();
   };
 
-  map.on("mousemove", PARISH_FILL, (e: MapLayerMouseEvent) => {
-    const f = e.features?.[0];
-    if (!f) return;
-    const p = data.parishes.get(f.properties.dicofre as string);
-    // The layer filter already drops non-PNCT parishes in focus mode; this also covers
-    // the moment between toggling and the filtered tiles being drawn.
-    if (!p || (filter.focus && !p.pnct)) return clearHover();
-    setHover(featureId(p.dicofre));
+  /** The PNCT parish or concelho under `point` at the current level; hidden features don't count. */
+  const hit = (point: { x: number; y: number }) => {
+    if (level === "concelho") {
+      const code = map.queryRenderedFeatures([point.x, point.y], { layers: [CONCELHO_FILL] })[0]?.properties.code as string | undefined;
+      const c = code ? data.concelhos.get(code) : undefined;
+      // The layer filter already drops PNCT-less concelhos in focus mode; this also covers
+      // the moment between toggling and the filtered tiles being drawn.
+      return c && !(filter.focus && c.pnctCount === 0) ? ({ kind: "concelho", c } as const) : null;
+    }
+    const dicofre = map.queryRenderedFeatures([point.x, point.y], { layers: [PARISH_FILL] })[0]?.properties.dicofre as string | undefined;
+    const p = dicofre ? data.parishes.get(dicofre) : undefined;
+    return p && !(filter.focus && !p.pnct) ? ({ kind: "parish", p } as const) : null;
+  };
+
+  // ---- hover + tooltip ----------------------------------------------------------
+  let hover: { source: string; id: number } | null = null;
+  const setHover = (next: { source: string; id: number } | null) => {
+    if (next?.source === hover?.source && next?.id === hover?.id) return;
+    if (hover) map.setFeatureState(hover, { hover: false });
+    if (next) map.setFeatureState(next, { hover: true });
+    hover = next;
+  };
+
+  map.on("mousemove", (e: MapMouseEvent) => {
+    const target = hit(e.point);
+    if (!target) return clearHover();
     map.getCanvas().style.cursor = "pointer";
-    tooltip.replaceChildren(
-      h("strong", {}, p.freguesia),
-      h("span", {}, p.concelho),
-      h("span", { class: p.pnct ? "tt-pnct" : "tt-other" }, p.pnct ? "PNCT: yes" : "PNCT: no"),
-    );
+    if (target.kind === "concelho") {
+      const { c } = target;
+      setHover({ source: CONCELHO_SOURCE, id: featureId(c.code) });
+      const coverage = c.pnctCount === 0 ? "PNCT: no" : c.pnctCount === c.parishCount ? "PNCT: all parishes" : `PNCT: ${c.pnctCount} of ${c.parishCount} parishes`;
+      tooltip.replaceChildren(
+        h("strong", {}, c.name),
+        h("span", {}, `Concelho · ${c.distrito}`),
+        h("span", { class: c.pnctCount ? "tt-pnct" : "tt-other" }, coverage),
+      );
+    } else {
+      const { p } = target;
+      setHover({ source: PARISH_SOURCE, id: featureId(p.dicofre) });
+      tooltip.replaceChildren(
+        h("strong", {}, p.freguesia),
+        h("span", {}, p.concelho),
+        h("span", { class: p.pnct ? "tt-pnct" : "tt-other" }, p.pnct ? "PNCT: yes" : "PNCT: no"),
+      );
+    }
     tooltip.style.transform = `translate(${e.point.x + 14}px, ${e.point.y + 14}px)`;
     tooltip.hidden = false;
   });
-  const clearHover = () => {
+  function clearHover(): void {
     setHover(null);
     map.getCanvas().style.cursor = "";
     tooltip.hidden = true;
-  };
-  map.on("mouseleave", PARISH_FILL, clearHover);
-  // The layer's mouseleave does not fire when the pointer moves onto a DOM overlay.
+  }
+  // The map's mousemove does not fire when the pointer moves onto a DOM overlay.
   map.on("mouseout", clearHover);
 
+  // At concelho level a click (or tap) selects the concelho and zooms into it; parishes are not
+  // hit-tested there, so a tap on a country-wide view never selects a tiny parish by accident.
   map.on("click", (e) => {
-    const f = map.queryRenderedFeatures(e.point, { layers: [PARISH_FILL] })[0];
-    const dicofre = f?.properties.dicofre as string | undefined;
-    const hidden = dicofre !== undefined && filter.focus && !data.parishes.get(dicofre)?.pnct;
-    if (dicofre && !hidden) select({ kind: "parish", dicofre });
+    const target = hit(e.point);
+    if (target?.kind === "concelho") select({ kind: "concelho", code: target.c.code }, { fly: true });
+    else if (target?.kind === "parish") select({ kind: "parish", dicofre: target.p.dicofre });
     else select(null);
   });
 
@@ -229,7 +297,7 @@ function start(data: MapData): void {
 
   districtSelect.addEventListener("change", () => {
     filter.district = districtSelect.value || null;
-    applyFilter(map, filter);
+    applyFilter(map, filter, limits.levelZoom);
     writeHash({ d: filter.district });
     fit(filter.district ? data.districtBounds.get(filter.district) : MAINLAND, 10);
   });
@@ -249,10 +317,10 @@ function start(data: MapData): void {
     }
     if (map.getLayer(PARISH_FILL)) {
       document.body.dataset.mapIdle = "false"; // the filter change re-renders; "idle" sets it back
-      applyFilter(map, filter);
+      applyFilter(map, filter, limits.levelZoom);
     }
     writeHash({ focus: on ? "1" : null, pnct: null });
-    if (on && hoverId !== null && !data.parishes.get(String(hoverId).padStart(6, "0"))?.pnct) clearHover();
+    if (on) clearHover(); // the next mousemove restores it if the feature is still shown
     if (on && selection?.kind === "parish" && !data.parishes.get(selection.dicofre)?.pnct) select(null);
     else if (on && selection?.kind === "concelho" && !data.concelhos.get(selection.code)?.pnctCount) select(null);
     else if (selection?.kind === "concelho") select(selection); // refresh which parishes are highlighted
@@ -280,10 +348,11 @@ function start(data: MapData): void {
     if ((s.parish ?? s.concelho) !== current) restore(true, s);
   });
 
-  // The map is usable once the parishes are drawn; basemap labels may still be loading.
-  // data-parishes-loaded marks that frame (used by scripts/perf.mjs).
+  // The map is usable once the parishes and concelhos are drawn; basemap labels may still be loading.
+  // data-parishes-loaded marks that frame (used by scripts/perf.mjs and the e2e waits).
   const onParishData = (e: MapSourceDataEvent) => {
-    if (e.sourceId !== PARISH_SOURCE || !map.isSourceLoaded(PARISH_SOURCE)) return;
+    if (e.sourceId !== PARISH_SOURCE && e.sourceId !== CONCELHO_SOURCE) return;
+    if (!map.isSourceLoaded(PARISH_SOURCE) || !map.isSourceLoaded(CONCELHO_SOURCE)) return;
     map.off("sourcedata", onParishData);
     map.once("render", () => {
       status.hidden = true;

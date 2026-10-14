@@ -7,6 +7,7 @@ Live site: https://pnct.singledev.eu. This is an unofficial tool. What's done an
 Features:
 
 - **Parish map:** all 3,049 mainland parishes, with the 1,861 PNCT parishes shaded, and concelho boundaries.
+- **Zoom levels:** concelhos (whole / partly / not PNCT) at country zoom, where a click zooms into one; parishes once zoomed in. Zoom-out and panning stop around mainland Portugal.
 - **Interaction:** hover tooltip, and a click opens a panel (side panel on desktop, bottom sheet on phones).
 - **Search and filters:**
   - Search across parishes and concelhos.
@@ -73,7 +74,7 @@ Git ignores both downloads. `make all` runs the download as a dependency, so you
 | `make parse` | `scripts/parse_pdf.py` → `data/interim/pnct_raw.csv` |
 | `make match` | `scripts/build_parishes.py` → `data/processed/pnct_parishes.csv`, `data/processed/unmatched.csv` |
 | `make geo` | `scripts/build_geo.py` → `data/processed/parishes_all.geojson`, `data/processed/concelhos.geojson` |
-| `make web-data` | `scripts/build_topo.py` → `web/data/pnct.topo.json` (one TopoJSON, objects `parishes` + `concelhos`) |
+| `make web-data` | `scripts/build_topo.py` → `web/data/pnct.topo.json` (one TopoJSON, objects `parishes` + `concelhos`; concelhos are dissolved from the simplified parishes on `dicofre[:4]` and carry `pnct_count`/`parish_count`, from which the app derives full/partial/none) |
 | `make shapes` | `scripts/build_shapes.py` → `web/data/shapes.json` (one search polygon per PNCT parish) and `data/processed/shapes_quality.csv` |
 | `make test` | `pytest` (`tests/test_pipeline.py`, `tests/test_shapes.py`) |
 | `make web` | `npm ci && npm test && npm run build` in `web/` → static `web/dist/` |

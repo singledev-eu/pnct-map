@@ -1,6 +1,6 @@
 # Roadmap
 
-Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-10-12.
+Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-10-14.
 
 ## Done
 
@@ -18,17 +18,11 @@ Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-m
 
 Release `v0.1.0` (2026-10-12) covers all of the above; see [CHANGELOG.md](../CHANGELOG.md).
 
-## Next (agreed for the next session, as one combined task)
+## Next
 
-1. **Zoom-dependent selection.**
-   - At country or district zoom, a click selects a whole concelho and zooms into it. Inside a concelho, clicks select parishes.
-   - Concelhos are coloured fully / partly / not PNCT.
-   - A breadcrumb, or zooming out, goes back up a level.
-   - Concelho geometry is dissolved from the existing simplified parishes, as `concelhos` already is in the TopoJSON.
-2. **Camera limits.**
-   - A dynamic min zoom, so that mainland Portugal just fits the viewport. It's recomputed on resize and rotation.
-   - `maxBounds` with a margin of about 1–1.5°.
-   - Verify in the perf harness (`web/scripts/perf.mjs`) that the Arabic glyph ranges (`1536-1791`, and Presentation Forms-B `65024-65279`) and the Tifinagh range (`11520-11775`), which come from Moroccan labels in the z6 basemap tiles, are no longer requested.
+- **Review and ship `feat/zoom-levels`:** check preview on a phone, then production. See [zoom-levels](reports/zoom-levels.md).
+- **Basemap glyphs:** the Arabic (`1536-1791`, `65024-65279`) and Tifinagh (`11520-11775`) glyph ranges are still requested. At the phone min zoom, the view reaches below 36.6°N, which loads the z6 basemap tile with northern Morocco. Camera limits alone don't avoid this. A fix would need a smaller bottom fit padding on phones, or style filters on the basemap label layers.
+- **Phone legend:** at country zoom on a 390×844 phone, the 4-row concelho legend covers part of the Algarve. Consider a collapsible legend.
 
 ## Backlog
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### For users
+
+- **Zoom levels:** at country zoom the map shows concelhos, shaded as whole PNCT, partly PNCT (light, hatched) or not PNCT. A click or tap on a concelho selects it and zooms in to its parishes. Inside, parishes behave as before, with concelho outlines kept for context. The two levels cross-fade at the threshold, and focus mode hides not-PNCT concelhos at concelho level.
+- **Camera limits:** you can't zoom out past the view where mainland Portugal just fits. That limit follows the window size and phone rotation. Panning is kept to mainland plus about 1.5°.
+
 ## 0.1.0 (2026-10-12)
 
 First public release, live at https://pnct.singledev.eu.

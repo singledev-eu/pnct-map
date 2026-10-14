@@ -87,7 +87,7 @@ test("toggling focus mode hides non-PNCT fill and outlines", async ({ page }) =>
 
   for (const id of [...PARISH_LAYERS, "concelho-line"]) expect(await filterOf(page, id), id).toBeUndefined();
   await expect.poll(() => renderedPnctFlags(page)).toContain(false);
-  await expect(page.locator(".legend-row-other")).toBeVisible();
+  await expect(page.locator(".legend-parish.legend-row-other")).toBeVisible();
 
   await setFocus(page, true);
   for (const id of PARISH_LAYERS) expect(await filterOf(page, id), id).toEqual(PNCT_FILTER);
@@ -98,13 +98,13 @@ test("toggling focus mode hides non-PNCT fill and outlines", async ({ page }) =>
   }).toBe(true);
   expect(hash(page)).toContain("focus=1");
   await expect(page.locator("body")).toHaveClass(/focus-mode/);
-  await expect(page.locator(".legend-row-other")).toBeHidden();
+  await expect(page.locator(".legend-parish.legend-row-other")).toBeHidden();
 
   await setFocus(page, false);
   for (const id of [...PARISH_LAYERS, "concelho-line"]) expect(await filterOf(page, id), id).toBeUndefined();
   await expect.poll(() => renderedPnctFlags(page)).toContain(false);
   expect(hash(page)).not.toContain("focus=1");
-  await expect(page.locator(".legend-row-other")).toBeVisible();
+  await expect(page.locator(".legend-parish.legend-row-other")).toBeVisible();
   expect(errors).toEqual([]);
 });
 

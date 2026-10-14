@@ -130,6 +130,13 @@ select {
   display: none;
 }
 
+/* The legend follows the zoom level (body data-level, set in main.ts). The app opens at the
+   country view, so the concelho rows are the default until the level is known. */
+body[data-level="parish"] .legend-concelho,
+body:not([data-level="parish"]) .legend-parish {
+  display: none;
+}
+
 /* ---- side panel / bottom sheet -------------------------------------------- */
 
 .panel {
@@ -456,6 +463,13 @@ select {
 
 .swatch-pnct {
   background: rgba(15, 138, 126, 0.5);
+  border: 1px solid rgba(15, 138, 126, 0.8);
+}
+
+.swatch-partial {
+  background:
+    repeating-linear-gradient(-45deg, rgba(15, 138, 126, 0.8) 0 1.5px, transparent 1.5px 5px),
+    rgba(15, 138, 126, 0.16);
   border: 1px solid rgba(15, 138, 126, 0.8);
 }
 

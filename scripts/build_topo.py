@@ -4,6 +4,8 @@ Input:  data/processed/parishes_all.geojson (already simplified by build_geo.py)
 Output: web/data/pnct.topo.json with two objects:
   parishes   dicofre, freguesia, concelho, distrito, pnct
   concelhos  name, distrito, pnct_count, parish_count
+             (dissolved here on dicofre[:4]; the web app's concelho level derives
+             whole / partly / not PNCT from the two counts, see web/src/layers.ts)
 """
 
 from __future__ import annotations
