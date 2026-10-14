@@ -22,7 +22,7 @@ Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (20
 
 ## Next
 
-- **Ship `fix/camera-center`** (camera centre kept near mainland at every zoom): it's on preview; check it on a phone, then merge and deploy. See [camera-center](reports/camera-center.md).
+- **Ship `fix/camera-center`** (camera centre kept near mainland at every zoom): it's on preview; check it on a phone, then merge and deploy. See [camera-center](reports/camera-center.md) and [camera-min-zoom-slack](reports/camera-min-zoom-slack.md).
 
 ## Backlog
 

@@ -74,7 +74,7 @@ No regression.
 ## Left for later
 
 - **Ship:** check the preview on a phone (pinch and drag at the Algarve and border edges), then merge and deploy.
-- **Min-zoom vertical slack (pre-existing since 0.2.0, unchanged here).**
+- **Min-zoom vertical slack (pre-existing since 0.2.0, unchanged here; fixed afterwards on this branch, see [camera-min-zoom-slack](camera-min-zoom-slack.md)).**
   - On height-limited screens (desktop), maxBounds at min zoom is taller than the view: lat 35.45–43.66 for a ~6° view.
   - So a cursor-anchored zoom-out from the Algarve ends about 1.2° south of the country view, with the north of the Minho cut off. Production 0.2.1 ends at exactly the same camera.
   - Your brief said min-zoom behaviour must stay as it is, so I didn't change it.
