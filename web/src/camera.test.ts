@@ -38,32 +38,49 @@ describe("fitCenter", () => {
 });
 
 describe("cameraLimits", () => {
-  for (const [name, size, pad] of [
-    ["desktop", DESKTOP, DESKTOP_PAD],
-    ["phone", PHONE, PHONE_PAD],
-    ["phone landscape", { width: 844, height: 390 }, DESKTOP_PAD],
-    ["ultra-wide", { width: 3440, height: 1440 }, DESKTOP_PAD],
+  const world = (z: number) => 512 * 2 ** z;
+  const px = (b: readonly number[], z: number) => ({
+    width: (((b[2] - b[0]) / 360) * world(z)),
+    height: ((Math.log(Math.tan(Math.PI / 4 + (b[3] * Math.PI) / 360)) - Math.log(Math.tan(Math.PI / 4 + (b[1] * Math.PI) / 360))) / (2 * Math.PI)) * world(z),
+  });
+  const NARROW_PHONE = { width: 320, height: 900 }; // tall enough that the width limits the fit
+
+  for (const [name, size, pad, limiting] of [
+    ["desktop", DESKTOP, DESKTOP_PAD, "height"],
+    ["phone", PHONE, PHONE_PAD, "height"],
+    ["phone landscape", { width: 844, height: 390 }, DESKTOP_PAD, "height"],
+    ["ultra-wide", { width: 3440, height: 1440 }, DESKTOP_PAD, "height"],
+    ["narrow phone", NARROW_PHONE, PHONE_PAD, "width"],
   ] as const) {
-    it(`${name}: maxBounds contain mainland + margin and the whole min-zoom view`, () => {
+    it(`${name} (${limiting}-limited): maxBounds are exactly the min-zoom view, with mainland and its fit padding inside`, () => {
       const { minZoom, maxBounds, levelZoom } = cameraLimits(size, pad);
       expect(levelZoom).toBe(minZoom + LEVEL_OFFSET);
-      expect(maxBounds[0]).toBeLessThanOrEqual(MAINLAND[0] - BOUNDS_MARGIN);
-      expect(maxBounds[1]).toBeLessThanOrEqual(MAINLAND[1] - BOUNDS_MARGIN);
-      expect(maxBounds[2]).toBeGreaterThanOrEqual(MAINLAND[2] + BOUNDS_MARGIN);
-      expect(maxBounds[3]).toBeGreaterThanOrEqual(MAINLAND[3] + BOUNDS_MARGIN);
-      // The view at minZoom fits inside maxBounds, so MapLibre never has to zoom in past minZoom.
-      const world = 512 * 2 ** minZoom;
-      const x = (lng: number) => ((lng + 180) / 360) * world;
-      const y = (lat: number) => ((1 - Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360)) / Math.PI) / 2) * world;
-      expect(x(maxBounds[2]) - x(maxBounds[0])).toBeGreaterThanOrEqual(size.width - 1e-6);
-      expect(y(maxBounds[1]) - y(maxBounds[3])).toBeGreaterThanOrEqual(size.height - 1e-6);
+      // Which axis limits the fit: mainland spans the padded size on that axis.
+      const land = px(MAINLAND, minZoom);
+      const padded = { width: size.width - pad.left - pad.right, height: size.height - pad.top - pad.bottom };
+      expect(land[limiting]).toBeCloseTo(padded[limiting], 6);
+      expect(land[limiting === "height" ? "width" : "height"]).toBeLessThan(padded[limiting === "height" ? "width" : "height"]);
+      // maxBounds is the view on both axes: no slack at minZoom, and no forced zoom-in past it.
+      const bounds = px(maxBounds, minZoom);
+      expect(bounds.width).toBeCloseTo(size.width, 6);
+      expect(bounds.height).toBeCloseTo(size.height, 6);
+      expect(maxBounds[0]).toBeLessThan(MAINLAND[0]);
+      expect(maxBounds[1]).toBeLessThan(MAINLAND[1]);
+      expect(maxBounds[2]).toBeGreaterThan(MAINLAND[2]);
+      expect(maxBounds[3]).toBeGreaterThan(MAINLAND[3]);
     });
   }
 
-  it("a phone's limits are the plain margin (the view is narrower than mainland + margin)", () => {
-    const { maxBounds } = cameraLimits(PHONE, PHONE_PAD);
-    expect(maxBounds[0]).toBeCloseTo(MAINLAND[0] - BOUNDS_MARGIN, 6);
-    expect(maxBounds[2]).toBeCloseTo(MAINLAND[2] + BOUNDS_MARGIN, 6);
+  it("on the limiting axis, the margin beyond mainland is the fit padding (desktop: toolbar 80 px, bottom 40 px)", () => {
+    const { minZoom, maxBounds } = cameraLimits(DESKTOP, DESKTOP_PAD);
+    expect(px([0, MAINLAND[3], 0, maxBounds[3]], minZoom).height).toBeCloseTo(80, 6);
+    expect(px([0, maxBounds[1], 0, MAINLAND[1]], minZoom).height).toBeCloseTo(40, 6);
+  });
+
+  it("on a width-limited screen, the side margins are the fit padding (24 px)", () => {
+    const { minZoom, maxBounds } = cameraLimits(NARROW_PHONE, PHONE_PAD);
+    expect(px([maxBounds[0], 0, MAINLAND[0], 0], minZoom).width).toBeCloseTo(24, 6);
+    expect(px([MAINLAND[2], 0, maxBounds[2], 0], minZoom).width).toBeCloseTo(24, 6);
   });
 });
 
@@ -99,7 +116,7 @@ describe("clampCenter", () => {
 describe("constrainView", () => {
   const limitsFor = (size: { width: number; height: number }, pad: typeof DESKTOP_PAD) => {
     const { minZoom, maxBounds } = cameraLimits(size, pad);
-    return { minZoom, view: { size, minZoom, maxZoom: 15, maxBounds, centerBox: CENTER_BOX } };
+    return { minZoom, view: { size, minZoom, maxZoom: 15, maxBounds, boundsMargin: BOUNDS_MARGIN, centerBox: CENTER_BOX } };
   };
 
   for (const [name, size, pad] of [["desktop", DESKTOP, DESKTOP_PAD], ["phone", PHONE, PHONE_PAD], ["ultra-wide", { width: 3440, height: 1440 }, DESKTOP_PAD]] as const) {
@@ -125,7 +142,10 @@ describe("constrainView", () => {
 
   it("keeps the centre in the box at high zoom (Tangier, Madrid)", () => {
     const { view } = limitsFor(PHONE, PHONE_PAD);
-    expect(constrainView([-5.81, 35.77], 10, view).center).toEqual([CENTER_BOX[2], CENTER_BOX[1]]);
+    // Tangier: the box corner (at z10 maxBounds are widened by the full margin, so the box limits).
+    const [tLng, tLat] = constrainView([-5.81, 35.77], 10, view).center;
+    expect(tLng).toBeCloseTo(CENTER_BOX[2], 9);
+    expect(tLat).toBeCloseTo(CENTER_BOX[1], 9);
     const madrid = constrainView([-3.7, 40.4], 11, limitsFor(DESKTOP, DESKTOP_PAD).view).center;
     expect(madrid[0]).toBeCloseTo(CENTER_BOX[2], 9);
     expect(madrid[1]).toBeCloseTo(40.4, 9);
@@ -137,7 +157,8 @@ describe("constrainView", () => {
     const [lng, lat] = constrainView([-5.9, 36.7], z, view).center; // box corner, but the view would leave maxBounds
     const world = 512 * 2 ** z;
     const halfLng = (DESKTOP.width / 2 / world) * 360;
-    expect(lng + halfLng).toBeLessThanOrEqual(view.maxBounds[2] + 1e-9);
+    const margin = BOUNDS_MARGIN * (0.5 / LEVEL_OFFSET); // faded in: a quarter of the way at minZoom + 0.5
+    expect(lng + halfLng).toBeLessThanOrEqual(view.maxBounds[2] + margin + 1e-9); // inside the (widened) bounds
     expect(lng).toBeLessThanOrEqual(CENTER_BOX[2]);
     expect(lat).toBeGreaterThanOrEqual(CENTER_BOX[1]);
   });
@@ -147,5 +168,38 @@ describe("constrainView", () => {
     const out = constrainView([-8, 39.5], view.minZoom, { ...view, size: { width: 4000, height: 844 } });
     expect(out.zoom).toBe(view.minZoom);
     expect(out.center[0]).toBeCloseTo((view.maxBounds[0] + view.maxBounds[2]) / 2, 6);
+  });
+});
+
+describe("constrainView at min zoom (no slack)", () => {
+  const cases = [
+    ["desktop", DESKTOP, DESKTOP_PAD],
+    ["phone", PHONE, PHONE_PAD],
+    ["phone landscape", { width: 844, height: 390 }, DESKTOP_PAD],
+    ["ultra-wide", { width: 3440, height: 1440 }, DESKTOP_PAD],
+    ["narrow phone (width-limited)", { width: 320, height: 900 }, PHONE_PAD],
+  ] as const;
+
+  for (const [name, size, pad] of cases) {
+    it(`${name}: any requested centre ends at exactly the country view`, () => {
+      const { minZoom, maxBounds } = cameraLimits(size, pad);
+      const limits = { size, minZoom, maxZoom: 15, maxBounds, boundsMargin: BOUNDS_MARGIN, centerBox: CENTER_BOX };
+      const country = fitCenter(MAINLAND, minZoom, pad);
+      for (const c of [[-8.94, 37.0], [-8.2, 42.1], [-6.2, 41.5], [-9.5, 38.7], [-3.7, 40.4], [-5.81, 35.77]] as [number, number][]) {
+        const out = constrainView(c, minZoom - 1, limits); // also below minZoom
+        expect(out.zoom).toBe(minZoom);
+        expect(out.center[0]).toBeCloseTo(country[0], 6);
+        expect(out.center[1]).toBeCloseTo(country[1], 6);
+      }
+    });
+  }
+
+  it("the allowed area grows with zoom, reaching the full margin at the parish level", () => {
+    const { minZoom, maxBounds } = cameraLimits(DESKTOP, DESKTOP_PAD);
+    const limits = { size: DESKTOP, minZoom, maxZoom: 15, maxBounds, boundsMargin: BOUNDS_MARGIN, centerBox: CENTER_BOX };
+    // How far south the centre can go near Sagres, per zoom: monotonic, no jumps.
+    const south = [0, 0.25, 0.5, 1, 1.5, 2, 3].map((dz) => constrainView([-8.94, 30], minZoom + dz, limits).center[1]);
+    for (let i = 1; i < south.length; i++) expect(south[i]).toBeLessThanOrEqual(south[i - 1] + 1e-9);
+    expect(south.at(-1)).toBeCloseTo(CENTER_BOX[1], 9); // at parish zooms the centre box is what limits
   });
 });

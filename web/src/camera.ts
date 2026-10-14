@@ -6,10 +6,14 @@ import type { Bounds } from "./data";
  */
 export const MAINLAND: Bounds = [-9.53, 36.95, -6.18, 42.16];
 const TILE_SIZE = 512;
-/** maxBounds margin around mainland, in degrees. */
-export const BOUNDS_MARGIN = 1.5;
 /** Concelho level below minZoom + LEVEL_OFFSET: 4× the country-fit scale, about one district on screen. */
 export const LEVEL_OFFSET = 2;
+/**
+ * Margin around maxBounds in degrees, faded in with zoom by constrainView: 0 at minZoom (the
+ * camera is pinned to the country view there) up to the full margin from the parish level
+ * (minZoom + LEVEL_OFFSET), where selection fits need room for the side panel or the bottom sheet.
+ */
+export const BOUNDS_MARGIN = 1.5;
 /** Half-width of the zoom band in which the concelho and parish fills cross-fade. */
 export const FADE = 0.25;
 
@@ -63,27 +67,26 @@ export interface CameraLimits {
 }
 
 /**
- * minZoom: mainland just fits with the app's fit padding (toolbar, legend). maxBounds: mainland plus
- * BOUNDS_MARGIN, widened to the whole viewport at minZoom. MapLibre keeps the *viewport* inside
- * maxBounds and zooms in when it can't, so on a wide screen a plain margin would override minZoom.
+ * minZoom: mainland just fits with the app's fit padding (toolbar, legend).
+ * maxBounds (MapLibre keeps the *viewport* inside it): exactly the view at minZoom. So the only
+ * camera at minZoom is the country view, and zooming out from anywhere ends there.
+ *   - On the axis that limits the fit (height on most screens), a margin left slack: a zoom-out
+ *     anchored on the Algarve ended ~1.2° south, with the north of the Minho cut off.
+ *   - On the other axis, wide screens already had this (the margin was widened to the view, or
+ *     MapLibre would zoom in past minZoom). On phones, mainland ± 1.5° was wider than the ~4° view,
+ *     so it left ±1.2° of sideways slack at minZoom.
+ * constrainView widens it by BOUNDS_MARGIN as the zoom rises, so zoomed-in selection fits keep
+ * their room, and CENTER_BOX keeps the centre close to mainland.
  */
 export function cameraLimits(size: Size, pad: Padding): CameraLimits {
   const minZoom = fitZoom(MAINLAND, size, pad);
-  const view = viewBounds(fitCenter(MAINLAND, minZoom, pad), minZoom, size);
-  const m = BOUNDS_MARGIN;
-  const maxBounds: Bounds = [
-    Math.min(MAINLAND[0] - m, view[0]),
-    Math.min(MAINLAND[1] - m, view[1]),
-    Math.max(MAINLAND[2] + m, view[2]),
-    Math.max(MAINLAND[3] + m, view[3]),
-  ];
+  const maxBounds = viewBounds(fitCenter(MAINLAND, minZoom, pad), minZoom, size);
   return { minZoom, maxBounds, levelZoom: minZoom + LEVEL_OFFSET };
 }
 
 /**
  * Margin around mainland for the camera *centre*, in degrees. maxBounds only keeps the viewport
- * inside mainland ± BOUNDS_MARGIN, which at high zoom still lets the centre wander to Tangier or
- * deep into Spain. 0.25° (~25 km) still centres Sagres, the Minho and the border parishes, and keeps
+ * inside the min-zoom view, which at high zoom still lets the centre wander far beyond mainland. 0.25° (~25 km) still centres Sagres, the Minho and the border parishes, and keeps
  * the off-centre fits (the panel on desktop, the bottom sheet on phones) of edge concelhos.
  */
 export const CENTER_MARGIN = 0.25;
@@ -103,8 +106,10 @@ export interface ViewLimits {
   size: Size;
   minZoom: number;
   maxZoom: number;
-  /** maxBounds: the viewport stays inside it. */
+  /** maxBounds (the min-zoom view): the viewport stays inside it, widened by boundsMargin(zoom). */
   maxBounds: Bounds;
+  /** Full widening in degrees, reached at minZoom + LEVEL_OFFSET (0 at minZoom). */
+  boundsMargin: number;
   /** The camera centre stays inside it. */
   centerBox: Bounds;
 }
@@ -112,7 +117,9 @@ export interface ViewLimits {
 /**
  * Camera constrain for MapLibre's transformConstrain hook, which replaces the built-in one, so this
  * also does its job: clamp the zoom, then keep the viewport inside maxBounds (the same rule as
- * MapLibre's default), then keep the centre inside centerBox. Per-axis clamping keeps the viewport
+ * MapLibre's default, with maxBounds widened by a margin that fades in with zoom, so the
+ * allowed area shrinks smoothly to exactly the country view while zooming out), then keep the
+ * centre inside centerBox. Per-axis clamping keeps the viewport
  * rule satisfied, because both ranges contain the country-view centre. If the viewport is wider than
  * maxBounds (only for a moment, while a resize hasn't recomputed the limits yet), it is centred on
  * them; MapLibre would zoom in instead.
@@ -120,7 +127,8 @@ export interface ViewLimits {
 export function constrainView(center: [number, number], zoom: number, limits: ViewLimits): { center: [number, number]; zoom: number } {
   const z = Math.min(limits.maxZoom, Math.max(limits.minZoom, zoom));
   const world = TILE_SIZE * 2 ** z;
-  const b = limits.maxBounds;
+  const m = limits.boundsMargin * Math.min(1, Math.max(0, (z - limits.minZoom) / LEVEL_OFFSET));
+  const b: Bounds = [limits.maxBounds[0] - m, limits.maxBounds[1] - m, limits.maxBounds[2] + m, limits.maxBounds[3] + m];
   const fit = (v: number, lo: number, hi: number, half: number) => (hi - lo < 2 * half ? (lo + hi) / 2 : Math.min(hi - half, Math.max(lo + half, v)));
   const x = fit(mercX(center[0]), mercX(b[0]), mercX(b[2]), limits.size.width / 2 / world);
   const y = fit(mercY(center[1]), mercY(b[3]), mercY(b[1]), limits.size.height / 2 / world);

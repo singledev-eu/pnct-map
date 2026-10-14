@@ -109,6 +109,49 @@ async function pointInside(page: Page, layer: string, key: string, value: string
   return point!;
 }
 
+/**
+ * The initial fit is the country view. From z12 at Sagres, a wheel zoom-out anchored on Sagres (the
+ * worst case: it pulls the view south-west) must end at that same camera: maxBounds are the min-zoom
+ * view itself, so there is no slack at min zoom on either axis (camera.ts: cameraLimits, constrainView).
+ */
+async function zoomOutFromSagres(page: Page): Promise<void> {
+  const errors = trackErrors(page);
+  await page.goto("/");
+  await waitForParishView(page);
+  const country = { center: await centerOf(page), zoom: await zoomOf(page) };
+  expect(Math.abs(country.zoom - (await minZoomOf(page)))).toBeLessThan(1e-6);
+
+  await page.goto("about:blank");
+  await page.goto("/#map=12/37.0/-8.94");
+  await waitForParishView(page);
+  // Sagres must be centrable: no clamp there.
+  const start = await centerOf(page);
+  expect(Math.abs(start.lng - -8.94)).toBeLessThan(0.01);
+  expect(Math.abs(start.lat - 37.0)).toBeLessThan(0.01);
+
+  const sagres = await page.evaluate(() => {
+    const p = window.pnctMap.project([-8.94, 37.0]);
+    const r = window.pnctMap.getCanvas().getBoundingClientRect();
+    return { x: r.left + p.x, y: r.top + p.y };
+  });
+  await page.mouse.move(sagres.x, sagres.y);
+  await expect
+    .poll(
+      async () => {
+        await page.mouse.wheel(0, 800);
+        return Math.abs((await zoomOf(page)) - country.zoom);
+      },
+      { timeout: 30_000, intervals: [100] },
+    )
+    .toBeLessThan(1e-6);
+  await waitForParishView(page);
+
+  const end = await centerOf(page);
+  expect(Math.abs(end.lng - country.center.lng), `lng ${end.lng} vs ${country.center.lng}`).toBeLessThan(1e-4);
+  expect(Math.abs(end.lat - country.center.lat), `lat ${end.lat} vs ${country.center.lat}`).toBeLessThan(1e-4);
+  expect(errors).toEqual([]);
+}
+
 test.describe("phone portrait (390×844)", () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
 
@@ -164,6 +207,11 @@ test.describe("phone portrait (390×844)", () => {
   });
 });
 
+test.describe("phone portrait (390×844), zoom-out", () => {
+  test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  test("zooming out from zoom 12 near Sagres ends at the country view", ({ page }) => zoomOutFromSagres(page));
+});
+
 test.describe("desktop (1440×900)", () => {
   test("dragging toward Madrid at zoom 10 stops with the centre inside the box", async ({ page }) => {
     const errors = trackErrors(page);
@@ -200,42 +248,7 @@ test.describe("desktop (1440×900)", () => {
     expect(errors).toEqual([]);
   });
 
-  test("zooming out from zoom 12 near Sagres reaches min zoom", async ({ page }) => {
-    const errors = trackErrors(page);
-    await page.goto("/#map=12/37.0/-8.94");
-    await waitForParishView(page);
-
-    // Sagres must be centrable: no clamp there.
-    const start = await centerOf(page);
-    expect(Math.abs(start.lng - -8.94)).toBeLessThan(0.01);
-    expect(Math.abs(start.lat - 37.0)).toBeLessThan(0.01);
-
-    const minZoom = await minZoomOf(page);
-    await page.mouse.move(720, 450);
-    await expect
-      .poll(
-        async () => {
-          await page.mouse.wheel(0, 800);
-          return Math.abs((await zoomOf(page)) - minZoom);
-        },
-        { timeout: 30_000, intervals: [100] },
-      )
-      .toBeLessThan(0.01);
-    await waitForParishView(page);
-
-    // Zooming out was never blocked; the centre is in the box and the view inside maxBounds. This is not
-    // necessarily the exact country view: on a height-limited screen maxBounds is taller than the view at
-    // min zoom, so a cursor-anchored zoom-out can end ~1.2° south of it. That slack is unchanged from
-    // 0.2.1 (same final camera there); see docs/reports/camera-center.md.
-    expectCenterInBox(await centerOf(page));
-    const inside = await page.evaluate(() => {
-      const [view, max] = [window.pnctMap.getBounds(), window.pnctMap.getMaxBounds()];
-      const e = 1e-6;
-      return view.getWest() >= max.getWest() - e && view.getEast() <= max.getEast() + e && view.getSouth() >= max.getSouth() - e && view.getNorth() <= max.getNorth() + e;
-    });
-    expect(inside, "the view stays inside maxBounds").toBe(true);
-    expect(errors).toEqual([]);
-  });
+  test("zooming out from zoom 12 near Sagres ends at the country view", ({ page }) => zoomOutFromSagres(page));
 
   test("the country view is unchanged at min zoom", async ({ page }) => {
     const errors = trackErrors(page);

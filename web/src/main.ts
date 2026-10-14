@@ -3,7 +3,7 @@ import "./style.css";
 import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { latinLabels } from "./basemap";
-import { cameraLimits, CENTER_BOX, constrainView, fitCenter, fitZoom, MAINLAND, type CameraLimits } from "./camera";
+import { BOUNDS_MARGIN, cameraLimits, CENTER_BOX, constrainView, fitCenter, fitZoom, MAINLAND, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
 import { addLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, PARISH_FILL, PARISH_SOURCE, type FilterState } from "./layers";
@@ -65,6 +65,7 @@ map.setTransformConstrain((lngLat, zoom) => {
     minZoom: map.getMinZoom(),
     maxZoom: map.getMaxZoom(),
     maxBounds: (map.getMaxBounds()?.toArray().flat() ?? limits.maxBounds) as Bounds,
+    boundsMargin: BOUNDS_MARGIN,
     centerBox: CENTER_BOX,
   });
   return { center: new LngLat(...view.center), zoom: view.zoom };
