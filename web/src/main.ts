@@ -2,10 +2,12 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
 import { AttributionControl, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
+import { latinLabels } from "./basemap";
 import { cameraLimits, fitCenter, fitZoom, MAINLAND, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
 import { addLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, PARISH_FILL, PARISH_SOURCE, type FilterState } from "./layers";
+import { mountLegend } from "./legend";
 import { h, Panel } from "./panel";
 import { loadOptions, saveOptions } from "./prefs";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
@@ -40,7 +42,6 @@ const initial = readHash();
 let limits = limitsFor($("map"));
 const map = new MapLibreMap({
   container: "map",
-  style: STYLE_URL,
   hash: MAP_HASH_KEY,
   bounds: initial.hasMapView ? undefined : (MAINLAND as LngLatBoundsLike),
   fitBoundsOptions: { padding: fitPadding(false) },
@@ -51,6 +52,8 @@ const map = new MapLibreMap({
   dragRotate: false,
   pitchWithRotate: false,
 });
+// Set here rather than as the `style` option so the label patch (basemap.ts) applies before any tile is parsed.
+map.setStyle(STYLE_URL, { transformStyle: latinLabels });
 map.touchZoomRotate.disableRotation();
 map.addControl(new NavigationControl({ showCompass: false }), "bottom-right");
 // No `compact` option: MapLibre shows the full line on wide maps and the compact ⓘ button at
@@ -82,6 +85,7 @@ let onLimits = () => {};
 // The attribution shares the bottom edge with the legend. style.css limits its width to the
 // space right of the legend, so the expanded text wraps upwards instead of covering it.
 const legendEl = document.querySelector<HTMLElement>(".legend")!;
+mountLegend(legendEl, window.matchMedia("(max-width: 640px)"));
 const trackLegend = () => document.documentElement.style.setProperty("--legend-right", `${Math.ceil(legendEl.getBoundingClientRect().right)}px`);
 new ResizeObserver(trackLegend).observe(legendEl);
 window.addEventListener("resize", trackLegend);

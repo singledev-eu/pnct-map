@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### For users
+
+- **Phones:** the legend starts as a small "Legend" chip, so it no longer covers the Algarve at the country view. A tap expands it, and the choice is remembered on this device. Desktop keeps the full legend.
+- **Basemap labels are Latin-only:** places with a non-Latin name, such as northern Morocco at the map's southern edge, show their Latin name ("Tanger"). This removes three Arabic/Tifinagh font downloads (about 330 KB). On the throttled phone profile, the map settles about 1.9 s sooner.
+
 ## 0.2.0 (2026-10-14)
 
 ### For users

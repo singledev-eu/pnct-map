@@ -21,8 +21,7 @@ Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (20
 
 ## Next
 
-- **Basemap glyphs:** the Arabic (`1536-1791`, `65024-65279`) and Tifinagh (`11520-11775`) glyph ranges are still requested. At the phone min zoom, the view reaches below 36.6°N, which loads the z6 basemap tile with northern Morocco. Camera limits alone don't avoid this. A fix would need a smaller bottom fit padding on phones, or style filters on the basemap label layers.
-- **Phone legend:** at country zoom on a 390×844 phone, the 4-row concelho legend covers part of the Algarve. Consider a collapsible legend.
+- **Ship `fix/phone-polish`** (collapsible phone legend, Latin-only basemap labels): it's on preview; check it on a phone, then merge and deploy. See [phone-polish](reports/phone-polish.md).
 
 ## Backlog
 

@@ -52,7 +52,11 @@
 
     <aside id="panel" class="panel" hidden aria-live="polite" data-testid="panel"></aside>
 
-    <div class="legend" aria-label="Legend">
+    <div class="legend" role="group" aria-label="Legend">
+      <button id="legend-toggle" type="button" class="legend-toggle" aria-expanded="true" aria-controls="legend-body">
+        Legend<span class="legend-chevron" aria-hidden="true"></span>
+      </button>
+      <div id="legend-body" class="legend-body">
       <div class="legend-row legend-concelho"><span class="swatch swatch-pnct"></span>Whole concelho PNCT</div>
       <div class="legend-row legend-concelho"><span class="swatch swatch-partial"></span>Partly PNCT</div>
       <div class="legend-row legend-concelho legend-row-other"><span class="swatch swatch-other"></span>Not PNCT</div>
@@ -60,6 +64,7 @@
       <div class="legend-row legend-parish legend-row-other"><span class="swatch swatch-other"></span>Other parish</div>
       <div class="legend-row"><span class="swatch swatch-line"></span>Concelho boundary</div>
       <button id="about-open" type="button" class="link-button">About</button>
+      </div>
     </div>
 
     <div id="tooltip" class="tooltip" hidden role="tooltip"></div>

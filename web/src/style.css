@@ -449,6 +449,20 @@ body:not([data-level="parish"]) .legend-parish {
   margin-bottom: 4px;
 }
 
+/* Only on narrow screens (see the media query below and legend.ts). */
+.legend-toggle {
+  display: none;
+}
+
+.legend-chevron::after {
+  content: "▴";
+  margin-left: 6px;
+}
+
+.legend-collapsed .legend-chevron::after {
+  content: "▾";
+}
+
 .legend .link-button {
   margin-top: 4px;
   font-size: 12px;
@@ -669,6 +683,29 @@ dialog a {
     left: 8px;
     bottom: 8px;
     padding: 8px 10px;
+  }
+
+  .legend-toggle {
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    margin: -4px -2px 4px;
+    padding: 0 4px;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  /* Collapsed: just the chip. */
+  .legend-collapsed {
+    padding: 4px 8px;
+  }
+
+  .legend-collapsed .legend-toggle {
+    margin: 0;
   }
 
   .panel-open .legend,

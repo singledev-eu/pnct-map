@@ -218,6 +218,10 @@ if (median) {
   console.log("\nNo run reached ready.");
 }
 
+// Basemap glyph ranges, across all runs. Only 0-255 is expected: labels are Latin-only (src/basemap.ts).
+const glyphRanges = [...new Set(runs.flatMap((r) => r.requests.map((q) => decodeURIComponent(q.url).match(/\/fonts\/[^/]+\/(\d+-\d+)\.pbf/)?.[1]).filter(Boolean)))];
+console.log(`\nglyph ranges requested: ${glyphRanges.sort((a, b) => parseInt(a) - parseInt(b)).join(", ") || "none"}`);
+
 const failures = runs.flatMap((r, i) => r.errors.map((e) => `run ${i + 1}: ${e}`));
 if (failures.length) console.error(`\nProblems:\n  ${failures.join("\n  ")}`);
 
