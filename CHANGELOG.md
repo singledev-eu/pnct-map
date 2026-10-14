@@ -1,11 +1,16 @@
 # Changelog
 
-## Unreleased
+## 0.2.2 (2026-10-14)
 
 ### For users
 
-- **The camera stays over Portugal:** at any zoom, the map centre stays within mainland Portugal plus about 0.25° (~25 km), so panning or flying can no longer drift to Tangier or deep into Spain. Sagres, the Minho and the border parishes can still be centred. Edges stop smoothly, with no bounce-back.
-- **Zooming all the way out always returns to the country view.** Before, a zoom-out anchored away from the centre could stop short: about 1.2° south on desktop, with the north of the Minho cut off, or about 1.1° to the side on phones.
+- **The camera stays over Portugal at every zoom:** the map centre stays within mainland Portugal plus about 0.25° (~25 km), so panning, flinging or flying can no longer drift off to Morocco (Tangier) or deep into Spain. Sagres, the Minho and the border parishes can still be centred, and edges stop smoothly with no bounce-back.
+- **Zooming out always ends at the exact country view, on every screen shape:** desktop, phone, landscape phone and ultra-wide. Before, a zoom-out anchored away from the centre could stop short: about 1.2° south on desktop, with the north of the Minho cut off, or about 1.1° to the side on phones. Selecting a concelho or parish near the coast or the border still frames it clear of the side panel or the bottom sheet.
+
+### Infrastructure
+
+- The camera rules are one tested function (`constrainView` in `web/src/camera.ts`), plugged into MapLibre's `transformConstrain` hook. A data-driven unit test (`camera.fits.test.ts`) checks that no concelho or parish selection is ever moved by them, on two phone and two desktop sizes.
+- New e2e spec `camera-center.spec.ts`: panning toward Tangier and Madrid, every frame of a drag with inertia, an Algarve concelho selected with the bottom sheet open, and a zoom-out from Sagres on desktop and phone.
 
 ## 0.2.1 (2026-10-14)
 

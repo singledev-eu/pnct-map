@@ -16,13 +16,14 @@ Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-m
 | 2026-10-12 | Mobile attribution: compact ⓘ on phones, kept clear of the legend; bottom-sheet credit with all four linked credits | [mobile-attribution](reports/mobile-attribution.md) |
 | 2026-10-14 | Zoom levels (concelhos at country zoom, parishes inside, cross-fade) and camera limits (dynamic min zoom, maxBounds). Released as 0.2.0 | [zoom-levels](reports/zoom-levels.md) |
 | 2026-10-14 | Phone polish: collapsible phone legend; Latin-only basemap labels, so no Arabic/Tifinagh glyph requests (full idle 12.0 → 10.1 s). Released as 0.2.1 | [phone-polish](reports/phone-polish.md) |
+| 2026-10-14 | Camera centre kept over Portugal at every zoom, and every zoom-out ends at the exact country view. Released as 0.2.2 | [camera-center](reports/camera-center.md), [camera-min-zoom-slack](reports/camera-min-zoom-slack.md) |
 | 2026-10-12 | E2E flakiness: one retry; flaky tests warn with a trace but don't block deploys; tests wait for the parish layer, not the basemap | [e2e-flakiness](reports/e2e-flakiness.md) |
 
-Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; see [CHANGELOG.md](../CHANGELOG.md).
+Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; see [CHANGELOG.md](../CHANGELOG.md).
 
 ## Next
 
-- **Ship `fix/camera-center`** (camera centre kept near mainland at every zoom): it's on preview; check it on a phone, then merge and deploy. See [camera-center](reports/camera-center.md) and [camera-min-zoom-slack](reports/camera-min-zoom-slack.md).
+Nothing agreed yet. Pick from the backlog below.
 
 ## Backlog
 
