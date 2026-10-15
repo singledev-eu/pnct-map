@@ -6,7 +6,7 @@ import { basemapStyle } from "./basemap";
 import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, MAINLAND, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
-import { addLayers, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, PARISH_FILL, PARISH_SOURCE, setHatchColor, withAppLayers, type FilterState } from "./layers";
+import { addLayers, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, HATCH_IMAGE, hatchImage, PARISH_FILL, PARISH_SOURCE, setHatchColor, withAppLayers, type FilterState } from "./layers";
 import { mountLegend } from "./legend";
 import { h, Panel } from "./panel";
 import { loadOptions, saveOptions } from "./prefs";
@@ -56,6 +56,16 @@ const map = new MapLibreMap({
   attributionControl: false,
   dragRotate: false,
   pitchWithRotate: false,
+});
+// OpenFreeMap's dark style uses a "wood-pattern" that its sprite doesn't have. A missing basemap image gets a
+// 1×1 transparent stand-in, so nothing is drawn and MapLibre logs no warning. (A `styleimagemissing` listener
+// can't prevent that warning in MapLibre 6: the event fires just before it, and only this resolver runs earlier.)
+// The hatch, missing only for a moment after a full style rebuild, is drawn in the current palette. Every
+// style the map loads, theme switches included, uses this resolver.
+map.setMissingStyleImageResolver((id) => {
+  if (map.hasImage(id)) return;
+  if (id === HATCH_IMAGE) map.addImage(id, hatchImage(PALETTES[theme].pnct), { pixelRatio: 2 });
+  else map.addImage(id, { width: 1, height: 1, data: new Uint8Array(4) });
 });
 // Set here rather than as the `style` option so the label patch (basemap.ts) applies before any tile is parsed.
 map.setStyle(STYLE_URLS[theme], { transformStyle: basemapStyle(theme) });

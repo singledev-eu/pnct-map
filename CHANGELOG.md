@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.0 (2026-10-15)
+
+### For users
+
+- **Dark theme:** the map follows your device's light or dark setting automatically. In dark mode, the basemap is OpenFreeMap's dark style (Dark Matter), and the panel, search, legend, buttons, attribution and About dialog are dark too. PNCT parishes are a brighter teal that stands out on the dark map, and place names are brighter so they read over it. Switching the device theme while the page is open updates everything at once and keeps your view, selection and "Only PNCT" filter. The phone's browser bar matches the theme. There is no manual toggle.
+- **Light theme:** unchanged, except that the grey secondary text is a little darker, to meet the WCAG AA contrast minimum on badges and highlighted search results.
+
+### Infrastructure
+
+- `web/src/theme.ts`: style URLs and the map palette per theme. All UI colours are CSS custom properties with a dark override; the legend swatches read the same `--map-*` tokens, and a Vitest check keeps them in step with the palette.
+- A theme switch diffs the new basemap into the current style with the app layers rebuilt in the new palette, so the sources, feature state, camera and filters stay.
+- The app layers now go above every non-label basemap layer (`appLayerIndex`). In positron that's the same place as before; in Dark Matter it keeps the near-black roads under the PNCT fill.
+- A missing-image resolver gives sprite images missing from the basemap a 1×1 transparent stand-in, so the dark style's missing `wood-pattern` no longer logs a warning.
+- Tests:
+  - e2e `theme.spec.ts`: light load, dark load (the dark style is the first request and there are no console warnings), selection and focus in dark, and live switches that keep the camera, selection, focus, layers and level;
+  - `web/scripts/theme_shots.mjs`: review screenshots in light and dark, desktop and phone.
+
 ## 0.2.3 (2026-10-15)
 
 ### For users

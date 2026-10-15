@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { PALETTES, STYLE_URLS } from "../../src/theme";
-import { expect, test, trackErrors, waitForParishes, waitForParishView } from "./helpers";
+import { expect, test, trackErrors, waitForFullIdle, waitForParishes, waitForParishView } from "./helpers";
 
 // Automatic light/dark theme (src/theme.ts): the basemap style, the data-layer palette and the CSS
 // all follow prefers-color-scheme, at load and on a live OS switch (page.emulateMedia fires the
@@ -17,6 +17,15 @@ function trackStyleRequests(page: Page): string[] {
     if (req.url().includes("/styles/")) urls.push(req.url());
   });
   return urls;
+}
+
+/** Console warnings (MapLibre logs style problems, such as a missing sprite image, as warnings). */
+function trackWarnings(page: Page): string[] {
+  const warnings: string[] = [];
+  page.on("console", (msg) => {
+    if (msg.type() === "warning") warnings.push(msg.text());
+  });
+  return warnings;
 }
 
 const filterOf = (page: Page, layer: string) => page.evaluate((id) => window.pnctMap.getFilter(id), layer);
@@ -72,10 +81,12 @@ test.describe("light (default)", () => {
 test.describe("dark", () => {
   test.use({ colorScheme: "dark" });
 
-  test("loads the dark basemap first, with every app layer", async ({ page }) => {
+  test("loads the dark basemap first, with every app layer and no console warnings", async ({ page }) => {
     const errors = trackErrors(page);
+    const warnings = trackWarnings(page);
     const styles = trackStyleRequests(page);
-    await page.goto("/");
+    // z11: Dark Matter only draws its wood pattern (landcover_wood) from z10.
+    await page.goto("/#map=11/41.27/-8.07");
     await waitForParishes(page);
 
     // The theme is read before the map is created, so a dark-mode visitor never fetches the light style.
@@ -89,6 +100,11 @@ test.describe("dark", () => {
     expect(await cssOf(page, "body", "background-color")).toBe(BODY_BG.dark);
     // The legend is translucent (rgba), so compare the colour channels rather than the exact string.
     expect(await cssOf(page, ".legend", "background-color")).not.toMatch(/^rgba?\(255, 255, 255/);
+    // Fully drawn, basemap included, so every sprite image the view needs has been requested. The dark
+    // style's "wood-pattern" is not in its sprite; main.ts resolves it to a blank image, so MapLibre must not warn.
+    await waitForFullIdle(page);
+    expect(await page.evaluate(() => window.pnctMap.hasImage("wood-pattern"))).toBe(true);
+    expect(warnings).toEqual([]);
     expect(errors).toEqual([]);
   });
 

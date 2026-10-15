@@ -1,6 +1,6 @@
 # Automatic dark theme
 
-Branch `feature/dark-theme`, committed locally. **Waiting for your screenshot review.** Nothing is merged, pushed, deployed or tagged.
+Branch `feature/dark-theme`. The screenshots were approved and the feature was **released as 0.3.0**; see [release-0.3.0](release-0.3.0.md).
 
 The theme follows the OS or browser setting (`prefers-color-scheme`) only. There is no manual toggle. Switching the OS theme while the page is open updates the UI and the map live, with no reload.
 
@@ -111,7 +111,7 @@ The new e2e tests wait on `data-map-theme`, `waitForParishes` / `waitForParishVi
 4. **Live switch light → dark → light:** camera centre and zoom unchanged (< 1e-6); selection feature state, focus filter, the 7 layers, panel and hash kept; palette swapped both ways.
 5. **Live switch at country view:** zoom, min zoom and the concelho level are kept.
 
-The dark style logs a console **warning** (not an error) about a missing `wood-pattern` image. It comes from OpenFreeMap's style itself.
+**Follow-up after the review:** OpenFreeMap's dark style uses a `wood-pattern` image that its sprite doesn't have, and MapLibre warned about it from z10. `main.ts` now registers a missing-image resolver (`map.setMissingStyleImageResolver`) before the first style. It gives any missing basemap image a 1×1 transparent stand-in, and gives the app's hatch, if a full style rebuild ever drops it, its real image. A `styleimagemissing` listener can't do this in MapLibre 6.11: the event fires just before an unconditional `warnOnce`, and only the resolver runs earlier. The dark e2e test now loads at z11, waits for full idle, and asserts that `wood-pattern` is resolved and that there are **no console warnings**. With the resolver disabled, the test fails.
 
 ## Screenshots
 

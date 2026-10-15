@@ -12,7 +12,7 @@ const PARISH_LINE = "parish-line";
 const PARISH_HIGHLIGHT = "parish-highlight";
 const CONCELHO_LINE = "concelho-line";
 const CONCELHO_HIGHLIGHT = "concelho-highlight";
-const HATCH_IMAGE = "pnct-hatch";
+export const HATCH_IMAGE = "pnct-hatch";
 
 export interface FilterState {
   district: string | null;

@@ -18,13 +18,14 @@ Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-m
 | 2026-10-14 | Phone polish: collapsible phone legend; Latin-only basemap labels, so no Arabic/Tifinagh glyph requests (full idle 12.0 → 10.1 s). Released as 0.2.1 | [phone-polish](reports/phone-polish.md) |
 | 2026-10-14 | Camera centre kept over Portugal at every zoom, and every zoom-out ends at the exact country view. Released as 0.2.2 | [camera-center](reports/camera-center.md), [camera-min-zoom-slack](reports/camera-min-zoom-slack.md) |
 | 2026-10-15 | Shape-aware camera: the centre of the visible map stays inside a mainland outline (2 km past the Spanish border, 20 km at sea) instead of a rectangle that reached Andalusia and Galicia. Released as 0.2.3 | [shape-aware-camera](reports/shape-aware-camera.md) |
+| 2026-10-15 | Automatic dark theme from `prefers-color-scheme`: OpenFreeMap dark basemap, dark UI tokens and map palette, live switch that keeps the view, selection and focus. Released as 0.3.0 | [dark-theme](reports/dark-theme.md) |
 | 2026-10-12 | E2E flakiness: one retry; flaky tests warn with a trace but don't block deploys; tests wait for the parish layer, not the basemap | [e2e-flakiness](reports/e2e-flakiness.md) |
 
-Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; see [CHANGELOG.md](../CHANGELOG.md).
+Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; `0.3.0` (2026-10-15) the dark theme; see [CHANGELOG.md](../CHANGELOG.md).
 
 ## Next
 
-- **Automatic dark theme** (`prefers-color-scheme`, live switch, OpenFreeMap dark basemap): on branch `feature/dark-theme`, waiting for the screenshot review. Proposed as 0.3.0. See [dark-theme](reports/dark-theme.md).
+Nothing agreed yet. Pick from the backlog below.
 
 ## Backlog
 
