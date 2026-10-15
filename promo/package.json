@@ -1,0 +1,16 @@
+{
+  "name": "pnct-map-promo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Records the promo video of the live site (see README.md).",
+  "scripts": {
+    "setup": "npm ci && PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium",
+    "promo": "node record.mjs && node captions.mjs && node encode.mjs",
+    "promo:record": "node record.mjs",
+    "promo:encode": "node captions.mjs && node encode.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}
