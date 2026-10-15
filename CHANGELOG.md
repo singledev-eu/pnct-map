@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.1 (2026-10-15)
+
+### Infrastructure
+
+- **No console warnings on a light load:** positron's three road-shield layers filter on `["<=", ["get", "ref_length"], 6]`. Roads without a ref have no `ref_length`, and MapLibre warned for each layer. `basemapStyle()` now wraps the value as `["coalesce", ["get", "ref_length"], 1000]`, in those filters only. A road without a ref still fails the filter, as before; a fallback of 0 would have matched every such road. Nothing on the map changes.
+- Tests:
+  - Vitest checks the patched filter;
+  - the light-load e2e test loads at z12, waits for full idle and asserts no console warnings, like the dark one.
+
 ## 0.3.0 (2026-10-15)
 
 ### For users

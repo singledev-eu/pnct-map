@@ -61,10 +61,12 @@ async function enableFocus(page: Page): Promise<void> {
 }
 
 test.describe("light (default)", () => {
-  test("loads the positron basemap and the light palette", async ({ page }) => {
+  test("loads the positron basemap and the light palette, with no console warnings", async ({ page }) => {
     const errors = trackErrors(page);
+    const warnings = trackWarnings(page);
     const styles = trackStyleRequests(page);
-    await page.goto("/");
+    // z12, a view with roads: positron's road-shield layers start at z11 (road_shield_us at z12).
+    await page.goto("/#map=12/41.19/-7.72");
     await waitForParishes(page);
 
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
@@ -74,6 +76,10 @@ test.describe("light (default)", () => {
     expect(await pnctFill(page)).toBe(PALETTES.light.pnct);
     expect(await cssOf(page, "body", "background-color")).toBe(BODY_BG.light);
     await expect(page.locator('meta[name="color-scheme"]')).toHaveAttribute("content", "light dark");
+    // Fully drawn, basemap included, so every road-shield filter has run on the view's roads. Roads without
+    // a ref have no ref_length; basemap.ts patches those filters, so MapLibre must not warn.
+    await waitForFullIdle(page);
+    expect(warnings).toEqual([]);
     expect(errors).toEqual([]);
   });
 });

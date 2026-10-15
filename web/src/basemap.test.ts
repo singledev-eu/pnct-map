@@ -1,6 +1,6 @@
 import type { StyleSpecification } from "maplibre-gl";
 import { describe, expect, it } from "vitest";
-import { basemapStyle, DARK_PLACE_LABEL, latinLabels } from "./basemap";
+import { basemapStyle, DARK_PLACE_LABEL, latinLabels, NO_REF_LENGTH } from "./basemap";
 
 // The positron label expression (OpenFreeMap, 2026-10).
 const POSITRON_LABEL = [
@@ -42,5 +42,33 @@ describe("basemapStyle", () => {
     const dark = basemapStyle("dark")(undefined, style);
     expect(paint(dark)).toBe(DARK_PLACE_LABEL);
     expect(JSON.stringify(dark)).not.toContain("name:nonlatin\"]]");
+  });
+});
+
+describe("shield filters", () => {
+  // highway-shield-non-us (OpenFreeMap positron, 2026-10).
+  const shield = {
+    id: "highway-shield-non-us",
+    type: "symbol",
+    source: "openmaptiles",
+    "source-layer": "transportation_name",
+    filter: [
+      "all",
+      ["<=", ["get", "ref_length"], 6],
+      ["match", ["geometry-type"], ["LineString", "MultiLineString"], true, false],
+      ["match", ["get", "network"], ["us-highway", "us-interstate", "us-state"], false, true],
+    ],
+    layout: { "icon-image": ["concat", "road_", ["get", "ref_length"]], "text-field": ["to-string", ["get", "ref"]] },
+  };
+  const other = { id: "water", type: "fill", source: "openmaptiles", "source-layer": "water", filter: ["==", ["get", "class"], "lake"] };
+  const style = { version: 8, sources: {}, layers: [shield, other] } as unknown as StyleSpecification;
+
+  it("gives a missing ref_length a stand-in above the limit, in the filter only", () => {
+    const [patched, water] = basemapStyle("light")(undefined, style).layers as unknown as (typeof shield)[];
+    expect(patched.filter[1]).toEqual(["<=", ["coalesce", ["get", "ref_length"], NO_REF_LENGTH], 6]);
+    expect(NO_REF_LENGTH).toBeGreaterThan(6); // a road without a ref still fails the filter, as before
+    expect(patched.filter.slice(2)).toEqual(shield.filter.slice(2));
+    expect(patched.layout).toEqual(shield.layout);
+    expect(water).toBe(other);
   });
 });

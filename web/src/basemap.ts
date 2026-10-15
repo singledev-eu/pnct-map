@@ -48,10 +48,39 @@ function brightPlaceLabels(style: StyleSpecification): StyleSpecification {
   };
 }
 
-/** transformStyle for the basemap of `theme`: Latin-only labels, plus brighter place names in dark. */
+/**
+ * Positron's road-shield layers (highway-shield-non-us, highway-shield-us-interstate, road_shield_us)
+ * filter on ["<=", ["get", "ref_length"], 6]. Roads without a ref have no ref_length, and MapLibre
+ * logs "Expected value to be of type number, but found null instead. Falling back to false" for each
+ * layer. The patch gives the missing value a stand-in above any limit, so the comparison stays false
+ * exactly as before, only without the warning. (A 0 would make it true and match every road without
+ * a ref.) It touches only comparisons on ref_length; the icon and text expressions are unchanged.
+ */
+export const NO_REF_LENGTH = 1000;
+
+function refLengthFilter(expr: unknown): unknown {
+  if (!Array.isArray(expr)) return expr;
+  if (["<", "<=", ">", ">=", "==", "!="].includes(expr[0]) && JSON.stringify(expr[1]) === '["get","ref_length"]') {
+    return [expr[0], ["coalesce", expr[1], NO_REF_LENGTH], ...expr.slice(2)];
+  }
+  return expr.map(refLengthFilter);
+}
+
+function shieldFilters(style: StyleSpecification): StyleSpecification {
+  return {
+    ...style,
+    layers: style.layers.map((layer) =>
+      "filter" in layer && layer.filter && JSON.stringify(layer.filter).includes('"ref_length"')
+        ? { ...layer, filter: refLengthFilter(layer.filter) as never }
+        : layer,
+    ),
+  };
+}
+
+/** transformStyle for the basemap of `theme`: Latin-only labels and quiet shield filters, plus brighter place names in dark. */
 export function basemapStyle(theme: Theme) {
   return (previous: StyleSpecification | undefined, next: StyleSpecification): StyleSpecification => {
-    const style = latinLabels(previous, next);
+    const style = shieldFilters(latinLabels(previous, next));
     return theme === "dark" ? brightPlaceLabels(style) : style;
   };
 }
