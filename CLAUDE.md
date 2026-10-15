@@ -18,11 +18,12 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
   - `layers.ts`: MapLibre layers and filters.
   - `data.ts`: TopoJSON → GeoJSON, indexes.
   - `links.ts` and `idealista.ts`: Idealista URLs.
+  - `theme.ts`: light/dark from `prefers-color-scheme`: basemap style URLs and the map palette (mirrored by the `--map-*` CSS tokens).
   - `panel.ts`, `search.ts`, `hash.ts`, `prefs.ts`.
 - `web/tests/e2e/`: Playwright specs. Shared waits are in `helpers.ts`.
 - `web/scripts/`:
   - `perf.mjs`: throttled load timing; `--toggles N` times the focus toggle.
-  - `shots.mjs`, `og_image.mjs`: screenshots and the share image.
+  - `shots.mjs`, `og_image.mjs`: screenshots and the share image. `theme_shots.mjs`: light/dark review shots, desktop and phone.
   - `e2e-flaky-report.mjs`: the flaky-test warning.
 - `web/public/`: `_headers` (caching, CSP, security headers), icons, OG image, robots.txt, sitemap.xml.
 - `docs/`: `ROADMAP.md`, `reports/<task>.md` (one per task), screenshots and perf data.

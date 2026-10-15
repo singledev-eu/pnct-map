@@ -1,6 +1,7 @@
-import type { ExpressionSpecification, Map as MapLibreMap } from "maplibre-gl";
+import type { ExpressionSpecification, LayerSpecification, Map as MapLibreMap, StyleSpecification } from "maplibre-gl";
 import { FADE } from "./camera";
 import type { MapData } from "./data";
+import type { MapPalette } from "./theme";
 
 export const PARISH_SOURCE = "parishes";
 export const CONCELHO_SOURCE = "concelhos";
@@ -12,14 +13,6 @@ const PARISH_HIGHLIGHT = "parish-highlight";
 const CONCELHO_LINE = "concelho-line";
 const CONCELHO_HIGHLIGHT = "concelho-highlight";
 const HATCH_IMAGE = "pnct-hatch";
-
-export const COLORS = {
-  pnct: "#0f8a7e",
-  other: "#64748b",
-  selected: "#0b3d39",
-  parishLine: "#5b6b73",
-  concelhoLine: "#2f3b42",
-};
 
 export interface FilterState {
   district: string | null;
@@ -98,42 +91,34 @@ function concelhoFilter(focus: boolean): ExpressionSpecification | null {
 const withFilter = (filter: ExpressionSpecification | null) => (filter ? { filter } : {});
 
 /** Diagonal stripes in the PNCT colour, for partly-PNCT concelhos (8 CSS px, drawn at 2×). */
-function hatchImage(): { width: number; height: number; data: Uint8Array } {
+export function hatchImage(color: string): { width: number; height: number; data: Uint8Array } {
   const size = 16;
+  const alpha = 0.8;
+  // Premultiplied RGBA of `color` (#rrggbb) at 80% alpha.
+  const rgba = [1, 3, 5].map((i) => Math.round(parseInt(color.slice(i, i + 2), 16) * alpha)).concat(Math.round(255 * alpha));
   const data = new Uint8Array(size * size * 4);
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       if ((x + y) % size >= 3) continue; // a 3 px stripe per 16 px tile, on the "/" diagonal
-      const i = (y * size + (size - 1 - x)) * 4;
-      // Premultiplied #0f8a7e at 80% alpha.
-      data.set([12, 110, 101, 204], i);
+      data.set(rgba, (y * size + (size - 1 - x)) * 4);
     }
   }
   return { width: size, height: size, data };
 }
 
-/** Adds the sources and the map layers below the basemap's first label layer. `level`: see concelhoLevel. */
-export function addLayers(map: MapLibreMap, data: MapData, filter: FilterState, level: number): void {
-  map.addSource(PARISH_SOURCE, { type: "geojson", data: data.parishGeoJSON, maxzoom: 12 });
-  map.addSource(CONCELHO_SOURCE, { type: "geojson", data: data.concelhoGeoJSON, maxzoom: 12 });
-  map.addImage(HATCH_IMAGE, hatchImage(), { pixelRatio: 2 });
-
-  const firstSymbol = map.getStyle().layers.find((l) => l.type === "symbol")?.id;
-
-  map.addLayer(
+/** The app's map layers, bottom to top, for the current filter, level zoom and theme palette. */
+export function appLayers(filter: FilterState, level: number, colors: MapPalette): LayerSpecification[] {
+  return [
     {
       id: CONCELHO_FILL,
       type: "fill",
       source: CONCELHO_SOURCE,
       ...withFilter(concelhoFilter(filter.focus)),
       paint: {
-        "fill-color": ["case", selected, COLORS.selected, hasPnct, COLORS.pnct, COLORS.other],
+        "fill-color": ["case", selected, colors.selected, hasPnct, colors.pnct, colors.other],
         "fill-opacity": concelhoFillOpacity(filter, level),
       },
     },
-    firstSymbol,
-  );
-  map.addLayer(
     {
       id: CONCELHO_HATCH,
       type: "fill",
@@ -141,22 +126,16 @@ export function addLayers(map: MapLibreMap, data: MapData, filter: FilterState, 
       filter: partPnct,
       paint: { "fill-pattern": HATCH_IMAGE, "fill-opacity": hatchOpacity(filter, level) },
     },
-    firstSymbol,
-  );
-  map.addLayer(
     {
       id: PARISH_FILL,
       type: "fill",
       source: PARISH_SOURCE,
       ...withFilter(parishFilter(filter.focus)),
       paint: {
-        "fill-color": ["case", selected, COLORS.selected, isPnct, COLORS.pnct, COLORS.other],
+        "fill-color": ["case", selected, colors.selected, isPnct, colors.pnct, colors.other],
         "fill-opacity": parishFillOpacity(filter, level),
       },
     },
-    firstSymbol,
-  );
-  map.addLayer(
     {
       id: PARISH_LINE,
       type: "line",
@@ -164,55 +143,92 @@ export function addLayers(map: MapLibreMap, data: MapData, filter: FilterState, 
       ...withFilter(parishFilter(filter.focus)),
       minzoom: 8,
       paint: {
-        "line-color": COLORS.parishLine,
+        "line-color": colors.parishLine,
         "line-width": ["interpolate", ["linear"], ["zoom"], 8, 0.3, 12, 0.8],
         "line-opacity": parishLevel(level, lineOpacity(filter.district, 0.45, 0.15)),
       },
     },
-    firstSymbol,
-  );
-  map.addLayer(
     {
       id: CONCELHO_LINE,
       type: "line",
       source: CONCELHO_SOURCE,
       ...withFilter(concelhoFilter(filter.focus)),
       paint: {
-        "line-color": COLORS.concelhoLine,
+        "line-color": colors.concelhoLine,
         "line-width": ["interpolate", ["linear"], ["zoom"], 5, 0.4, 9, 1.1, 12, 1.8],
         "line-opacity": lineOpacity(filter.district, 0.6, 0.2),
       },
     },
-    firstSymbol,
-  );
-  map.addLayer(
     {
       id: PARISH_HIGHLIGHT,
       type: "line",
       source: PARISH_SOURCE,
       ...withFilter(parishFilter(filter.focus)),
       paint: {
-        "line-color": COLORS.selected,
+        "line-color": colors.highlight,
         "line-width": ["case", selected, 2.2, hovered, 1.6, grouped, 1, 0],
         "line-opacity": ["case", ["any", selected, hovered], 1, grouped, 0.7, 0],
       },
     },
-    firstSymbol,
-  );
-  map.addLayer(
     {
       id: CONCELHO_HIGHLIGHT,
       type: "line",
       source: CONCELHO_SOURCE,
       ...withFilter(concelhoFilter(filter.focus)),
       paint: {
-        "line-color": COLORS.selected,
+        "line-color": colors.highlight,
         "line-width": ["case", selected, 2.4, hovered, 1.8, 0],
         "line-opacity": concelhoLevel(level, ["case", ["any", selected, hovered], 1, 0]),
       },
     },
-    firstSymbol,
-  );
+  ];
+}
+
+/**
+ * Where the app layers go in a basemap's layer list: above every non-label layer (land, roads,
+ * boundaries), below the label stack. Positron draws all its labels last, so that is its first label
+ * layer; Dark Matter has a water label early on, before the buildings and roads, whose near-black
+ * lines would otherwise cross the PNCT fill.
+ */
+export function appLayerIndex(layers: readonly LayerSpecification[]): number {
+  let last = -1;
+  layers.forEach((l, i) => {
+    if (l.type !== "symbol") last = i;
+  });
+  return last + 1;
+}
+
+/** Adds the sources and the map layers between the basemap and its labels (appLayerIndex). `level`: see concelhoLevel. */
+export function addLayers(map: MapLibreMap, data: MapData, filter: FilterState, level: number, colors: MapPalette): void {
+  map.addSource(PARISH_SOURCE, { type: "geojson", data: data.parishGeoJSON, maxzoom: 12 });
+  map.addSource(CONCELHO_SOURCE, { type: "geojson", data: data.concelhoGeoJSON, maxzoom: 12 });
+  map.addImage(HATCH_IMAGE, hatchImage(colors.pnct), { pixelRatio: 2 });
+  const basemap = map.getStyle().layers;
+  const before = basemap[appLayerIndex(basemap)]?.id;
+  for (const layer of appLayers(filter, level, colors)) map.addLayer(layer, before);
+}
+
+/**
+ * transformStyle for a theme switch (map.setStyle with the other basemap): `next` plus the app's
+ * sources, carried over unchanged from `previous`, and its layers, rebuilt for the new palette, at
+ * appLayerIndex. MapLibre diffs this against the current style, so the GeoJSON sources, their
+ * feature state (hover, selection) and the hatch image stay; only paint values and basemap layers change.
+ */
+export function withAppLayers(previous: StyleSpecification | undefined, next: StyleSpecification, layers: LayerSpecification[]): StyleSpecification {
+  const sources = { ...next.sources };
+  for (const id of [PARISH_SOURCE, CONCELHO_SOURCE]) {
+    const source = previous?.sources[id];
+    if (source) sources[id] = source;
+  }
+  if (!sources[PARISH_SOURCE] || !sources[CONCELHO_SOURCE]) return next; // the app has not added them yet
+  const split = appLayerIndex(next.layers);
+  return { ...next, sources, layers: [...next.layers.slice(0, split), ...layers, ...next.layers.slice(split)] };
+}
+
+/** Recolours the hatch image (kept across a diffed style switch) or adds it (after a full style rebuild). */
+export function setHatchColor(map: MapLibreMap, color: string): void {
+  if (map.hasImage(HATCH_IMAGE)) map.updateImage(HATCH_IMAGE, hatchImage(color));
+  else map.addImage(HATCH_IMAGE, hatchImage(color), { pixelRatio: 2 });
 }
 
 /** Re-applies filters and paint after a filter change or a new level zoom (viewport resize). */

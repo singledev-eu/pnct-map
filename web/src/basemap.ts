@@ -1,4 +1,5 @@
 import type { StyleSpecification } from "maplibre-gl";
+import type { Theme } from "./theme";
 
 /**
  * The positron labels show `name:latin` plus `name:nonlatin` when a place has a non-Latin name.
@@ -28,5 +29,29 @@ export function latinLabels(_previous: StyleSpecification | undefined, next: Sty
         ? { ...layer, layout: { ...layer.layout, "text-field": latinOnly(layer.layout["text-field"]) as never } }
         : layer,
     ),
+  };
+}
+
+/**
+ * Dark Matter draws place names in rgb(101,101,101) with a black halo: fine on its near-black land,
+ * but too dim over the teal PNCT fill. The dark theme lifts them to #a3a3a3 (7.8:1 on the land) and
+ * keeps the halo, which separates them from the fill.
+ */
+export const DARK_PLACE_LABEL = "#a3a3a3";
+
+function brightPlaceLabels(style: StyleSpecification): StyleSpecification {
+  return {
+    ...style,
+    layers: style.layers.map((layer) =>
+      layer.type === "symbol" && layer.id.startsWith("place_") ? { ...layer, paint: { ...layer.paint, "text-color": DARK_PLACE_LABEL } } : layer,
+    ),
+  };
+}
+
+/** transformStyle for the basemap of `theme`: Latin-only labels, plus brighter place names in dark. */
+export function basemapStyle(theme: Theme) {
+  return (previous: StyleSpecification | undefined, next: StyleSpecification): StyleSpecification => {
+    const style = latinLabels(previous, next);
+    return theme === "dark" ? brightPlaceLabels(style) : style;
   };
 }

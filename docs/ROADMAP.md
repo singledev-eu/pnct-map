@@ -24,7 +24,7 @@ Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (20
 
 ## Next
 
-Nothing agreed yet. Pick from the backlog below.
+- **Automatic dark theme** (`prefers-color-scheme`, live switch, OpenFreeMap dark basemap): on branch `feature/dark-theme`, waiting for the screenshot review. Proposed as 0.3.0. See [dark-theme](reports/dark-theme.md).
 
 ## Backlog
 

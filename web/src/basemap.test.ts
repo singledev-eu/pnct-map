@@ -1,6 +1,6 @@
 import type { StyleSpecification } from "maplibre-gl";
 import { describe, expect, it } from "vitest";
-import { latinLabels } from "./basemap";
+import { basemapStyle, DARK_PLACE_LABEL, latinLabels } from "./basemap";
 
 // The positron label expression (OpenFreeMap, 2026-10).
 const POSITRON_LABEL = [
@@ -29,5 +29,18 @@ describe("latinLabels", () => {
     expect(out.layers[0]).toBe(fill);
     expect((out.layers[1] as typeof shield).layout["text-field"]).toEqual(["to-string", ["get", "ref"]]);
     expect((out.layers[2] as typeof legacy).layout["text-field"]).toBe("{name:latin}");
+  });
+});
+
+describe("basemapStyle", () => {
+  const place = { id: "place_town", type: "symbol", source: "omt", "source-layer": "place", layout: { "text-field": POSITRON_LABEL }, paint: { "text-color": "rgb(101,101,101)" } };
+  const style = { version: 8, sources: {}, layers: [place] } as unknown as StyleSpecification;
+  const paint = (s: StyleSpecification) => (s.layers[0] as { paint: Record<string, unknown> }).paint["text-color"];
+
+  it("brightens place names in dark only, on top of the Latin-only labels", () => {
+    expect(paint(basemapStyle("light")(undefined, style))).toBe("rgb(101,101,101)");
+    const dark = basemapStyle("dark")(undefined, style);
+    expect(paint(dark)).toBe(DARK_PLACE_LABEL);
+    expect(JSON.stringify(dark)).not.toContain("name:nonlatin\"]]");
   });
 });

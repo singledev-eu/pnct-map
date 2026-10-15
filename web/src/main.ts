@@ -1,22 +1,27 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
-import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent } from "maplibre-gl";
+import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent, type StyleSpecification } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
-import { latinLabels } from "./basemap";
+import { basemapStyle } from "./basemap";
 import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, MAINLAND, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
-import { addLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, PARISH_FILL, PARISH_SOURCE, type FilterState } from "./layers";
+import { addLayers, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, PARISH_FILL, PARISH_SOURCE, setHatchColor, withAppLayers, type FilterState } from "./layers";
 import { mountLegend } from "./legend";
 import { h, Panel } from "./panel";
 import { loadOptions, saveOptions } from "./prefs";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
+import { DARK_QUERY, PALETTES, STYLE_URLS, themeOf, type Theme } from "./theme";
 // ?url makes Vite emit the file content-hashed under assets/; index.html preloads the same file.
 import DATA_URL from "../data/pnct.topo.json?url";
 
 setWorkerUrl(workerUrl);
 
-const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
+// The theme follows the OS/browser setting (theme.ts); it is read before the map is created, so a
+// dark-mode visitor never loads the light basemap. style.css follows the same media query.
+const darkQuery = window.matchMedia(DARK_QUERY);
+let theme: Theme = themeOf(darkQuery);
+document.documentElement.dataset.theme = theme;
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const status = $<HTMLDivElement>("status");
@@ -53,7 +58,19 @@ const map = new MapLibreMap({
   pitchWithRotate: false,
 });
 // Set here rather than as the `style` option so the label patch (basemap.ts) applies before any tile is parsed.
-map.setStyle(STYLE_URL, { transformStyle: latinLabels });
+map.setStyle(STYLE_URLS[theme], { transformStyle: basemapStyle(theme) });
+
+// A live OS theme switch swaps the basemap. Once the app has added its layers (start), the switch
+// carries them over with the new palette (themeStyle, set in start), and style.load restores the rest.
+let themeStyle = (previous: StyleSpecification | undefined, next: StyleSpecification) => basemapStyle(theme)(previous, next);
+darkQuery.addEventListener("change", () => {
+  const next = themeOf(darkQuery);
+  if (next === theme) return;
+  theme = next;
+  document.documentElement.dataset.theme = theme;
+  document.body.dataset.mapTheme = "pending"; // set to the theme on the new style's first frame (start)
+  map.setStyle(STYLE_URLS[theme], { transformStyle: (previous, next) => themeStyle(previous, next) });
+});
 // Keep the centre of the visible area over mainland at every zoom, not just the viewport inside
 // maxBounds (camera.ts: constrainView, OUTLINE). MapLibre runs this on every camera change (drag,
 // pinch, inertia, easeTo, the hash), so a pan stops smoothly at the edge instead of bouncing back. It
@@ -139,7 +156,7 @@ function start(data: MapData): void {
     writeHash({ d: null });
   }
 
-  addLayers(map, data, filter, limits.levelZoom);
+  addLayers(map, data, filter, limits.levelZoom, PALETTES[theme]);
   // Lets the e2e tests inspect layer filters and rendered features.
   (window as unknown as { pnctMap: MapLibreMap }).pnctMap = map;
 
@@ -361,6 +378,23 @@ function start(data: MapData): void {
     else if (selection?.kind === "concelho") select(selection); // refresh which parishes are highlighted
   }
   setFocus(filter.focus);
+
+  // ---- theme ------------------------------------------------------------------
+  // A theme switch diffs the new basemap with the app's layers (rebuilt in the new palette) into the
+  // current style, which keeps the sources, their feature state, the filters and the camera. If
+  // MapLibre has to rebuild the style from scratch instead, the sources come back without feature
+  // state or the hatch image, so both are restored here either way.
+  themeStyle = (previous, next) => withAppLayers(previous, basemapStyle(theme)(previous, next), appLayers(filter, limits.levelZoom, PALETTES[theme]));
+  map.on("style.load", () => {
+    if (!map.getSource(PARISH_SOURCE)) addLayers(map, data, filter, limits.levelZoom, PALETTES[theme]);
+    setHatchColor(map, PALETTES[theme].pnct);
+    clearHover();
+    setSelectedIds(selectedIds, groupIds, selectedConcelhoId);
+    document.body.dataset.mapIdle = "false";
+    const shown = theme;
+    map.once("render", () => (document.body.dataset.mapTheme = shown));
+  });
+  document.body.dataset.mapTheme = theme;
 
   // ---- about ------------------------------------------------------------------
   $("about-open").addEventListener("click", () => aboutDialog.showModal());

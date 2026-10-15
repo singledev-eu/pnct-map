@@ -9,11 +9,11 @@
   list-style: none;
   max-height: 60vh;
   overflow: auto;
-  background: var(--panel-bg, #fff);
-  color: var(--text, #1f2328);
-  border: 1px solid var(--border, #e5e7eb);
+  background: var(--panel-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow);
   z-index: 20;
 }
 
@@ -32,31 +32,31 @@
 }
 
 .search-list li[aria-selected="true"] {
-  background: var(--hover, #f1f5f4);
-  box-shadow: inset 3px 0 0 var(--accent, #0f766e);
+  background: var(--hover);
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 
 .search-list .search-empty {
   cursor: default;
-  color: var(--muted, #6b7280);
+  color: var(--muted);
 }
 
 .search-list .search-tag {
   flex: none;
   min-width: 4.6em;
   padding: 1px 6px;
-  border: 1px solid var(--border, #e5e7eb);
+  border: 1px solid var(--border);
   border-radius: 4px;
   font-size: 0.68rem;
   line-height: 1.5;
   letter-spacing: 0.02em;
   text-align: center;
   text-transform: uppercase;
-  color: var(--muted, #6b7280);
+  color: var(--muted);
 }
 
 .search-list .search-tag-concelho {
-  color: var(--accent, #0f766e);
+  color: var(--accent);
   border-color: currentColor;
 }
 
@@ -72,7 +72,7 @@
 
 .search-list .search-sub {
   font-size: 0.8em;
-  color: var(--muted, #6b7280);
+  color: var(--muted);
 }
 
 .search-list mark {
@@ -87,7 +87,7 @@
   height: 8px;
   margin-left: 6px;
   border-radius: 50%;
-  background: var(--accent, #0f766e);
+  background: var(--accent);
   vertical-align: middle;
 }
 
