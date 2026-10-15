@@ -1,13 +1,14 @@
 import type { Page } from "@playwright/test";
 import { expect, test, trackErrors, waitForParishView } from "./helpers";
 
-// Camera centre limits: a transformConstrain keeps the camera *centre* inside CENTER_BOX at every
-// zoom, so a pan can't wander to Tangier or deep into Spain, while the country view (min zoom) and
-// edge concelhos (Sagres, the Minho) stay reachable. The map is exposed as window.pnctMap
-// (MapLibre Map); it is only inspected inside page.evaluate.
+// Camera centre limits: a transformConstrain keeps the camera centre near mainland at every zoom,
+// so a pan can't wander to Tangier or deep into Spain, while the country view (min zoom) and edge
+// concelhos (Sagres, the Minho) stay reachable. The map is exposed as window.pnctMap (MapLibre Map);
+// it is only inspected inside page.evaluate.
 
-// CENTER_BOX from src/camera.ts: MAINLAND [-9.53, 36.95, -6.18, 42.16] ± CENTER_MARGIN (0.25°),
-// as [west, south, east, north].
+// The 0.2.2 centre box, MAINLAND [-9.53, 36.95, -6.18, 42.16] ± 0.25°, as [west, south, east, north].
+// Since 0.2.3 the limit is the mainland outline (camera-outline.spec.ts), which lies inside this box,
+// so these checks still hold as an outer bound.
 const CENTER_BOX = [-9.78, 36.7, -5.93, 42.41] as const;
 const EPS = 1e-6;
 const VILA_DO_BISPO = "Vila do Bispo";

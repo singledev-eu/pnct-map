@@ -1,11 +1,11 @@
 import { feature } from "topojson-client";
 import type { Topology } from "topojson-specification";
 import { describe, expect, it } from "vitest";
-import { BOUNDS_MARGIN, cameraLimits, CENTER_BOX, constrainView, fitCenter, fitZoom, LEVEL_OFFSET, type Padding, type Size } from "./camera";
+import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, LEVEL_OFFSET, OUTLINE_MERC, paddingOffset, type Padding, type Size } from "./camera";
 import type { Bounds } from "./data";
 import topoJson from "../data/pnct.topo.json?raw";
 
-// Regression guard on the real data: the camera constraint (maxBounds = min-zoom view, CENTER_BOX)
+// Regression guard on the real data: the camera constraint (maxBounds = min-zoom view, OUTLINE)
 // must never move the camera of a selection fit, so no concelho or parish ends up under the phone
 // bottom sheet or the desktop side panel. Mirrors main.ts: fitPadding(true) and fit() (concelhos at
 // least LEVEL_OFFSET + 0.5 above minZoom and at most 11, parishes at most 12).
@@ -41,7 +41,7 @@ describe("selection fits are never moved by the camera constraint", () => {
   ] as const) {
     it(name, () => {
       const { minZoom, maxBounds } = cameraLimits(size, basePad);
-      const limits = { size, minZoom, maxZoom: 15, maxBounds, boundsMargin: BOUNDS_MARGIN, centerBox: CENTER_BOX };
+      const limits = { size, minZoom, maxZoom: 15, maxBounds, boundsMargin: BOUNDS_MARGIN, outline: OUTLINE_MERC, offset: paddingOffset(panelPad) };
       const moved: string[] = [];
       const check = (id: string, b: Bounds, zoom: number) => {
         const center = fitCenter(b, zoom, panelPad);

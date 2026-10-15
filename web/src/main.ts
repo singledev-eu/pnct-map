@@ -3,7 +3,7 @@ import "./style.css";
 import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { latinLabels } from "./basemap";
-import { BOUNDS_MARGIN, cameraLimits, CENTER_BOX, constrainView, fitCenter, fitZoom, MAINLAND, type CameraLimits } from "./camera";
+import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, MAINLAND, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
 import { addLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, PARISH_FILL, PARISH_SOURCE, type FilterState } from "./layers";
@@ -54,22 +54,36 @@ const map = new MapLibreMap({
 });
 // Set here rather than as the `style` option so the label patch (basemap.ts) applies before any tile is parsed.
 map.setStyle(STYLE_URL, { transformStyle: latinLabels });
-// Keep the camera centre near mainland at every zoom, not just the viewport inside maxBounds
-// (camera.ts: constrainView, CENTER_BOX). MapLibre runs this on every camera change (drag, pinch,
-// inertia, easeTo, the hash), so a pan stops smoothly at the edge instead of bouncing back. It reads
-// the limits set below (setMinZoom/setMaxBounds), so min zoom and the country view are unchanged.
-map.setTransformConstrain((lngLat, zoom) => {
+// Keep the centre of the visible area over mainland at every zoom, not just the viewport inside
+// maxBounds (camera.ts: constrainView, OUTLINE). MapLibre runs this on every camera change (drag,
+// pinch, inertia, easeTo, the hash), so a pan stops smoothly at the edge instead of bouncing back. It
+// reads the limits set below (setMinZoom/setMaxBounds), so min zoom and the country view are
+// unchanged, and the fit padding, so a selection fit next to the border is never moved.
+let panelOpen = false;
+const constrain = (center: [number, number], zoom: number) => {
   const container = map.getContainer();
-  const view = constrainView([lngLat.lng, lngLat.lat], zoom ?? map.getZoom(), {
+  return constrainView(center, zoom, {
     size: { width: container.clientWidth, height: container.clientHeight },
     minZoom: map.getMinZoom(),
     maxZoom: map.getMaxZoom(),
     maxBounds: (map.getMaxBounds()?.toArray().flat() ?? limits.maxBounds) as Bounds,
     boundsMargin: BOUNDS_MARGIN,
-    centerBox: CENTER_BOX,
+    outline: OUTLINE_MERC,
+    offset: paddingOffset(fitPadding(panelOpen)),
   });
+};
+map.setTransformConstrain((lngLat, zoom) => {
+  const view = constrain([lngLat.lng, lngLat.lat], zoom ?? map.getZoom());
   return { center: new LngLat(...view.center), zoom: view.zoom };
 });
+/** Opening or closing the panel moves the visible area; ease the camera back inside the limits if needed. */
+const setPanelOpen = (open: boolean) => {
+  if (open === panelOpen) return;
+  panelOpen = open;
+  const { lng, lat } = map.getCenter();
+  const view = constrain([lng, lat], map.getZoom());
+  if (Math.abs(view.center[0] - lng) > 1e-9 || Math.abs(view.center[1] - lat) > 1e-9) map.easeTo({ center: view.center, duration: 300 });
+};
 map.touchZoomRotate.disableRotation();
 map.addControl(new NavigationControl({ showCompass: false }), "bottom-right");
 // No `compact` option: MapLibre shows the full line on wide maps and the compact ⓘ button at
@@ -173,6 +187,7 @@ function start(data: MapData): void {
 
   function select(next: Selection, opts: { fly?: boolean; animate?: boolean } = {}): void {
     selection = next;
+    setPanelOpen(next !== null);
     if (next?.kind === "parish") {
       const p = data.parishes.get(next.dicofre);
       if (!p) return select(null);

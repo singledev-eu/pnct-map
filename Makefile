@@ -7,9 +7,9 @@ PNCT_SHA256 := c286ef77c16321e8c5124eeb92f8d3f0565dbe302787817a91fe526653e7cffc
 PNCT_PDF := data/raw/territorios-pnct-2026-02-04.pdf
 PY := uv run python
 
-.PHONY: all download parse match geo web-data shapes test web e2e clean
+.PHONY: all download parse match geo web-data shapes outline test web e2e clean
 
-all: web-data shapes test
+all: web-data shapes outline test
 
 download: $(CAOP_GPKG) $(PNCT_PDF)
 
@@ -49,13 +49,17 @@ shapes: web/data/shapes.json
 web/data/shapes.json: scripts/build_shapes.py scripts/polyline.py data/processed/pnct_parishes.csv $(CAOP_GPKG)
 	$(PY) scripts/build_shapes.py
 
+outline: web/data/outline.json
+web/data/outline.json: scripts/build_outline.py $(CAOP_GPKG)
+	$(PY) scripts/build_outline.py
+
 test:
 	uv run pytest -q
 
-web: web-data shapes
+web: web-data shapes outline
 	cd web && npm ci && npm test && npm run build
 
-e2e: web-data shapes
+e2e: web-data shapes outline
 	cd web && npm ci && npm run test:e2e
 
 clean:

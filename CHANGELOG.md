@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.2.3 (2026-10-15)
+
+### For users
+
+- **The camera follows the shape of Portugal:** the 0.2.2 limit was a rectangle around mainland, whose corners still let the map centre sit over Andalusia (Cádiz, Seville) or Galicia (Vigo, Ourense). Now the centre of the visible map stays over mainland Portugal: up to about 2 km past the Spanish border and about 20 km out to sea. Spanish towns just over the border, such as Badajoz, can no longer be centred, while Elvas, Miranda do Douro, Vila Real de Santo António, Caminha, Sagres and Cabo da Roca still can. Drags and flings stop smoothly at the edge, with no jitter.
+- **Border selections stay framed:** the limit applies to the part of the map not covered by the side panel or the bottom sheet. A concelho or parish on the border still lands clear of the panel. When the panel closes, the map eases back over Portugal if needed.
+
+### Infrastructure
+
+- New pipeline step `scripts/build_outline.py` (`make outline`), run by `make all`. From CAOP 2025, it builds the mainland outline:
+  - a 2 km buffer along the Spanish border (CAOP `cont_trocos`, `Portugal#Espanha`) and a 20 km buffer at sea;
+  - simplified to 175 vertices: `web/data/outline.json`, 3.3 KB, bundled into the JS (+1.4 KB brotli).
+- `constrainView` (`web/src/camera.ts`) keeps the viewport rule and replaces the per-axis centre box: it clips the outline to the viewport rule's box and projects onto it. That makes it a fixed point, so a camera it has constrained never creeps.
+- Tests:
+  - pytest `test_outline.py`;
+  - Vitest: the outline, the clipping, the fixed point over a grid of zooms and panel states, and the edge towns and Spanish cities;
+  - e2e `camera-outline.spec.ts`: the Spanish cities at country and parish zoom, the edge towns at z12 and z14, a shared Badajoz link, a mouse drag with inertia, a touch fling, and a border concelho with the panel open and closed.
+
 ## 0.2.2 (2026-10-14)
 
 ### For users

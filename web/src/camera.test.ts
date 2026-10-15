@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BOUNDS_MARGIN, cameraLimits, CENTER_BOX, CENTER_MARGIN, clampCenter, constrainView, fitCenter, fitZoom, LEVEL_OFFSET, MAINLAND } from "./camera";
+import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, clipRing, insideRing, LEVEL_OFFSET, MAINLAND, nearestOnRing, OUTLINE, OUTLINE_MERC, paddingOffset, type Padding, type Size } from "./camera";
 
 const DESKTOP = { width: 1440, height: 900 };
 const PHONE = { width: 390, height: 844 };
@@ -84,39 +84,73 @@ describe("cameraLimits", () => {
   });
 });
 
-describe("clampCenter", () => {
-  const [w, s, e, n] = CENTER_BOX;
+// Mercator helpers for the assertions (world units, as in camera.ts).
+const mx = (lng: number) => (lng + 180) / 360;
+const my = (lat: number) => (1 - Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360)) / Math.PI) / 2;
+const merc = ([lng, lat]: [number, number]): [number, number] => [mx(lng), my(lat)];
 
-  it("keeps centres inside the box, edges included", () => {
-    for (const c of [[-8, 40], [w, s], [e, n], [-9.0, 37.0]] as [number, number][]) expect(clampCenter(c)).toEqual(c);
-  });
+/** Points the camera must not centre on at parish zooms, and points it must (lat, lng as in the spec). */
+const REJECTED = { Cádiz: [36.53, -6.29], Seville: [37.39, -5.98], Badajoz: [38.88, -6.97], Salamanca: [40.97, -5.66], Vigo: [42.24, -8.72], Ourense: [42.34, -7.86], Madrid: [40.4, -3.7], Tangier: [35.77, -5.81] } as const;
+const REACHABLE = { Sagres: [37.01, -8.94], "Vila Real de Santo António": [37.19, -7.42], Elvas: [38.88, -7.16], "Miranda do Douro": [41.5, -6.27], Bragança: [41.81, -6.76], Caminha: [41.87, -8.84], "Cabo da Roca": [38.78, -9.5] } as const;
+const lngLat = ([lat, lng]: readonly [number, number]): [number, number] => [lng, lat];
 
-  it("clamps each side separately", () => {
-    expect(clampCenter([-12, 40])).toEqual([w, 40]); // Atlantic
-    expect(clampCenter([-3.7, 40.4])).toEqual([e, 40.4]); // Madrid
-    expect(clampCenter([-8, 35.77])).toEqual([-8, s]); // south of the Algarve
-    expect(clampCenter([-8, 43.4])).toEqual([-8, n]); // Galician coast
-    expect(clampCenter([-5.81, 35.77])).toEqual([e, s]); // Tangier: a corner
-  });
-
-  it("handles the extremes of the Mercator world", () => {
-    expect(clampCenter([-180, -85.05])).toEqual([w, s]);
-    expect(clampCenter([180, 85.05])).toEqual([e, n]);
-  });
-
-  it("is mainland plus the margin, and the country view centre is inside it", () => {
-    expect(CENTER_BOX).toEqual([MAINLAND[0] - CENTER_MARGIN, MAINLAND[1] - CENTER_MARGIN, MAINLAND[2] + CENTER_MARGIN, MAINLAND[3] + CENTER_MARGIN]);
-    for (const [size, pad] of [[DESKTOP, DESKTOP_PAD], [PHONE, PHONE_PAD], [{ width: 3440, height: 1440 }, DESKTOP_PAD], [{ width: 844, height: 390 }, DESKTOP_PAD]] as const) {
-      const c = fitCenter(MAINLAND, fitZoom(MAINLAND, size, pad), pad);
-      expect(clampCenter(c)).toEqual(c); // so the clamp never moves the min-zoom view
+describe("OUTLINE", () => {
+  it("is a simple ring of under 200 vertices around mainland", () => {
+    expect(OUTLINE.length).toBeGreaterThan(50);
+    expect(OUTLINE.length).toBeLessThan(200);
+    for (const [lng, lat] of OUTLINE) {
+      expect(lng).toBeGreaterThan(MAINLAND[0] - 0.4);
+      expect(lng).toBeLessThan(MAINLAND[2] + 0.1);
+      expect(lat).toBeGreaterThan(MAINLAND[1] - 0.4);
+      expect(lat).toBeLessThan(MAINLAND[3] + 0.1);
     }
+  });
+
+  it("contains every edge town and cape, and none of the Spanish cities", () => {
+    for (const [name, p] of Object.entries(REACHABLE)) expect(insideRing(merc(lngLat(p)), OUTLINE_MERC), name).toBe(true);
+    for (const [name, p] of Object.entries(REJECTED)) expect(insideRing(merc(lngLat(p)), OUTLINE_MERC), name).toBe(false);
+  });
+
+  it("contains the visible centre of the country view (mainland's bbox centre)", () => {
+    expect(insideRing(merc([(MAINLAND[0] + MAINLAND[2]) / 2, (MAINLAND[1] + MAINLAND[3]) / 2]), OUTLINE_MERC)).toBe(true);
   });
 });
 
+describe("insideRing / nearestOnRing / clipRing", () => {
+  const square: [number, number][] = [[0, 0], [2, 0], [2, 2], [0, 2]];
+  it("tests inside and outside", () => {
+    expect(insideRing([1, 1], square)).toBe(true);
+    expect(insideRing([3, 1], square)).toBe(false);
+    expect(insideRing([1, -0.5], square)).toBe(false);
+  });
+  it("finds the nearest boundary point, corners included", () => {
+    expect(nearestOnRing([3, 1], square)).toEqual([2, 1]);
+    expect(nearestOnRing([1, -5], square)).toEqual([1, 0]);
+    expect(nearestOnRing([5, 5], square)).toEqual([2, 2]);
+  });
+  it("clips a ring to a box", () => {
+    const sort = (r: [number, number][]) => r.map((p) => p.join()).sort();
+    expect(sort(clipRing(square, [1, -1, 3, 1]))).toEqual(sort([[1, 0], [2, 0], [2, 1], [1, 1]]));
+    expect(clipRing(square, [5, 5, 6, 6])).toEqual([]);
+  });
+});
+
+const viewFor = (size: Size, pad: Padding, panelPad: Padding = pad) => {
+  const { minZoom, maxBounds } = cameraLimits(size, pad);
+  return { size, minZoom, maxZoom: 15, maxBounds, boundsMargin: BOUNDS_MARGIN, outline: OUTLINE_MERC, offset: paddingOffset(panelPad) };
+};
+/** Visible-area centre (Mercator) of a camera at `zoom`: the map centre minus the padding offset. */
+const visible = (center: [number, number], zoom: number, pad: Padding): [number, number] => {
+  const world = 512 * 2 ** zoom;
+  const o = paddingOffset(pad);
+  const [x, y] = merc(center);
+  return [x - o.x / world, y - o.y / world];
+};
+
 describe("constrainView", () => {
-  const limitsFor = (size: { width: number; height: number }, pad: typeof DESKTOP_PAD) => {
-    const { minZoom, maxBounds } = cameraLimits(size, pad);
-    return { minZoom, view: { size, minZoom, maxZoom: 15, maxBounds, boundsMargin: BOUNDS_MARGIN, centerBox: CENTER_BOX } };
+  const limitsFor = (size: Size, pad: Padding) => {
+    const view = viewFor(size, pad);
+    return { minZoom: view.minZoom, view };
   };
 
   for (const [name, size, pad] of [["desktop", DESKTOP, DESKTOP_PAD], ["phone", PHONE, PHONE_PAD], ["ultra-wide", { width: 3440, height: 1440 }, DESKTOP_PAD]] as const) {
@@ -134,33 +168,76 @@ describe("constrainView", () => {
     const { minZoom, view } = limitsFor(PHONE, PHONE_PAD);
     expect(constrainView([-8.9, 37.0], minZoom - 3, view).zoom).toBe(minZoom);
     expect(constrainView([-8.9, 37.0], 20, view).zoom).toBe(15);
-    const sagres = constrainView([-8.9, 37.0], 12, view); // Sagres is allowed
-    expect(sagres.zoom).toBe(12);
-    expect(sagres.center[0]).toBeCloseTo(-8.9, 9);
-    expect(sagres.center[1]).toBeCloseTo(37.0, 9);
   });
 
-  it("keeps the centre in the box at high zoom (Tangier, Madrid)", () => {
-    const { view } = limitsFor(PHONE, PHONE_PAD);
-    // Tangier: the box corner (at z10 maxBounds are widened by the full margin, so the box limits).
-    const [tLng, tLat] = constrainView([-5.81, 35.77], 10, view).center;
-    expect(tLng).toBeCloseTo(CENTER_BOX[2], 9);
-    expect(tLat).toBeCloseTo(CENTER_BOX[1], 9);
-    const madrid = constrainView([-3.7, 40.4], 11, limitsFor(DESKTOP, DESKTOP_PAD).view).center;
-    expect(madrid[0]).toBeCloseTo(CENTER_BOX[2], 9);
-    expect(madrid[1]).toBeCloseTo(40.4, 9);
+  for (const [name, size, pad] of [["desktop", DESKTOP, DESKTOP_PAD], ["phone", PHONE, PHONE_PAD]] as const) {
+    it(`${name}: every edge town and cape can be centred at z12 and z14`, () => {
+      const { view } = limitsFor(size, pad);
+      for (const z of [12, 14]) {
+        for (const [place, p] of Object.entries(REACHABLE)) {
+          const out = constrainView(lngLat(p), z, view);
+          expect(out.center[0], `${place} z${z}`).toBeCloseTo(p[1], 9);
+          expect(out.center[1], `${place} z${z}`).toBeCloseTo(p[0], 9);
+        }
+      }
+    });
+
+    it(`${name}: Spanish cities are clamped to the outline at the parish level and above`, () => {
+      const { minZoom, view } = limitsFor(size, pad);
+      for (const z of [minZoom + LEVEL_OFFSET, minZoom + LEVEL_OFFSET + 1, 10, 12, 14]) {
+        for (const [place, p] of Object.entries(REJECTED)) {
+          const out = constrainView(lngLat(p), z, view);
+          const v = visible(out.center, z, pad);
+          // Moved to the outline (or, near min zoom, further in by the viewport rule).
+          const onEdge = nearestOnRing(v, OUTLINE_MERC);
+          const inside = insideRing(v, OUTLINE_MERC);
+          expect(inside || Math.hypot(v[0] - onEdge[0], v[1] - onEdge[1]) < 1e-12, `${place} z${z.toFixed(2)}`).toBe(true);
+        }
+      }
+    });
+  }
+
+  it("uses the visible area: with the desktop panel open the map centre may sit further east", () => {
+    const view = viewFor(DESKTOP, DESKTOP_PAD, { ...DESKTOP_PAD, right: 400 });
+    const closed = viewFor(DESKTOP, DESKTOP_PAD);
+    // A fit at z9 of a feature next to the border near Elvas: its map centre is ~0.25° east, over Spain.
+    const elvasFit = fitCenter([-7.25, 38.8, -7.1, 38.95], 9, { ...DESKTOP_PAD, right: 400 });
+    expect(elvasFit[0]).toBeGreaterThan(-7.0);
+    const open = constrainView(elvasFit, 9, view).center;
+    expect(open[0]).toBeCloseTo(elvasFit[0], 9);
+    expect(open[1]).toBeCloseTo(elvasFit[1], 9);
+    expect(constrainView(elvasFit, 9, closed).center[0]).toBeLessThan(elvasFit[0] - 0.05);
+  });
+
+  it("is a fixed point: constraining a constrained camera doesn't move it (no creep while dragging)", () => {
+    for (const [size, pad, panelPad] of [
+      [DESKTOP, DESKTOP_PAD, DESKTOP_PAD],
+      [DESKTOP, DESKTOP_PAD, { ...DESKTOP_PAD, right: 400 }],
+      [PHONE, PHONE_PAD, PHONE_PAD],
+      [PHONE, PHONE_PAD, { ...PHONE_PAD, bottom: 422 }],
+    ] as const) {
+      const view = viewFor(size, pad, panelPad);
+      for (let dz = 0; dz <= 8; dz += 0.5) {
+        for (let lng = -12; lng <= -3; lng += 0.75) {
+          for (let lat = 35; lat <= 44; lat += 0.75) {
+            const once = constrainView([lng, lat], view.minZoom + dz, view);
+            let again = once;
+            for (let frame = 0; frame < 10; frame++) again = constrainView(again.center, again.zoom, view);
+            expect(Math.abs(again.center[0] - once.center[0]) + Math.abs(again.center[1] - once.center[1]), `${lng},${lat} +${dz}`).toBeLessThan(1e-9);
+          }
+        }
+      }
+    }
   });
 
   it("keeps the viewport inside maxBounds at low zoom, as MapLibre's default does", () => {
     const { minZoom, view } = limitsFor(DESKTOP, DESKTOP_PAD);
     const z = minZoom + 0.5;
-    const [lng, lat] = constrainView([-5.9, 36.7], z, view).center; // box corner, but the view would leave maxBounds
+    const [lng] = constrainView([-5.9, 36.7], z, view).center;
     const world = 512 * 2 ** z;
     const halfLng = (DESKTOP.width / 2 / world) * 360;
     const margin = BOUNDS_MARGIN * (0.5 / LEVEL_OFFSET); // faded in: a quarter of the way at minZoom + 0.5
     expect(lng + halfLng).toBeLessThanOrEqual(view.maxBounds[2] + margin + 1e-9); // inside the (widened) bounds
-    expect(lng).toBeLessThanOrEqual(CENTER_BOX[2]);
-    expect(lat).toBeGreaterThanOrEqual(CENTER_BOX[1]);
   });
 
   it("centres instead of zooming in when the viewport is wider than maxBounds (mid-resize)", () => {
@@ -182,8 +259,8 @@ describe("constrainView at min zoom (no slack)", () => {
 
   for (const [name, size, pad] of cases) {
     it(`${name}: any requested centre ends at exactly the country view`, () => {
-      const { minZoom, maxBounds } = cameraLimits(size, pad);
-      const limits = { size, minZoom, maxZoom: 15, maxBounds, boundsMargin: BOUNDS_MARGIN, centerBox: CENTER_BOX };
+      const limits = viewFor(size, pad);
+      const { minZoom } = limits;
       const country = fitCenter(MAINLAND, minZoom, pad);
       for (const c of [[-8.94, 37.0], [-8.2, 42.1], [-6.2, 41.5], [-9.5, 38.7], [-3.7, 40.4], [-5.81, 35.77]] as [number, number][]) {
         const out = constrainView(c, minZoom - 1, limits); // also below minZoom
@@ -194,12 +271,11 @@ describe("constrainView at min zoom (no slack)", () => {
     });
   }
 
-  it("the allowed area grows with zoom, reaching the full margin at the parish level", () => {
-    const { minZoom, maxBounds } = cameraLimits(DESKTOP, DESKTOP_PAD);
-    const limits = { size: DESKTOP, minZoom, maxZoom: 15, maxBounds, boundsMargin: BOUNDS_MARGIN, centerBox: CENTER_BOX };
-    // How far south the centre can go near Sagres, per zoom: monotonic, no jumps.
-    const south = [0, 0.25, 0.5, 1, 1.5, 2, 3].map((dz) => constrainView([-8.94, 30], minZoom + dz, limits).center[1]);
+  it("the allowed area grows with zoom: no jumps while zooming in or out", () => {
+    const limits = viewFor(DESKTOP, DESKTOP_PAD);
+    // How far south the centre can go near Sagres, per zoom: monotonic.
+    const south = [0, 0.25, 0.5, 1, 1.5, 2, 3, 5].map((dz) => constrainView([-8.94, 30], limits.minZoom + dz, limits).center[1]);
     for (let i = 1; i < south.length; i++) expect(south[i]).toBeLessThanOrEqual(south[i - 1] + 1e-9);
-    expect(south.at(-1)).toBeCloseTo(CENTER_BOX[1], 9); // at parish zooms the centre box is what limits
+    expect(south.at(-1)).toBeGreaterThan(36.6); // the outline: ~20 km off Sagres
   });
 });

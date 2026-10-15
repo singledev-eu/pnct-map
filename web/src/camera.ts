@@ -1,4 +1,5 @@
 import type { Bounds } from "./data";
+import outlineJson from "../data/outline.json";
 
 /**
  * Camera limits and zoom levels, computed from the viewport size (pure Web Mercator maths, so it is
@@ -76,7 +77,7 @@ export interface CameraLimits {
  *     MapLibre would zoom in past minZoom). On phones, mainland ± 1.5° was wider than the ~4° view,
  *     so it left ±1.2° of sideways slack at minZoom.
  * constrainView widens it by BOUNDS_MARGIN as the zoom rises, so zoomed-in selection fits keep
- * their room, and CENTER_BOX keeps the centre close to mainland.
+ * their room, and OUTLINE keeps the centre of the visible area over mainland.
  */
 export function cameraLimits(size: Size, pad: Padding): CameraLimits {
   const minZoom = fitZoom(MAINLAND, size, pad);
@@ -85,22 +86,49 @@ export function cameraLimits(size: Size, pad: Padding): CameraLimits {
 }
 
 /**
- * Margin around mainland for the camera *centre*, in degrees. maxBounds only keeps the viewport
- * inside the min-zoom view, which at high zoom still lets the centre wander far beyond mainland. 0.25° (~25 km) still centres Sagres, the Minho and the border parishes, and keeps
- * the off-centre fits (the panel on desktop, the bottom sheet on phones) of edge concelhos.
+ * The camera outline: mainland Portugal buffered by ~2 km along the Spanish border and ~20 km at sea,
+ * simplified to < 200 vertices (scripts/build_outline.py, from CAOP). The centre of the *visible area*
+ * (the map minus the toolbar and the side panel or bottom sheet) stays inside it at every zoom, so a
+ * pan can't wander into Spain or out to sea, while every border town and cape can still be centred.
  */
-export const CENTER_MARGIN = 0.25;
-export const CENTER_BOX: Bounds = [
-  MAINLAND[0] - CENTER_MARGIN,
-  MAINLAND[1] - CENTER_MARGIN,
-  MAINLAND[2] + CENTER_MARGIN,
-  MAINLAND[3] + CENTER_MARGIN,
-];
+export const OUTLINE = outlineJson.ring as [number, number][];
+/** OUTLINE in Mercator world units. */
+export const OUTLINE_MERC: Point[] = OUTLINE.map(([lng, lat]) => [mercX(lng), mercY(lat)]);
 
-/** The point of `box` nearest to `center`, per axis (lng/lat are monotonic in Mercator, so this is also the nearest on screen axes). */
-export function clampCenter([lng, lat]: [number, number], box: Bounds = CENTER_BOX): [number, number] {
-  return [Math.min(box[2], Math.max(box[0], lng)), Math.min(box[3], Math.max(box[1], lat))];
+type Point = [number, number];
+
+/** Even-odd point-in-polygon test for a closed ring (first vertex not repeated). */
+export function insideRing([x, y]: Point, ring: Point[]): boolean {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
 }
+
+/** The point of the ring's boundary nearest to `p`. */
+export function nearestOnRing([x, y]: Point, ring: Point[]): Point {
+  let best: Point = ring[0];
+  let bestD = Infinity;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [ax, ay] = ring[j];
+    const [dx, dy] = [ring[i][0] - ax, ring[i][1] - ay];
+    const len = dx * dx + dy * dy;
+    const t = len ? Math.min(1, Math.max(0, ((x - ax) * dx + (y - ay) * dy) / len)) : 0;
+    const [px, py] = [ax + t * dx, ay + t * dy];
+    const d = (px - x) ** 2 + (py - y) ** 2;
+    if (d < bestD) [best, bestD] = [[px, py], d];
+  }
+  return best;
+}
+
+/**
+ * Screen offset (CSS px, x right, y down) from the centre of the visible area to the map centre, for
+ * the fit padding in use: what fitCenter adds, so a selection fit puts its feature's centre there.
+ */
+export const paddingOffset = (pad: Padding): { x: number; y: number } => ({ x: (pad.right - pad.left) / 2, y: (pad.bottom - pad.top) / 2 });
 
 export interface ViewLimits {
   size: Size;
@@ -110,27 +138,72 @@ export interface ViewLimits {
   maxBounds: Bounds;
   /** Full widening in degrees, reached at minZoom + LEVEL_OFFSET (0 at minZoom). */
   boundsMargin: number;
-  /** The camera centre stays inside it. */
-  centerBox: Bounds;
+  /** The centre of the visible area stays inside it (Mercator ring, OUTLINE_MERC). */
+  outline: Point[];
+  /** paddingOffset of the current fit padding (the panel or sheet, when open, is part of it). */
+  offset: { x: number; y: number };
+}
+
+/**
+ * The part of a ring inside an axis-aligned box [x0, y0, x1, y1] (Sutherland–Hodgman: exact for a
+ * convex clip region; separate pieces of a concave ring come back joined along the box edge).
+ */
+export function clipRing(ring: Point[], [x0, y0, x1, y1]: [number, number, number, number]): Point[] {
+  const edges: [(p: Point) => boolean, (a: Point, b: Point) => Point][] = [
+    [(p) => p[0] >= x0, (a, b) => [x0, a[1] + ((b[1] - a[1]) * (x0 - a[0])) / (b[0] - a[0])]],
+    [(p) => p[0] <= x1, (a, b) => [x1, a[1] + ((b[1] - a[1]) * (x1 - a[0])) / (b[0] - a[0])]],
+    [(p) => p[1] >= y0, (a, b) => [a[0] + ((b[0] - a[0]) * (y0 - a[1])) / (b[1] - a[1]), y0]],
+    [(p) => p[1] <= y1, (a, b) => [a[0] + ((b[0] - a[0]) * (y1 - a[1])) / (b[1] - a[1]), y1]],
+  ];
+  let out = ring;
+  for (const [inside, cross] of edges) {
+    const input = out;
+    out = [];
+    for (let i = 0; i < input.length; i++) {
+      const [prev, cur] = [input[(i + input.length - 1) % input.length], input[i]];
+      if (inside(cur)) {
+        if (!inside(prev)) out.push(cross(prev, cur));
+        out.push(cur);
+      } else if (inside(prev)) out.push(cross(prev, cur));
+    }
+  }
+  return out;
 }
 
 /**
  * Camera constrain for MapLibre's transformConstrain hook, which replaces the built-in one, so this
- * also does its job: clamp the zoom, then keep the viewport inside maxBounds (the same rule as
- * MapLibre's default, with maxBounds widened by a margin that fades in with zoom, so the
- * allowed area shrinks smoothly to exactly the country view while zooming out), then keep the
- * centre inside centerBox. Per-axis clamping keeps the viewport
- * rule satisfied, because both ranges contain the country-view centre. If the viewport is wider than
- * maxBounds (only for a moment, while a resize hasn't recomputed the limits yet), it is centred on
- * them; MapLibre would zoom in instead.
+ * also does its job:
+ *   1. clamp the zoom;
+ *   2. keep the viewport inside maxBounds (MapLibre's default rule, with maxBounds widened by a margin
+ *      that fades in with zoom, so the allowed area shrinks smoothly to exactly the country view while
+ *      zooming out). That leaves a box of allowed centres. If the viewport is wider than maxBounds
+ *      (at min zoom, or for a moment while a resize hasn't recomputed the limits), the box is a line
+ *      or a point, and this rule alone decides; MapLibre would zoom in instead;
+ *   3. keep the centre of the visible area inside the outline, within that box: outside, move it to
+ *      the nearest point of the outline clipped to the box (in Mercator, so the nearest on screen).
+ *      If they don't overlap (only near min zoom with the panel open), the box alone decides.
+ * The result is a projection onto one fixed region per zoom, so constraining it again doesn't move
+ * it: a drag or an inertia frame never creeps or jitters. At min zoom the box is the country view.
  */
 export function constrainView(center: [number, number], zoom: number, limits: ViewLimits): { center: [number, number]; zoom: number } {
   const z = Math.min(limits.maxZoom, Math.max(limits.minZoom, zoom));
   const world = TILE_SIZE * 2 ** z;
   const m = limits.boundsMargin * Math.min(1, Math.max(0, (z - limits.minZoom) / LEVEL_OFFSET));
   const b: Bounds = [limits.maxBounds[0] - m, limits.maxBounds[1] - m, limits.maxBounds[2] + m, limits.maxBounds[3] + m];
-  const fit = (v: number, lo: number, hi: number, half: number) => (hi - lo < 2 * half ? (lo + hi) / 2 : Math.min(hi - half, Math.max(lo + half, v)));
-  const x = fit(mercX(center[0]), mercX(b[0]), mercX(b[2]), limits.size.width / 2 / world);
-  const y = fit(mercY(center[1]), mercY(b[3]), mercY(b[1]), limits.size.height / 2 / world);
-  return { center: clampCenter([lngOf(x), latOf(y)], limits.centerBox), zoom: z };
+  // Allowed map centres along one axis: [lo + half, hi - half], or the middle if the view is wider.
+  const range = (lo: number, hi: number, half: number): [number, number] => (hi - lo < 2 * half ? [(lo + hi) / 2, (lo + hi) / 2] : [lo + half, hi - half]);
+  const [x0, x1] = range(mercX(b[0]), mercX(b[2]), limits.size.width / 2 / world);
+  const [y0, y1] = range(mercY(b[3]), mercY(b[1]), limits.size.height / 2 / world);
+  const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+  const boxed: Point = [clamp(mercX(center[0]), x0, x1), clamp(mercY(center[1]), y0, y1)];
+  const done = (p: Point) => ({ center: [lngOf(p[0]), latOf(p[1])] as [number, number], zoom: z });
+  if (x0 === x1 || y0 === y1) return done(boxed);
+
+  // Rule 3 in visible-area coordinates: the map centre minus the padding offset.
+  const [ox, oy] = [limits.offset.x / world, limits.offset.y / world];
+  const area = clipRing(limits.outline, [x0 - ox, y0 - oy, x1 - ox, y1 - oy]);
+  if (area.length < 3) return done(boxed);
+  const visible: Point = [mercX(center[0]) - ox, mercY(center[1]) - oy];
+  const [vx, vy] = insideRing(visible, area) ? visible : nearestOnRing(visible, area);
+  return done([vx + ox, vy + oy]);
 }

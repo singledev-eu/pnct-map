@@ -10,9 +10,9 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
 - **Data pipeline:** Python 3.12 (uv), geopandas/pyogrio/shapely, and mapshaper via `npx` (pinned 0.7.68).
 - **Web app:** Vite + TypeScript + MapLibre GL JS. It's a static site with no backend; the basemap is OpenFreeMap "positron".
 - `data/`: pipeline inputs and outputs. The downloads (`data/external/`, `data/raw/*.pdf`) and large intermediates (`data/processed/*.geojson`) are gitignored.
-- `scripts/`: pipeline steps (`parse_pdf` → `build_parishes` → `build_geo` → `build_topo`, plus `build_shapes`) and `polyline.py`.
+- `scripts/`: pipeline steps (`parse_pdf` → `build_parishes` → `build_geo` → `build_topo`, plus `build_shapes` and `build_outline`) and `polyline.py`.
 - `tests/`: pytest for the pipeline and shapes.
-- `web/data/`: `pnct.topo.json` (display geometry) and `shapes.json` (Idealista link shapes). Committed, built by the pipeline.
+- `web/data/`: `pnct.topo.json` (display geometry), `shapes.json` (Idealista link shapes) and `outline.json` (the camera outline, bundled). Committed, built by the pipeline.
 - `web/src/`:
   - `main.ts`: app wiring, selection, focus mode, hash.
   - `layers.ts`: MapLibre layers and filters.
