@@ -19,6 +19,11 @@ describe("theme palette", () => {
     expect(mapTokens("@media (prefers-color-scheme: dark) {\n  :root {")).toEqual(asTokens(PALETTES.dark));
   });
 
+  it("matches the RNAP tint token in style.css", () => {
+    const tints = [...css.matchAll(/--map-rnap-tint:\s*(\d+)%/g)].map((m) => Number(m[1]) / 100);
+    expect(tints).toEqual([PALETTES.light.rnapTint, PALETTES.dark.rnapTint]);
+  });
+
   it("draws the hatch in the premultiplied PNCT colour", () => {
     const { data } = hatchImage("#0f8a7e");
     const stripe = [...data].findIndex((v) => v !== 0);

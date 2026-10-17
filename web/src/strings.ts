@@ -15,6 +15,10 @@ export interface ProtectedStrings {
   /** "Under protection: 12.3% (RNAP 4.1%, Natura 10%)". */
   summary: (any: string, parts: string[]) => string;
   areasLabel: string;
+  /** Designation of a Natura 2000 name listed as both a ZPE and a ZEC/SIC (merged into one line). */
+  naturaBoth: string;
+  /** Toggle row while the overlay file loads (first switch-on). */
+  toggleLoading: string;
   loading: string;
   loadError: string;
   overlayError: string;
@@ -34,6 +38,8 @@ export const en: ProtectedStrings = {
   panelHeading: "Nature protection",
   summary: (any, parts) => `Under protection: ${any}${parts.length > 1 ? ` (${parts.join(", ")})` : ""}`,
   areasLabel: "Areas",
+  naturaBoth: "ZPE + ZEC",
+  toggleLoading: "Loading…",
   loading: "Loading protection data…",
   loadError: "Could not load the protection data. Please try again.",
   overlayError: "Could not load the protected areas. Please try again.",
@@ -47,7 +53,11 @@ export const en: ProtectedStrings = {
 /** The active language. */
 export const t: ProtectedStrings = en;
 
-/** "0%", "100%", "12.3%": one decimal, none for whole numbers. */
+/** Shares below this (but above 0) are mostly boundary mismatches; they show as "<0.5%". The data keeps the exact value. */
+export const SMALL_SHARE = 0.5;
+
+/** "0%", "<0.5%", "12.3%", "100%": one decimal, none for whole numbers. */
 export function formatPct(value: number): string {
+  if (value > 0 && value < SMALL_SHARE) return `<${SMALL_SHARE}%`;
   return `${Number.isInteger(value) ? value : value.toFixed(1)}%`;
 }

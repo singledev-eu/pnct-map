@@ -136,6 +136,37 @@ test("the toggles show and hide each overlay and keep the hash in step", async (
   expect(errors).toEqual([]);
 });
 
+test("a toggle row shows a loading state while the overlay file loads, then clears it", async ({ page }) => {
+  const errors = trackErrors(page);
+  // Hold the overlay request until the loading state has been seen.
+  let release!: () => void;
+  const held = new Promise<void>((resolve) => (release = resolve));
+  await page.route(/\/assets\/protected\.topo-[^/]+\.json$/, async (route) => {
+    await held;
+    await route.continue();
+  });
+  await page.goto(`/#${GERES}`);
+  await waitForParishView(page);
+  const loading = page.getByTestId("overlay-loading-natura");
+  await expect(loading).toBeHidden();
+
+  await toggle(page, "natura").check();
+  await expect(loading).toBeVisible();
+  await expect(loading).toHaveText("Loading…");
+  await expect(page.locator(".legend-overlay").filter({ has: toggle(page, "natura") })).toHaveAttribute("aria-busy", "");
+  await expect(page.getByTestId("overlay-loading-rnap")).toBeHidden();
+
+  release();
+  await expectOverlays(page, ["natura"]);
+  await expect(loading).toBeHidden();
+  await expect(page.locator(".legend-overlay[aria-busy]")).toHaveCount(0);
+  // Already loaded: the next switch-on shows no loading state.
+  await toggle(page, "rnap").check();
+  await expectOverlays(page, ["natura", "rnap"]);
+  await expect(page.getByTestId("overlay-loading-rnap")).toBeHidden();
+  expect(errors).toEqual([]);
+});
+
 test("a link with pa= opens with those overlays on", async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto(`/#${GERES}&pa=natura`);
@@ -160,6 +191,15 @@ test("the panel shows the protection shares with the overlays off", async ({ pag
   await waitForParishes(page);
   await expect(page.getByTestId("protection-summary")).toHaveText("Under protection: 0% (RNAP 0%, Natura 0%)");
   await expect(page.getByTestId("protection-areas")).toHaveCount(0);
+
+  // Shares above 0 and below 0.5% show as "<0.5%"; the data attribute keeps the exact value.
+  await reopen(page, "/#f=040709"); // Cabanelas: RNAP 0.4%, a boundary sliver
+  await expect(page.getByTestId("protection-summary")).toHaveText("Under protection: <0.5% (RNAP <0.5%, Natura 0%)");
+  await expect(page.getByTestId("protection-summary")).toHaveAttribute("data-rnap", "0.4");
+
+  // A Natura name designated under both Directives is one line.
+  await reopen(page, "/#f=110662"); // Parque das Nações: Estuário do Tejo, ZPE and ZEC
+  await expect(page.getByTestId("protection-areas").locator("li")).toHaveText(["Estuário do Tejo · ZPE + ZEC"]);
 
   await reopen(page, `/#c=${TERRAS_DE_BOURO}`);
   await waitForParishes(page);

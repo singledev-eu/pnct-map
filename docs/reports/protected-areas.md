@@ -169,6 +169,15 @@ Key ones:
 
 ## Open questions
 
+Answered on 2026-10-17 (see [protected-areas-delta](protected-areas-delta.md)):
+- 1–4: keep RNAP credited as "reuse terms not confirmed", EEA end-2024, land clipping and the PNCT split.
+- 5: RNAP tint 8% in light mode.
+- 6: "<0.5%".
+- 7: merged "ZPE + ZEC" lines.
+- A toggle loading state was also added.
+
+The original questions:
+
 1. **ICNF licence:** RNAP's reuse terms are unconfirmed. The service only states ICNF as copyright holder. Ship 0.4.0 with RNAP credited as "reuse terms not confirmed", or set `CATEGORIES["rnap"] = None` until ICNF answers? One line either way.
 2. **Natura source:** keep EEA end-2024 (CC BY 4.0, confirmed licence, one 1.36 GB download per refresh) or switch to ICNF `BDG/RN2000` (lighter and possibly newer, but the same unconfirmed terms as RNAP)?
 3. **Marine areas:** the overlay is clipped to land, so marine parks (Recife do Algarve) and the sea parts of coastal sites aren't drawn. Fine for land hunters; draw them at sea instead?

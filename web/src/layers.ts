@@ -157,7 +157,7 @@ function overlayLayers(overlays: OverlayState | undefined, focus: boolean, color
         source: overlaySource(cat),
         layout,
         ...filter,
-        paint: cat === "natura" ? { "fill-pattern": NATURA_HATCH_IMAGE } : { "fill-color": color, "fill-opacity": 0.16 },
+        paint: cat === "natura" ? { "fill-pattern": NATURA_HATCH_IMAGE } : { "fill-color": color, "fill-opacity": colors.rnapTint },
       },
       {
         id: overlayLine(cat),

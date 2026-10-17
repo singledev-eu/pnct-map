@@ -407,9 +407,11 @@ function start(data: MapData): void {
     writeHash({ pa: CATEGORY_IDS.filter((c) => overlays.visible.has(c)).join(",") || null });
     syncToggles();
     if (!overlays.loaded && overlays.visible.size) {
+      toggles.setLoading(overlays.visible);
       try {
         overlayData = await loadOverlay();
       } catch (err) {
+        toggles.setLoading(new Set());
         console.error(err);
         overlays.visible.clear();
         writeHash({ pa: null });
@@ -423,16 +425,18 @@ function start(data: MapData): void {
         overlays.loaded = true;
         addOverlays(map, overlayData, overlays, filter, PALETTES[theme]);
       }
+      toggles.setLoading(new Set());
     }
     document.body.dataset.mapIdle = "false";
     setOverlayVisibility(map, overlays);
     markOverlays();
   }
-  const syncToggles = mountOverlayToggles($("legend-protected"), (cat) => overlays.visible.has(cat), (cat, on) => {
+  const toggles = mountOverlayToggles($("legend-protected"), (cat) => overlays.visible.has(cat), (cat, on) => {
     if (on) overlays.visible.add(cat);
     else overlays.visible.delete(cat);
     void syncOverlays();
   });
+  const syncToggles = toggles.sync;
   if (overlays.visible.size) void syncOverlays();
   else markOverlays();
 

@@ -70,6 +70,31 @@ export const loadOverlay = cachedJson<OverlayData>(TOPO_URL, (json) => {
 
 export const categoryLabel = (c: CategoryMeta) => t.toggle[c.id] ?? c.source;
 
+/**
+ * The areas as listed in the panel, in the given order. A Natura 2000 name designated under both
+ * Directives appears twice in the data (a ZPE and a ZEC/SIC, two site codes); it becomes one line,
+ * "<name> · ZPE + ZEC", at the position of its first entry.
+ */
+export function panelAreas(areas: ProtectedArea[]): { name: string; type: string }[] {
+  const out: { name: string; type: string }[] = [];
+  const natura = new Map<string, { name: string; type: string }>();
+  for (const a of areas) {
+    if (a.cat !== "natura") {
+      out.push({ name: a.name, type: a.type });
+      continue;
+    }
+    const seen = natura.get(a.name);
+    if (seen) {
+      seen.type = t.naturaBoth;
+      continue;
+    }
+    const row = { name: a.name, type: a.type };
+    natura.set(a.name, row);
+    out.push(row);
+  }
+  return out;
+}
+
 const provider = (c: CategoryMeta) => c.source.split(":")[0];
 
 /** "ICNF, 2026-10-17" / "EEA, end 2024". */

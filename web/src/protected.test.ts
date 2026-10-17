@@ -1,7 +1,7 @@
 import type { LayerSpecification, StyleSpecification } from "maplibre-gl";
 import { describe, expect, it } from "vitest";
 import { appLayers, hatchImage, NATURA_HATCH_IMAGE, overlayFill, overlayLine, overlaySource, patternImages, withAppLayers, type FilterState, type OverlayState } from "./layers";
-import { attributionHtml, CATEGORIES, CATEGORY_IDS, credits } from "./protected";
+import { attributionHtml, CATEGORIES, CATEGORY_IDS, credits, panelAreas } from "./protected";
 import { formatPct, t } from "./strings";
 import { PALETTES } from "./theme";
 
@@ -108,12 +108,41 @@ describe("pattern images", () => {
   });
 });
 
+describe("panelAreas", () => {
+  const natura = (code: string, name: string, type: string) => ({ cat: "natura", code, name, type });
+  const rnap = { cat: "rnap", code: "PNSACV", name: "Sudoeste Alentejano e Costa Vicentina", type: "Parque Natural" };
+
+  it("merges a Natura name listed as ZPE and ZEC into one line, where it first appears", () => {
+    const out = panelAreas([
+      natura("PTZPE0015", "Costa Sudoeste", "ZPE (Birds Directive)"),
+      rnap,
+      natura("PTCON0012", "Costa Sudoeste", "ZEC/SIC (Habitats Directive)"),
+    ]);
+    expect(out).toEqual([
+      { name: "Costa Sudoeste", type: "ZPE + ZEC" },
+      { name: rnap.name, type: "Parque Natural" },
+    ]);
+  });
+
+  it("keeps different names, and RNAP areas, as they are", () => {
+    const out = panelAreas([natura("PTZPE0002", "Serra do Gerês", "ZPE (Birds Directive)"), natura("PTCON0001", "Peneda / Gerês", "ZEC/SIC (Habitats Directive)"), { ...rnap, name: "Costa Sudoeste" }]);
+    expect(out.map((a) => a.type)).toEqual(["ZPE (Birds Directive)", "ZEC/SIC (Habitats Directive)", "Parque Natural"]);
+  });
+});
+
 describe("strings", () => {
   it("formats shares with at most one decimal", () => {
     expect(formatPct(0)).toBe("0%");
     expect(formatPct(100)).toBe("100%");
     expect(formatPct(12.3)).toBe("12.3%");
-    expect(formatPct(0.1)).toBe("0.1%");
+    expect(formatPct(0.5)).toBe("0.5%");
+    expect(formatPct(0.6)).toBe("0.6%");
+  });
+
+  it("shows shares above 0 and below 0.5% as <0.5%", () => {
+    expect(formatPct(0.1)).toBe("<0.5%");
+    expect(formatPct(0.4)).toBe("<0.5%");
+    expect(formatPct(0)).toBe("0%");
   });
 
   it("summarises the union and the categories", () => {

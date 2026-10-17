@@ -1,7 +1,7 @@
 import type { Concelho, Parish } from "./data";
 import { LAND_FILTERS, type LandFilter, type Operation, type PropertyType, type SearchOptions } from "./idealista";
 import { getConcelhoLinks, getLinks, type PropertyLink } from "./links";
-import { credits, loadProtection, type Protection, type ProtectionData } from "./protected";
+import { credits, loadProtection, panelAreas, type Protection, type ProtectionData } from "./protected";
 import { formatPct, t } from "./strings";
 
 type Child = Node | string | null | undefined | false;
@@ -116,7 +116,7 @@ function protectionBody(data: ProtectionData, p: Protection | undefined): Child[
     ),
   );
   for (const c of data.categories) summary.dataset[c] = String(share(`${c}_pct`));
-  const areas = (p?.areas ?? []).map((i) => data.areas[i]);
+  const areas = panelAreas((p?.areas ?? []).map((i) => data.areas[i]));
   return [
     summary,
     areas.length
