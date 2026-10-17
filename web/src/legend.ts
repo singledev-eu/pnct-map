@@ -3,6 +3,10 @@
  * Algarve at the country view; a tap expands it. The viewer's choice is kept in localStorage
  * (when available). Wide screens always show it expanded, without the toggle.
  */
+import { h } from "./panel";
+import { CATEGORIES, categoryLabel, sourceLabel } from "./protected";
+import { t } from "./strings";
+
 const STORAGE_KEY = "pnct-map:legend";
 
 function stored(): boolean | null {
@@ -36,4 +40,27 @@ export function mountLegend(legend: HTMLElement, narrow: MediaQueryList): void {
   });
   narrow.addEventListener("change", apply);
   apply();
+}
+
+/**
+ * The protected-areas toggles (one per category of protected.meta.json, all off by default) and the
+ * source note with the disclaimer, rendered into `container` in the legend body. `onChange` gets the
+ * category and its new state; the returned function re-syncs the checkboxes (hash navigation).
+ */
+export function mountOverlayToggles(container: HTMLElement, isOn: (cat: string) => boolean, onChange: (cat: string, on: boolean) => void): () => void {
+  const inputs = CATEGORIES.map((c) => {
+    const input = h("input", { type: "checkbox", "data-overlay": c.id, "data-testid": `overlay-${c.id}` });
+    input.addEventListener("change", () => onChange(c.id, input.checked));
+    return { id: c.id, input, row: h("label", { class: "legend-row legend-overlay" }, input, h("span", { class: `swatch swatch-${c.id}`, "aria-hidden": "true" }), categoryLabel(c)) };
+  });
+  container.replaceChildren(
+    h("p", { class: "legend-heading" }, t.legendHeading),
+    ...inputs.map((i) => i.row),
+    h("p", { class: "legend-note", "data-testid": "overlay-note" }, `${t.legendSources}: ${CATEGORIES.map(sourceLabel).join(" · ")}. ${t.disclaimer}`),
+  );
+  const sync = () => {
+    for (const { id, input } of inputs) input.checked = isOn(id);
+  };
+  sync();
+  return sync;
 }

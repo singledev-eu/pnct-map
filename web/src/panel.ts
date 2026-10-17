@@ -1,6 +1,8 @@
 import type { Concelho, Parish } from "./data";
 import { LAND_FILTERS, type LandFilter, type Operation, type PropertyType, type SearchOptions } from "./idealista";
 import { getConcelhoLinks, getLinks, type PropertyLink } from "./links";
+import { credits, loadProtection, type Protection, type ProtectionData } from "./protected";
+import { formatPct, t } from "./strings";
 
 type Child = Node | string | null | undefined | false;
 
@@ -97,7 +99,50 @@ function sheetCredit(): HTMLElement {
     creditLink("https://www.openmaptiles.org/", "OpenMapTiles"),
     " · ©\u00a0",
     creditLink("https://www.openstreetmap.org/copyright", "OpenStreetMap"),
+    ` · ${t.creditLead} `,
+    ...credits().flatMap((c, i) => [i ? " · " : "", creditLink(c.url, c.label.replace(/ /g, "\u00a0"))]),
   );
+}
+
+/** "Under protection: X% (RNAP Y%, Natura Z%)" and the areas covering at least 0.5% (protection.json). */
+function protectionBody(data: ProtectionData, p: Protection | undefined): Child[] {
+  const share = (key: `${string}_pct`) => p?.[key] ?? 0;
+  const summary = h(
+    "p",
+    { class: "protection-summary", "data-testid": "protection-summary", "data-any": String(share("any_pct")) },
+    t.summary(
+      formatPct(share("any_pct")),
+      data.categories.map((c) => `${t.short[c] ?? c} ${formatPct(share(`${c}_pct`))}`),
+    ),
+  );
+  for (const c of data.categories) summary.dataset[c] = String(share(`${c}_pct`));
+  const areas = (p?.areas ?? []).map((i) => data.areas[i]);
+  return [
+    summary,
+    areas.length
+      ? h(
+          "ul",
+          { class: "protection-areas", "aria-label": t.areasLabel, "data-testid": "protection-areas" },
+          ...areas.map((a) => h("li", {}, a.name, h("span", { class: "muted" }, ` · ${a.type}`))),
+        )
+      : null,
+  ];
+}
+
+/** Nature-protection section; the shares load on first use and fill in when they arrive. */
+function protectionSection(level: "freguesias" | "concelhos", code: string): HTMLElement {
+  const body = h("div", {}, h("p", { class: "muted" }, t.loading));
+  const section = h("section", { class: "protection", "data-testid": "protection" }, h("h3", {}, t.panelHeading), body, h("p", { class: "disclaimer" }, t.disclaimer));
+  loadProtection()
+    .then((data) => {
+      if (section.isConnected) body.replaceChildren(...protectionBody(data, data[level][code]?.protection).filter((c): c is Node => !!c));
+    })
+    .catch((err: unknown) => {
+      if (!section.isConnected) return; // the panel moved on
+      console.error(err);
+      body.replaceChildren(h("p", { class: "muted" }, t.loadError));
+    });
+  return section;
 }
 
 export class Panel {
@@ -235,6 +280,7 @@ export class Panel {
         ["DICOFRE", p.dicofre],
       ]),
       h("section", {}, h("h3", {}, "Concelho coverage"), coverage(c), showConcelho),
+      protectionSection("freguesias", p.dicofre),
       property,
     );
   }
@@ -267,6 +313,7 @@ export class Panel {
         ["Parishes", String(c.parishCount)],
       ]),
       h("section", {}, h("h3", {}, "PNCT coverage"), coverage(c), whole ? parishes : null),
+      protectionSection("concelhos", c.code),
       whole ? null : parishes,
       whole ? this.propertySection((opts) => getConcelhoLinks(c, opts)) : null,
     );

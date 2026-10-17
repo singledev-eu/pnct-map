@@ -1,7 +1,7 @@
 {
   "name": "pnct-map-web",
   "private": true,
-  "version": "0.3.1",
+  "version": "0.4.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,6 +11,7 @@
     "test": "vitest run",
     "test:e2e:remote": "PLAYWRIGHT_BROWSERS_PATH=0 playwright test && node scripts/e2e-flaky-report.mjs",
     "test:py": "cd .. && uv run pytest -q",
+    "data:protected": "cd .. && uv run make protected-fetch && uv run make protected",
     "test:all": "npm run test:py && npm test && npm run test:e2e",
     "deploy": "npm run test:all && npm run build && npx -y wrangler@4.149.0 pages deploy dist --project-name pnct-map --commit-dirty=true --branch main && node scripts/e2e-flaky-report.mjs",
     "deploy:preview": "npm run test:all && npm run build && npx -y wrangler@4.149.0 pages deploy dist --project-name pnct-map --commit-dirty=true --branch preview && node scripts/e2e-flaky-report.mjs"

@@ -58,7 +58,7 @@ Only needed to rebuild the data from the sources.
 
 ```sh
 uv sync
-uv run make all      # download (checksum-verified) → parse → match → geo → topo → shapes → pytest
+uv run make all      # download (checksum-verified) → parse → match → geo → topo → shapes → outline → protected → pytest
 ```
 
 `make download` fetches two sources. Each download is checked against a SHA-256 before it is kept:
@@ -68,6 +68,12 @@ uv run make all      # download (checksum-verified) → parse → match → geo 
 
 Git ignores both downloads. `make all` runs the download as a dependency, so you do not need to call it first.
 
+The protected-areas step also downloads, once, into `data/external/protected/` (gitignored):
+- the ICNF RNAP layer, paged from the ArcGIS service (~7 MB);
+- the EEA Natura 2000 end-2024 GeoPackage (1.36 GB, EU-wide, SHA-256 pinned).
+
+`make protected-fetch` re-fetches them on demand (`REFRESH=1` downloads the GeoPackage again); `cd web && npm run data:protected` does the same plus the rebuild. Which source feeds which category is set in `scripts/protected_config.py`. See [data/ATTRIBUTION.md](data/ATTRIBUTION.md).
+
 | Target | What it does |
 |---|---|
 | `make download` | Fetches the CAOP 2025 Continente GeoPackage into `data/external/` and the PNCT PDF into `data/raw/`, and verifies both SHA-256 values |
@@ -76,7 +82,10 @@ Git ignores both downloads. `make all` runs the download as a dependency, so you
 | `make geo` | `scripts/build_geo.py` → `data/processed/parishes_all.geojson`, `data/processed/concelhos.geojson` |
 | `make web-data` | `scripts/build_topo.py` → `web/data/pnct.topo.json` (one TopoJSON, objects `parishes` + `concelhos`; concelhos are dissolved from the simplified parishes on `dicofre[:4]` and carry `pnct_count`/`parish_count`, from which the app derives full/partial/none) |
 | `make shapes` | `scripts/build_shapes.py` → `web/data/shapes.json` (one search polygon per PNCT parish) and `data/processed/shapes_quality.csv` |
-| `make test` | `pytest` (`tests/test_pipeline.py`, `tests/test_shapes.py`) |
+| `make outline` | `scripts/build_outline.py` → `web/data/outline.json` (the camera outline) |
+| `make protected-fetch` | `scripts/fetch_protected.py` → `data/external/protected/<source>/` plus `fetch.json` (source URL, licence, fetch time) |
+| `make protected` | `scripts/build_protected.py` → `web/data/protected.topo.json` (display overlay), `web/data/protection.json` (shares per DICOFRE/DICO), `web/data/protected.meta.json` (categories, bundled), `data/processed/protected_sites.csv` |
+| `make test` | `pytest` (`tests/test_pipeline.py`, `tests/test_shapes.py`, `tests/test_outline.py`, `tests/test_protected.py`, `tests/test_fetch_protected.py`) |
 | `make web` | `npm ci && npm test && npm run build` in `web/` → static `web/dist/` |
 | `make e2e` | `npm ci`, builds, then runs the Playwright smoke tests (`web/tests/e2e`). Screenshots go to `web/test-results/screenshots/` (ignored by git) |
 | `make clean` | Removes `data/interim`, `data/processed` and `web/data` |
@@ -85,14 +94,14 @@ mapshaper runs through `npx` at a pinned version (`mapshaper@0.7.68`), with its 
 
 Committed outputs:
 
-- `web/data/pnct.topo.json` and `web/data/shapes.json`
+- `web/data/*.json` (`pnct.topo.json`, `shapes.json`, `outline.json`, `protected.topo.json`, `protection.json`, `protected.meta.json`)
 - `data/interim/pnct_raw.csv`
-- `data/processed/*.csv` (`pnct_parishes.csv`, `unmatched.csv`, `shapes_quality.csv`)
+- `data/processed/*.csv` (`pnct_parishes.csv`, `unmatched.csv`, `shapes_quality.csv`, `protected_sites.csv`)
 
 Not committed (ignored, rebuilt by `make`):
 
 - `data/processed/*.geojson`
-- `data/interim/parishes_full_4326.geojson`
+- `data/interim/parishes_full_4326.geojson`, `data/interim/protected/`
 - `data/external/` and `data/raw/*.pdf`
 
 `make clean` deletes `web/data`, which the site needs, and the committed CSV files. Run `uv run make all` afterwards to regenerate them. (`git restore web/data data/interim data/processed` also brings the committed files back, but not the ignored GeoJSON files.)
@@ -131,6 +140,7 @@ This text matches the About panel on the site.
 - **PNCT territories:** the official list dated 4 February 2026, published by IEFP: https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf
 - **Boundaries:** CAOP 2025 © Direção-Geral do Território, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). "Informação geográfica cedida pela Direção-Geral do Território." Simplified for the web. Landing page: https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop
 - **Basemap:** [OpenFreeMap](https://openfreemap.org), © OpenMapTiles, © OpenStreetMap contributors (ODbL).
+- **Protected areas:** RNAP © ICNF (reuse terms not confirmed yet), fetched 2026-10-17; Natura 2000 end-2024 © EEA, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The overlay and the "under protection" shares are an indicator, not a verdict: check the municipal PDM. Details and licence status: [data/ATTRIBUTION.md](data/ATTRIBUTION.md).
 - **Unofficial tool.** Always confirm eligibility with the official sources. This project is not affiliated with Idealista.
 
 | Source | Edition | URL | Downloaded |

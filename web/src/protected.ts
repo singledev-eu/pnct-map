@@ -1,0 +1,94 @@
+import { feature } from "topojson-client";
+import type { GeometryCollection, Topology } from "topojson-specification";
+import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
+import { t } from "./strings";
+// Bundled (< 1 KB): which categories exist, with source, version and licence. Built by scripts/build_protected.py,
+// which leaves a category out when protected_config.py disables it; the legend, panel and credits follow.
+import META from "../data/protected.meta.json";
+// Content-hashed by Vite, fetched on first use: the overlay when a toggle is first switched on, the
+// shares when the panel first opens. Neither is on the initial-load path.
+import TOPO_URL from "../data/protected.topo.json?url";
+import STATS_URL from "../data/protection.json?url";
+
+export interface CategoryMeta {
+  id: string;
+  source: string;
+  url: string;
+  as_of: string;
+  fetched_at: string;
+  licence: string;
+  licence_url: string | null;
+  licence_confirmed: boolean;
+}
+
+export const CATEGORIES: CategoryMeta[] = META.categories;
+export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);
+
+/** Per parish (DICOFRE) or concelho (DICO): `<category>_pct`, `any_pct` (0–100) and indexes into `areas`. */
+export type Protection = Record<`${string}_pct`, number> & { any_pct: number; areas: number[] };
+
+export interface ProtectedArea {
+  cat: string;
+  code: string;
+  name: string;
+  type: string;
+}
+
+export interface ProtectionData {
+  categories: string[];
+  areas: ProtectedArea[];
+  freguesias: Record<string, { protection: Protection }>;
+  concelhos: Record<string, { protection: Protection }>;
+}
+
+export type OverlayData = Record<string, FeatureCollection<Polygon | MultiPolygon, { pnct: boolean }>>;
+
+/** Fetches `url` once as JSON and caches the promise; a failed fetch is retried next time. */
+function cachedJson<T>(url: string, convert: (json: unknown) => T = (json) => json as T): () => Promise<T> {
+  let promise: Promise<T> | null = null;
+  return () => {
+    promise ??= fetch(url)
+      .then((r) => {
+        if (!r.ok) throw new Error(`Failed to load ${url}: ${r.status}`);
+        return r.json();
+      })
+      .then(convert)
+      .catch((err: unknown) => {
+        promise = null;
+        throw err;
+      });
+    return promise;
+  };
+}
+
+export const loadProtection = cachedJson<ProtectionData>(STATS_URL);
+
+export const loadOverlay = cachedJson<OverlayData>(TOPO_URL, (json) => {
+  const topo = json as Topology<Record<string, GeometryCollection<{ pnct: boolean }>>>;
+  return Object.fromEntries(CATEGORY_IDS.map((id) => [id, feature(topo, topo.objects[id]) as OverlayData[string]]));
+});
+
+export const categoryLabel = (c: CategoryMeta) => t.toggle[c.id] ?? c.source;
+
+const provider = (c: CategoryMeta) => c.source.split(":")[0];
+
+/** "ICNF, 2026-10-17" / "EEA, end 2024". */
+export const sourceLabel = (c: CategoryMeta) => `${provider(c)}, ${c.as_of}`;
+
+const licenceText = (c: CategoryMeta) => (c.licence_confirmed ? c.licence : t.licenceUnconfirmed);
+
+const escape = (s: string) => s.replace(/[&<>"]/g, (ch) => `&${({ "&": "amp", "<": "lt", ">": "gt", '"': "quot" })[ch]};`);
+
+/** HTML for the map attribution control: "Protected areas: <ICNF RNAP> · <Natura 2000 © EEA> (CC BY 4.0)". */
+export function attributionHtml(): string {
+  const parts = CATEGORIES.map((c) => {
+    const link = `<a href="${escape(c.url)}" target="_blank" rel="noopener noreferrer">${escape(`${t.short[c.id] ?? c.id} © ${provider(c)}`)}</a>`;
+    return c.licence_confirmed ? `${link} (${escape(c.licence)})` : link;
+  });
+  return `${escape(t.creditLead)}: ${parts.join(" · ")}`;
+}
+
+/** The categories as credit entries (phone sheet credit, About panel). */
+export function credits(): { label: string; url: string; licence: string; licenceUrl: string | null; asOf: string }[] {
+  return CATEGORIES.map((c) => ({ label: `${t.short[c.id] ?? c.id} © ${provider(c)}`, url: c.url, licence: licenceText(c), licenceUrl: c.licence_url, asOf: c.as_of }));
+}

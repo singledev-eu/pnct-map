@@ -1,0 +1,159 @@
+code,name,type,category,area_ha,mainland_ha
+APPFB,Faia Brava,Area Protegida Privada,rnap,214.7,214.7
+APPMFM,Montado do Freixo do Meio,Area Protegida Privada,rnap,577.1,577.1
+APPVA,Vale das Amoreiras,Area Protegida Privada,rnap,10.1,10.1
+APPVFRB,Fraga Viva - Reduto do Batráquio,Area Protegida Privada,rnap,14.0,14.0
+MNC,Carenque,Monumento Natural,rnap,6.1,6.1
+MNCM,Cabo Mondego,Monumento Natural,rnap,117.7,56.4
+MNLCCO,Canhão Cársico de Ota,Monumento Natural Local,rnap,316.3,316.3
+MNLGVT,Gruta de Vale Telheiro,Monumento Natural Local,rnap,78.5,78.5
+MNLLM,Livraria do Mondego,Monumento Natural Local,rnap,21.5,21.5
+MNLag,Lagosteiros,Monumento Natural,rnap,7.1,7.1
+MNPA,Pedreira do Avelino,Monumento Natural,rnap,1.7,1.7
+MNPD,Pegadas de Dinossaurios de Ourém/Torres Novas,Monumento Natural,rnap,54.0,54.0
+MNPM,Pedra da Mua,Monumento Natural,rnap,5.1,4.5
+MNPR,Portas de Rodão,Monumento Natural,rnap,965.4,965.4
+PNA,Arrábida,Parque Natural,rnap,17653.3,12342.1
+PNAL,Alvão,Parque Natural,rnap,7238.3,7238.3
+PNDI,Douro Internacional,Parque Natural,rnap,86834.8,86765.5
+PNLN,Litoral Norte,Parque Natural,rnap,8761.8,1316.5
+PNM,Montesinho,Parque Natural,rnap,74224.9,74183.9
+PNMRA,Recife do Algarve - Pedra do Valado,Parque Natural,rnap,15623.5,1.1
+PNPG,Peneda-Gerês,Parque Nacional,rnap,69594.5,69594.2
+PNRF,Ria Formosa,Parque Natural,rnap,17900.8,17857.5
+PNRVT,Vale do Tua,Parque Natural Regional,rnap,24769.1,24769.1
+PNSAC,Serras de Aire e Candeeiros,Parque Natural,rnap,38344.0,38344.0
+PNSACV,Sudoeste Alentejano e Costa Vicentina,Parque Natural,rnap,89568.8,60577.2
+PNSC,Sintra-Cascais,Parque Natural,rnap,14450.8,14412.2
+PNSE,Serra da Estrela,Parque Natural,rnap,89132.2,89132.2
+PNSSM,Serra de São Mamede,Parque Natural,rnap,56061.3,55995.7
+PNTI,Tejo Internacional,Parque Natural,rnap,26490.4,26482.0
+PNVG,Vale do Guadiana,Parque Natural,rnap,69665.9,69665.2
+PPAFCC,Arriba Fossil da Costa da Caparica,Paisagem Protegida,rnap,1551.6,1524.3
+PPLAAgol,Açude da Agolada,Paisagem Protegida Local,rnap,266.4,266.4
+PPLAMB,Açude do Monte da Barca,Paisagem Protegida Local,rnap,867.8,867.8
+PPLFB,Fonte Benemola,Paisagem Protegida Local,rnap,406.4,406.4
+PPLRP,Rocha da Pena,Paisagem Protegida Local,rnap,671.8,671.8
+PPLSSA,Serras do Socorro e Archeira,Paisagem Protegida Local,rnap,1191.0,1191.0
+PPRAAzib,Albufeira do Azibo,Paisagem Protegida Regional,rnap,3277.2,3277.2
+PPRCB,Corno do Bico,Paisagem Protegida Regional,rnap,2070.8,2070.8
+PPRLBSPA,Lagoas de Bertiandos e São Pedro de Arcos,Paisagem Protegida Regional,rnap,345.9,345.9
+PPRLVCROM,Litoral de Vila do Conde e Reserva Ornitologica do Mindelo,Paisagem Protegida Regional,rnap,379.6,369.5
+PPRPSP,Parque das Serras do Porto,Paisagem Protegida Regional,rnap,5974.2,5974.2
+PPRSG,Serra da Gardunha,Paisagem Protegida Regional,rnap,10507.5,10507.5
+PPRSM,Serra de Montejunto,Paisagem Protegida Regional,rnap,4897.4,4897.4
+PPSA,Serra do Açor,Paisagem Protegida,rnap,373.4,373.4
+RNB,Berlengas,Reserva Natural,rnap,9540.7,79.7
+RNDSJ,Dunas de São Jacinto,Reserva Natural,rnap,995.7,733.5
+RNES,Estuário do Sado,Reserva Natural,rnap,23971.5,23971.5
+RNET,Estuário do Tejo,Reserva Natural,rnap,14416.2,11526.9
+RNLED,Estuário do Douro,Reserva Natural Local,rnap,66.4,66.4
+RNLFAT,Foz do Almargem e do Trafal,Reserva Natural Local,rnap,135.4,135.4
+RNLPT,Paul da Tornada,Reserva Natural Local,rnap,53.7,53.7
+RNLSAS,Lagoas de Santo André e da Sancha,Reserva Natural,rnap,5265.6,3116.5
+RNPA,Paul de Arzila,Reserva Natural,rnap,586.7,586.7
+RNPB,Paul do Boquilobo,Reserva Natural,rnap,817.6,817.6
+RNSCMVRSA,Sapal de Castro Marim e Vila Real de Santo António,Reserva Natural,rnap,2308.0,2306.6
+RNSM,Serra Malcata,Reserva Natural,rnap,16158.0,16151.3
+PTCON0001,Peneda / Gerês,ZEC/SIC (Habitats Directive),natura,89574.2,89574.2
+PTCON0002,Montesinho / Nogueira,ZEC/SIC (Habitats Directive),natura,108029.1,108029.1
+PTCON0003,Alvão / Marão,ZEC/SIC (Habitats Directive),natura,58765.7,58765.7
+PTCON0004,Malcata,ZEC/SIC (Habitats Directive),natura,79380.0,79380.0
+PTCON0005,Paul de Arzila,ZEC/SIC (Habitats Directive),natura,651.7,651.7
+PTCON0006,Arquipélago da Berlenga,ZEC/SIC (Habitats Directive),natura,92.3,79.7
+PTCON0007,São Mamede,ZEC/SIC (Habitats Directive),natura,115105.2,115105.2
+PTCON0008,Sintra / Cascais,ZEC/SIC (Habitats Directive),natura,16631.9,8228.2
+PTCON0009,Estuário do Tejo,ZEC/SIC (Habitats Directive),natura,44011.3,35838.7
+PTCON0010,Arrábida / Espichel,ZEC/SIC (Habitats Directive),natura,20432.3,15123.9
+PTCON0011,Estuário do Sado,ZEC/SIC (Habitats Directive),natura,31074.1,31074.1
+PTCON0012,Costa Sudoeste,ZEC/SIC (Habitats Directive),natura,262416.4,99249.1
+PTCON0013,Ria Formosa / Castro Marim,ZEC/SIC (Habitats Directive),natura,17021.9,17021.9
+PTCON0014,Serra da Estrela,ZEC/SIC (Habitats Directive),natura,88535.9,88535.9
+PTCON0015,Serras de Aire e Candeeiros,ZEC/SIC (Habitats Directive),natura,44226.8,44226.8
+PTCON0016,Cambarinho,ZEC/SIC (Habitats Directive),natura,24.0,24.0
+PTCON0017,Litoral Norte,ZEC/SIC (Habitats Directive),natura,2798.8,1904.7
+PTCON0018,Barrinha de Esmoriz,ZEC/SIC (Habitats Directive),natura,349.4,349.4
+PTCON0019,Rio Minho,ZEC/SIC (Habitats Directive),natura,4371.0,4371.0
+PTCON0020,Rio Lima,ZEC/SIC (Habitats Directive),natura,5371.2,5371.2
+PTCON0021,Rios Sabor e Maçãs,ZEC/SIC (Habitats Directive),natura,33262.8,33262.8
+PTCON0022,Douro Internacional,ZEC/SIC (Habitats Directive),natura,35729.4,35729.4
+PTCON0023,Morais,ZEC/SIC (Habitats Directive),natura,12973.2,12973.2
+PTCON0024,Valongo,ZEC/SIC (Habitats Directive),natura,2546.4,2546.4
+PTCON0025,Serra de Montemuro,ZEC/SIC (Habitats Directive),natura,38782.6,38782.6
+PTCON0026,Rio Vouga,ZEC/SIC (Habitats Directive),natura,2799.1,2799.1
+PTCON0027,Carregal do Sal,ZEC/SIC (Habitats Directive),natura,9483.6,9483.6
+PTCON0028,Serra da Gardunha,ZEC/SIC (Habitats Directive),natura,5935.3,5935.3
+PTCON0029,Cabeção,ZEC/SIC (Habitats Directive),natura,48394.4,48394.4
+PTCON0030,Caia,ZEC/SIC (Habitats Directive),natura,31111.8,31111.8
+PTCON0031,Monfurado,ZEC/SIC (Habitats Directive),natura,23921.7,23921.7
+PTCON0032,Guadiana / Juromenha,ZEC/SIC (Habitats Directive),natura,2175.0,2175.0
+PTCON0033,Cabrela,ZEC/SIC (Habitats Directive),natura,56431.0,56431.0
+PTCON0034,Comporta / Galé,ZEC/SIC (Habitats Directive),natura,32147.8,32147.8
+PTCON0035,Alvito/Cuba,ZEC/SIC (Habitats Directive),natura,921.9,921.9
+PTCON0036,Guadiana,ZEC/SIC (Habitats Directive),natura,38022.8,38022.8
+PTCON0037,Monchique,ZPE + ZEC (both Directives),natura,76138.4,76138.4
+PTCON0038,Ribeira de Quarteira,ZEC/SIC (Habitats Directive),natura,579.2,579.2
+PTCON0039,Serra de Arga,ZEC/SIC (Habitats Directive),natura,4475.8,4475.8
+PTCON0040,Corno do Bico,ZEC/SIC (Habitats Directive),natura,5144.0,5144.0
+PTCON0041,Samil,ZEC/SIC (Habitats Directive),natura,92.1,92.1
+PTCON0042,Minas de St. Adrião,ZEC/SIC (Habitats Directive),natura,3496.9,3496.9
+PTCON0043,Romeu,ZEC/SIC (Habitats Directive),natura,4755.4,4755.4
+PTCON0044,Nisa / Lage da Prata,ZEC/SIC (Habitats Directive),natura,12668.6,12668.6
+PTCON0045,Sicó / Alvaiázere,ZEC/SIC (Habitats Directive),natura,31628.3,31628.3
+PTCON0046,Azabuxo-Leiria,ZEC/SIC (Habitats Directive),natura,136.8,136.8
+PTCON0047,Serras da Freita e Arada,ZEC/SIC (Habitats Directive),natura,28635.8,28635.8
+PTCON0048,Serra de Montejunto,ZEC/SIC (Habitats Directive),natura,3830.5,3830.5
+PTCON0049,Barrocal,ZEC/SIC (Habitats Directive),natura,20844.8,20844.8
+PTCON0050,Cerro da Cabeça,ZEC/SIC (Habitats Directive),natura,572.1,572.1
+PTCON0051,Complexo do Açor,ZEC/SIC (Habitats Directive),natura,1363.1,1363.1
+PTCON0052,Arade / Odelouca,ZEC/SIC (Habitats Directive),natura,2106.8,2106.8
+PTCON0053,Moura / Barrancos,ZEC/SIC (Habitats Directive),natura,43290.8,43290.8
+PTCON0054,Fernão Ferro / Lagoa de Albufeira,ZEC/SIC (Habitats Directive),natura,4321.0,4321.0
+PTCON0055,"Dunas de Mira, Gândara e Gafanhas",ZEC/SIC (Habitats Directive),natura,20497.1,20497.1
+PTCON0056,Peniche / Santa Cruz,ZEC/SIC (Habitats Directive),natura,8285.5,2811.0
+PTCON0057,Caldeirão,ZPE + ZEC (both Directives),natura,47193.0,47193.0
+PTCON0058,Ria de Alvor,ZEC/SIC (Habitats Directive),natura,1443.9,1443.9
+PTCON0059,Rio Paiva,ZEC/SIC (Habitats Directive),natura,14512.7,14512.7
+PTCON0060,Serra da Lousã,ZEC/SIC (Habitats Directive),natura,15112.7,15112.7
+PTCON0061,Ria de Aveiro,ZEC/SIC (Habitats Directive),natura,33131.4,30818.2
+PTCON0063,Maceda - Praia da Vieira,ZEC/SIC (Habitats Directive),natura,502643.8,0.0
+PTZPE0001,Estuários dos Rios Minho e Coura,ZPE (Birds Directive),natura,3392.6,3054.4
+PTZPE0002,Serra do Gerês,ZPE (Birds Directive),natura,63432.1,63291.5
+PTZPE0003,Montesinho / Nogueira,ZPE (Birds Directive),natura,108003.8,107930.7
+PTZPE0004,Ria de Aveiro,ZPE (Birds Directive),natura,51446.2,30672.5
+PTZPE0005,Paul de Arzila,ZPE (Birds Directive),natura,477.1,477.1
+PTZPE0006,Paul da Madriz,ZPE (Birds Directive),natura,89.3,89.3
+PTZPE0007,Serra da Malcata,ZPE (Birds Directive),natura,16347.1,16335.3
+PTZPE0008,Paul do Boquilobo,ZPE (Birds Directive),natura,432.8,432.8
+PTZPE0009,Ilhas Berlengas,ZPE (Birds Directive),natura,102663.7,79.7
+PTZPE0010,Estuário do Tejo,ZPE (Birds Directive),natura,44772.5,36578.8
+PTZPE0011,Estuário do Sado,ZPE (Birds Directive),natura,24632.8,24632.8
+PTZPE0012,Açude da Murta,ZPE (Birds Directive),natura,497.7,497.7
+PTZPE0013,Lagoa de Santo André,ZPE (Birds Directive),natura,2164.5,1517.8
+PTZPE0014,Lagoa da Sancha,ZPE (Birds Directive),natura,408.8,194.6
+PTZPE0015,Costa Sudoeste,ZPE (Birds Directive),natura,100685.0,47618.1
+PTZPE0016,Leixão da Gaivota,ZPE (Birds Directive),natura,0.2,0.1
+PTZPE0017,Ria Formosa,ZPE (Birds Directive),natura,23269.2,15061.5
+PTZPE0018,Sapais de Castro Marim,ZPE (Birds Directive),natura,2146.4,2144.6
+PTZPE0037,Rios Sabor e Maçãs,ZPE (Birds Directive),natura,50722.6,50722.4
+PTZPE0038,Douro Internacional e Vale do Águeda,ZPE (Birds Directive),natura,106829.2,106829.2
+PTZPE0039,Vale do Côa,ZPE (Birds Directive),natura,20625.6,20625.6
+PTZPE0040,Paul do Taipal,ZPE (Birds Directive),natura,221.4,221.4
+PTZPE0042,"Tejo Internacional, Erges e Pônsul",ZPE (Birds Directive),natura,25774.8,25761.2
+PTZPE0043,Campo Maior,ZPE (Birds Directive),natura,9579.6,9546.7
+PTZPE0045,Mourão/Moura/Barrancos,ZPE (Birds Directive),natura,84912.9,84821.7
+PTZPE0046,Castro Verde,ZPE (Birds Directive),natura,85343.0,85343.0
+PTZPE0047,Vale do Guadiana,ZPE (Birds Directive),natura,76531.1,76530.3
+PTZPE0049,Lagoa Pequena,ZPE (Birds Directive),natura,68.8,68.8
+PTZPE0050,Cabo Espichel,ZPE (Birds Directive),natura,16428.0,874.3
+PTZPE0051,Monforte,ZPE (Birds Directive),natura,1887.4,1887.4
+PTZPE0052,Veiros,ZPE (Birds Directive),natura,1959.5,1959.5
+PTZPE0053,Vila Fernando,ZPE (Birds Directive),natura,5260.7,5260.7
+PTZPE0054,São Vicente,ZPE (Birds Directive),natura,3564.9,3564.9
+PTZPE0055,Évora,ZPE (Birds Directive),natura,14707.4,14707.4
+PTZPE0056,Reguengos,ZPE (Birds Directive),natura,6042.7,6042.7
+PTZPE0057,Cuba,ZPE (Birds Directive),natura,4080.8,4080.8
+PTZPE0058,Piçarras,ZPE (Birds Directive),natura,2827.3,2827.3
+PTZPE0059,Torre da Bolsa,ZPE (Birds Directive),natura,868.8,868.8
+PTZPE0060,Aveiro/ Nazaré,ZPE (Birds Directive),natura,292733.8,0.0
+PTZPE0061,Cabo Raso,ZPE (Birds Directive),natura,133546.9,0.0

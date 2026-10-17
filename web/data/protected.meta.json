@@ -1,0 +1,24 @@
+{
+  "categories": [
+    {
+      "id": "rnap",
+      "source": "ICNF: Rede Nacional de Áreas Protegidas (RNAP)",
+      "url": "https://sigservices.icnf.pt/server/rest/services/BDG/RNAP/MapServer",
+      "as_of": "2026-10-17",
+      "fetched_at": "2026-10-17T19:41:55Z",
+      "licence": "Reuse terms not confirmed",
+      "licence_url": null,
+      "licence_confirmed": false
+    },
+    {
+      "id": "natura",
+      "source": "EEA: Natura 2000 (vector), version end 2024",
+      "url": "https://sdi.eea.europa.eu/catalogue/srv/api/records/91357f39-7866-41ce-b447-43905c364ec8",
+      "as_of": "end 2024",
+      "fetched_at": "2026-10-17T19:41:24Z",
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+      "licence_confirmed": true
+    }
+  ]
+}

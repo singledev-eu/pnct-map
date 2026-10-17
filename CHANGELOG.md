@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.4.0 (unreleased; on branch `feat/protected-areas`)
+
+### For users
+
+- **Protected-areas overlays:** two new toggles in the legend, "Protected areas (RNAP)" and "Natura 2000", both off by default. RNAP (parques, reservas, paisagens protegidas, monumentos naturais) is a light orange tint with a solid outline. Natura 2000 (ZPE and ZEC/SIC sites) is a violet "\" hatch with a dashed outline. Both read in the light and dark themes and sit under the parish lines and the selection outline. They are shown at every zoom, don't intercept clicks (selecting a concelho or parish works the same), follow "Only PNCT" (only the parts inside PNCT territory remain), and are carried in the link (`pa=rnap,natura`). On phones the toggles are in the collapsible legend.
+- **Protection share in the panel:** every parish and concelho panel says "Under protection: X% (RNAP Y%, Natura Z%)" and lists the protected areas covering at least 0.5% of it, whether or not the overlays are on. X% is the share inside either network (their union, not the sum).
+- **Disclaimer:** the legend and the panel say "Indicator, not a verdict — check the municipal PDM."
+- **Credits:** ICNF and EEA are added to the map attribution, the phone bottom-sheet credit and the About panel.
+
+### Infrastructure
+
+- New pipeline steps:
+  - `make protected-fetch` / `scripts/fetch_protected.py`: fetches offline into the gitignored `data/external/protected/`. RNAP is paged out of ICNF's ArcGIS service (`f=geojson`, `outSR=4326`, count-checked). The EEA end-2024 GeoPackage is resumable and SHA-256 pinned. Each source records its URL, licence and fetch time.
+  - `make protected` / `scripts/build_protected.py`: dissolves, clips to mainland land and simplifies (mapshaper 3%), and splits the overlay along the display PNCT outline (for focus mode). It computes the shares on unsimplified geometry in EPSG:3763.
+- Sources are pluggable in `scripts/protected_config.py`: one line drops RNAP, or swaps Natura from EEA to ICNF `BDG/RN2000`.
+- New committed data:
+  - `web/data/protected.topo.json`: 214 KB gzipped, fetched on the first toggle;
+  - `web/data/protection.json`: 25 KB gzipped, fetched on the first panel. Keyed by DICOFRE/DICO, with a `protection` block and per-field meta (source, url, as_of, licence), ready to merge into per-parish data cards;
+  - `web/data/protected.meta.json`: bundled;
+  - `data/processed/protected_sites.csv`.
+- Initial load unchanged: only the JS grows (+2.4 KB transferred); the overlay and shares files are not requested until used.
+- UI strings for the feature live in `web/src/strings.ts`, ready for the PT/EN toggle.
+- `data/ATTRIBUTION.md` lists every source with its licence status. ICNF's reuse terms are still unconfirmed.
+- Tests:
+  - pytest: synthetic share cases, Peneda-Gerês parishes ≥ 99.5% RNAP, central Lisbon and Porto at 0%, union bounds, metadata, size budgets, fetch pagination (mocked);
+  - Vitest: layer order, focus filter, theme carry-over, hatch, strings;
+  - e2e `protected-areas.spec.ts`: toggles, hash, lazy load, panel shares, selection through the overlays, focus, both themes with no console warnings, live theme switch, credits, phone legend;
+  - `web/scripts/protected_shots.mjs`: review screenshots.
+  - The credit expectations in `mobile-attribution.spec.ts` now include ICNF and EEA.
+
 ## 0.3.1 (2026-10-15)
 
 ### Infrastructure

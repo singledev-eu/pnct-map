@@ -6,11 +6,13 @@ import { basemapStyle } from "./basemap";
 import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, MAINLAND, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
-import { addLayers, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, HATCH_IMAGE, hatchImage, PARISH_FILL, PARISH_SOURCE, setHatchColor, withAppLayers, type FilterState } from "./layers";
-import { mountLegend } from "./legend";
+import { addLayers, addOverlays, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, overlaySource, PARISH_FILL, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, withAppLayers, type FilterState, type OverlayState } from "./layers";
+import { mountLegend, mountOverlayToggles } from "./legend";
 import { h, Panel } from "./panel";
 import { loadOptions, saveOptions } from "./prefs";
+import { attributionHtml, CATEGORY_IDS, credits, loadOverlay, type OverlayData } from "./protected";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
+import { t } from "./strings";
 import { DARK_QUERY, PALETTES, STYLE_URLS, themeOf, type Theme } from "./theme";
 // ?url makes Vite emit the file content-hashed under assets/; index.html preloads the same file.
 import DATA_URL from "../data/pnct.topo.json?url";
@@ -60,11 +62,12 @@ const map = new MapLibreMap({
 // OpenFreeMap's dark style uses a "wood-pattern" that its sprite doesn't have. A missing basemap image gets a
 // 1×1 transparent stand-in, so nothing is drawn and MapLibre logs no warning. (A `styleimagemissing` listener
 // can't prevent that warning in MapLibre 6: the event fires just before it, and only this resolver runs earlier.)
-// The hatch, missing only for a moment after a full style rebuild, is drawn in the current palette. Every
-// style the map loads, theme switches included, uses this resolver.
+// The app's hatches, missing only for a moment after a full style rebuild, are drawn in the current palette.
+// Every style the map loads, theme switches included, uses this resolver.
 map.setMissingStyleImageResolver((id) => {
   if (map.hasImage(id)) return;
-  if (id === HATCH_IMAGE) map.addImage(id, hatchImage(PALETTES[theme].pnct), { pixelRatio: 2 });
+  const pattern = patternImages(PALETTES[theme])[id];
+  if (pattern) map.addImage(id, pattern, { pixelRatio: 2 });
   else map.addImage(id, { width: 1, height: 1, data: new Uint8Array(4) });
 });
 // Set here rather than as the `style` option so the label patch (basemap.ts) applies before any tile is parsed.
@@ -115,7 +118,7 @@ map.touchZoomRotate.disableRotation();
 map.addControl(new NavigationControl({ showCompass: false }), "bottom-right");
 // No `compact` option: MapLibre shows the full line on wide maps and the compact ⓘ button at
 // ≤ 640 px. It opens the compact view on load, so start it collapsed; the text is one tap away.
-map.addControl(new AttributionControl({ customAttribution: "Boundaries: CAOP 2025 © DGT (CC BY 4.0)" }), "bottom-right");
+map.addControl(new AttributionControl({ customAttribution: ["Boundaries: CAOP 2025 © DGT (CC BY 4.0)", attributionHtml()] }), "bottom-right");
 const attribution = map.getContainer().querySelector<HTMLElement>(".maplibregl-ctrl-attrib")!;
 const isCompact = () => attribution.classList.contains("maplibregl-compact");
 const collapseAttribution = () => attribution.classList.remove("maplibregl-compact-show"); // as MapLibre does on drag
@@ -167,6 +170,13 @@ function start(data: MapData): void {
   }
 
   addLayers(map, data, filter, limits.levelZoom, PALETTES[theme]);
+  // Protected-areas overlays: off unless the hash names them; the data loads on the first switch-on.
+  const overlays: OverlayState & { visible: Set<string> } = {
+    categories: CATEGORY_IDS,
+    loaded: false,
+    visible: new Set(initial.overlays.filter((c) => CATEGORY_IDS.includes(c))),
+  };
+  let overlayData: OverlayData | null = null;
   // Lets the e2e tests inspect layer filters and rendered features.
   (window as unknown as { pnctMap: MapLibreMap }).pnctMap = map;
 
@@ -254,7 +264,7 @@ function start(data: MapData): void {
   document.body.dataset.level = level;
   map.on("zoom", updateLevel);
   onLimits = () => {
-    applyFilter(map, filter, limits.levelZoom);
+    applyFilter(map, filter, limits.levelZoom, CATEGORY_IDS);
     updateLevel();
   };
 
@@ -359,7 +369,7 @@ function start(data: MapData): void {
 
   districtSelect.addEventListener("change", () => {
     filter.district = districtSelect.value || null;
-    applyFilter(map, filter, limits.levelZoom);
+    applyFilter(map, filter, limits.levelZoom, CATEGORY_IDS);
     writeHash({ d: filter.district });
     fit(filter.district ? data.districtBounds.get(filter.district) : MAINLAND, 10);
   });
@@ -379,7 +389,7 @@ function start(data: MapData): void {
     }
     if (map.getLayer(PARISH_FILL)) {
       document.body.dataset.mapIdle = "false"; // the filter change re-renders; "idle" sets it back
-      applyFilter(map, filter, limits.levelZoom);
+      applyFilter(map, filter, limits.levelZoom, CATEGORY_IDS);
     }
     writeHash({ focus: on ? "1" : null, pnct: null });
     if (on) clearHover(); // the next mousemove restores it if the feature is still shown
@@ -389,15 +399,53 @@ function start(data: MapData): void {
   }
   setFocus(filter.focus);
 
+  // ---- protected areas ----------------------------------------------------------
+  // body data-overlays lists the categories shown once their layers are in the style (e2e waits on it).
+  const markOverlays = () => (document.body.dataset.overlays = overlays.loaded ? [...overlays.visible].sort().join(",") : "");
+  /** Applies overlays.visible: loads and adds the overlay on first use, then shows/hides the layers. */
+  async function syncOverlays(): Promise<void> {
+    writeHash({ pa: CATEGORY_IDS.filter((c) => overlays.visible.has(c)).join(",") || null });
+    syncToggles();
+    if (!overlays.loaded && overlays.visible.size) {
+      try {
+        overlayData = await loadOverlay();
+      } catch (err) {
+        console.error(err);
+        overlays.visible.clear();
+        writeHash({ pa: null });
+        syncToggles();
+        status.textContent = t.overlayError;
+        status.hidden = false;
+        setTimeout(() => (status.hidden = true), 4000);
+        return;
+      }
+      if (!overlays.loaded) {
+        overlays.loaded = true;
+        addOverlays(map, overlayData, overlays, filter, PALETTES[theme]);
+      }
+    }
+    document.body.dataset.mapIdle = "false";
+    setOverlayVisibility(map, overlays);
+    markOverlays();
+  }
+  const syncToggles = mountOverlayToggles($("legend-protected"), (cat) => overlays.visible.has(cat), (cat, on) => {
+    if (on) overlays.visible.add(cat);
+    else overlays.visible.delete(cat);
+    void syncOverlays();
+  });
+  if (overlays.visible.size) void syncOverlays();
+  else markOverlays();
+
   // ---- theme ------------------------------------------------------------------
   // A theme switch diffs the new basemap with the app's layers (rebuilt in the new palette) into the
   // current style, which keeps the sources, their feature state, the filters and the camera. If
   // MapLibre has to rebuild the style from scratch instead, the sources come back without feature
   // state or the hatch image, so both are restored here either way.
-  themeStyle = (previous, next) => withAppLayers(previous, basemapStyle(theme)(previous, next), appLayers(filter, limits.levelZoom, PALETTES[theme]));
+  themeStyle = (previous, next) => withAppLayers(previous, basemapStyle(theme)(previous, next), appLayers(filter, limits.levelZoom, PALETTES[theme], overlays));
   map.on("style.load", () => {
     if (!map.getSource(PARISH_SOURCE)) addLayers(map, data, filter, limits.levelZoom, PALETTES[theme]);
-    setHatchColor(map, PALETTES[theme].pnct);
+    if (overlayData && overlays.loaded && !map.getSource(overlaySource(CATEGORY_IDS[0]))) addOverlays(map, overlayData, overlays, filter, PALETTES[theme]);
+    setPatternImages(map, PALETTES[theme]);
     clearHover();
     setSelectedIds(selectedIds, groupIds, selectedConcelhoId);
     document.body.dataset.mapIdle = "false";
@@ -408,6 +456,18 @@ function start(data: MapData): void {
 
   // ---- about ------------------------------------------------------------------
   $("about-open").addEventListener("click", () => aboutDialog.showModal());
+  $("about-protected").replaceChildren(
+    h("strong", {}, `${t.aboutHeading}:`),
+    " ",
+    ...credits().flatMap((c, i) => [
+      i ? "; " : "",
+      h("a", { href: c.url, target: "_blank", rel: "noopener noreferrer" }, c.label),
+      ` (${c.asOf}, `,
+      c.licenceUrl ? h("a", { href: c.licenceUrl, target: "_blank", rel: "noopener noreferrer" }, c.licence) : c.licence,
+      ")",
+    ]),
+    `. ${t.aboutBody}`,
+  );
 
   // ---- restore from hash ----------------------------------------------------------
   const restore = (fly: boolean, s: HashState = readHash()) => {
@@ -423,6 +483,11 @@ function start(data: MapData): void {
     const s = readHash();
     const focus = s.focus && !hiddenByFocus(s);
     if (focus !== filter.focus || s.focus !== focus) setFocus(focus);
+    const visible = CATEGORY_IDS.filter((c) => s.overlays.includes(c));
+    if (visible.join() !== CATEGORY_IDS.filter((c) => overlays.visible.has(c)).join()) {
+      overlays.visible = new Set(visible);
+      void syncOverlays();
+    }
     const current = selection?.kind === "parish" ? selection.dicofre : selection?.kind === "concelho" ? selection.code : null;
     if ((s.parish ?? s.concelho) !== current) restore(true, s);
   });

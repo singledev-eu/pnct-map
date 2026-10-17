@@ -11,7 +11,7 @@ function mapTokens(opening: string): Record<string, string> {
   return Object.fromEntries([...block.matchAll(/--map-([a-z-]+):\s*(#[0-9a-f]{6})/g)].map((m) => [m[1], m[2]]));
 }
 
-const asTokens = (p: MapPalette) => ({ pnct: p.pnct, other: p.other, "parish-line": p.parishLine, "concelho-line": p.concelhoLine });
+const asTokens = (p: MapPalette) => ({ pnct: p.pnct, other: p.other, "parish-line": p.parishLine, "concelho-line": p.concelhoLine, rnap: p.rnap, natura: p.natura });
 
 describe("theme palette", () => {
   it("matches the legend tokens in style.css", () => {

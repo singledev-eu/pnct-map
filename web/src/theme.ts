@@ -29,6 +29,9 @@ export interface MapPalette {
   highlight: string;
   parishLine: string;
   concelhoLine: string;
+  /** Protected-areas overlay (layers.ts overlayLayers): RNAP tint and outline, Natura 2000 hatch and dashed outline. */
+  rnap: string;
+  natura: string;
 }
 
 export const PALETTES: Record<Theme, MapPalette> = {
@@ -39,6 +42,10 @@ export const PALETTES: Record<Theme, MapPalette> = {
     highlight: "#0b3d39",
     parishLine: "#5b6b73",
     concelhoLine: "#2f3b42",
+    // Warm orange and violet: apart from the PNCT teal and from each other, and from the basemap's
+    // blue water and green parks.
+    rnap: "#c2410c",
+    natura: "#7c3aed",
   },
   // On Dark Matter (background #0c0c0c): a brighter teal so PNCT stands out from the near-black
   // land, the selection lighter than PNCT (the light theme makes it darker), and grey lines kept
@@ -50,6 +57,8 @@ export const PALETTES: Record<Theme, MapPalette> = {
     highlight: "#c9f5ee",
     parishLine: "#7d8b95",
     concelhoLine: "#a9b5be",
+    rnap: "#fb923c",
+    natura: "#b79cff",
   },
 };
 

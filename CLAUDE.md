@@ -10,20 +10,21 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
 - **Data pipeline:** Python 3.12 (uv), geopandas/pyogrio/shapely, and mapshaper via `npx` (pinned 0.7.68).
 - **Web app:** Vite + TypeScript + MapLibre GL JS. It's a static site with no backend; the basemap is OpenFreeMap "positron".
 - `data/`: pipeline inputs and outputs. The downloads (`data/external/`, `data/raw/*.pdf`) and large intermediates (`data/processed/*.geojson`) are gitignored.
-- `scripts/`: pipeline steps (`parse_pdf` → `build_parishes` → `build_geo` → `build_topo`, plus `build_shapes` and `build_outline`) and `polyline.py`.
+- `scripts/`: pipeline steps (`parse_pdf` → `build_parishes` → `build_geo` → `build_topo`, plus `build_shapes`, `build_outline` and the protected areas: `protected_config` → `fetch_protected` → `build_protected`) and `polyline.py`.
 - `tests/`: pytest for the pipeline and shapes.
-- `web/data/`: `pnct.topo.json` (display geometry), `shapes.json` (Idealista link shapes) and `outline.json` (the camera outline, bundled). Committed, built by the pipeline.
+- `web/data/`: `pnct.topo.json` (display geometry), `shapes.json` (Idealista link shapes), `outline.json` (the camera outline, bundled), and the protected areas: `protected.topo.json` (overlay, lazy), `protection.json` (shares per DICOFRE/DICO, lazy) and `protected.meta.json` (categories, bundled). Committed, built by the pipeline.
 - `web/src/`:
   - `main.ts`: app wiring, selection, focus mode, hash.
   - `layers.ts`: MapLibre layers and filters.
   - `data.ts`: TopoJSON → GeoJSON, indexes.
   - `links.ts` and `idealista.ts`: Idealista URLs.
   - `theme.ts`: light/dark from `prefers-color-scheme`: basemap style URLs and the map palette (mirrored by the `--map-*` CSS tokens).
+  - `protected.ts`: protected-areas data and credits; `strings.ts`: their UI strings (for the PT/EN toggle).
   - `panel.ts`, `search.ts`, `hash.ts`, `prefs.ts`.
 - `web/tests/e2e/`: Playwright specs. Shared waits are in `helpers.ts`.
 - `web/scripts/`:
   - `perf.mjs`: throttled load timing; `--toggles N` times the focus toggle.
-  - `shots.mjs`, `og_image.mjs`: screenshots and the share image. `theme_shots.mjs`: light/dark review shots, desktop and phone.
+  - `shots.mjs`, `og_image.mjs`: screenshots and the share image. `theme_shots.mjs`, `protected_shots.mjs`: light/dark review shots, desktop and phone.
   - `e2e-flaky-report.mjs`: the flaky-test warning.
 - `web/public/`: `_headers` (caching, CSP, security headers), icons, OG image, robots.txt, sitemap.xml.
 - `docs/`: `ROADMAP.md`, `reports/<task>.md` (one per task), screenshots and perf data.
@@ -32,6 +33,7 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
 
 ```sh
 uv sync && uv run make all            # pipeline: downloads CAOP 2025 + the IEFP PNCT PDF (SHA-256 checked), rebuilds data, runs pytest
+uv run make protected-fetch           # re-fetch RNAP (ICNF) and Natura 2000 (EEA, 1.36 GB once) into data/external/protected/
 cd web && npm ci && npm run dev       # dev server (data is committed; the pipeline is not needed)
 PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium   # once, for e2e
 
@@ -57,7 +59,8 @@ cd web && npm run deploy              # same, to production (main). Only after t
 - **Link geometry:** Idealista links come from the full-resolution `web/data/shapes.json`, built by `scripts/build_shapes.py` from CAOP. They are never derived from the simplified display geometry.
 - **Codec in two places:** URL and slug changes go in both `scripts/polyline.py` and `web/src/idealista.ts`, with their fixtures.
 - **Content-hashed data:** the data files are imported with `?url`, so Vite content-hashes them into `/assets/` (immutable caching). `index.html` preloads the same hashed TopoJSON.
-- **Attribution:** it must stay complete wherever it's shown: CAOP 2025 © DGT (CC BY 4.0), OpenFreeMap, © OpenMapTiles, © OpenStreetMap contributors, with links. That covers the map control, the bottom-sheet credit and the About panel.
+- **Attribution:** it must stay complete wherever it's shown: CAOP 2025 © DGT (CC BY 4.0), OpenFreeMap, © OpenMapTiles, © OpenStreetMap contributors, and the protected-area sources (ICNF RNAP, EEA Natura 2000; generated from `protected.meta.json`), with links. That covers the map control, the bottom-sheet credit and the About panel. Licence status: `data/ATTRIBUTION.md`.
+- **Protected-area sources:** fetched offline only, never from the browser. `scripts/protected_config.py` is the single switch per category. Shares are computed on unsimplified CAOP and site geometry in EPSG:3763.
 - **Parish layer readiness:** the app adds the parish layers on `style.load`, not `load`. `data-parishes-loaded` marks the first parish frame and `data-ready` the first full idle. `window.pnctMap` exposes the map for tests.
 - **e2e waits:** wait for the parish layer (`waitForParishes` / `waitForParishView`), not the basemap. Use `waitForFullIdle` only before screenshots. No `waitForTimeout`.
 

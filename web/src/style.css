@@ -22,6 +22,8 @@
   --map-other: #64748b;
   --map-parish-line: #5b6b73;
   --map-concelho-line: #2f3b42;
+  --map-rnap: #c2410c;
+  --map-natura: #7c3aed;
   --radius: 10px;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color-scheme: light dark;
@@ -52,6 +54,8 @@
     --map-other: #94a3b8;
     --map-parish-line: #7d8b95;
     --map-concelho-line: #a9b5be;
+    --map-rnap: #fb923c;
+    --map-natura: #b79cff;
   }
 }
 
@@ -542,6 +546,62 @@ body:not([data-level="parish"]) .legend-parish {
   border-radius: 0;
 }
 
+/* Protected-areas overlays (layers.ts overlayLayers): the RNAP tint with its solid outline, the
+   Natura 2000 "\" hatch with its dashed outline. */
+.swatch-rnap {
+  background: color-mix(in srgb, var(--map-rnap) 16%, transparent);
+  border: 1.5px solid var(--map-rnap);
+}
+
+.swatch-natura {
+  background: repeating-linear-gradient(45deg, color-mix(in srgb, var(--map-natura) 75%, transparent) 0 1px, transparent 1px 5px);
+  border: 1.5px dashed var(--map-natura);
+}
+
+.legend-protected {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.legend-heading {
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+
+.legend-overlay {
+  cursor: pointer;
+  user-select: none;
+}
+
+.legend-overlay input {
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.legend-note {
+  max-width: 230px;
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ---- nature protection (panel) ------------------------------------------------- */
+
+.protection-summary {
+  margin: 0 0 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.protection-areas {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.protection-areas li {
+  padding: 1px 0;
+}
+
 /* ---- tooltip / status / dialog ----------------------------------------------- */
 
 .tooltip {
@@ -793,6 +853,18 @@ dialog a {
     font-weight: 600;
     color: var(--text);
     cursor: pointer;
+  }
+
+  /* Comfortable tap targets for the overlay toggles. */
+  .legend-overlay {
+    min-height: 32px;
+    margin-bottom: 0;
+  }
+
+  /* Expanded with the overlay toggles, the legend can outgrow a short (landscape) phone: scroll it. */
+  .legend-body {
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
   }
 
   /* Collapsed: just the chip. */

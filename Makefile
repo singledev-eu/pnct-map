@@ -7,9 +7,9 @@ PNCT_SHA256 := c286ef77c16321e8c5124eeb92f8d3f0565dbe302787817a91fe526653e7cffc
 PNCT_PDF := data/raw/territorios-pnct-2026-02-04.pdf
 PY := uv run python
 
-.PHONY: all download parse match geo web-data shapes outline test web e2e clean
+.PHONY: all download parse match geo web-data shapes outline protected-fetch protected test web e2e clean
 
-all: web-data shapes outline test
+all: web-data shapes outline protected test
 
 download: $(CAOP_GPKG) $(PNCT_PDF)
 
@@ -53,13 +53,29 @@ outline: web/data/outline.json
 web/data/outline.json: scripts/build_outline.py $(CAOP_GPKG)
 	$(PY) scripts/build_outline.py
 
+# Protected areas (RNAP, Natura 2000): sources in scripts/protected_config.py. The fetch caches
+# the downloads in data/external/protected/ and is re-run explicitly (`make protected-fetch`,
+# REFRESH=1 to download file sources again); `make protected` fetches only what is missing.
+PROTECTED_FETCHED := data/external/protected/.fetched
+protected-fetch:
+	$(PY) scripts/fetch_protected.py $(if $(REFRESH),--refresh)
+	touch $(PROTECTED_FETCHED)
+
+$(PROTECTED_FETCHED): scripts/protected_config.py scripts/fetch_protected.py
+	$(PY) scripts/fetch_protected.py
+	touch $@
+
+protected: web/data/protection.json
+web/data/protection.json: scripts/build_protected.py scripts/protected_config.py $(PROTECTED_FETCHED) data/processed/parishes_all.geojson $(CAOP_GPKG)
+	$(PY) scripts/build_protected.py
+
 test:
 	uv run pytest -q
 
-web: web-data shapes outline
+web: web-data shapes outline protected
 	cd web && npm ci && npm test && npm run build
 
-e2e: web-data shapes outline
+e2e: web-data shapes outline protected
 	cd web && npm ci && npm run test:e2e
 
 clean:

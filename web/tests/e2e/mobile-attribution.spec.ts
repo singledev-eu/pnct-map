@@ -4,15 +4,20 @@ import { expect, test, trackErrors, waitForParishes } from "./helpers";
 // The MapLibre attribution must never cover the legend on phones: compact (ⓘ) and collapsed by
 // default at ≤ 640 px, the full text one tap away, and the expanded text kept beside the legend.
 
-const ATTRIBUTION_TEXT = "Boundaries: CAOP 2025 © DGT (CC BY 4.0) | OpenFreeMap © OpenMapTiles Data from OpenStreetMap";
-const ATTRIBUTION_LINKS = ["https://openfreemap.org/", "https://www.openmaptiles.org/", "https://www.openstreetmap.org/copyright"];
+// The protected-areas credits (ICNF, EEA) come from web/data/protected.meta.json.
+const ATTRIBUTION_TEXT =
+  "Boundaries: CAOP 2025 © DGT (CC BY 4.0) | OpenFreeMap © OpenMapTiles Data from OpenStreetMap | Protected areas: RNAP © ICNF · Natura © EEA (CC BY 4.0)";
+const PROTECTED_LINKS = ["https://sigservices.icnf.pt/server/rest/services/BDG/RNAP/MapServer", "https://sdi.eea.europa.eu/catalogue/srv/api/records/91357f39-7866-41ce-b447-43905c364ec8"];
+const ATTRIBUTION_LINKS = ["https://openfreemap.org/", "https://www.openmaptiles.org/", "https://www.openstreetmap.org/copyright", ...PROTECTED_LINKS];
 // The bottom sheet covers the map attribution while it is open, so it carries the same credits.
-const SHEET_CREDIT_TEXT = "Boundaries CAOP 2025 © DGT, CC BY 4.0 · OpenFreeMap · © OpenMapTiles · © OpenStreetMap";
+const SHEET_CREDIT_TEXT = "Boundaries CAOP 2025 © DGT, CC BY 4.0 · OpenFreeMap · © OpenMapTiles · © OpenStreetMap · Protected areas RNAP © ICNF · Natura © EEA";
 const SHEET_CREDIT_LINKS: [string, string][] = [
   ["CAOP 2025", "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop"],
   ["OpenFreeMap", "https://openfreemap.org/"],
   ["OpenMapTiles", "https://www.openmaptiles.org/"],
   ["OpenStreetMap", "https://www.openstreetmap.org/copyright"],
+  ["RNAP\u00a0©\u00a0ICNF", PROTECTED_LINKS[0]],
+  ["Natura\u00a0©\u00a0EEA", PROTECTED_LINKS[1]],
 ];
 
 async function expectApart(a: Locator, b: Locator): Promise<void> {

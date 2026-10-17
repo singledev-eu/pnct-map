@@ -1,6 +1,6 @@
 # Roadmap
 
-Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-10-15.
+Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-10-17.
 
 ## Done
 
@@ -20,17 +20,19 @@ Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-m
 | 2026-10-15 | Shape-aware camera: the centre of the visible map stays inside a mainland outline (2 km past the Spanish border, 20 km at sea) instead of a rectangle that reached Andalusia and Galicia. Released as 0.2.3 | [shape-aware-camera](reports/shape-aware-camera.md) |
 | 2026-10-15 | Automatic dark theme from `prefers-color-scheme`: OpenFreeMap dark basemap, dark UI tokens and map palette, live switch that keeps the view, selection and focus. Released as 0.3.0 | [dark-theme](reports/dark-theme.md) |
 | 2026-10-15 | No console warnings on a light load: positron's road-shield filters get a `ref_length` fallback through `basemapStyle()`. Released as 0.3.1 | [release-0.3.1](reports/release-0.3.1.md) |
+| 2026-10-17 | Protected-areas overlay v1: RNAP (ICNF) and Natura 2000 (EEA end 2024) toggles, the share under protection in every parish/concelho panel, pluggable offline sources. On branch `feat/protected-areas`, awaiting approval; to be released as 0.4.0 | [protected-areas](reports/protected-areas.md) |
 | 2026-10-12 | E2E flakiness: one retry; flaky tests warn with a trace but don't block deploys; tests wait for the parish layer, not the basemap | [e2e-flakiness](reports/e2e-flakiness.md) |
 
 Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; `0.3.0` (2026-10-15) the dark theme; `0.3.1` (2026-10-15) quiet road-shield filters; see [CHANGELOG.md](../CHANGELOG.md).
 
 ## Next
 
-Nothing agreed yet. Pick from the backlog below.
+- Review and release 0.4.0 (protected areas): merge, tag and deploy after approval.
+- Confirm ICNF's reuse terms for RNAP (and for BDG/RN2000, if Natura switches source). Until then RNAP is credited as "reuse terms not confirmed"; dropping it is one line in `scripts/protected_config.py`.
 
 ## Backlog
 
-- Protected-areas overlay: natural parks, Natura 2000.
+- Protected areas v2: other restriction layers (REN, RAN, PDM zoning), per-site tooltips, the planned per-parish data card (`protection.json` is already shaped for it).
 - PT/EN language toggle. Today the UI is English, with a PT-first title and description.
 - Cloudflare Web Analytics (cookieless). Undecided.
 - Eventual migration from Cloudflare Pages to Workers static assets. Wrangler 4.149 already steers new projects there; `pnct-map` was created on classic Pages with `--force`.
@@ -38,6 +40,7 @@ Nothing agreed yet. Pick from the backlog below.
 ## Decisions and rejected options
 
 - **TopoJSON quantization 5e4:** rejected. It looks identical at the tested views, but its ~12 m steps break the 5 m accuracy budget enforced by `test_topojson_quantization_below_zoom12_pixel`. Kept 1.2e5 (~4.8 m).
+- **Protected areas as PMTiles/vector tiles:** rejected for v1. The overlay is 214 KB gzipped and loads only on the first toggle. Tiles would add a request per tile on every pan and zoom, plus a new hosting path, for no gain at this size.
 - **PMTiles:** not needed. The display data is ~430 KB brotli, under the 1 MB threshold, and PMTiles would add tile requests on every pan and zoom over slow mobile connections.
 - **Cloudflare auto-deploy from GitHub:** not now. `npm run deploy` gates every upload on pytest, Vitest and e2e.
 - **`--fail-on-flaky-tests` for deploy:** off. Flaky tests (passing only on the retry) print a warning with the trace; tests that fail both attempts still block.
