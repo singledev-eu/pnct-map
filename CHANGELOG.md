@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.0 (unreleased; on branch `feat/protected-areas`)
+## 0.4.0 (2026-10-17)
 
 ### For users
 

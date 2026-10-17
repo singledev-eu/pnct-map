@@ -20,14 +20,14 @@ Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-m
 | 2026-10-15 | Shape-aware camera: the centre of the visible map stays inside a mainland outline (2 km past the Spanish border, 20 km at sea) instead of a rectangle that reached Andalusia and Galicia. Released as 0.2.3 | [shape-aware-camera](reports/shape-aware-camera.md) |
 | 2026-10-15 | Automatic dark theme from `prefers-color-scheme`: OpenFreeMap dark basemap, dark UI tokens and map palette, live switch that keeps the view, selection and focus. Released as 0.3.0 | [dark-theme](reports/dark-theme.md) |
 | 2026-10-15 | No console warnings on a light load: positron's road-shield filters get a `ref_length` fallback through `basemapStyle()`. Released as 0.3.1 | [release-0.3.1](reports/release-0.3.1.md) |
-| 2026-10-17 | Protected-areas overlay v1: RNAP (ICNF) and Natura 2000 (EEA end 2024) toggles, the share under protection in every parish/concelho panel, pluggable offline sources. On branch `feat/protected-areas`, awaiting approval; to be released as 0.4.0 | [protected-areas](reports/protected-areas.md) |
+| 2026-10-17 | Protected-areas overlay v1: RNAP (ICNF) and Natura 2000 (EEA end 2024) toggles, the share under protection in every parish/concelho panel, pluggable offline sources. Released as 0.4.0 | [protected-areas](reports/protected-areas.md), [delta](reports/protected-areas-delta.md), [release](reports/release-0.4.0.md) |
 | 2026-10-12 | E2E flakiness: one retry; flaky tests warn with a trace but don't block deploys; tests wait for the parish layer, not the basemap | [e2e-flakiness](reports/e2e-flakiness.md) |
 
-Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; `0.3.0` (2026-10-15) the dark theme; `0.3.1` (2026-10-15) quiet road-shield filters; see [CHANGELOG.md](../CHANGELOG.md).
+Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; `0.3.0` (2026-10-15) the dark theme; `0.3.1` (2026-10-15) quiet road-shield filters; `0.4.0` (2026-10-17) protected areas; see [CHANGELOG.md](../CHANGELOG.md).
 
 ## Next
 
-- Review and release 0.4.0 (protected areas): merge, tag and deploy after approval.
+- Possible 0.4.1: fade the Natura 2000 hatch at country zoom (the user decides after seeing 0.4.0 on the phone).
 - Confirm ICNF's reuse terms for RNAP (and for BDG/RN2000, if Natura switches source). Until then RNAP is credited as "reuse terms not confirmed"; dropping it is one line in `scripts/protected_config.py`.
 
 ## Backlog
