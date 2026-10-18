@@ -234,7 +234,7 @@ test.describe("phone portrait (390×844), touch", () => {
       await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: 195, y: 250 }] });
       for (let s = 1; s <= 8; s++) {
         await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: 195, y: 250 + s * 50 }] });
-        await page.waitForFunction(() => new Promise((r) => requestAnimationFrame(() => r(true))));
+        await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => r(true)))); // one frame per move
       }
       await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
       await waitForParishView(page);

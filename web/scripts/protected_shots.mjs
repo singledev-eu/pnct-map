@@ -4,6 +4,7 @@
 process.env.PLAYWRIGHT_BROWSERS_PATH ??= "0";
 const { chromium } = await import("@playwright/test");
 import { mkdirSync } from "node:fs";
+import { waitForSettled } from "./settled.mjs";
 
 const BASE = "http://localhost:4173/";
 
@@ -51,34 +52,6 @@ const out = process.argv[2];
 if (!out) throw new Error("usage: node scripts/protected_shots.mjs <out-dir>");
 mkdirSync(out, { recursive: true });
 
-/**
- * Resolves once the app has started and drawn in `scheme`, the camera is at rest, the map (basemap
- * included) is loaded, and no finite CSS transition is running. Checked two animation frames in a
- * row, like settled() in tests/e2e/helpers.ts, polled on every frame (no fixed sleeps).
- */
-const settled = (page, scheme) =>
-  page.waitForFunction(
-    (scheme) =>
-      new Promise((resolve) =>
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => {
-            const map = window.pnctMap;
-            if (document.body.dataset.ready !== "true" || document.body.dataset.mapTheme !== scheme) return resolve(false);
-            // The overlays named in the hash are in the style (main.ts sets data-overlays once they are).
-            const wanted = (new URLSearchParams(location.hash.slice(1)).get("pa") ?? "").split(",").filter(Boolean).sort().join(",");
-            if ((document.body.dataset.overlays ?? "") !== wanted) return resolve(false);
-            // The protection section has filled in.
-            if (document.querySelector('[data-testid="protection"]') && !document.querySelector('[data-testid="protection-summary"]')) return resolve(false);
-            if (!map || map.isMoving() || !map.loaded()) return resolve(false);
-            const running = document.getAnimations().filter((a) => a.effect?.getComputedTiming().iterations !== Infinity);
-            resolve(running.length === 0);
-          }),
-        ),
-      ),
-    scheme,
-    { polling: "raf", timeout: 60_000 },
-  );
-
 const browser = await chromium.launch({ channel: "chromium" });
 for (const [device, options] of Object.entries(DEVICES)) {
   for (const scheme of ["light", "dark"]) {
@@ -90,15 +63,15 @@ for (const [device, options] of Object.entries(DEVICES)) {
       await page.goto(`${BASE}${spec.hash}`);
       await page.waitForFunction(() => document.body.dataset.ready === "true", null, { polling: "raf", timeout: 60_000 });
       await page.waitForFunction(() => !!window.pnctMap, null, { polling: "raf", timeout: 60_000 });
-      await settled(page, scheme);
+      let waited = await waitForSettled(page, scheme);
       if (spec.after) {
         await spec.after(page);
         await page.waitForFunction(spec.until, null, { polling: "raf", timeout: 10_000 });
-        await settled(page, scheme);
+        waited += await waitForSettled(page, scheme);
       }
       const path = `${out}/${device}-${scheme}-${view}.png`;
       await page.screenshot({ path });
-      console.log(path);
+      console.log(`${path} (settled in ${waited} ms)`);
       await context.close();
     }
   }

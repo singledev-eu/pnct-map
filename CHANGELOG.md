@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Infrastructure
+
+- **Screenshot scripts wait for a settled map again:** `theme_shots.mjs` and `protected_shots.mjs` passed a Promise-returning predicate to `page.waitForFunction`. Playwright awaits that Promise once, then judges the Promise object itself, which is always truthy, so the "settled" check ran once and returned even when it found the map unsettled. The new shared `web/scripts/settled.mjs` (`waitForSettled`) polls with `page.evaluate` until the check passes, and names the unmet condition on timeout. `readme_shot.mjs` uses it too. The scripts log how long each view took to settle. The one-frame wait in `camera-outline.spec.ts` is now a plain `page.evaluate`. Nothing in the site changes.
+
 ## 0.4.1 (2026-10-18)
 
 ### For users
