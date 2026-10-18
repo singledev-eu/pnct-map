@@ -18,6 +18,8 @@ export interface Contacts {
   urbanism_url: string | null;
   /** null where the câmara publishes no PDM page at all; the card then points to SNIT. */
   pdm_url: string | null;
+  /** From the curation review: the link shows the PDM in force, or PDM documents whose version isn't stated. null without a pdm_url. */
+  pdm_status: "in_force" | "unclear" | null;
   as_of: string;
 }
 
@@ -73,6 +75,7 @@ export function issueUrl(base: string, c: Pick<Concelho, "code" | "name">, f: Co
     `Phone: ${k?.phone ?? tc.missing}`,
     `Urbanism page: ${k?.urbanism_url ?? tc.missing}`,
     `PDM page: ${k?.pdm_url ?? tc.missing}`,
+    `PDM status: ${k?.pdm_status ?? tc.missing}`,
     `Population ${year}: ${f?.population ?? tc.missing}`,
   ];
   const params = new URLSearchParams({ title: tc.issueTitle(c.name, c.code), body: tc.issueBody(c.name, c.code, current, k?.as_of ?? tc.missing), labels: "data" });
@@ -126,11 +129,21 @@ function contactsBlock(data: ConcelhoData, c: Concelho, f: ConcelhoFacts | undef
       h("li", {}, h("a", { href: `mailto:${k.email}` }, k.email)),
       h("li", {}, h("a", { href: `tel:${k.phone.replace(/\s/g, "")}` }, k.phone)),
       h("li", {}, k.urbanism_url ? external(k.urbanism_url, tc.urbanism) : h("span", { class: "muted" }, `${tc.missing} ${tc.noUrbanism}`)),
-      h("li", {}, k.pdm_url ? external(k.pdm_url, tc.pdm, { "data-testid": "concelho-pdm" }) : h("span", { class: "muted", "data-testid": "concelho-no-pdm" }, `${tc.missing} ${tc.noPdm}`)),
+      h("li", {}, ...pdmItem(k)),
     ),
     snit,
     h("p", { class: "disclaimer" }, `${tc.contactsSource(monthYear(k.as_of))} · `, report),
   );
+}
+
+/** The PDM link: "PDM in force", or "PDM documents" with a note when the review couldn't tell which version is in force. */
+function pdmItem(k: Contacts): Node[] {
+  if (!k.pdm_url) return [h("span", { class: "muted", "data-testid": "concelho-no-pdm" }, `${tc.missing} ${tc.noPdm}`)];
+  if (k.pdm_status === "in_force") return [external(k.pdm_url, tc.pdm, { "data-testid": "concelho-pdm", "data-status": "in_force" })];
+  return [
+    external(k.pdm_url, tc.pdmDocuments, { "data-testid": "concelho-pdm", "data-status": "unclear" }),
+    h("span", { class: "muted concelho-pdm-note", "data-testid": "concelho-pdm-unclear" }, tc.pdmUnclear),
+  ];
 }
 
 /** The card for `c`: "Loading…" until the data arrives, then the population and contacts blocks. */

@@ -855,6 +855,11 @@ body:not([data-level="parish"]) .legend-parish {
   overflow-wrap: anywhere;
 }
 
+.concelho-pdm-note {
+  display: block;
+  font-size: 12px;
+}
+
 .concelho-note {
   margin: 6px 0 0;
   font-size: 12px;

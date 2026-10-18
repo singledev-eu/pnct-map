@@ -127,6 +127,9 @@ export interface ConcelhoStrings {
   urbanism: string;
   noUrbanism: string;
   pdm: string;
+  /** The PDM link when the version in force isn't stated (pdm_status "unclear"), with pdmUnclear under it. */
+  pdmDocuments: string;
+  pdmUnclear: string;
   noPdm: string;
   contactsSource: (checked: string) => string;
   notYet: string;
@@ -159,6 +162,8 @@ export const concelhoEn: ConcelhoStrings = {
   urbanism: "Urbanism",
   noUrbanism: "No urbanism page found on the câmara's site",
   pdm: "PDM in force",
+  pdmDocuments: "PDM documents",
+  pdmUnclear: "Version in force not stated — check with the câmara.",
   noPdm: "No PDM page found on the câmara's site",
   contactsSource: (checked) => `Source: câmara website, checked ${checked}`,
   notYet: "Câmara contacts: not yet available",

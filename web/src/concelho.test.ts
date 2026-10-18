@@ -25,7 +25,21 @@ describe("concelhos.json", () => {
   it("ships contacts without the curators' notes", () => {
     const curated = Object.values(data.concelhos).filter((c) => c.contacts);
     expect(curated.length).toBeGreaterThan(0);
-    for (const c of curated) expect(Object.keys(c.contacts!).sort()).toEqual(["as_of", "email", "pdm_url", "phone", "urbanism_url", "website"]);
+    for (const c of curated) expect(Object.keys(c.contacts!).sort()).toEqual(["as_of", "email", "pdm_status", "pdm_url", "phone", "urbanism_url", "website"]);
+  });
+});
+
+describe("pdm_status", () => {
+  it("comes from the review: 24 unclear, none without a link, all others in force", () => {
+    const curated = Object.entries(data.concelhos).filter(([, c]) => c.contacts);
+    expect(curated.filter(([, c]) => c.contacts!.pdm_status === "unclear")).toHaveLength(24);
+    for (const [, c] of curated) expect(c.contacts!.pdm_status === null).toBe(c.contacts!.pdm_url === null);
+    expect(data.concelhos["1210"].contacts!.pdm_status).toBe("unclear"); // Marvão
+  });
+
+  it("is in the report-outdated-info body", () => {
+    const body = new URL(issueUrl(data.issues_url, { code: "1210", name: "Marvão" }, data.concelhos["1210"], data.estimate_year)).searchParams.get("body")!;
+    expect(body).toContain("PDM status: unclear");
   });
 });
 
@@ -80,6 +94,7 @@ describe("issueUrl", () => {
     expect(body).toContain("DICO 0505");
     expect(body).toContain(`Email: ${c.contacts!.email}`);
     expect(body).toContain(`PDM page: ${c.contacts!.pdm_url}`);
+    expect(body).toContain("PDM status: in_force");
     expect(body).toContain(`Population ${data.estimate_year}: ${c.population}`);
     expect(body).toContain(`checked ${c.contacts!.as_of}`);
     expect(body).toContain("What changed?");

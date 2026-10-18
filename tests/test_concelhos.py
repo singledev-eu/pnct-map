@@ -189,6 +189,15 @@ def test_contacts_csv_passes_the_offline_checks(contact_rows, caop):
     assert len(dicos) == len(set(dicos))
 
 
+def test_pdm_status_from_the_review(data, contact_rows):
+    statuses = {r["dico"]: r["pdm_status"] for r in contact_rows}
+    assert sum(s == "unclear" for s in statuses.values()) == 24  # the review's "PDM unclear" list (phase 2 report)
+    assert statuses["1210"] == "unclear" and statuses["0505"] == "in_force"  # Marvão, Idanha-a-Nova
+    assert {d for d, s in statuses.items() if not s} == {"0708", "0901", "1803"}  # no PDM page: Mourão, Aguiar da Beira, Castro Daire
+    for d, s in statuses.items():
+        assert data["concelhos"][d]["contacts"]["pdm_status"] == (s or None)
+
+
 def test_no_personal_emails(contact_rows):
     assert [r["email"] for r in contact_rows if vc.looks_personal(r["email"])] == []
 
@@ -206,14 +215,18 @@ def test_no_personal_emails(contact_rows):
         ({"name": "Agueda"}, "!= CAOP"),
         ({"pdm_url": "http://www.cm-agueda.pt/pages/81"}, "not an https URL"),
         ({"urbanism_url": ""}, None),  # optional
-        ({"pdm_url": ""}, "warning: pdm_url is empty"),  # allowed, but flagged
+        ({"pdm_url": "", "pdm_status": ""}, "warning: pdm_url is empty"),  # allowed, but flagged
+        ({"pdm_status": "unclear"}, None),
+        ({"pdm_status": ""}, "pdm_status must be one of"),  # required with a pdm_url
+        ({"pdm_status": "maybe"}, "pdm_status must be one of"),
+        ({"pdm_url": "", "pdm_status": "in_force"}, "without a pdm_url"),
         ({"website": ""}, "website is empty"),
         ({"pdm_url": "https://geo.cm-agueda.com/pdm"}, "warning: pdm_url is off"),
     ],
 )
 def test_check_row(caop, change, expect):
     row = {"dico": "0101", "name": "Águeda", "website": "https://www.cm-agueda.pt/", "email": "geral@cm-agueda.pt", "phone": "+351 234 610 070",
-           "urbanism_url": "https://www.cm-agueda.pt/u", "pdm_url": "https://www.cm-agueda.pt/pages/81", "source_url": "https://www.cm-agueda.pt/",
+           "urbanism_url": "https://www.cm-agueda.pt/u", "pdm_url": "https://www.cm-agueda.pt/pages/81", "pdm_status": "in_force", "source_url": "https://www.cm-agueda.pt/",
            "as_of": "2026-10-18", "notes": ""} | change
     problems = vc.check_row(row, caop)
     if expect is None:

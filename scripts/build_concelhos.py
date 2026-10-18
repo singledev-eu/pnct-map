@@ -28,7 +28,7 @@ import pyogrio
 import concelhos_config as cfg
 import validate_contacts
 
-CONTACT_FIELDS = ["website", "email", "phone", "urbanism_url", "pdm_url", "as_of"]
+CONTACT_FIELDS = ["website", "email", "phone", "urbanism_url", "pdm_url", "pdm_status", "as_of"]
 
 
 def municipal_values(response: list) -> tuple[dict[str, float], dict[str, float]]:

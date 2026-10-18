@@ -36,7 +36,10 @@ import pyogrio
 
 ROOT = Path(__file__).resolve().parent.parent
 CAOP_GPKG = ROOT / "data/external/CAOP_Continente_2025-gpkg/Continente_CAOP2025.gpkg"
-COLUMNS = ["dico", "name", "website", "email", "phone", "urbanism_url", "pdm_url", "source_url", "as_of", "notes"]
+COLUMNS = ["dico", "name", "website", "email", "phone", "urbanism_url", "pdm_url", "pdm_status", "source_url", "as_of", "notes"]
+# What the review established about pdm_url: the page/notice shows the PDM in force, or PDM documents
+# whose version in force isn't stated (the card then says so). Empty exactly when pdm_url is empty.
+PDM_STATUSES = {"in_force", "unclear"}
 URL_FIELDS = ["website", "urbanism_url", "pdm_url", "source_url"]
 EMAIL = re.compile(r"^[a-z0-9._%+-]+@([a-z0-9-]+(?:\.[a-z0-9-]+)+)$")
 PHONE = re.compile(r"^\+351 [29]\d{2} \d{3} \d{3}$")
@@ -95,6 +98,10 @@ def check_row(row: dict[str, str], caop: dict[str, str]) -> list[str]:
             problems.append(f"email looks personal: {row['email']}")
     if not PHONE.match(row["phone"]):
         problems.append(f"phone malformed (want '+351 2xx xxx xxx'): {row['phone']!r}")
+    if row["pdm_url"] and row["pdm_status"] not in PDM_STATUSES:
+        problems.append(f"pdm_status must be one of {sorted(PDM_STATUSES)} when pdm_url is set: {row['pdm_status']!r}")
+    if not row["pdm_url"] and row["pdm_status"]:
+        problems.append(f"pdm_status {row['pdm_status']!r} without a pdm_url")
     try:
         dt.date.fromisoformat(row["as_of"])
     except ValueError:

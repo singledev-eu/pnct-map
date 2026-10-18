@@ -54,6 +54,8 @@ test("the concelho panel shows the population block and the curated contacts", a
   await expect(website).toHaveText(/^Website: cm-idanhanova\.pt ↗/); // the domain shown; "Website:" for screen readers only
   await expect(website.locator(".visually-hidden").first()).toHaveText("Website: ");
   await expect(page.getByTestId("concelho-pdm")).toHaveAttribute("href", c.contacts.pdm_url);
+  await expect(page.getByTestId("concelho-pdm")).toHaveText(/^PDM in force ↗/);
+  await expect(page.getByTestId("concelho-pdm-unclear")).toHaveCount(0);
   await expect(page.getByTestId("concelho-pdm")).toHaveAttribute("target", "_blank");
   await expect(page.getByTestId("concelho-snit")).toHaveAttribute("href", "https://snit-mais.dgterritorio.gov.pt/portalsnit/");
   await expect(page.getByTestId("concelho-snit")).toContainText("Official PDM maps: SNIT (DGT)");
@@ -92,6 +94,23 @@ test("a concelho without curated contacts says so, and still links SNIT and the 
   const report = new URL((await page.getByTestId("concelho-report").getAttribute("href"))!);
   expect(report.searchParams.get("title")).toContain(`(${NOT_YET})`);
   expect(report.searchParams.get("labels")).toBe("data");
+  expect(errors).toEqual([]);
+});
+
+test("a PDM whose version in force isn't stated is labelled as documents, with a note", async ({ page }) => {
+  const errors = trackErrors(page);
+  const MARVAO = "1210";
+  expect(DATA.concelhos[MARVAO].contacts.pdm_status).toBe("unclear");
+  await page.goto(`/#c=${MARVAO}`);
+  await waitForParishes(page);
+  const pdm = page.getByTestId("concelho-pdm");
+  await expect(pdm).toHaveText(/^PDM documents ↗/);
+  await expect(pdm).toHaveAttribute("href", DATA.concelhos[MARVAO].contacts.pdm_url);
+  await expect(pdm).toHaveAttribute("data-status", "unclear");
+  await expect(page.getByTestId("concelho-pdm-unclear")).toHaveText("Version in force not stated — check with the câmara.");
+  await expect(page.getByTestId("concelho-contacts")).not.toContainText("PDM in force");
+  const body = new URL((await page.getByTestId("concelho-report").getAttribute("href"))!).searchParams.get("body")!;
+  expect(body).toContain("PDM status: unclear");
   expect(errors).toEqual([]);
 });
 
