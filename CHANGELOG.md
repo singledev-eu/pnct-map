@@ -1,9 +1,20 @@
 # Changelog
 
-## Unreleased
+## 0.5.0 (unreleased)
+
+### For users
+
+- **Concelho card:** clicking a concelho at country zoom shows two new sections in its panel; at parish zoom the parish panel has a collapsed "Concelho: <name>" section with the same card, loaded only when opened.
+  - **Population (INE, CC BY 4.0):** the 2025 resident-population estimate; the change between the 2011 and 2021 Censuses (never an annual estimate against a Census, since the 2021+ estimates are administrative-based and differ from the Census by up to ±20% per concelho); the density (people/km², from the CAOP 2025 area); and the ageing index as a ratio, "4.2 older people (65+) per child (Portugal: 1.9)", with the index itself in an ⓘ. Partly-PNCT concelhos say "Figures for the whole concelho". A missing value shows "—", never an estimate.
+  - **Câmara Municipal:** the website (shown as its domain), the general mailbox and phone, the urbanism page and the page of the PDM in force, for all 185 concelhos with PNCT parishes; "Câmara contacts: not yet available" for the others. Where a câmara has no urbanism or PDM page, the card says so. Every card links SNIT (DGT) for the official PDM maps and has a "Report outdated info" link that opens a pre-filled GitHub issue (label `data`).
+- **Phone bottom sheet:** a real drag handle. Drag it (or the header) up to ~90% of the screen, down to half, and down again to close; the handle is a button for the keyboard and screen readers, and nothing animates with Reduce Motion. The sheet's credits now sit behind a © button in its header, so the content scrolls to the bottom edge.
 
 ### Infrastructure
 
+- **Population pipeline:** `scripts/concelhos_config.py`, `scripts/fetch_ine.py` (INE JSON API: 0012917 population, 0012909 ageing index, 0011609 Censuses; cached in `data/external/ine/`, retried, series guard), `scripts/build_concelhos.py` → `data/concelhos.json` (with the curators' notes) and `web/data/concelhos.json` (   96 KB raw, 16 KB gzipped, content-hashed, fetched on the first card). `make concelhos-fetch` / `make concelhos`; `REFRESH=1` for next year's estimates.
+- **Contacts:** `data/contacts/camaras.csv`, curated by hand for the 185 PNCT concelhos (kiro-cli first pass per batch of 25, every PDM link checked against the live site or the Diário da República notice, ~20% of the other fields spot-checked; see `docs/reports/concelho-card-phase2.md`). `scripts/contacts_candidates.py` gathers candidates; `scripts/validate_contacts.py` checks the CSV offline (and URLs with `--online`): generic institutional mailboxes only, phone format, CAOP names; incomplete TLS chains and off-domain links are warnings.
+- `data/ATTRIBUTION.md`: INE (CC BY 4.0) and the câmara websites.
+- Tests: pytest `tests/test_concelhos.py` (coverage of the 278 concelhos and the 185 curated, value ranges, mainland sums, census-to-census change, series guard, contacts validation, size budget); Vitest `concelho.test.ts`; e2e `concelho-card.spec.ts` and `bottom-sheet.spec.ts` (touch drags on a 375 px phone). `web/scripts/concelho_shots.mjs` for review screenshots.
 - **Screenshot scripts wait for a settled map again:** `theme_shots.mjs` and `protected_shots.mjs` passed a Promise-returning predicate to `page.waitForFunction`. Playwright awaits that Promise once, then judges the Promise object itself, which is always truthy, so the "settled" check ran once and returned even when it found the map unsettled. The new shared `web/scripts/settled.mjs` (`waitForSettled`) polls with `page.evaluate` until the check passes, and names the unmet condition on timeout. `readme_shot.mjs` uses it too. The scripts log how long each view took to settle. The one-frame wait in `camera-outline.spec.ts` is now a plain `page.evaluate`. Nothing in the site changes.
 
 ## 0.4.1 (2026-10-18)

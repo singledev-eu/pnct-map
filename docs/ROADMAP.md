@@ -29,11 +29,13 @@ Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (20
 
 ## Next
 
+- 0.5.0 concelho card (branch `feat/concelho-card`, on the preview): population block (INE) and câmara contacts for the 185 PNCT concelhos, phone sheet drag. Merge, tag and deploy after the user's phone check ([report](reports/concelho-card-phase2.md)).
 - Confirm ICNF's reuse terms for RNAP (and for BDG/RN2000, if Natura switches source). Until then RNAP is credited as "reuse terms not confirmed"; dropping it is one line in `scripts/protected_config.py`.
 
 ## Backlog
 
-- Protected areas v2: other restriction layers (REN, RAN, PDM zoning), per-site tooltips, the planned per-parish data card (`protection.json` is already shaped for it).
+- Protected areas v2: other restriction layers (REN, RAN, PDM zoning), per-site tooltips.
+- Concelho card v2: câmara contacts for the 93 concelhos without PNCT parishes; a yearly refresh of the INE estimates (mid-June) and an `--online` re-check of the contacts.
 - PT/EN language toggle. Today the UI is English, with a PT-first title and description.
 - Cloudflare Web Analytics (cookieless). Undecided.
 - Eventual migration from Cloudflare Pages to Workers static assets. Wrangler 4.149 already steers new projects there; `pnct-map` was created on classic Pages with `--force`.
