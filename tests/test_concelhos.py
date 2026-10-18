@@ -66,9 +66,6 @@ def test_contacts_in_the_data_match_the_csv(data, contact_rows):
     assert {d for d, c in data["concelhos"].items() if c["contacts"]} == curated
 
 
-# Curation runs in batches (docs/reports/concelho-card-phase2.md). strict: once every PNCT concelho is
-# curated this xpasses and fails, so the marker must come off for the 0.5.0 release candidate.
-@pytest.mark.xfail(strict=True, reason="contacts curation in progress")
 def test_every_pnct_concelho_is_curated(pnct_dicos, contact_rows):
     missing = sorted(pnct_dicos - {r["dico"] for r in contact_rows})
     assert missing == [], f"{len(missing)} PNCT concelhos without contacts"
