@@ -209,6 +209,8 @@ def test_no_personal_emails(contact_rows):
         ({"name": "Agueda"}, "!= CAOP"),
         ({"pdm_url": "http://www.cm-agueda.pt/pages/81"}, "not an https URL"),
         ({"urbanism_url": ""}, None),  # optional
+        ({"pdm_url": ""}, "warning: pdm_url is empty"),  # allowed, but flagged
+        ({"website": ""}, "website is empty"),
         ({"pdm_url": "https://geo.cm-agueda.com/pdm"}, "warning: pdm_url is off"),
     ],
 )

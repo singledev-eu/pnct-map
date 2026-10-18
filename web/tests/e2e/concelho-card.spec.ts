@@ -106,12 +106,15 @@ test("a missing value shows a dash and a note, never a number", async ({ page })
     const json = await (await route.fetch()).json();
     Object.assign(json.concelhos[IDANHA], { population: null, density: null, ageing_index: null, census_change: null });
     json.concelhos[IDANHA].contacts.urbanism_url = null;
+    json.concelhos[IDANHA].contacts.pdm_url = null;
     await route.fulfill({ json });
   });
   await page.goto(`/#c=${IDANHA}`);
   await waitForParishes(page);
   for (const id of ["concelho-people", "concelho-change", "concelho-density", "concelho-ageing"]) await expect(page.getByTestId(id)).toHaveText("— (not available)");
   await expect(page.getByTestId("concelho-contacts")).toContainText("— No urbanism page found on the câmara's site");
+  await expect(page.getByTestId("concelho-no-pdm")).toHaveText("— No PDM page found on the câmara's site");
+  await expect(page.getByTestId("concelho-snit")).toBeVisible(); // the fallback for the PDM maps
 });
 
 test("the parish panel's concelho section is collapsed and fetches only when opened", async ({ page }) => {

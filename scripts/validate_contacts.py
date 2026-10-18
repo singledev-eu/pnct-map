@@ -75,7 +75,9 @@ def check_row(row: dict[str, str], caop: dict[str, str]) -> list[str]:
     for f in URL_FIELDS:
         v = row[f]
         if not v:
-            if f != "urbanism_url":  # the only optional URL
+            if f == "pdm_url":  # a câmara with no PDM page anywhere (Mourão): the card says so and links SNIT
+                problems.append(f"{WARNING}pdm_url is empty")
+            elif f != "urbanism_url":  # optional: many câmaras have no urbanism page
                 problems.append(f"{f} is empty")
             continue
         if urlparse(v).scheme != "https" or not urlparse(v).hostname:

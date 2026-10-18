@@ -16,7 +16,8 @@ export interface Contacts {
   email: string;
   phone: string;
   urbanism_url: string | null;
-  pdm_url: string;
+  /** null where the câmara publishes no PDM page at all; the card then points to SNIT. */
+  pdm_url: string | null;
   as_of: string;
 }
 
@@ -125,7 +126,7 @@ function contactsBlock(data: ConcelhoData, c: Concelho, f: ConcelhoFacts | undef
       h("li", {}, h("a", { href: `mailto:${k.email}` }, k.email)),
       h("li", {}, h("a", { href: `tel:${k.phone.replace(/\s/g, "")}` }, k.phone)),
       h("li", {}, k.urbanism_url ? external(k.urbanism_url, tc.urbanism) : h("span", { class: "muted" }, `${tc.missing} ${tc.noUrbanism}`)),
-      h("li", {}, external(k.pdm_url, tc.pdm, { "data-testid": "concelho-pdm" })),
+      h("li", {}, k.pdm_url ? external(k.pdm_url, tc.pdm, { "data-testid": "concelho-pdm" }) : h("span", { class: "muted", "data-testid": "concelho-no-pdm" }, `${tc.missing} ${tc.noPdm}`)),
     ),
     snit,
     h("p", { class: "disclaimer" }, `${tc.contactsSource(monthYear(k.as_of))} · `, report),

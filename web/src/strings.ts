@@ -127,6 +127,7 @@ export interface ConcelhoStrings {
   urbanism: string;
   noUrbanism: string;
   pdm: string;
+  noPdm: string;
   contactsSource: (checked: string) => string;
   notYet: string;
   report: string;
@@ -158,6 +159,7 @@ export const concelhoEn: ConcelhoStrings = {
   urbanism: "Urbanism",
   noUrbanism: "No urbanism page found on the câmara's site",
   pdm: "PDM in force",
+  noPdm: "No PDM page found on the câmara's site",
   contactsSource: (checked) => `Source: câmara website, checked ${checked}`,
   notYet: "Câmara contacts: not yet available",
   report: "Report outdated info",
