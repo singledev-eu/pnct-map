@@ -476,9 +476,8 @@ body:not([data-level="parish"]) .legend-parish {
   gap: 4px;
 }
 
-/* The ⓘ that shows the sheet's credits (phones), drawn like the legend's "?". */
+/* The © that shows the sheet's credits (phones); not an ⓘ, which the ageing figure uses. */
 .sheet-credit-toggle {
-  position: relative;
   align-items: center;
   justify-content: center;
   width: 32px;
@@ -488,19 +487,10 @@ body:not([data-level="parish"]) .legend-parish {
   border-radius: 8px;
   background: none;
   font: inherit;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 20px;
+  line-height: 1;
   color: var(--muted);
   cursor: pointer;
-}
-
-.sheet-credit-toggle::before {
-  content: "";
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border: 1.5px solid currentColor;
-  border-radius: 50%;
 }
 
 .sheet-credit-toggle[aria-expanded="true"] {

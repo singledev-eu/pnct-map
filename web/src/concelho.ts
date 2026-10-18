@@ -52,8 +52,11 @@ const densityText = (value: number) => number(value, value < 100 ? 1 : 0);
 /** "October 2026" from "2026-10-18". */
 const monthYear = (iso: string) => new Intl.DateTimeFormat(tc.locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${iso}T00:00:00Z`));
 
-const external = (href: string, text: string, attrs: Record<string, string> = {}) =>
-  h("a", { href, target: "_blank", rel: "noopener noreferrer", ...attrs }, text, h("span", { "aria-hidden": "true" }, " ↗"), h("span", { class: "visually-hidden" }, ` (${tc.newTab})`));
+/** A new-tab link; `hidden` is read before the text by screen readers only ("Website: cm-x.pt"). */
+const external = (href: string, text: string, attrs: Record<string, string> = {}, hidden = "") =>
+  h("a", { href, target: "_blank", rel: "noopener noreferrer", ...attrs }, hidden ? h("span", { class: "visually-hidden" }, hidden) : null, text, h("span", { "aria-hidden": "true" }, " ↗"), h("span", { class: "visually-hidden" }, ` (${tc.newTab})`));
+/** "cm-idanhanova.pt" from "https://www.cm-idanhanova.pt/". */
+export const domainOf = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 
 /** A value, or "—" with a muted note: never a made-up number. */
 function value(v: number | null, render: (v: number) => string): Node[] {
@@ -118,7 +121,7 @@ function contactsBlock(data: ConcelhoData, c: Concelho, f: ConcelhoFacts | undef
     h(
       "ul",
       { class: "concelho-links" },
-      h("li", {}, external(k.website, tc.website)),
+      h("li", {}, external(k.website, domainOf(k.website), { "data-testid": "concelho-website" }, `${tc.website}: `)),
       h("li", {}, h("a", { href: `mailto:${k.email}` }, k.email)),
       h("li", {}, h("a", { href: `tel:${k.phone.replace(/\s/g, "")}` }, k.phone)),
       h("li", {}, k.urbanism_url ? external(k.urbanism_url, tc.urbanism) : h("span", { class: "muted" }, `${tc.missing} ${tc.noUrbanism}`)),

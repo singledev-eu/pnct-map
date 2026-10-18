@@ -49,6 +49,10 @@ test("the concelho panel shows the population block and the curated contacts", a
   await expect(contacts).toHaveAttribute("data-state", "curated");
   await expect(contacts.getByRole("link", { name: c.contacts.email })).toHaveAttribute("href", `mailto:${c.contacts.email}`);
   await expect(contacts.getByRole("link", { name: c.contacts.phone })).toHaveAttribute("href", `tel:${c.contacts.phone.replace(/\s/g, "")}`);
+  const website = page.getByTestId("concelho-website");
+  await expect(website).toHaveAttribute("href", c.contacts.website);
+  await expect(website).toHaveText(/^Website: cm-idanhanova\.pt ↗/); // the domain shown; "Website:" for screen readers only
+  await expect(website.locator(".visually-hidden").first()).toHaveText("Website: ");
   await expect(page.getByTestId("concelho-pdm")).toHaveAttribute("href", c.contacts.pdm_url);
   await expect(page.getByTestId("concelho-pdm")).toHaveAttribute("target", "_blank");
   await expect(page.getByTestId("concelho-snit")).toHaveAttribute("href", "https://snit-mais.dgterritorio.gov.pt/portalsnit/");

@@ -71,7 +71,7 @@ test.describe("phone portrait (390×844)", () => {
     await expect(attribution.locator(".maplibregl-ctrl-attrib-inner")).toBeHidden();
 
     // With a parish open, the bottom sheet hides the map controls. Its credit line, behind the
-    // header's ⓘ (collapsed like the map's compact attribution), has all four credits.
+    // header's © (collapsed like the map's compact attribution), has all four credits.
     await page.goto("/#f=170810");
     await expect(page.getByTestId("panel-title")).toHaveText("Vilarinho dos Freires");
     await expect(attribution).toBeHidden();

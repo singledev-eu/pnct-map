@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import DATA from "../data/concelhos.json";
-import { ageingHelpText, ageingText, issueUrl, signedPct, type ConcelhoData } from "./concelho";
+import { ageingHelpText, ageingText, domainOf, issueUrl, signedPct, type ConcelhoData } from "./concelho";
 import { tc } from "./strings";
 
 const data = DATA as unknown as ConcelhoData;
@@ -34,6 +34,14 @@ describe("signedPct", () => {
     expect(signedPct(-14)).toBe("−14.0%");
     expect(signedPct(3.14)).toBe("+3.1%");
     expect(signedPct(0)).toBe("0.0%");
+  });
+});
+
+describe("domainOf", () => {
+  it("shows the câmara site as its domain, without www.", () => {
+    expect(domainOf("https://www.cm-idanhanova.pt/")).toBe("cm-idanhanova.pt");
+    expect(domainOf("https://cm-alcoutim.pt/")).toBe("cm-alcoutim.pt");
+    expect(domainOf("https://www.mun-aljustrel.pt/")).toBe("mun-aljustrel.pt");
   });
 });
 

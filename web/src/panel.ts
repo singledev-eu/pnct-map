@@ -88,7 +88,7 @@ const creditLink = (href: string, text: string) => h("a", { href, target: "_blan
 /**
  * Credit line shown in the phone bottom sheet, which covers the map attribution while it is open.
  * Same credits and links as the map attribution and the About panel. Collapsed behind the header's
- * ⓘ (like MapLibre's compact attribution), so it doesn't take the sheet's space.
+ * © (like MapLibre's compact attribution), so it doesn't take the sheet's space.
  */
 function sheetCredit(): HTMLElement {
   return h(
@@ -167,7 +167,7 @@ export class Panel {
     close.addEventListener("click", () => this.cb.onClose());
     // Phone sheet only (hidden on wide screens): the drag handle (sheet.ts) and the credits toggle.
     const handle = h("button", { type: "button", class: "sheet-handle", "data-testid": "sheet-handle" });
-    const credits = h("button", { type: "button", class: "sheet-credit-toggle", "aria-label": sheet.credits, "aria-controls": "sheet-credit", "aria-expanded": "false", "data-testid": "sheet-credit-toggle" }, "i");
+    const credits = h("button", { type: "button", class: "sheet-credit-toggle", "aria-label": sheet.credits, "aria-controls": "sheet-credit", "aria-expanded": "false", "data-testid": "sheet-credit-toggle" }, "©");
     credits.addEventListener("click", () => {
       const open = credits.getAttribute("aria-expanded") !== "true";
       credits.setAttribute("aria-expanded", String(open));

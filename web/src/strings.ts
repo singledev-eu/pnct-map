@@ -175,7 +175,7 @@ export const tc: ConcelhoStrings = concelhoEn;
 export const sheet = {
   expand: "Expand panel",
   collapse: "Collapse panel",
-  credits: "Map data credits",
+  credits: "Map credits",
 };
 
 /** Shares below this (but above 0) are mostly boundary mismatches; they show as "<0.5%". The data keeps the exact value. */

@@ -3,7 +3,7 @@ import { expect, test, trackErrors, waitForParishes } from "./helpers";
 
 // The phone bottom sheet (src/sheet.ts): the drag handle is a real button; dragging it (or the
 // header) up snaps the sheet to ~90vh, down to half, and down from half closes it. × still closes.
-// The credits collapse behind the header's ⓘ. Touch drags go through CDP touch events, which
+// The credits collapse behind the header's ©. Touch drags go through CDP touch events, which
 // Chromium turns into pointer events like a real finger.
 
 const H = 667;
@@ -99,14 +99,15 @@ test.describe("phone portrait (375×667)", () => {
     await expect(panel(page)).toBeHidden();
   });
 
-  test("the credits are behind the header's ⓘ, and the content scrolls clear to the bottom", async ({ page }) => {
+  test("the credits are behind the header's ©, and the content scrolls clear to the bottom", async ({ page }) => {
     await page.goto("/#c=0505");
     await waitForParishes(page);
     const credit = page.getByTestId("sheet-credit");
     const toggle = page.getByTestId("sheet-credit-toggle");
     await expect(credit).toBeHidden();
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
-    await expect(toggle).toHaveAttribute("aria-label", "Map data credits");
+    await expect(toggle).toHaveAttribute("aria-label", "Map credits");
+    await expect(toggle).toHaveText("©"); // not an ⓘ, which the ageing figure uses
 
     // The panel body reaches the bottom of the sheet; its last line can be scrolled fully into view.
     const body = panel(page).locator(".panel-body");
