@@ -463,8 +463,48 @@ body:not([data-level="parish"]) .legend-parish {
   margin-top: 6px;
 }
 
-.sheet-credit {
+.sheet-credit,
+.sheet-handle,
+.sheet-credit-toggle {
   display: none;
+}
+
+.panel-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+}
+
+/* The ⓘ that shows the sheet's credits (phones), drawn like the legend's "?". */
+.sheet-credit-toggle {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.sheet-credit-toggle::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+
+.sheet-credit-toggle[aria-expanded="true"] {
+  color: var(--accent);
 }
 
 /* ---- legend ---------------------------------------------------------------- */
@@ -1079,26 +1119,65 @@ dialog a {
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  .panel::before {
+  /* Two snap heights (sheet.ts): "half" (above) and "full". */
+  .panel[data-sheet="full"] {
+    max-height: 90vh;
+  }
+
+  .panel:not(.sheet-dragging) {
+    transition:
+      max-height 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  /* The drag handle: a full-width 24 px strip with the visible grip in the middle. */
+  .sheet-handle {
+    display: flex;
+    flex: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .sheet-handle::before {
     content: "";
-    display: block;
     width: 36px;
     height: 4px;
-    margin: 8px auto 0;
     border-radius: 2px;
     background: var(--handle);
   }
 
-  .panel-header {
-    padding-top: 8px;
+  .sheet-handle:focus-visible {
+    outline: none;
   }
 
-  .sheet-credit {
+  .sheet-handle:focus-visible::before {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .panel-header {
+    padding-top: 0;
+    touch-action: none; /* the header drags the sheet too */
+  }
+
+  .sheet-credit-toggle {
+    display: inline-flex;
+  }
+
+  /* The credits, collapsed behind the header's ⓘ until it's tapped. */
+  .sheet-credit-open .sheet-credit {
     display: block;
     flex: none;
     margin: 0;
-    padding: 6px 16px 8px;
-    border-top: 1px solid var(--border);
+    padding: 0 16px 8px;
+    border-bottom: 1px solid var(--border);
     font-size: 10.5px;
     color: var(--muted);
   }
@@ -1196,5 +1275,13 @@ dialog a {
 
   .tooltip {
     display: none;
+  }
+}
+
+/* Without motion the sheet snaps at once (sheet.ts closes without animating, too). After the phone
+   rules, which set the transition. */
+@media (prefers-reduced-motion: reduce) {
+  .panel:not(.sheet-dragging) {
+    transition: none;
   }
 }

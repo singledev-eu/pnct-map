@@ -40,7 +40,8 @@ test("the concelho panel shows the population block and the curated contacts", a
   await expect(page.getByTestId("concelho-people")).toHaveText(`${fmt(c.population)} people (${DATA.estimate_year})`);
   await expect(page.getByTestId("concelho-change")).toHaveText("−14.0% from 2011 to 2021 (Censuses)");
   await expect(page.getByTestId("concelho-density")).toHaveText(`${c.density} people/km²`);
-  await expect(page.getByTestId("concelho-ageing")).toContainText(`Ageing index ${Math.round(c.ageing_index)} (Portugal: ${Math.round(DATA.national.ageing_index)})`);
+  const ratio = (index: number) => (index / 100).toFixed(1);
+  await expect(page.getByTestId("concelho-ageing")).toContainText(`${ratio(c.ageing_index)} older people (65+) per child (Portugal: ${ratio(DATA.national.ageing_index)})`);
   await expect(page.getByTestId("concelho-whole")).toHaveCount(0); // whole-PNCT: no note
   await expect(card(page)).toContainText(`Source: INE, population estimates ${DATA.estimate_year}, Censuses 2011/2021 · CC BY 4.0`);
 
@@ -55,10 +56,12 @@ test("the concelho panel shows the population block and the curated contacts", a
 
   // The ageing-index ⓘ is a keyboard-operable disclosure.
   const help = page.getByTestId("concelho-ageing").locator("summary");
-  await expect(help).toHaveAttribute("aria-label", "What is the ageing index?");
+  await expect(help).toHaveAttribute("aria-label", "About this figure (ageing index)");
   await help.focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByTestId("concelho-ageing")).toContainText("People aged 65 and over per 100 under 15.");
+  await expect(page.getByTestId("concelho-ageing")).toContainText(
+    `Ageing index ${Math.round(c.ageing_index)} (Portugal: ${Math.round(DATA.national.ageing_index)}): people aged 65 and over per 100 children under 15. Source: INE.`,
+  );
   expect(errors).toEqual([]);
 });
 

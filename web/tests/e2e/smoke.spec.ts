@@ -166,6 +166,7 @@ test.describe("mobile", () => {
     await expect(panel.getByTestId("panel-title")).toHaveText("Vilar das Almas");
     const box = await panel.boundingBox();
     expect(box && box.y > 844 / 3).toBeTruthy();
+    await panel.getByTestId("sheet-credit-toggle").tap(); // the credits sit behind the header's ⓘ
     await expect(panel.locator(".sheet-credit")).toBeVisible();
     await expect(panel.locator(".sheet-credit")).toContainText("CC BY 4.0");
     await waitForFullIdle(page); // screenshot: needs the basemap

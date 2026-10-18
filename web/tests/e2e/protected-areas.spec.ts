@@ -420,6 +420,7 @@ test.describe("phone portrait (390×844)", () => {
     // The bottom-sheet credit carries the overlay sources too.
     await reopen(page, `/#f=${VILAR_DA_VEIGA}&pa=natura`);
     await waitForParishes(page);
+    await page.getByTestId("sheet-credit-toggle").tap();
     await expect(page.getByTestId("sheet-credit").getByRole("link", { name: /EEA/ })).toBeVisible();
     expect(errors).toEqual([]);
   });

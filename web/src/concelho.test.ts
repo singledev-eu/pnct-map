@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import DATA from "../data/concelhos.json";
-import { issueUrl, signedPct, type ConcelhoData } from "./concelho";
+import { ageingHelpText, ageingText, issueUrl, signedPct, type ConcelhoData } from "./concelho";
 import { tc } from "./strings";
 
 const data = DATA as unknown as ConcelhoData;
@@ -34,6 +34,26 @@ describe("signedPct", () => {
     expect(signedPct(-14)).toBe("−14.0%");
     expect(signedPct(3.14)).toBe("+3.1%");
     expect(signedPct(0)).toBe("0.0%");
+  });
+});
+
+describe("ageing index as a ratio", () => {
+  it("shows index / 100 with one decimal, against Portugal", () => {
+    expect(ageingText(417.9, 188.8)).toBe("4.2 older people (65+) per child (Portugal: 1.9)");
+    expect(ageingHelpText(417.9, 188.8)).toBe("Ageing index 418 (Portugal: 189): people aged 65 and over per 100 children under 15. Source: INE.");
+  });
+
+  it("reads naturally below 1 (fewer older people than children) and at exactly 1", () => {
+    expect(ageingText(80, 188.8)).toBe("0.8 older people (65+) per child (Portugal: 1.9)");
+    expect(ageingText(100, 188.8)).toBe("1.0 older people (65+) per child (Portugal: 1.9)");
+  });
+
+  it("covers the real range in the data", () => {
+    // 2025: Montijo 1.1 (111.3) to Vinhais 6.9 (687.0), none below 1. A sanity range, so a refresh can move it.
+    const ratios = Object.values(data.concelhos).map((c) => c.ageing_index! / 100);
+    expect(Math.min(...ratios)).toBeGreaterThan(0.5);
+    expect(Math.max(...ratios)).toBeLessThan(10);
+    expect(ageingText(data.national.ageing_index, data.national.ageing_index)).toMatch(/^1\.9 older people/);
   });
 });
 

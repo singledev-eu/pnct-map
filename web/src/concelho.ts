@@ -43,6 +43,10 @@ export const loadConcelhos = cachedJson<ConcelhoData>(DATA_URL);
 const number = (value: number, digits = 0) => new Intl.NumberFormat(tc.locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
 /** "−14.0%", "+3.1%", "0.0%": one decimal, a real minus sign. */
 export const signedPct = (value: number) => `${new Intl.NumberFormat(tc.locale, { minimumFractionDigits: 1, maximumFractionDigits: 1, signDisplay: "exceptZero" }).format(value).replace("-", "−")}%`;
+/** The ageing-index line: the index as a ratio, one decimal ("4.2 older people (65+) per child (Portugal: 1.9)"). */
+export const ageingText = (index: number, national: number) => tc.ageing(number(index / 100, 1), number(national / 100, 1));
+/** The ⓘ text with the index itself, rounded ("Ageing index 418 (Portugal: 189): …"). */
+export const ageingHelpText = (index: number, national: number) => tc.ageingHelp(number(index), number(national));
 /** One decimal below 100 people/km², none above. */
 const densityText = (value: number) => number(value, value < 100 ? 1 : 0);
 /** "October 2026" from "2026-10-18". */
@@ -73,8 +77,9 @@ export function issueUrl(base: string, c: Pick<Concelho, "code" | "name">, f: Co
 
 function populationBlock(data: ConcelhoData, f: ConcelhoFacts | undefined, partly: boolean): HTMLElement {
   const n = (key: keyof ConcelhoFacts) => (f?.[key] ?? null) as number | null;
-  const help = h("details", { class: "concelho-help" }, h("summary", { "aria-label": tc.ageingHelpLabel }, "ⓘ"), h("p", {}, tc.ageingHelp));
   const ageing = n("ageing_index");
+  const nationalAgeing = data.national.ageing_index;
+  const help = (index: number) => h("details", { class: "concelho-help" }, h("summary", { "aria-label": tc.ageingHelpLabel }, "ⓘ"), h("p", {}, ageingHelpText(index, nationalAgeing)));
   return h(
     "section",
     { class: "concelho-population", "data-testid": "concelho-population" },
@@ -85,7 +90,7 @@ function populationBlock(data: ConcelhoData, f: ConcelhoFacts | undefined, partl
       h("li", { "data-testid": "concelho-people" }, ...value(n("population"), (v) => tc.population(number(v), data.estimate_year))),
       h("li", { "data-testid": "concelho-change" }, ...value(n("census_change"), (v) => tc.censusChange(signedPct(v)))),
       h("li", { "data-testid": "concelho-density" }, ...value(n("density"), (v) => tc.density(densityText(v)))),
-      h("li", { "data-testid": "concelho-ageing" }, ...(ageing === null ? value(null, String) : [tc.ageing(number(ageing), number(data.national.ageing_index)), " ", help])),
+      h("li", { "data-testid": "concelho-ageing" }, ...(ageing === null ? value(null, String) : [ageingText(ageing, nationalAgeing), " ", help(ageing)])),
     ),
     partly ? h("p", { class: "muted concelho-note", "data-testid": "concelho-whole" }, tc.wholeConcelho) : null,
     h("p", { class: "disclaimer" }, tc.populationSource(data.estimate_year)),

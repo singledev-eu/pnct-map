@@ -3,7 +3,8 @@ import type { Concelho, Parish } from "./data";
 import { LAND_FILTERS, type LandFilter, type Operation, type PropertyType, type SearchOptions } from "./idealista";
 import { getConcelhoLinks, getLinks, type PropertyLink } from "./links";
 import { credits, loadProtection, panelAreas, type Protection, type ProtectionData } from "./protected";
-import { formatPct, t } from "./strings";
+import { attachSheet, setSheetState } from "./sheet";
+import { formatPct, sheet, t } from "./strings";
 
 type Child = Node | string | null | undefined | false;
 
@@ -86,12 +87,13 @@ const creditLink = (href: string, text: string) => h("a", { href, target: "_blan
 
 /**
  * Credit line shown in the phone bottom sheet, which covers the map attribution while it is open.
- * Same credits and links as the map attribution and the About panel.
+ * Same credits and links as the map attribution and the About panel. Collapsed behind the header's
+ * ⓘ (like MapLibre's compact attribution), so it doesn't take the sheet's space.
  */
 function sheetCredit(): HTMLElement {
   return h(
     "p",
-    { class: "sheet-credit", "data-testid": "sheet-credit" },
+    { id: "sheet-credit", class: "sheet-credit", "data-testid": "sheet-credit" },
     "Boundaries ",
     creditLink("https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop", "CAOP 2025"),
     " ©\u00a0DGT, CC\u00a0BY\u00a04.0 · ", // non-breaking spaces keep each "©" with its name when the line wraps
@@ -163,11 +165,20 @@ export class Panel {
   private open(title: string, kicker: string, ...body: Child[]): void {
     const close = h("button", { class: "panel-close", type: "button", "aria-label": "Close panel" }, "×");
     close.addEventListener("click", () => this.cb.onClose());
-    this.root.replaceChildren(
-      h("header", { class: "panel-header" }, h("div", {}, h("p", { class: "kicker" }, kicker), h("h2", { "data-testid": "panel-title" }, title)), close),
-      h("div", { class: "panel-body" }, ...body),
-      sheetCredit(),
-    );
+    // Phone sheet only (hidden on wide screens): the drag handle (sheet.ts) and the credits toggle.
+    const handle = h("button", { type: "button", class: "sheet-handle", "data-testid": "sheet-handle" });
+    const credits = h("button", { type: "button", class: "sheet-credit-toggle", "aria-label": sheet.credits, "aria-controls": "sheet-credit", "aria-expanded": "false", "data-testid": "sheet-credit-toggle" }, "i");
+    credits.addEventListener("click", () => {
+      const open = credits.getAttribute("aria-expanded") !== "true";
+      credits.setAttribute("aria-expanded", String(open));
+      this.root.classList.toggle("sheet-credit-open", open);
+    });
+    const header = h("header", { class: "panel-header" }, h("div", {}, h("p", { class: "kicker" }, kicker), h("h2", { "data-testid": "panel-title" }, title)), h("div", { class: "panel-actions" }, credits, close));
+    this.root.replaceChildren(handle, header, sheetCredit(), h("div", { class: "panel-body" }, ...body));
+    this.root.classList.remove("sheet-credit-open");
+    // A new selection in an open sheet keeps its height; a sheet that was closed opens at half.
+    setSheetState(this.root, handle, !this.root.hidden && this.root.dataset.sheet === "full" ? "full" : "half");
+    attachSheet(this.root, handle, [handle, header], () => this.cb.onClose());
     this.root.hidden = false;
     document.body.classList.add("panel-open");
   }

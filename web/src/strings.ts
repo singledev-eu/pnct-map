@@ -111,8 +111,10 @@ export interface ConcelhoStrings {
   /** The Census-to-Census change, e.g. "−14.0% from 2011 to 2021 (Censuses)". */
   censusChange: (pct: string) => string;
   density: (value: string) => string;
-  ageing: (value: string, national: string) => string;
-  ageingHelp: string;
+  /** The ageing index as a ratio (index / 100): "4.2 older people (65+) per child (Portugal: 1.9)". */
+  ageing: (ratio: string, national: string) => string;
+  /** The ⓘ text: the index itself, its definition and the source. */
+  ageingHelp: (index: string, national: string) => string;
   ageingHelpLabel: string;
   /** Under the population block of a partly-PNCT concelho. */
   wholeConcelho: string;
@@ -143,9 +145,10 @@ export const concelhoEn: ConcelhoStrings = {
   population: (people, year) => `${people} people (${year})`,
   censusChange: (pct) => `${pct} from 2011 to 2021 (Censuses)`,
   density: (value) => `${value} people/km²`,
-  ageing: (value, national) => `Ageing index ${value} (Portugal: ${national})`,
-  ageingHelp: "People aged 65 and over per 100 under 15.",
-  ageingHelpLabel: "What is the ageing index?",
+  // Reads the same below 1 ("0.8 older people (65+) per child"): no singular/plural switch needed.
+  ageing: (ratio, national) => `${ratio} older people (65+) per child (Portugal: ${national})`,
+  ageingHelp: (index, national) => `Ageing index ${index} (Portugal: ${national}): people aged 65 and over per 100 children under 15. Source: INE.`,
+  ageingHelpLabel: "About this figure (ageing index)",
   wholeConcelho: "Figures for the whole concelho",
   missing: "—",
   missingNote: "not available",
@@ -167,6 +170,13 @@ export const concelhoEn: ConcelhoStrings = {
 
 /** The active language for the concelho card. */
 export const tc: ConcelhoStrings = concelhoEn;
+
+/** The phone bottom sheet (sheet.ts, panel.ts). */
+export const sheet = {
+  expand: "Expand panel",
+  collapse: "Collapse panel",
+  credits: "Map data credits",
+};
 
 /** Shares below this (but above 0) are mostly boundary mismatches; they show as "<0.5%". The data keeps the exact value. */
 export const SMALL_SHARE = 0.5;
