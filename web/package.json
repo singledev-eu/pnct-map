@@ -1,7 +1,7 @@
 {
   "name": "pnct-map-web",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,8 @@
     "data:protected": "cd .. && uv run make protected-fetch && uv run make protected",
     "test:all": "npm run test:py && npm test && npm run test:e2e",
     "deploy": "npm run test:all && npm run build && npx -y wrangler@4.149.0 pages deploy dist --project-name pnct-map --commit-dirty=true --branch main && node scripts/e2e-flaky-report.mjs",
-    "deploy:preview": "npm run test:all && npm run build && npx -y wrangler@4.149.0 pages deploy dist --project-name pnct-map --commit-dirty=true --branch preview && node scripts/e2e-flaky-report.mjs"
+    "deploy:preview": "npm run test:all && npm run build && npx -y wrangler@4.149.0 pages deploy dist --project-name pnct-map --commit-dirty=true --branch preview && node scripts/e2e-flaky-report.mjs",
+    "shots:readme": "node scripts/readme_shot.mjs"
   },
   "dependencies": {
     "maplibre-gl": "6.11.2",

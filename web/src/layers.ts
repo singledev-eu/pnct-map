@@ -1,5 +1,5 @@
 import type { ExpressionSpecification, LayerSpecification, Map as MapLibreMap, StyleSpecification } from "maplibre-gl";
-import { FADE } from "./camera";
+import { FADE, protectedFade } from "./camera";
 import type { MapData } from "./data";
 import type { OverlayData } from "./protected";
 import type { MapPalette } from "./theme";
@@ -143,13 +143,14 @@ export function patternImages(colors: MapPalette): Record<string, ReturnType<typ
  * visibility "none", so a toggle doesn't rebuild anything. Focus mode drops the parts outside PNCT
  * territory (the pipeline splits every category along the display PNCT outline: `pnct` true/false).
  */
-function overlayLayers(overlays: OverlayState | undefined, focus: boolean, colors: MapPalette): LayerSpecification[] {
+function overlayLayers(overlays: OverlayState | undefined, focus: boolean, level: number, colors: MapPalette): LayerSpecification[] {
   if (!overlays?.loaded) return [];
   const width: ExpressionSpecification = ["interpolate", ["linear"], ["zoom"], 5, 0.6, 9, 1.1, 13, 2];
   return overlays.categories.flatMap<LayerSpecification>((cat) => {
     const color = cat === "natura" ? colors.natura : colors.rnap;
     const layout = { visibility: overlays.visible.has(cat) ? ("visible" as const) : ("none" as const) };
     const filter = withFilter(parishFilter(focus));
+    const fill = overlayFillOpacity(cat, level, colors);
     return [
       {
         id: overlayFill(cat),
@@ -157,7 +158,7 @@ function overlayLayers(overlays: OverlayState | undefined, focus: boolean, color
         source: overlaySource(cat),
         layout,
         ...filter,
-        paint: cat === "natura" ? { "fill-pattern": NATURA_HATCH_IMAGE } : { "fill-color": color, "fill-opacity": colors.rnapTint },
+        paint: cat === "natura" ? { "fill-pattern": NATURA_HATCH_IMAGE, "fill-opacity": fill } : { "fill-color": color, "fill-opacity": fill },
       },
       {
         id: overlayLine(cat),
@@ -165,11 +166,22 @@ function overlayLayers(overlays: OverlayState | undefined, focus: boolean, color
         source: overlaySource(cat),
         layout,
         ...filter,
-        paint: { "line-color": color, "line-width": width, "line-opacity": 0.9, ...(cat === "natura" ? { "line-dasharray": [3, 2] } : {}) },
+        paint: { "line-color": color, "line-width": width, "line-opacity": overlayLineOpacity(level), ...(cat === "natura" ? { "line-dasharray": [3, 2] } : {}) },
       },
     ];
   });
 }
+
+/**
+ * Zoom fade of the overlays (camera.ts protectedFade): 0 up to `start`, full at the parish level. At
+ * the country view the hatch and outlines would clutter the map and compete with the PNCT fill.
+ */
+function protectedLevel(level: number, value: number): ExpressionSpecification {
+  const [start, end] = protectedFade(level);
+  return ["interpolate", ["linear"], ["zoom"], start, 0, end, value];
+}
+const overlayFillOpacity = (cat: string, level: number, colors: MapPalette) => protectedLevel(level, cat === "natura" ? 1 : colors.rnapTint);
+const overlayLineOpacity = (level: number) => protectedLevel(level, 0.9);
 
 /** The app's map layers, bottom to top, for the current filter, level zoom, theme palette and overlays. */
 export function appLayers(filter: FilterState, level: number, colors: MapPalette, overlays?: OverlayState): LayerSpecification[] {
@@ -201,7 +213,7 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
         "fill-opacity": parishFillOpacity(filter, level),
       },
     },
-    ...overlayLayers(overlays, filter.focus, colors),
+    ...overlayLayers(overlays, filter.focus, level, colors),
     {
       id: PARISH_LINE,
       type: "line",
@@ -278,12 +290,12 @@ export function addLayers(map: MapLibreMap, data: MapData, filter: FilterState, 
  * Adds the overlay sources and layers (OverlayState.loaded) below the parish lines, as appLayers
  * orders them. `overlays.loaded` must already be true.
  */
-export function addOverlays(map: MapLibreMap, data: OverlayData, overlays: OverlayState, filter: FilterState, colors: MapPalette): void {
+export function addOverlays(map: MapLibreMap, data: OverlayData, overlays: OverlayState, filter: FilterState, level: number, colors: MapPalette): void {
   for (const cat of overlays.categories) {
     if (!map.getSource(overlaySource(cat))) map.addSource(overlaySource(cat), { type: "geojson", data: data[cat], maxzoom: 12 });
   }
   setPatternImages(map, colors);
-  for (const layer of overlayLayers(overlays, filter.focus, colors)) if (!map.getLayer(layer.id)) map.addLayer(layer, PARISH_LINE);
+  for (const layer of overlayLayers(overlays, filter.focus, level, colors)) if (!map.getLayer(layer.id)) map.addLayer(layer, PARISH_LINE);
 }
 
 /** Shows or hides each category's layers (no-op before the overlay is loaded). */
@@ -322,10 +334,16 @@ export function setPatternImages(map: MapLibreMap, colors: MapPalette): void {
   }
 }
 
-/** Re-applies filters and paint after a filter change or a new level zoom (viewport resize). */
-export function applyFilter(map: MapLibreMap, filter: FilterState, level: number, overlayCategories: readonly string[] = []): void {
+/**
+ * Re-applies filters and paint after a filter change or a new level zoom (viewport resize). The
+ * overlays' zoom fade follows the level zoom, so it needs the palette for the RNAP tint.
+ */
+export function applyFilter(map: MapLibreMap, filter: FilterState, level: number, colors: MapPalette, overlayCategories: readonly string[] = []): void {
   for (const cat of overlayCategories) {
-    for (const id of [overlayFill(cat), overlayLine(cat)]) if (map.getLayer(id)) map.setFilter(id, parishFilter(filter.focus));
+    if (!map.getLayer(overlayFill(cat))) continue;
+    for (const id of [overlayFill(cat), overlayLine(cat)]) map.setFilter(id, parishFilter(filter.focus));
+    map.setPaintProperty(overlayFill(cat), "fill-opacity", overlayFillOpacity(cat, level, colors));
+    map.setPaintProperty(overlayLine(cat), "line-opacity", overlayLineOpacity(level));
   }
   for (const id of [PARISH_FILL, PARISH_LINE, PARISH_HIGHLIGHT]) map.setFilter(id, parishFilter(filter.focus));
   for (const id of [CONCELHO_FILL, CONCELHO_LINE, CONCELHO_HIGHLIGHT]) map.setFilter(id, concelhoFilter(filter.focus));

@@ -14,9 +14,12 @@ Features:
   - A district filter.
   - **Only PNCT** (focus mode): it hides everything outside PNCT territory, and those parishes don't respond to hover, clicks or search.
 - **Idealista links:** for each PNCT parish, a polygon search link, with a selector for buying or renting, property type and land filters. When the whole concelho is PNCT, the municipality page is linked too.
+- **Nature protection:** RNAP (ICNF) and Natura 2000 (EEA) overlays, faded in once zoomed past the country view, and the share of each parish or concelho under protection in its panel. A "?" next to the legend heading explains what protection means for buying land.
 - **Shareable views:** the map view, the selection, the filters and the selector all live in the URL (see [URL parameters](#url-parameters)).
 
-![The national map view, with PNCT parishes shaded](docs/screenshots/desktop-national.png)
+![Peneda-Gerês with the protected-areas overlays on: PNCT parishes shaded, the RNAP outline and the Natura 2000 hatch, and the Soajo parish panel with its share under protection](docs/screenshots/desktop-protected.jpg)
+
+The screenshot is generated with `npm run shots:readme` (in `web/`, with `npm run preview` running).
 
 ## Quick start (map only)
 

@@ -1,5 +1,6 @@
 import type { LayerSpecification, StyleSpecification } from "maplibre-gl";
 import { describe, expect, it } from "vitest";
+import { LEVEL_OFFSET, PROTECTED_FADE, protectedFade } from "./camera";
 import { appLayers, hatchImage, NATURA_HATCH_IMAGE, overlayFill, overlayLine, overlaySource, patternImages, withAppLayers, type FilterState, type OverlayState } from "./layers";
 import { attributionHtml, CATEGORIES, CATEGORY_IDS, credits, panelAreas } from "./protected";
 import { formatPct, t } from "./strings";
@@ -67,12 +68,28 @@ describe("overlay layers", () => {
     }
   });
 
+  it("fade in with zoom up to the level zoom, from 0 at the country view to their full strength", () => {
+    const level = 7.66; // a phone's minZoom (5.66) + LEVEL_OFFSET
+    const [start, end] = protectedFade(level);
+    expect(end).toBe(level);
+    expect(end - start).toBe(PROTECTED_FADE);
+    expect(start).toBeCloseTo(level - LEVEL_OFFSET + 0.5); // minZoom + 0.5
+    for (const theme of ["light", "dark"] as const) {
+      const layers = appLayers(FILTER, level, PALETTES[theme], overlays(CATEGORY_IDS));
+      const fade = (value: number) => ["interpolate", ["linear"], ["zoom"], start, 0, end, value];
+      for (const cat of CATEGORY_IDS) {
+        expect(layer(layers, overlayLine(cat)).paint).toMatchObject({ "line-opacity": fade(0.9) });
+        expect(layer(layers, overlayFill(cat)).paint).toMatchObject({ "fill-opacity": fade(cat === "natura" ? 1 : PALETTES[theme].rnapTint) });
+      }
+    }
+  });
+
   it("use the theme palette", () => {
     for (const theme of ["light", "dark"] as const) {
       const layers = appLayers(FILTER, 7, PALETTES[theme], overlays(CATEGORY_IDS));
       if (CATEGORY_IDS.includes("rnap")) expect(layer(layers, overlayLine("rnap")).paint).toMatchObject({ "line-color": PALETTES[theme].rnap });
       if (CATEGORY_IDS.includes("natura")) {
-        expect(layer(layers, overlayFill("natura")).paint).toEqual({ "fill-pattern": NATURA_HATCH_IMAGE });
+        expect(layer(layers, overlayFill("natura")).paint).toMatchObject({ "fill-pattern": NATURA_HATCH_IMAGE });
         expect(layer(layers, overlayLine("natura")).paint).toMatchObject({ "line-color": PALETTES[theme].natura, "line-dasharray": [3, 2] });
       }
     }

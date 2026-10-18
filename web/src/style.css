@@ -571,6 +571,68 @@ body:not([data-level="parish"]) .legend-parish {
   font-weight: 600;
 }
 
+.legend-heading-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-heading-row .legend-heading {
+  margin: 0;
+}
+
+/* The "?" explainer button (legend.ts mountExplainer): an 18 px circle in a larger tap area. */
+.help-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: -4px -6px -4px -4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.help-button::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+
+.help-button:hover,
+.help-button[aria-expanded="true"] {
+  color: var(--accent-strong);
+}
+
+.help-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: 50%;
+}
+
+/* An overlay is on but faded out at country zoom (main.ts updateZoomHint). */
+.legend-hint {
+  max-width: 230px;
+  margin: 2px 0 0;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.legend-hint[hidden] {
+  display: none;
+}
+
 .legend-overlay {
   cursor: pointer;
   user-select: none;
@@ -621,6 +683,93 @@ body:not([data-level="parish"]) .legend-parish {
   margin: 4px 0 0;
   font-size: 11px;
   color: var(--muted);
+}
+
+/* ---- protection explainer (legend.ts mountExplainer) ------------------------------ */
+
+/* Wide screens: a popover beside the legend, bottom-aligned with it (--explainer-* set in legend.ts). */
+.explainer {
+  position: fixed;
+  z-index: 20;
+  left: var(--explainer-left, 12px);
+  bottom: var(--explainer-bottom, 12px);
+  box-sizing: border-box;
+  width: min(360px, calc(100vw - var(--explainer-left, 12px) - 12px));
+  max-height: calc(100vh - var(--explainer-bottom, 12px) - 76px);
+  overflow-y: auto;
+  padding: 12px 16px 14px;
+  background: var(--panel-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.explainer:focus {
+  outline: none;
+}
+
+.explainer:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.explainer[hidden],
+.explainer-backdrop[hidden] {
+  display: none;
+}
+
+.explainer-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.explainer h2 {
+  flex: 1;
+  margin: 2px 0 8px;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.explainer-close {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  margin: -6px -10px 0 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.explainer-close:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+
+.explainer ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.explainer li {
+  margin-bottom: 6px;
+}
+
+.explainer-footnote {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+/* Phones only (see the media query below). */
+.explainer-backdrop {
+  display: none;
 }
 
 /* ---- nature protection (panel) ------------------------------------------------- */
@@ -911,6 +1060,47 @@ dialog a {
 
   .legend-collapsed .legend-toggle {
     margin: 0;
+  }
+
+  /* The explainer is a bottom sheet over a backdrop, like the panel. */
+  .explainer {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    max-height: 75vh;
+    padding: 0 16px calc(14px + env(safe-area-inset-bottom));
+    border-radius: 16px 16px 0 0;
+    border-bottom: 0;
+  }
+
+  .explainer::before {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 4px;
+    margin: 8px auto 6px;
+    border-radius: 2px;
+    background: var(--handle);
+  }
+
+  .explainer-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 19;
+    background: var(--backdrop);
+  }
+
+  .explainer-close {
+    width: 44px;
+    height: 44px;
+    margin: -10px -12px 0 0;
+  }
+
+  .help-button {
+    width: 32px;
+    height: 32px;
   }
 
   .panel-open .legend,

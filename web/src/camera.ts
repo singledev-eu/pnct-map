@@ -17,6 +17,15 @@ export const LEVEL_OFFSET = 2;
 export const BOUNDS_MARGIN = 1.5;
 /** Half-width of the zoom band in which the concelho and parish fills cross-fade. */
 export const FADE = 0.25;
+/**
+ * The protected-areas overlays fade in over this many zoom levels and reach full strength at the
+ * parish level (minZoom + LEVEL_OFFSET): invisible from the country view (minZoom) to minZoom + 0.5,
+ * so a small pinch at the country view stays clean, and full wherever a concelho click lands.
+ */
+export const PROTECTED_FADE = 1.5;
+
+/** Zoom range [start, end] over which the overlays fade in, for a level zoom (CameraLimits.levelZoom). */
+export const protectedFade = (levelZoom: number): [number, number] => [levelZoom - PROTECTED_FADE, levelZoom];
 
 export interface Padding {
   top: number;

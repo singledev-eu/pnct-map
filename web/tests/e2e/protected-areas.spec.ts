@@ -293,6 +293,93 @@ test("a live theme switch keeps the overlays", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+// The overlays fade in with zoom (layers.ts protectedLevel, camera.ts protectedFade): invisible at
+// the country view, full strength from the parish level. The evaluated paint values at the current zoom.
+const OPACITY_PROPS = CATS.flatMap((c) => [`protected-${c}-fill:fill-opacity`, `protected-${c}-line:line-opacity`]);
+const overlayOpacity = (page: Page) =>
+  page.evaluate((props) => {
+    const map = window.pnctMap;
+    return Object.fromEntries(
+      props.map((key) => {
+        const [id, prop] = key.split(":");
+        const value = map.getLayer(id).paint.get(prop);
+        return [key, typeof value === "number" ? value : value.constantOr(NaN)];
+      }),
+    );
+  }, OPACITY_PROPS);
+const zoomHint = (page: Page) => page.getByTestId("overlay-zoom-hint");
+const zoomTo = async (page: Page, zoom: number, center: [number, number] = [-8.13, 41.74]) => {
+  await page.evaluate(([zoom, center]) => window.pnctMap.jumpTo({ zoom, center }), [zoom, center] as const);
+  await waitForParishView(page);
+};
+
+for (const scheme of ["light", "dark"] as const) {
+  test(`${scheme}: the overlays are faded out at the country view, full when zoomed in, and the legend hint follows`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme: scheme });
+    const errors = trackErrors(page);
+    await page.goto("/#pa=rnap,natura");
+    await waitForParishView(page);
+    await expectOverlays(page, CATS);
+    const minZoom = await page.evaluate(() => window.pnctMap.getMinZoom());
+    expect(await page.evaluate(() => window.pnctMap.getZoom())).toBeCloseTo(minZoom, 2);
+    for (const [key, value] of Object.entries(await overlayOpacity(page))) expect(value, key).toBeCloseTo(0, 3);
+    await expect(zoomHint(page)).toBeVisible();
+    await expect(zoomHint(page)).toHaveText("Zoom in to see protected areas");
+
+    // Still invisible half a level in (the start of the fade), partly faded in between.
+    await zoomTo(page, minZoom + 0.4);
+    for (const value of Object.values(await overlayOpacity(page))) expect(value).toBeCloseTo(0, 3);
+    await expect(zoomHint(page)).toBeVisible();
+    await zoomTo(page, minZoom + 1.25);
+    const mid = await overlayOpacity(page);
+    expect(mid["protected-natura-fill:fill-opacity"]).toBeGreaterThan(0.2);
+    expect(mid["protected-natura-fill:fill-opacity"]).toBeLessThan(0.8);
+    await expect(zoomHint(page)).toBeHidden();
+
+    // Full strength from the parish level (minZoom + 2) on: the 0.4.0 values.
+    const tint = scheme === "light" ? 0.08 : 0.16;
+    for (const zoom of [minZoom + 2, 11]) {
+      await zoomTo(page, zoom);
+      expect(await overlayOpacity(page)).toEqual({
+        "protected-rnap-fill:fill-opacity": tint,
+        "protected-rnap-line:line-opacity": 0.9,
+        "protected-natura-fill:fill-opacity": 1,
+        "protected-natura-line:line-opacity": 0.9,
+      });
+      await expect(zoomHint(page)).toBeHidden();
+    }
+
+    // Back out to the country view: faded out again, hint back.
+    await zoomTo(page, minZoom);
+    for (const value of Object.values(await overlayOpacity(page))) expect(value).toBeCloseTo(0, 3);
+    await expect(zoomHint(page)).toBeVisible();
+    expect(errors).toEqual([]);
+  });
+}
+
+test("the zoom hint shows only while an overlay is on, and the fade survives a theme switch", async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.goto("/");
+  await waitForParishView(page);
+  await expect(zoomHint(page)).toBeHidden();
+  await toggle(page, "natura").check();
+  await expectOverlays(page, ["natura"]);
+  await expect(zoomHint(page)).toBeVisible();
+  await toggle(page, "natura").uncheck();
+  await expectOverlays(page, []);
+  await expect(zoomHint(page)).toBeHidden();
+
+  await toggle(page, "rnap").check();
+  await expectOverlays(page, ["rnap"]);
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect(page.locator("body")).toHaveAttribute("data-map-theme", "dark");
+  await expectOverlays(page, ["rnap"]);
+  for (const value of Object.values(await overlayOpacity(page))) expect(value).toBeCloseTo(0, 3);
+  await zoomTo(page, 11);
+  expect((await overlayOpacity(page))["protected-rnap-fill:fill-opacity"]).toBe(0.16);
+  expect(errors).toEqual([]);
+});
+
 test("the map attribution and the About panel credit ICNF and EEA", async ({ page }) => {
   await page.goto("/");
   await waitForParishes(page);

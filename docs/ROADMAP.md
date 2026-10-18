@@ -27,7 +27,7 @@ Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (20
 
 ## Next
 
-- Possible 0.4.1: fade the Natura 2000 hatch at country zoom (the user decides after seeing 0.4.0 on the phone).
+- 0.4.1 (branch `feat/0.4.1-protection-polish`, on the preview): the legend's "?" explainer, the protection layers faded out at country zoom with a zoom hint, and the new README screenshot. Merge, tag and deploy to production after the user checks it on the phone ([report](reports/0.4.1-report.md)).
 - Confirm ICNF's reuse terms for RNAP (and for BDG/RN2000, if Natura switches source). Until then RNAP is credited as "reuse terms not confirmed"; dropping it is one line in `scripts/protected_config.py`.
 
 ## Backlog

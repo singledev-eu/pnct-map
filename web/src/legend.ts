@@ -44,16 +44,18 @@ export function mountLegend(legend: HTMLElement, narrow: MediaQueryList): void {
 
 /**
  * The protected-areas toggles (one per category of protected.meta.json, all off by default) and the
- * source note with the disclaimer, rendered into `container` in the legend body. `onChange` gets the
- * category and its new state. Returns `sync`, which re-syncs the checkboxes (hash navigation), and
- * `setLoading`, which marks the rows of the given categories as loading (spinner and "Loading…",
- * aria-busy) while the overlay file is fetched on the first switch-on.
+ * source note with the disclaimer, rendered into `container` in the legend body, under a heading with
+ * the "?" explainer (mountExplainer). `onChange` gets the category and its new state. Returns `sync`,
+ * which re-syncs the checkboxes (hash navigation), `setLoading`, which marks the rows of the given
+ * categories as loading (spinner and "Loading…", aria-busy) while the overlay file is fetched on the
+ * first switch-on, and `setZoomHint`, which shows "Zoom in to see protected areas" (main.ts: while an
+ * overlay is on but faded out at country zoom).
  */
 export function mountOverlayToggles(
   container: HTMLElement,
   isOn: (cat: string) => boolean,
   onChange: (cat: string, on: boolean) => void,
-): { sync: () => void; setLoading: (cats: ReadonlySet<string>) => void } {
+): { sync: () => void; setLoading: (cats: ReadonlySet<string>) => void; setZoomHint: (show: boolean) => void } {
   const inputs = CATEGORIES.map((c) => {
     const input = h("input", { type: "checkbox", "data-overlay": c.id, "data-testid": `overlay-${c.id}` });
     input.addEventListener("change", () => onChange(c.id, input.checked));
@@ -62,9 +64,13 @@ export function mountOverlayToggles(
     const row = h("label", { class: "legend-row legend-overlay" }, input, h("span", { class: `swatch swatch-${c.id}`, "aria-hidden": "true" }), categoryLabel(c), loading);
     return { id: c.id, input, row, loading };
   });
+  const help = h("button", { type: "button", class: "help-button", "aria-label": t.explainer.button, "data-testid": "protection-help" }, "?");
+  const hint = h("p", { class: "legend-hint", "data-testid": "overlay-zoom-hint" }, t.zoomHint);
+  hint.hidden = true;
   container.replaceChildren(
-    h("p", { class: "legend-heading" }, t.legendHeading),
+    h("div", { class: "legend-heading-row" }, h("p", { class: "legend-heading" }, t.legendHeading), help),
     ...inputs.map((i) => i.row),
+    hint,
     h("p", { class: "legend-note", "data-testid": "overlay-note" }, `${t.legendSources}: ${CATEGORIES.map(sourceLabel).join(" · ")}. ${t.disclaimer}`),
   );
   const sync = () => {
@@ -77,5 +83,81 @@ export function mountOverlayToggles(
     }
   };
   sync();
-  return { sync, setLoading };
+  mountExplainer(help);
+  return { sync, setLoading, setZoomHint: (show) => (hint.hidden = !show) };
+}
+
+/** `text` with *emphasis* as <em> (explainer strings). */
+function rich(text: string): (string | HTMLElement)[] {
+  return text.split(/(\*[^*]+\*)/).filter(Boolean).map((part) => (/^\*[^*]+\*$/.test(part) ? h("em", {}, part.slice(1, -1)) : part));
+}
+
+/**
+ * The "?" explainer: what protection means for buying land (strings.ts). A popover beside the legend
+ * on wide screens, a bottom sheet over a backdrop on phones (style.css). Esc, a click or tap outside,
+ * or its close button closes it, and focus goes back to the "?" button; tabbing out of it closes it
+ * and leaves focus where it went.
+ */
+export function mountExplainer(button: HTMLButtonElement): void {
+  const titleId = "explainer-title";
+  const close = h("button", { type: "button", class: "explainer-close", "aria-label": t.explainer.close }, "×");
+  const pop = h(
+    "div",
+    { id: "protection-explainer", class: "explainer", role: "dialog", "aria-labelledby": titleId, tabindex: "-1", "data-testid": "protection-explainer" },
+    h("div", { class: "explainer-header" }, h("h2", { id: titleId }, t.explainer.title), close),
+    h("ul", {}, ...t.explainer.items.map((item) => h("li", {}, h("strong", {}, ...rich(item.lead)), " ", ...rich(item.body)))),
+    h("p", { class: "explainer-footnote" }, h("em", {}, t.explainer.footnote)),
+  );
+  const backdrop = h("div", { class: "explainer-backdrop", "aria-hidden": "true" });
+  pop.hidden = backdrop.hidden = true;
+  button.setAttribute("aria-haspopup", "dialog");
+  button.setAttribute("aria-controls", pop.id);
+  button.setAttribute("aria-expanded", "false");
+  document.body.append(backdrop, pop);
+
+  // Wide screens: beside the legend, bottom-aligned with it (style.css reads these on > 640 px only).
+  const place = () => {
+    const legend = button.closest(".legend")!.getBoundingClientRect();
+    pop.style.setProperty("--explainer-left", `${Math.round(legend.right + 8)}px`);
+    pop.style.setProperty("--explainer-bottom", `${Math.round(window.innerHeight - legend.bottom)}px`);
+  };
+  const isOpen = () => !pop.hidden;
+  const open = () => {
+    place();
+    pop.hidden = backdrop.hidden = false;
+    button.setAttribute("aria-expanded", "true");
+    pop.focus();
+    document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("keydown", onKeyDown, true);
+    window.addEventListener("resize", place);
+  };
+  const hide = (refocus: boolean) => {
+    if (!isOpen()) return;
+    pop.hidden = backdrop.hidden = true;
+    button.setAttribute("aria-expanded", "false");
+    document.removeEventListener("pointerdown", onPointerDown, true);
+    document.removeEventListener("keydown", onKeyDown, true);
+    window.removeEventListener("resize", place);
+    if (refocus) button.focus();
+  };
+  // A press on the "?" button itself is left to its click handler, which toggles. The browser moves
+  // focus on the mousedown that follows (for a tap, after the pointerup), so focus goes back once
+  // the press has ended.
+  const onPointerDown = (e: PointerEvent) => {
+    const target = e.target as Node;
+    if (pop.contains(target) || button.contains(target)) return;
+    hide(false);
+    document.addEventListener("pointerup", () => setTimeout(() => button.focus()), { once: true, capture: true });
+  };
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key !== "Escape") return;
+    e.stopPropagation();
+    hide(true);
+  };
+  pop.addEventListener("focusout", (e) => {
+    const next = e.relatedTarget as Node | null;
+    if (next && !pop.contains(next) && next !== button) hide(false);
+  });
+  button.addEventListener("click", () => (isOpen() ? hide(true) : open()));
+  close.addEventListener("click", () => hide(true));
 }

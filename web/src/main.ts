@@ -3,7 +3,7 @@ import "./style.css";
 import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent, type StyleSpecification } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { basemapStyle } from "./basemap";
-import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, MAINLAND, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
+import { BOUNDS_MARGIN, cameraLimits, protectedFade, constrainView, fitCenter, fitZoom, MAINLAND, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
 import { addLayers, addOverlays, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, overlaySource, PARISH_FILL, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, withAppLayers, type FilterState, type OverlayState } from "./layers";
@@ -264,8 +264,9 @@ function start(data: MapData): void {
   document.body.dataset.level = level;
   map.on("zoom", updateLevel);
   onLimits = () => {
-    applyFilter(map, filter, limits.levelZoom, CATEGORY_IDS);
+    applyFilter(map, filter, limits.levelZoom, PALETTES[theme], CATEGORY_IDS);
     updateLevel();
+    updateZoomHint();
   };
 
   /** The PNCT parish or concelho under `point` at the current level; hidden features don't count. */
@@ -369,7 +370,7 @@ function start(data: MapData): void {
 
   districtSelect.addEventListener("change", () => {
     filter.district = districtSelect.value || null;
-    applyFilter(map, filter, limits.levelZoom, CATEGORY_IDS);
+    applyFilter(map, filter, limits.levelZoom, PALETTES[theme], CATEGORY_IDS);
     writeHash({ d: filter.district });
     fit(filter.district ? data.districtBounds.get(filter.district) : MAINLAND, 10);
   });
@@ -389,7 +390,7 @@ function start(data: MapData): void {
     }
     if (map.getLayer(PARISH_FILL)) {
       document.body.dataset.mapIdle = "false"; // the filter change re-renders; "idle" sets it back
-      applyFilter(map, filter, limits.levelZoom, CATEGORY_IDS);
+      applyFilter(map, filter, limits.levelZoom, PALETTES[theme], CATEGORY_IDS);
     }
     writeHash({ focus: on ? "1" : null, pnct: null });
     if (on) clearHover(); // the next mousemove restores it if the feature is still shown
@@ -401,7 +402,14 @@ function start(data: MapData): void {
 
   // ---- protected areas ----------------------------------------------------------
   // body data-overlays lists the categories shown once their layers are in the style (e2e waits on it).
-  const markOverlays = () => (document.body.dataset.overlays = overlays.loaded ? [...overlays.visible].sort().join(",") : "");
+  const markOverlays = () => {
+    document.body.dataset.overlays = overlays.loaded ? [...overlays.visible].sort().join(",") : "";
+    updateZoomHint();
+  };
+  // An overlay can be on but faded out (layers.ts protectedLevel): below the start of the fade, the
+  // legend says to zoom in.
+  const updateZoomHint = () => toggles.setZoomHint(overlays.visible.size > 0 && map.getZoom() < protectedFade(limits.levelZoom)[0]);
+  map.on("zoom", () => updateZoomHint());
   /** Applies overlays.visible: loads and adds the overlay on first use, then shows/hides the layers. */
   async function syncOverlays(): Promise<void> {
     writeHash({ pa: CATEGORY_IDS.filter((c) => overlays.visible.has(c)).join(",") || null });
@@ -423,7 +431,7 @@ function start(data: MapData): void {
       }
       if (!overlays.loaded) {
         overlays.loaded = true;
-        addOverlays(map, overlayData, overlays, filter, PALETTES[theme]);
+        addOverlays(map, overlayData, overlays, filter, limits.levelZoom, PALETTES[theme]);
       }
       toggles.setLoading(new Set());
     }
@@ -448,7 +456,7 @@ function start(data: MapData): void {
   themeStyle = (previous, next) => withAppLayers(previous, basemapStyle(theme)(previous, next), appLayers(filter, limits.levelZoom, PALETTES[theme], overlays));
   map.on("style.load", () => {
     if (!map.getSource(PARISH_SOURCE)) addLayers(map, data, filter, limits.levelZoom, PALETTES[theme]);
-    if (overlayData && overlays.loaded && !map.getSource(overlaySource(CATEGORY_IDS[0]))) addOverlays(map, overlayData, overlays, filter, PALETTES[theme]);
+    if (overlayData && overlays.loaded && !map.getSource(overlaySource(CATEGORY_IDS[0]))) addOverlays(map, overlayData, overlays, filter, limits.levelZoom, PALETTES[theme]);
     setPatternImages(map, PALETTES[theme]);
     clearHover();
     setSelectedIds(selectedIds, groupIds, selectedConcelhoId);
