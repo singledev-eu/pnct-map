@@ -40,9 +40,17 @@ COLUMNS = ["dico", "name", "website", "email", "phone", "urbanism_url", "pdm_url
 URL_FIELDS = ["website", "urbanism_url", "pdm_url", "source_url"]
 EMAIL = re.compile(r"^[a-z0-9._%+-]+@([a-z0-9-]+(?:\.[a-z0-9-]+)+)$")
 PHONE = re.compile(r"^\+351 [29]\d{2} \d{3} \d{3}$")
-# Mailbox names that usually belong to a person (first.last@); generic ones (geral, municipio, ...)
-# pass, and so do institutional prefixes such as cm.sever@ (Sever do Vouga's only published mailbox).
-PERSONAL = re.compile(r"^(?!(?:cm|mun|camara|municipio)\.)[a-z]+\.[a-z]+@")
+# Mailbox names that usually belong to a person (first.last@). Generic ones (geral, municipio, ...)
+# pass, and so do dotted names with an institutional part: cm.sever@ (Sever do Vouga),
+# gi.cmv@ (Vimioso), secretaria.gap@ (Penamacor's "Geral"). Only a heuristic: the rule is to record
+# the mailbox the câmara publishes as its general one, never to swap it to satisfy this check.
+INSTITUTIONAL = {"cm", "cmv", "mun", "camara", "municipio", "geral", "secretaria", "gap", "gi", "expediente", "gabinete", "atendimento", "info"}
+DOTTED = re.compile(r"^([a-z]+)\.([a-z]+)@")
+
+
+def looks_personal(email: str) -> bool:
+    m = DOTTED.match(email)
+    return bool(m) and not {m.group(1), m.group(2)} & INSTITUTIONAL
 # Never a câmara's institutional address.
 FREEMAIL = {"gmail.com", "hotmail.com", "outlook.com", "sapo.pt", "yahoo.com", "live.com.pt", "iol.pt", "netcabo.pt"}
 WARNING = "warning: "
@@ -81,7 +89,7 @@ def check_row(row: dict[str, str], caop: dict[str, str]) -> list[str]:
         elif m.group(1).removeprefix("www.") != host(row["website"]):
             # Some câmaras publish their mailbox on another of their domains (municipioamares.pt for amares.pt).
             problems.append(f"{WARNING}email domain {m.group(1)} is not the website's ({host(row['website'])})")
-        if PERSONAL.match(row["email"]):
+        if looks_personal(row["email"]):
             problems.append(f"email looks personal: {row['email']}")
     if not PHONE.match(row["phone"]):
         problems.append(f"phone malformed (want '+351 2xx xxx xxx'): {row['phone']!r}")

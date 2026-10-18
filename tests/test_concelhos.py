@@ -193,7 +193,7 @@ def test_contacts_csv_passes_the_offline_checks(contact_rows, caop):
 
 
 def test_no_personal_emails(contact_rows):
-    assert [r["email"] for r in contact_rows if vc.PERSONAL.match(r["email"])] == []
+    assert [r["email"] for r in contact_rows if vc.looks_personal(r["email"])] == []
 
 
 @pytest.mark.parametrize(
@@ -204,6 +204,7 @@ def test_no_personal_emails(contact_rows):
         ({"email": "geral@gmail.com"}, "free-mail"),
         ({"email": "geral@municipio-agueda.pt"}, "warning: email domain"),
         ({"email": "cm.agueda@cm-agueda.pt"}, None),  # institutional prefix, not a person
+        ({"email": "secretaria.gap@cm-agueda.pt"}, None),  # Penamacor's "Geral" style
         ({"phone": "234 610 070"}, "phone malformed"),
         ({"name": "Agueda"}, "!= CAOP"),
         ({"pdm_url": "http://www.cm-agueda.pt/pages/81"}, "not an https URL"),
