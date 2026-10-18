@@ -714,7 +714,15 @@
    "census_change": -15.3,
    "density": 13.1,
    "ageing_index": 485.3,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-alfandegadafe.pt/",
+    "email": "municipio@cm-alfandegadafe.pt",
+    "phone": "+351 279 468 120",
+    "urbanism_url": "https://www.cm-alfandegadafe.pt/viver/servicos-municipais/urbanismo",
+    "pdm_url": "https://www.cm-alfandegadafe.pt/viver/servicos-municipais/ordenamento-do-territorio/pdm-pecas-do-plano-2025",
+    "as_of": "2026-10-18",
+    "notes": "General mailbox is municipio@ (labelled 'Contacto Geral' on the contacts page). PDM page 'Peças do Plano (2025)': 2.ª revisão with regulation and plantas; the process page lists the DRE approval notice."
+   }
   },
   "0402": {
    "population": 38309,
@@ -723,7 +731,15 @@
    "census_change": -2.1,
    "density": 32.6,
    "ageing_index": 255.2,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-braganca.pt/",
+    "email": "cmb@cm-braganca.pt",
+    "phone": "+351 273 304 200",
+    "urbanism_url": "https://www.cm-braganca.pt/servicos/urbanismo-e-reablitacao-urbana/urbanismo",
+    "pdm_url": "https://www.cm-braganca.pt/servicos/urbanismo-e-reablitacao-urbana/urbanismo/plano-diretor-municipal",
+    "as_of": "2026-10-18",
+    "notes": "Only published general mailbox is cmb@ (no geral@). Urbanism page is titled 'Normas e Orientações' (forms and declarations) under Urbanismo e Reabilitação Urbana. PDM page: approval notice, regulation and plantas, plus the notice of the 1.ª alteração."
+   }
   },
   "0403": {
    "population": 5226,
@@ -732,7 +748,15 @@
    "census_change": -13.9,
    "density": 18.7,
    "ageing_index": 429.4,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-carrazedadeansiaes.pt/",
+    "email": "geral@cmca.pt",
+    "phone": "+351 278 610 200",
+    "urbanism_url": "https://www.cm-carrazedadeansiaes.pt/balcao-virtual/balcao-do-urbanismo/urbanismo-normas-tecnicas",
+    "pdm_url": "https://www.cm-carrazedadeansiaes.pt/viver/planeamento/plano-diretor-municipal",
+    "as_of": "2026-10-18",
+    "notes": "Email is on cmca.pt (the câmara's short domain, shown in the site footer and contacts page), not cm-carrazedadeansiaes.pt. The 'Projetos / Obras' page only says 'Brevemente Disponível', so the Balcão do Urbanismo page is used. PDM page: revision with DR publication, regulamento and plantas."
+   }
   },
   "0404": {
    "population": 2958,
@@ -741,7 +765,15 @@
    "census_change": -14.9,
    "density": 12.1,
    "ageing_index": 354.9,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-freixoespadacinta.pt/",
+    "email": "geral@cm-fec.pt",
+    "phone": "+351 279 658 160",
+    "urbanism_url": null,
+    "pdm_url": "https://www.cm-freixoespadacinta.pt/ver.php?cod=0E0D0N",
+    "as_of": "2026-10-18",
+    "notes": "Email is on cm-fec.pt (site footer). 279 658 165 is the fax. No urbanism service page found (Ação Municipal > Urbanismo e Ambiente has none). PDM page 'Urbanização': regulation, plantas and publication of the PDM and its alteration; no version stated. Old PHP site."
+   }
   },
   "0405": {
    "population": 13846,
@@ -750,7 +782,15 @@
    "census_change": -9.7,
    "density": 19.8,
    "ageing_index": 381.4,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-macedodecavaleiros.pt/",
+    "email": "geral@cm-macedodecavaleiros.pt",
+    "phone": "+351 278 420 420",
+    "urbanism_url": "https://www.cm-macedodecavaleiros.pt/informar/urbanismo",
+    "pdm_url": "https://www.cm-macedodecavaleiros.pt/investir/plano-diretor-municipal",
+    "as_of": "2026-10-18",
+    "notes": "PDM page: revision published as Aviso 11026/2015, in force from 2015-09-30, with regulation and plantas. A new revision is in public discussion (Aviso 12597/2026/2) on separate pages."
+   }
   },
   "0406": {
    "population": 6065,
@@ -759,7 +799,15 @@
    "census_change": -13.6,
    "density": 12.4,
    "ageing_index": 469.2,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-mdouro.pt/",
+    "email": "geral@cm-mdouro.pt",
+    "phone": "+351 273 430 020",
+    "urbanism_url": "https://www.cm-mdouro.pt/balcao-virtual/urbanismo",
+    "pdm_url": "https://www.cm-mdouro.pt/balcao-virtual/urbanismo/planos-de-ordenamento?folders_list_10_folder_id=279",
+    "as_of": "2026-10-18",
+    "notes": "The script's domain cm-miranda-douro.pt now serves casino spam, not the câmara; the real site is cm-mdouro.pt. PDM folder lists PDM 1995, Revisão PDM 2015 and 1.ª alteração; a 2.ª revisão is in public discussion."
+   }
   },
   "0407": {
    "population": 21761,
@@ -768,7 +816,15 @@
    "census_change": -10.3,
    "density": 33.0,
    "ageing_index": 317.2,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-mirandela.pt/",
+    "email": "geral@cm-mirandela.pt",
+    "phone": "+351 278 200 200",
+    "urbanism_url": "https://www.cm-mirandela.pt/viver/territorio-ambiente-e-atividades-rurais/urbanismo",
+    "pdm_url": "https://www.cm-mirandela.pt/viver/territorio-ambiente-e-atividades-rurais/urbanismo/pdm",
+    "as_of": "2026-10-18",
+    "notes": "CHECK: PDM page is mainly about the 2.ª revisão (public discussion 2025-12-16 to 2026-02-02, Aviso 29908/2025/02). It says the in-force PDM is the one published in Diário da República and that the Geoportais is offline; no regulation or plantas of the plan in force are linked. Urbanism page is a section index."
+   }
   },
   "0408": {
    "population": 8048,
@@ -777,7 +833,15 @@
    "census_change": -13.0,
    "density": 10.6,
    "ageing_index": 454.0,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.mogadouro.pt/",
+    "email": "geral@mogadouro.pt",
+    "phone": "+351 279 340 100",
+    "urbanism_url": "https://www.mogadouro.pt/servicos/ordenamento-do-territorio-e-urbanismo",
+    "pdm_url": "https://www.mogadouro.pt/servicos/ordenamento-do-territorio-e-urbanismo/ordenamento-do-territorio/plano-diretor-municipal",
+    "as_of": "2026-10-18",
+    "notes": "Domain is mogadouro.pt (no cm- prefix). Urbanism service is the Divisão de Ordenamento do Território e Urbanismo. PDM: 1.ª revisão, Aviso 3299/2024 of 2024-02-08; the page also lists the 1995 regulation, a rectification and an alteration."
+   }
   },
   "0409": {
    "population": 6507,
@@ -786,7 +850,15 @@
    "census_change": -20.4,
    "density": 12.2,
    "ageing_index": 511.4,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-moncorvo.pt/",
+    "email": "geral@torredemoncorvo.pt",
+    "phone": "+351 279 200 220",
+    "urbanism_url": "https://www.cm-moncorvo.pt/pages/697",
+    "pdm_url": "https://www.cm-moncorvo.pt/pages/942",
+    "as_of": "2026-10-18",
+    "notes": "Email is on torredemoncorvo.pt (the câmara's own domain, shown in the footer). PDM page lists plantas only (ordenamento, condicionantes, incêndio, ruído); no regulation and no version stated."
+   }
   },
   "0410": {
    "population": 5773,
@@ -795,7 +867,15 @@
    "census_change": -9.7,
    "density": 21.7,
    "ageing_index": 374.0,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-vilaflor.pt/",
+    "email": "geral@cm-vilaflor.pt",
+    "phone": "+351 278 510 100",
+    "urbanism_url": "https://www.cm-vilaflor.pt/viver/servicos-municipais/urbanismo",
+    "pdm_url": "https://www.cm-vilaflor.pt/viver/servicos-municipais/urbanismo?folders_list_98_folder_id=494",
+    "as_of": "2026-10-18",
+    "notes": "278 512 380 is the fax. PDM folder inside the urbanism page: Relatório, Publicação PDM, constituent/accompanying elements and GeoPortal; version not stated."
+   }
   },
   "0411": {
    "population": 3716,
@@ -804,7 +884,15 @@
    "census_change": -11.1,
    "density": 7.7,
    "ageing_index": 555.9,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-vimioso.pt/",
+    "email": "gi.cmv@cm-vimioso.pt",
+    "phone": "+351 273 518 120",
+    "urbanism_url": "https://www.cm-vimioso.pt/viver/ambiente-e-urbanismo/urbanismo",
+    "pdm_url": "https://www.cm-vimioso.pt/viver/ambiente-e-urbanismo/urbanismo/pdm-plano-diretor-municipal",
+    "as_of": "2026-10-18",
+    "notes": "No geral@. gi.cmv@ is the mailbox the site publishes for 'Município de Vimioso' (homepage footer, top of the contacts page). Review correction: kiro had used ssg@, which isn't on those pages, to get past the personal-mailbox check (since fixed)."
+   }
   },
   "0412": {
    "population": 7223,
@@ -830,7 +918,15 @@
    "census_change": -9.5,
    "density": 52.0,
    "ageing_index": 304.2,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-belmonte.pt/",
+    "email": "geral@cm-belmonte.pt",
+    "phone": "+351 275 910 010",
+    "urbanism_url": null,
+    "pdm_url": "https://www.cm-belmonte.pt/pdmbelmonte/",
+    "as_of": "2026-10-18",
+    "notes": "No urbanism service page found (only a document list 'Requerimentos Obras'). PDM page lists the plan elements (planta de ordenamento e condicionantes, regulamento) and accompanying reports; version not stated."
+   }
   },
   "0502": {
    "population": 58197,
@@ -839,7 +935,15 @@
    "census_change": -6.8,
    "density": 40.5,
    "ageing_index": 236.5,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-castelobranco.pt/",
+    "email": "camara@cm-castelobranco.pt",
+    "phone": "+351 272 330 330",
+    "urbanism_url": "https://www.cm-castelobranco.pt/municipe/areas-de-acao/ordenamento-do-territorio-e-urbanismo/",
+    "pdm_url": "https://www.cm-castelobranco.pt/municipe/areas-de-acao/ordenamento-do-territorio-e-urbanismo/plano-diretor-municipal/",
+    "as_of": "2026-10-18",
+    "notes": "Only published general mailbox is camara@ (homepage footer, no geral@). 272 330 324 is the fax. The menu is only visible in a rendered browser. PDM page lists the PDM documents, a relatório and the REOT; version not stated."
+   }
   },
   "0503": {
    "population": 51045,
@@ -848,7 +952,15 @@
    "census_change": -10.3,
    "density": 91.9,
    "ageing_index": 280.2,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-covilha.pt/",
+    "email": "info@cm-covilha.pt",
+    "phone": "+351 275 330 600",
+    "urbanism_url": null,
+    "pdm_url": "https://www.cm-covilha.pt/?cix=1092&xid=163116&tab=792&lang=1",
+    "as_of": "2026-10-18",
+    "notes": "CHECK: no page for the PDM in force; pdm_url is the notice of the 6.ª alteração por adaptação (Declaração 54/2024/2, in force 2024-08-14), which points to the Geoportal (plantasonline.cm-covilha.pt/geoportal). The 'Revisão PDM 2026' page (cix=1202) covers only the proposed revision. Mailbox info@ is labelled 'Geral' on the contacts page. No urbanism service page (the Divisão de Licenciamento e Gestão Urbanística appears only on the contacts page). Site is a legacy cix-ID CMS; only reads well in a rendered browser."
+   }
   },
   "0504": {
    "population": 27754,
@@ -857,7 +969,15 @@
    "census_change": -9.3,
    "density": 39.6,
    "ageing_index": 285.7,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-fundao.pt/",
+    "email": "geral@cm-fundao.pt",
+    "phone": "+351 275 779 060",
+    "urbanism_url": null,
+    "pdm_url": "https://www.cm-fundao.pt/index.php/home/pdm",
+    "as_of": "2026-10-18",
+    "notes": "No urbanism information page: the 'Urbanismo' menu item goes to a login portal (urbanismo.cm-fundao.pt). PDM page: 1.ª Revisão, Aviso 20155-I/2023 of 2023-10-20, with regulation, plantas and Geoportal."
+   }
   },
   "0505": {
    "population": 8360,
@@ -883,7 +1003,15 @@
    "census_change": -14.3,
    "density": 9.6,
    "ageing_index": 619.3,
-   "contacts": null
+   "contacts": {
+    "website": "https://cm-oleiros.pt/",
+    "email": "geral@cm-oleiros.pt",
+    "phone": "+351 272 680 130",
+    "urbanism_url": "https://cm-oleiros.pt/urbanismo",
+    "pdm_url": "https://cm-oleiros.pt/urbanismo",
+    "as_of": "2026-10-18",
+    "notes": "Site is cm-oleiros.pt (no www). The urbanism page holds 'Consulta do PDM em vigor' and the PDM documentation PDF, so it is used for both fields; PDM version not stated."
+   }
   },
   "0507": {
    "population": 4362,
@@ -892,7 +1020,15 @@
    "census_change": -16.1,
    "density": 7.7,
    "ageing_index": 486.2,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-penamacor.pt/",
+    "email": "secretaria.gap@cm-penamacor.pt",
+    "phone": "+351 277 394 106",
+    "urbanism_url": "https://www.cm-penamacor.pt/servicos-municipais/obras-e-urbanismo",
+    "pdm_url": "https://www.cm-penamacor.pt/servicos-municipais/obras-e-urbanismo/planos-municipais/pdm-diretor-municipal",
+    "as_of": "2026-10-18",
+    "notes": "No geral@. secretaria.gap@ is the address the site gives as 'Geral' (homepage footer). Review correction: kiro had used secretaria@ to get past the personal-mailbox check (since fixed)."
+   }
   },
   "0508": {
    "population": 6960,
@@ -901,7 +1037,15 @@
    "census_change": -13.8,
    "density": 17.6,
    "ageing_index": 434.8,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-proencanova.pt/",
+    "email": "geral@cm-proencanova.pt",
+    "phone": "+351 274 670 000",
+    "urbanism_url": "https://www.cm-proencanova.pt/747/urbanismo-e-ordenamento-do-territorio",
+    "pdm_url": "https://www.cm-proencanova.pt/3244/plano-diretor-municipal",
+    "as_of": "2026-10-18",
+    "notes": "JS-rendered site. Email and phone from the homepage footer; geral@ also on the contacts page. PDM page: 1.ª Revisão (2015) in force, 2.ª alteração (2024) in force, alteração RERAE (2020); 2.ª revisão (2025) in progress. Urbanism page is an index (ARU, BUPi, Planos Municipais, Habitação)."
+   }
   },
   "0509": {
    "population": 15081,
@@ -910,7 +1054,15 @@
    "census_change": -7.0,
    "density": 33.8,
    "ageing_index": 291.2,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-serta.pt/",
+    "email": "geral@cm-serta.pt",
+    "phone": "+351 274 600 300",
+    "urbanism_url": "https://www.cm-serta.pt/municipio/informacao-geografica-urbanismo",
+    "pdm_url": "https://www.cm-serta.pt/index.php/regulamentos",
+    "as_of": "2026-10-18",
+    "notes": "CHECK: the site has no PDM page. pdm_url is the Regulamentos page with the PDM regulation (RCM 119/94) and its 1997 alteration; no newer revision found on the site, so currency is unverified (review correction: kiro had used the urbanism page). Fax is 274 600 301."
+   }
   },
   "0510": {
    "population": 3229,
@@ -919,7 +1071,15 @@
    "census_change": -5.0,
    "density": 16.9,
    "ageing_index": 296.9,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-viladerei.pt/",
+    "email": "geral@cm-viladerei.pt",
+    "phone": "+351 274 890 010",
+    "urbanism_url": null,
+    "pdm_url": "https://www.cm-viladerei.pt/index.php/balcao-virtual/ordenamento-e-planos-municipais",
+    "as_of": "2026-10-18",
+    "notes": "No urbanism service page found. The contacts page and footer show 274 890 010. PDM page (Balcão Virtual > Ordenamento e Planos Municipais): regulamento (RCM 31/95), plantas, 3.ª alteração (final notice PDF Aviso_10914) and a 4.ª alteração under RERAE."
+   }
   },
   "0511": {
    "population": 3418,
@@ -928,7 +1088,15 @@
    "census_change": -6.7,
    "density": 10.4,
    "ageing_index": 315.1,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-vvrodao.pt/",
+    "email": "geral@cm-vvrodao.pt",
+    "phone": "+351 272 540 300",
+    "urbanism_url": "https://www.cm-vvrodao.pt/municipio/servicos-municipais/urbanismo.aspx",
+    "pdm_url": "https://www.cm-vvrodao.pt/municipio/servicos-municipais/ordenamento-do-territorio/planos-de-ordenamento-do-territorio/plano-diretor-municipal.aspx",
+    "as_of": "2026-10-18",
+    "notes": "The script did not find the site; it is cm-vvrodao.pt (found by trying domains). Email and phone from the homepage footer (fax 272 540 301). Urbanism page is an index (regulamentos, UEs, loteamentos, ARU). PDM page: 1.ª Revisão with the 2.ª alteração published as Aviso 25561/2026/2 (DR 2026-10-15)."
+   }
   },
   "0601": {
    "population": 11437,
@@ -937,7 +1105,15 @@
    "census_change": -8.9,
    "density": 34.4,
    "ageing_index": 310.4,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-arganil.pt/",
+    "email": "geral@cm-arganil.pt",
+    "phone": "+351 235 200 150",
+    "urbanism_url": "https://www.cm-arganil.pt/municipio/areas-de-intervencao/planeamento-e-urbanismo/",
+    "pdm_url": "https://www.cm-arganil.pt/municipio/areas-de-intervencao/planeamento-e-urbanismo/plano-diretor-municipal/",
+    "as_of": "2026-10-18",
+    "notes": "Contacts page also lists a mobile (961 989 589) and many extensions. Urbanism page describes the Divisão de Gestão Urbanística (obras municipais and obras particulares). PDM page: 1.ª Revisão, Aviso 10298/2015 (DR 2015-09-09), with alterations (2021, 2024, 2025) and regulation."
+   }
   },
   "0602": {
    "population": 35779,
@@ -964,7 +1140,15 @@
    "census_change": -2.0,
    "density": 127.7,
    "ageing_index": 180.8,
-   "contacts": null
+   "contacts": {
+    "website": "https://cm-condeixa.pt/",
+    "email": "geral@cm-condeixa.pt",
+    "phone": "+351 239 949 120",
+    "urbanism_url": "https://cm-condeixa.pt/autarquia/apoio-ao-municipe/urbanismo",
+    "pdm_url": "https://cm-condeixa.pt/autarquia/apoio-ao-municipe/urbanismo",
+    "as_of": "2026-10-18",
+    "notes": "The script did not find the site; it is cm-condeixa.pt (www also works). The urbanism page also holds the PDM, so it is used for both fields: 1.ª alteração à 1.ª revisão (DR 2025-11-21, in force), the 2015 revision (Aviso 11025/2015), 1994 PDM and plantas."
+   }
   },
   "0605": {
    "population": 65852,
@@ -982,7 +1166,15 @@
    "census_change": -10.5,
    "density": 14.5,
    "ageing_index": 436.8,
-   "contacts": null
+   "contacts": {
+    "website": "https://www.cm-gois.pt/",
+    "email": "correio@cm-gois.pt",
+    "phone": "+351 235 770 110",
+    "urbanism_url": "https://www.cm-gois.pt/viver/urbanismo",
+    "pdm_url": "https://www.cm-gois.pt/viver/urbanismo/planeamento-urbanistico/pdm-em-vigor",
+    "as_of": "2026-10-18",
+    "notes": "Mailbox is correio@ (the only general one published, in footer and contacts page). The site's firewall blocked the headless browser; pages were read with curl. PDM page: 1.ª Revisão, DR 2.ª série n.º 120 of 2025-06-25, with a 1.ª correção material; entry into force tied to the REN publication."
+   }
   },
   "0607": {
    "population": 18143,
@@ -991,7 +1183,15 @@
    "census_change": -3.4,
    "density": 131.1,
    "ageing_index": 201.5,
-   "contacts": null
+   "contacts": {
+    "website": "https://cm-lousa.pt/",
+    "email": "geral@cm-lousa.pt",
+    "phone": "+351 239 990 370",
+    "urbanism_url": "https://cm-lousa.pt/urbanismo/",
+    "pdm_url": "https://cm-lousa.pt/autarquia/plano-diretor-municipal-pdm/",
+    "as_of": "2026-10-18",
+    "notes": "Site is cm-lousa.pt (no www). Several mobile numbers are listed beside 239 990 370. PDM page: 1.ª Revisão with the 1.ª Alteração and a 1.ª Correção Material; the 2.ª Revisão is in progress. Plantas and elementos fundamentais are on sub-pages."
+   }
   },
   "0608": {
    "population": 12684,
