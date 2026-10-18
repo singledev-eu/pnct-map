@@ -268,7 +268,7 @@
     "urbanism_url": "https://www.cm-valedecambra.pt/pages/500",
     "pdm_url": "https://www.cm-valedecambra.pt/pages/765",
     "as_of": "2026-10-18",
-    "notes": "Urbanism URL is the Setor de Ordenamento e Gestão Urbanística page. PDM page: 2.ª revisão with regulation, plantas de ordenamento and de condicionantes, and the REN (Aviso 26000/2025/2 appears in the REN item); the aviso of the plan itself is not named on the page."
+    "notes": "Urbanism URL is the Setor de Ordenamento e Gestão Urbanística page. PDM page: 2.ª revisão with regulation, plantas de ordenamento and de condicionantes, and the REN (Aviso 26000/2025/2 appears in the REN item); the aviso of the plan itself is not named on the page. PDM re-check: 2.ª revisão published by Aviso 20491/2025/2 (DR 13-08-2025), in force."
    }
   },
   "0201": {
@@ -506,7 +506,7 @@
     "urbanism_url": "https://cm-vidigueira.pt/menu/739/gestao-do-territorio",
     "pdm_url": "https://cm-vidigueira.pt/menu/746/pdm",
     "as_of": "2026-10-18",
-    "notes": "CHECK: no dedicated urbanism service page found; the urbanism URL is the Gestão do Território section (obras municipais, loteamentos, reabilitação urbana, procedimentos para operações urbanísticas). PDM page lists the PDM, the 'Relatório de Avaliação do PDM em Vigor' and an 'Aviso de Revisão do PDM'; the version in force was not read from the documents."
+    "notes": "CHECK: no dedicated urbanism service page found; the urbanism URL is the Gestão do Território section (obras municipais, loteamentos, reabilitação urbana, procedimentos para operações urbanísticas). PDM page lists the PDM, the 'Relatório de Avaliação do PDM em Vigor' and an 'Aviso de Revisão do PDM'; the version in force was not read from the documents. PDM re-check: the 2022 PDM on the page is the revision approved and published by Deliberação 139/2022 (DR 03-02-2022), in force."
    }
   },
   "0301": {
@@ -521,9 +521,9 @@
     "email": "geral@municipioamares.pt",
     "phone": "+351 253 991 330",
     "urbanism_url": "https://amares.pt/balcao-virtual/servicos/urbanismo/",
-    "pdm_url": "https://amares.pt/balcao-virtual/servicos/urbanismo/plano-director-municipal/",
+    "pdm_url": "https://snit-mais.dgterritorio.gov.pt/SNIT/Diplomas/AVISO%201953_2025_2.pdf",
     "as_of": "2026-10-18",
-    "notes": "CHECK: the email domain (municipioamares.pt) differs from the website's (amares.pt). Both domains serve the same site and the canonical one is amares.pt; the site publishes geral@municipioamares.pt. PDM page: regulation, plantas, the 1.ª and 2.ª alteração ao regulamento and a '2ª Revisão (2024)' folder; which version is in force is not clear from the page."
+    "notes": "Email domain (municipioamares.pt) differs from the website's (amares.pt); the site publishes geral@municipioamares.pt. PDM re-check: the câmara's PDM page still announces the 2012 plan, but the 2.ª revisão was approved and published by Aviso 1953/2025/2 (DR 2.ª série, 22-01-2025); pdm_url is DGT's SNIT copy of that notice (regulation and plantas included)."
    }
   },
   "0302": {
@@ -669,7 +669,7 @@
     "urbanism_url": "https://cm-vminho.pt/pt/municipio/servicos-e-divisoes/servicos-de-planeamento-urbanistico-e-obras-particulares/",
     "pdm_url": "https://cm-vminho.pt/pt/municipio/documentos-e-relatorios/plano-do-diretor-municipal/",
     "as_of": "2026-10-18",
-    "notes": "CHECK: the script found no site (cm-vieiradominho.pt does not resolve). The real site is cm-vminho.pt (vieiradominho.pt shows a bare directory listing). The server answers HTTP 429 after a few quick requests. PDM page holds the plan's documents; a separate page 'PDM 2024 – 2ª Revisão' ('versão aprovada') has the regulation. Which version is in force was not confirmed."
+    "notes": "CHECK: the script found no site (cm-vieiradominho.pt does not resolve). The real site is cm-vminho.pt (vieiradominho.pt shows a bare directory listing). The server answers HTTP 429 after a few quick requests. PDM page holds the plan's documents; a separate page 'PDM 2024 – 2ª Revisão' ('versão aprovada') has the regulation. Which version is in force was not confirmed. PDM re-check: CHECK: the page shows the 2.ª revisão as 'versão aprovada' (2024) with all plantas; no DR publication found to confirm it is in force."
    }
   },
   "0312": {
@@ -721,7 +721,7 @@
     "urbanism_url": "https://www.cm-alfandegadafe.pt/viver/servicos-municipais/urbanismo",
     "pdm_url": "https://www.cm-alfandegadafe.pt/viver/servicos-municipais/ordenamento-do-territorio/pdm-pecas-do-plano-2025",
     "as_of": "2026-10-18",
-    "notes": "General mailbox is municipio@ (labelled 'Contacto Geral' on the contacts page). PDM page 'Peças do Plano (2025)': 2.ª revisão with regulation and plantas; the process page lists the DRE approval notice."
+    "notes": "General mailbox is municipio@ (labelled 'Contacto Geral' on the contacts page). PDM page 'Peças do Plano (2025)': 2.ª revisão with regulation and plantas; the process page lists the DRE approval notice. PDM re-check: the 2025 'Peças do Plano' are the 2.ª revisão published by Aviso 23096/2025/2 (DR 18-09-2025), in force."
    }
   },
   "0402": {
@@ -821,9 +821,9 @@
     "email": "geral@cm-mirandela.pt",
     "phone": "+351 278 200 200",
     "urbanism_url": "https://www.cm-mirandela.pt/viver/territorio-ambiente-e-atividades-rurais/urbanismo",
-    "pdm_url": "https://www.cm-mirandela.pt/viver/territorio-ambiente-e-atividades-rurais/urbanismo/pdm",
+    "pdm_url": "https://snit-mais.dgterritorio.gov.pt/SNIT/Diplomas/AVISO%209347_2015.pdf",
     "as_of": "2026-10-18",
-    "notes": "CHECK: PDM page is mainly about the 2.ª revisão (public discussion 2025-12-16 to 2026-02-02, Aviso 29908/2025/02). It says the in-force PDM is the one published in Diário da República and that the Geoportais is offline; no regulation or plantas of the plan in force are linked. Urbanism page is a section index."
+    "notes": "PDM re-check: the câmara's PDM page covers only the 2.ª revisão procedure (public discussion Dec 2025–Feb 2026) and sends readers to the DR for the plan in force; pdm_url is DGT's SNIT copy of Aviso 9347/2015 (1.ª revisão, DR 21-08-2015), the PDM in force."
    }
   },
   "0408": {
@@ -838,9 +838,9 @@
     "email": "geral@mogadouro.pt",
     "phone": "+351 279 340 100",
     "urbanism_url": "https://www.mogadouro.pt/servicos/ordenamento-do-territorio-e-urbanismo",
-    "pdm_url": "https://www.mogadouro.pt/servicos/ordenamento-do-territorio-e-urbanismo/ordenamento-do-territorio/plano-diretor-municipal",
+    "pdm_url": "https://www.mogadouro.pt/servicos/ordenamento-do-territorio-e-urbanismo/ordenamento-do-territorio/plano-diretor-municipal/revisoes-ao-pdm",
     "as_of": "2026-10-18",
-    "notes": "Domain is mogadouro.pt (no cm- prefix). Urbanism service is the Divisão de Ordenamento do Território e Urbanismo. PDM: 1.ª revisão, Aviso 3299/2024 of 2024-02-08; the page also lists the 1995 regulation, a rectification and an alteration."
+    "notes": "Domain is mogadouro.pt (no cm- prefix). Urbanism service is the Divisão de Ordenamento do Território e Urbanismo. PDM re-check: the PDM page lists only the 1995 regulation; the 'Revisões ao PDM' subpage has the 1.ª revisão in force (Aviso 3299/2024, DR 08-02-2024), so pdm_url points there."
    }
   },
   "0409": {
@@ -925,7 +925,7 @@
     "urbanism_url": null,
     "pdm_url": "https://www.cm-belmonte.pt/pdmbelmonte/",
     "as_of": "2026-10-18",
-    "notes": "No urbanism service page found (only a document list 'Requerimentos Obras'). PDM page lists the plan elements (planta de ordenamento e condicionantes, regulamento) and accompanying reports; version not stated."
+    "notes": "No urbanism service page found (only a document list 'Requerimentos Obras'). PDM page lists the plan elements (planta de ordenamento e condicionantes, regulamento) and accompanying reports; version not stated. PDM re-check: the page's regulation is Aviso 15930/2025/2 (DR 27-06-2025), the 1.ª revisão in force; the public discussion on the page is later."
    }
   },
   "0502": {
@@ -957,9 +957,9 @@
     "email": "info@cm-covilha.pt",
     "phone": "+351 275 330 600",
     "urbanism_url": null,
-    "pdm_url": "https://www.cm-covilha.pt/?cix=1092&xid=163116&tab=792&lang=1",
+    "pdm_url": "https://plantasonline.cm-covilha.pt/geoportal",
     "as_of": "2026-10-18",
-    "notes": "CHECK: no page for the PDM in force; pdm_url is the notice of the 6.ª alteração por adaptação (Declaração 54/2024/2, in force 2024-08-14), which points to the Geoportal (plantasonline.cm-covilha.pt/geoportal). The 'Revisão PDM 2026' page (cix=1202) covers only the proposed revision. Mailbox info@ is labelled 'Geral' on the contacts page. No urbanism service page (the Divisão de Licenciamento e Gestão Urbanística appears only on the contacts page). Site is a legacy cix-ID CMS; only reads well in a rendered browser."
+    "notes": "CHECK: no câmara page for the PDM in force. PDM re-check: pdm_url is the municipal Geoportal, where the câmara's notice of the 6.ª alteração por adaptação (Declaração 54/2024/2, in force 2024-08-14) says the PDM in force is published (it was the notice before). Mailbox info@ is the general one published."
    }
   },
   "0504": {
