@@ -1,3 +1,4 @@
+import { concelhoCard, concelhoDetails } from "./concelho";
 import type { Concelho, Parish } from "./data";
 import { LAND_FILTERS, type LandFilter, type Operation, type PropertyType, type SearchOptions } from "./idealista";
 import { getConcelhoLinks, getLinks, type PropertyLink } from "./links";
@@ -280,6 +281,7 @@ export class Panel {
         ["DICOFRE", p.dicofre],
       ]),
       h("section", {}, h("h3", {}, "Concelho coverage"), coverage(c), showConcelho),
+      concelhoDetails(c),
       protectionSection("freguesias", p.dicofre),
       property,
     );
@@ -313,6 +315,7 @@ export class Panel {
         ["Parishes", String(c.parishCount)],
       ]),
       h("section", {}, h("h3", {}, "PNCT coverage"), coverage(c), whole ? parishes : null),
+      concelhoCard(c),
       protectionSection("concelhos", c.code),
       whole ? null : parishes,
       whole ? this.propertySection((opts) => getConcelhoLinks(c, opts)) : null,

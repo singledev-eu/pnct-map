@@ -7,9 +7,9 @@ PNCT_SHA256 := c286ef77c16321e8c5124eeb92f8d3f0565dbe302787817a91fe526653e7cffc
 PNCT_PDF := data/raw/territorios-pnct-2026-02-04.pdf
 PY := uv run python
 
-.PHONY: all download parse match geo web-data shapes outline protected-fetch protected test web e2e clean
+.PHONY: all download parse match geo web-data shapes outline protected-fetch protected concelhos-fetch concelhos test web e2e clean
 
-all: web-data shapes outline protected test
+all: web-data shapes outline protected concelhos test
 
 download: $(CAOP_GPKG) $(PNCT_PDF)
 
@@ -69,13 +69,27 @@ protected: web/data/protection.json
 web/data/protection.json: scripts/build_protected.py scripts/protected_config.py $(PROTECTED_FETCHED) data/processed/parishes_all.geojson $(CAOP_GPKG)
 	$(PY) scripts/build_protected.py
 
+# Concelho card: INE population indicators (scripts/concelhos_config.py) and the curated câmara
+# contacts (data/contacts/camaras.csv). `make concelhos-fetch` re-downloads (REFRESH=1 to replace the
+# cache, e.g. for next year's estimates); `make concelhos` fetches only what is missing.
+INE_FETCHED := data/external/ine/fetch.json
+concelhos-fetch:
+	$(PY) scripts/fetch_ine.py $(if $(REFRESH),--refresh)
+
+$(INE_FETCHED): scripts/concelhos_config.py scripts/fetch_ine.py
+	$(PY) scripts/fetch_ine.py
+
+concelhos: web/data/concelhos.json
+web/data/concelhos.json: scripts/build_concelhos.py scripts/concelhos_config.py scripts/validate_contacts.py $(INE_FETCHED) data/contacts/camaras.csv $(CAOP_GPKG)
+	$(PY) scripts/build_concelhos.py
+
 test:
 	uv run pytest -q
 
-web: web-data shapes outline protected
+web: web-data shapes outline protected concelhos
 	cd web && npm ci && npm test && npm run build
 
-e2e: web-data shapes outline protected
+e2e: web-data shapes outline protected concelhos
 	cd web && npm ci && npm run test:e2e
 
 clean:

@@ -44,7 +44,7 @@ export interface ProtectionData {
 export type OverlayData = Record<string, FeatureCollection<Polygon | MultiPolygon, { pnct: boolean }>>;
 
 /** Fetches `url` once as JSON and caches the promise; a failed fetch is retried next time. */
-function cachedJson<T>(url: string, convert: (json: unknown) => T = (json) => json as T): () => Promise<T> {
+export function cachedJson<T>(url: string, convert: (json: unknown) => T = (json) => json as T): () => Promise<T> {
   let promise: Promise<T> | null = null;
   return () => {
     promise ??= fetch(url)

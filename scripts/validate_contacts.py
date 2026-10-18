@@ -1,4 +1,4 @@
-"""Validate a câmara contacts CSV (data/contacts/camaras*.csv). Exploratory (concelho card, phase 1).
+"""Validate the câmara contacts CSV (data/contacts/camaras.csv) for the concelho card.
 
 Offline checks (always):
   - the header is exactly COLUMNS;
@@ -10,7 +10,12 @@ Offline checks (always):
 Online check (--online): every URL answers with HTTP < 400 (GET, redirects followed). A failure is
 reported, not fixed: the row needs a human look.
 
-Usage: uv run python scripts/validate_contacts.py data/contacts/camaras.sample.csv [--online]
+Problems fail the run (exit 1). Warnings don't: a link off the câmara's own domain (a geoportal, a
+municipal company), and a site that answers only without TLS verification (an incomplete
+certificate chain, as Tabuaço's: browsers cope, strict clients don't). build_concelhos.py and
+tests/test_concelhos.py run the offline checks too.
+
+Usage: uv run python scripts/validate_contacts.py [data/contacts/camaras.csv] [--online]
 """
 
 from __future__ import annotations
@@ -37,6 +42,7 @@ EMAIL = re.compile(r"^[a-z0-9._%+-]+@([a-z0-9-]+(?:\.[a-z0-9-]+)+)$")
 PHONE = re.compile(r"^\+351 [29]\d{2} \d{3} \d{3}$")
 # Mailbox names that usually belong to a person; generic ones (geral, municipio, ...) pass.
 PERSONAL = re.compile(r"^[a-z]+\.[a-z]+@")
+WARNING = "warning: "
 
 
 def municipalities() -> dict[str, str]:
@@ -79,7 +85,7 @@ def check_row(row: dict[str, str], caop: dict[str, str]) -> list[str]:
         problems.append(f"as_of is not an ISO date: {row['as_of']!r}")
     for f in ["urbanism_url", "pdm_url", "source_url"]:
         if row[f] and host(row[f]) != host(row["website"]):
-            problems.append(f"{f} is off the câmara's site ({host(row[f])}); fine for SNIT, check otherwise")
+            problems.append(f"{WARNING}{f} is off the câmara's site ({host(row[f])})")
     return problems
 
 
@@ -91,7 +97,7 @@ def reachable(url: str) -> str | None:
         ctx = None if verify else ssl._create_unverified_context()  # noqa: S323 (diagnosis only)
         try:
             with urllib.request.urlopen(req, timeout=30, context=ctx):
-                return None if verify else "reachable only without TLS verification (incomplete certificate chain?)"
+                return None if verify else f"{WARNING}reachable only without TLS verification (incomplete certificate chain?)"
         except urllib.error.HTTPError as e:
             return f"HTTP {e.code}"
         except urllib.error.URLError as e:
@@ -105,7 +111,7 @@ def reachable(url: str) -> str | None:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("csv", type=Path)
+    ap.add_argument("csv", type=Path, nargs="?", default=ROOT / "data/contacts/camaras.csv")
     ap.add_argument("--online", action="store_true", help="also check that every URL answers")
     args = ap.parse_args()
     with args.csv.open(newline="", encoding="utf-8") as f:
@@ -121,18 +127,21 @@ def main() -> int:
         with ThreadPoolExecutor(max_workers=16) as pool:
             for (dico, f, _), why in zip(jobs, pool.map(lambda j: reachable(j[2]), jobs)):
                 online[(dico, f)] = why
-    errors = 0
+    errors = warnings = 0
     seen: set[str] = set()
     for row in rows:
         problems = check_row(row, caop)
         if row["dico"] in seen:
             problems.append("duplicate dico")
         seen.add(row["dico"])
-        problems += [f"{f}: {why}" for f in URL_FIELDS if (why := online.get((row["dico"], f)))]
+        for f in URL_FIELDS:
+            if why := online.get((row["dico"], f)):
+                problems.append(f"{WARNING}{f}: {why.removeprefix(WARNING)}" if why.startswith(WARNING) else f"{f}: {why}")
         for p in problems:
             print(f"{row['dico']} {row['name']}: {p}", flush=True)
-        errors += bool(problems)
-    print(f"{len(rows)} rows, {errors} with problems, {len(caop) - len(seen)} of {len(caop)} municipalities not covered")
+        errors += any(not p.startswith(WARNING) for p in problems)
+        warnings += any(p.startswith(WARNING) for p in problems)
+    print(f"{len(rows)} rows, {errors} with problems, {warnings} with warnings, {len(caop) - len(seen)} of {len(caop)} municipalities not covered")
     return 1 if errors else 0
 
 

@@ -7,7 +7,7 @@
 
 /**
  * Resolves once the app has started and drawn in `scheme`, the overlays named in the hash (`pa=`)
- * are in the style, an open panel's protection section has filled in, the camera is at rest, the map
+ * are in the style, an open panel's protection section and concelho card have filled in, the camera is at rest, the map
  * (basemap included) is loaded and no finite CSS animation or transition is running. Each check runs
  * two animation frames after the previous one ended (like settled() in tests/e2e/helpers.ts), with no
  * fixed sleeps. Returns the time it took in ms; throws, naming the condition still unmet, after
@@ -28,6 +28,7 @@ export async function waitForSettled(page, scheme, { timeout = 60_000 } = {}) {
               const wanted = (new URLSearchParams(location.hash.slice(1)).get("pa") ?? "").split(",").filter(Boolean).sort().join(",");
               if ((document.body.dataset.overlays ?? "") !== wanted) return resolve(`overlays "${wanted}" not in the style yet`);
               if (document.querySelector('[data-testid="protection"]') && !document.querySelector('[data-testid="protection-summary"]')) return resolve("protection section not filled in");
+              if (document.querySelector('[data-testid="concelho-card"][aria-busy]')) return resolve("concelho card still loading");
               if (!map || map.isMoving()) return resolve("camera moving");
               if (!map.loaded()) return resolve("map tiles or glyphs still loading");
               const running = document.getAnimations().filter((a) => a.effect?.getComputedTiming().iterations !== Infinity);

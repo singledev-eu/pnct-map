@@ -96,6 +96,78 @@ export const en: ProtectedStrings = {
 /** The active language. */
 export const t: ProtectedStrings = en;
 
+/**
+ * UI strings for the concelho card (concelho.ts), with the same PT/EN plan as `en` above. Numbers
+ * and dates are formatted with `locale`.
+ */
+export interface ConcelhoStrings {
+  locale: string;
+  /** Summary of the collapsed section in the parish panel. */
+  parishSummary: (name: string) => string;
+  loading: string;
+  loadError: string;
+  populationHeading: string;
+  population: (people: string, year: number) => string;
+  /** The Census-to-Census change, e.g. "−14.0% from 2011 to 2021 (Censuses)". */
+  censusChange: (pct: string) => string;
+  density: (value: string) => string;
+  ageing: (value: string, national: string) => string;
+  ageingHelp: string;
+  ageingHelpLabel: string;
+  /** Under the population block of a partly-PNCT concelho. */
+  wholeConcelho: string;
+  /** A missing value: "—" and why. */
+  missing: string;
+  missingNote: string;
+  populationSource: (year: number) => string;
+  contactsHeading: string;
+  website: string;
+  urbanism: string;
+  noUrbanism: string;
+  pdm: string;
+  contactsSource: (checked: string) => string;
+  notYet: string;
+  report: string;
+  snit: string;
+  newTab: string;
+  issueTitle: (name: string, dico: string) => string;
+  issueBody: (name: string, dico: string, current: string[], asOf: string) => string;
+}
+
+export const concelhoEn: ConcelhoStrings = {
+  locale: "en-GB",
+  parishSummary: (name) => `Concelho: ${name}`,
+  loading: "Loading concelho data…",
+  loadError: "Could not load the concelho data. Please try again.",
+  populationHeading: "Population",
+  population: (people, year) => `${people} people (${year})`,
+  censusChange: (pct) => `${pct} from 2011 to 2021 (Censuses)`,
+  density: (value) => `${value} people/km²`,
+  ageing: (value, national) => `Ageing index ${value} (Portugal: ${national})`,
+  ageingHelp: "People aged 65 and over per 100 under 15.",
+  ageingHelpLabel: "What is the ageing index?",
+  wholeConcelho: "Figures for the whole concelho",
+  missing: "—",
+  missingNote: "not available",
+  populationSource: (year) => `Source: INE, population estimates ${year}, Censuses 2011/2021 · CC BY 4.0`,
+  contactsHeading: "Câmara Municipal",
+  website: "Website",
+  urbanism: "Urbanism",
+  noUrbanism: "No urbanism page found on the câmara's site",
+  pdm: "PDM in force",
+  contactsSource: (checked) => `Source: câmara website, checked ${checked}`,
+  notYet: "Câmara contacts: not yet available",
+  report: "Report outdated info",
+  snit: "Official PDM maps: SNIT (DGT)",
+  newTab: "opens in a new tab",
+  issueTitle: (name, dico) => `Outdated info: ${name} (${dico})`,
+  issueBody: (name, dico, current, asOf) =>
+    [`Concelho: ${name} (DICO ${dico})`, "", `Current data (checked ${asOf}):`, ...current.map((l) => `- ${l}`), "", "What changed?", "", ""].join("\n"),
+};
+
+/** The active language for the concelho card. */
+export const tc: ConcelhoStrings = concelhoEn;
+
 /** Shares below this (but above 0) are mostly boundary mismatches; they show as "<0.5%". The data keeps the exact value. */
 export const SMALL_SHARE = 0.5;
 
