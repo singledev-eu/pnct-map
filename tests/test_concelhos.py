@@ -201,7 +201,9 @@ def test_no_personal_emails(contact_rows):
     [
         ({}, None),
         ({"email": "joao.silva@cm-x.pt"}, "personal"),
-        ({"email": "geral@gmail.com"}, "not the website's"),
+        ({"email": "geral@gmail.com"}, "free-mail"),
+        ({"email": "geral@municipio-agueda.pt"}, "warning: email domain"),
+        ({"email": "cm.agueda@cm-agueda.pt"}, None),  # institutional prefix, not a person
         ({"phone": "234 610 070"}, "phone malformed"),
         ({"name": "Agueda"}, "!= CAOP"),
         ({"pdm_url": "http://www.cm-agueda.pt/pages/81"}, "not an https URL"),

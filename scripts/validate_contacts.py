@@ -10,8 +10,8 @@ Offline checks (always):
 Online check (--online): every URL answers with HTTP < 400 (GET, redirects followed). A failure is
 reported, not fixed: the row needs a human look.
 
-Problems fail the run (exit 1). Warnings don't: a link off the câmara's own domain (a geoportal, a
-municipal company), and a site that answers only without TLS verification (an incomplete
+Problems fail the run (exit 1). Warnings don't: a link or mailbox off the câmara's website domain
+(a geoportal, a municipal company, a second domain the câmara uses for mail), and a site that answers only without TLS verification (an incomplete
 certificate chain, as Tabuaço's: browsers cope, strict clients don't). build_concelhos.py and
 tests/test_concelhos.py run the offline checks too.
 
@@ -40,8 +40,11 @@ COLUMNS = ["dico", "name", "website", "email", "phone", "urbanism_url", "pdm_url
 URL_FIELDS = ["website", "urbanism_url", "pdm_url", "source_url"]
 EMAIL = re.compile(r"^[a-z0-9._%+-]+@([a-z0-9-]+(?:\.[a-z0-9-]+)+)$")
 PHONE = re.compile(r"^\+351 [29]\d{2} \d{3} \d{3}$")
-# Mailbox names that usually belong to a person; generic ones (geral, municipio, ...) pass.
-PERSONAL = re.compile(r"^[a-z]+\.[a-z]+@")
+# Mailbox names that usually belong to a person (first.last@); generic ones (geral, municipio, ...)
+# pass, and so do institutional prefixes such as cm.sever@ (Sever do Vouga's only published mailbox).
+PERSONAL = re.compile(r"^(?!(?:cm|mun|camara|municipio)\.)[a-z]+\.[a-z]+@")
+# Never a câmara's institutional address.
+FREEMAIL = {"gmail.com", "hotmail.com", "outlook.com", "sapo.pt", "yahoo.com", "live.com.pt", "iol.pt", "netcabo.pt"}
 WARNING = "warning: "
 
 
@@ -73,8 +76,11 @@ def check_row(row: dict[str, str], caop: dict[str, str]) -> list[str]:
     if not m:
         problems.append(f"email malformed: {row['email']!r}")
     else:
-        if m.group(1).removeprefix("www.") != host(row["website"]):
-            problems.append(f"email domain {m.group(1)} is not the website's ({host(row['website'])})")
+        if m.group(1) in FREEMAIL:
+            problems.append(f"email is on a free-mail domain: {row['email']}")
+        elif m.group(1).removeprefix("www.") != host(row["website"]):
+            # Some câmaras publish their mailbox on another of their domains (municipioamares.pt for amares.pt).
+            problems.append(f"{WARNING}email domain {m.group(1)} is not the website's ({host(row['website'])})")
         if PERSONAL.match(row["email"]):
             problems.append(f"email looks personal: {row['email']}")
     if not PHONE.match(row["phone"]):

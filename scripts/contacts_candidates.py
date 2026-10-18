@@ -11,7 +11,8 @@ Nothing is chosen here: the reviewer (kiro-cli first pass, then a human) opens t
 generic mailbox and the page of the PDM in force, and writes data/contacts/camaras.csv.
 
 Output: data/interim/contacts/<name>.csv (gitignored).
-Usage: uv run python scripts/contacts_candidates.py --batch 1 --size 25 [--dico 0104 ...]
+Usage: uv run python scripts/contacts_candidates.py --batch 1 --size 25
+       uv run python scripts/contacts_candidates.py --dico 0104 0105 --name batch-02
 """
 
 from __future__ import annotations
@@ -78,15 +79,27 @@ def find_site(dico: str, name: str) -> tuple[str, str] | None:
     return None
 
 
+def join(base: str, href: str) -> str | None:
+    """Absolute URL of href, or None if it doesn't parse (some sites have hrefs like "http://[...")."""
+    try:
+        url = urllib.parse.urljoin(base, href)
+        urllib.parse.urlparse(url).hostname  # noqa: B018 (raises on a malformed netloc)
+        return url
+    except ValueError:
+        return None
+
+
 def links(base: str, text: str) -> list[tuple[str, str]]:
     found = []
     for href, label in re.findall(r'<a[^>]+href="([^"#][^"]*)"[^>]*>(.*?)</a>', text, re.S):
         label = re.sub(r"<[^>]+>|\s+", " ", html.unescape(label)).strip()
-        found.append((label, urllib.parse.urljoin(base, html.unescape(href))))
+        if url := join(base, html.unescape(href)):
+            found.append((label, url))
     # The JavaScript platform keeps its menu as escaped JSON: {\"title\":\"Urbanismo\",...,\"link\":\"/viver/urbanismo\"}
     unescaped = text.replace('\\"', '"').replace("\\/", "/")
     for label, href in re.findall(r'"title":"([^"]{2,80})"[^{}]*?"link":"(/[^"]*)"', unescaped):
-        found.append((label, urllib.parse.urljoin(base, href)))
+        if url := join(base, href):
+            found.append((label, url))
     return found
 
 
@@ -133,11 +146,12 @@ def main() -> None:
     ap.add_argument("--batch", type=int, default=1, help="1-based batch number over the remaining PNCT concelhos")
     ap.add_argument("--size", type=int, default=25)
     ap.add_argument("--dico", nargs="*", help="these DICOs instead of a batch")
+    ap.add_argument("--name", help="output file name (default: batch-NN, or 'manual' with --dico)")
     a = ap.parse_args()
     caop = pyogrio.read_dataframe(CAOP_GPKG, layer="cont_municipios", read_geometry=False)
     names = dict(zip(caop.dtmn, caop.municipio))
     if a.dico:
-        todo, out_name = a.dico, "manual"
+        todo, out_name = a.dico, a.name or "manual"
     else:
         topo = json.loads(TOPO.read_text(encoding="utf-8"))
         pnct = sorted({g["properties"]["dicofre"][:4] for g in topo["objects"]["parishes"]["geometries"] if g["properties"]["pnct"]})
