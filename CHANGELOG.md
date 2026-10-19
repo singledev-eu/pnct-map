@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.6.0 (unreleased, on preview)
+## 0.6.0 (2026-10-19)
 
 ### For users
 
@@ -10,7 +10,7 @@
   - The basemap's place, water and road labels follow it too, where OpenStreetMap has a name in that language ("Sevilha" / "Seville", "Lisboa" / "Lisbon"). Without one, they show the same Latin-only name as before.
 - **Theme: Auto / Light / Dark:** a button next to the language toggle cycles through the three, its icon and accessible name stating the current one ("Theme: Auto (system)"). Auto follows the system as before, including live changes; Light and Dark ignore it. The choice is saved; without storage the page stays on Auto. The page and the basemap start in the chosen theme (an inline script sets it before the CSS loads), so there is no flash of the other theme. The phone browser bar colour follows a forced theme too.
 - On phones both controls sit in the collapsed legend chip, so they're one tap away without opening anything.
-- **iPhone Safari fixes (also present in 0.5.0):**
+- **iPhone Safari zoom and safe-area fix (the bug also affected 0.5.0):**
   - The search field and the district select are 16 px on phones and touch screens. Safari used to zoom into the 14 px field on focus and stay zoomed, which clipped the toolbar and pushed the legend off-screen. Pinch zoom still works.
   - The legend chip, the map controls and the bottom sheet clear the home indicator and Safari's bottom toolbar (`env(safe-area-inset-bottom)`). The toolbar also clears the side insets in landscape.
   - Full-height layouts use `dvh` (with `vh` fallbacks): the sheet's half/full snap heights, the expanded legend, the explainer sheet and the search list.

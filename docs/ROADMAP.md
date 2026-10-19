@@ -1,6 +1,6 @@
 # Roadmap
 
-Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-10-18.
+Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-10-19.
 
 ## Done
 
@@ -24,13 +24,12 @@ Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-m
 | 2026-10-18 | Protection polish: a "?" explainer by the legend's Nature protection heading (what "protected" means for buying land; popover on desktop, bottom sheet on phones), the RNAP and Natura 2000 layers faded out at country zoom (full at the parish level) with a "Zoom in" hint, and a README screenshot of the overlays (`npm run shots:readme`). Released as 0.4.1 | [0.4.1-report](reports/0.4.1-report.md), [release](reports/0.4.1-release.md) |
 | 2026-10-18 | Screenshot scripts: the "settled" wait in `theme_shots.mjs` and `protected_shots.mjs` returned at once (a Promise predicate in `waitForFunction`); a shared `scripts/settled.mjs` now polls until the map is settled. Not released (tooling only) | [protected-shots-wait](reports/protected-shots-wait.md) |
 | 2026-10-18 | Concelho data card: population block (INE estimates 2025, Census 2011→2021 change, density, ageing ratio) for all 278 concelhos and câmara contacts (website, mailbox, phone, urbanism page, PDM link with in-force/unclear status) for the 185 PNCT concelhos, curated by kiro-cli and reviewed; phone sheet drag handle. Released as 0.5.0 | [phase1](reports/concelho-card-phase1.md), [phase2](reports/concelho-card-phase2.md), [pdm-status](reports/concelho-card-pdm-status.md), [release](reports/0.5.0-release.md) |
+| 2026-10-19 | PT/EN language toggle (every UI string in European Portuguese, `?lang=`, basemap labels in the language) and Auto/Light/Dark theme selection with no flash on load, both in the legend header; iPhone Safari fix (no focus zoom, UI clear of the safe-area insets; also affected 0.5.0). Released as 0.6.0 | [i18n-theme](reports/0.6.0-i18n-theme.md), [review](reports/0.6.0-i18n-theme-review.md), [iOS Safari](reports/0.6.0-ios-safari.md), [release](reports/0.6.0-release.md) |
 | 2026-10-12 | E2E flakiness: one retry; flaky tests warn with a trace but don't block deploys; tests wait for the parish layer, not the basemap | [e2e-flakiness](reports/e2e-flakiness.md) |
 
-Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; `0.3.0` (2026-10-15) the dark theme; `0.3.1` (2026-10-15) quiet road-shield filters; `0.4.0` (2026-10-17) protected areas; `0.4.1` (2026-10-18) the protection explainer and zoom fade; `0.5.0` (2026-10-18) the concelho card; see [CHANGELOG.md](../CHANGELOG.md).
+Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; `0.3.0` (2026-10-15) the dark theme; `0.3.1` (2026-10-15) quiet road-shield filters; `0.4.0` (2026-10-17) protected areas; `0.4.1` (2026-10-18) the protection explainer and zoom fade; `0.5.0` (2026-10-18) the concelho card; `0.6.0` (2026-10-19) the PT/EN toggle and theme selection; see [CHANGELOG.md](../CHANGELOG.md).
 
 ## Next
-
-- **0.6.0 on preview:** PT/EN language toggle and Auto/Light/Dark theme ([report](reports/0.6.0-i18n-theme.md)). Waiting for the phone check and the PT glossary review before production.
 
 - Confirm ICNF's reuse terms for RNAP (and for BDG/RN2000, if Natura switches source). Until then RNAP is credited as "reuse terms not confirmed"; dropping it is one line in `scripts/protected_config.py`.
 
