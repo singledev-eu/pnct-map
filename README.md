@@ -14,12 +14,13 @@ Features:
   - A district filter.
   - **Only PNCT** (focus mode): it hides everything outside PNCT territory, and those parishes don't respond to hover, clicks or search.
 - **Idealista links:** for each PNCT parish, a polygon search link, with a selector for buying or renting, property type and land filters. When the whole concelho is PNCT, the municipality page is linked too.
+- **Concelho card:** every concelho panel shows its population (INE 2025 estimate, the Census 2011→2021 change, density, the ageing ratio) and, for the 185 PNCT concelhos, the câmara's website, mailbox, phone, urbanism page and PDM link. Parish panels have the same card in a collapsed section. A missing value shows "—" with a note, never an estimate.
 - **Nature protection:** RNAP (ICNF) and Natura 2000 (EEA) overlays, faded in once zoomed past the country view, and the share of each parish or concelho under protection in its panel. A "?" next to the legend heading explains what protection means for buying land.
 - **Português / English:** a PT | EN toggle in the legend header switches every UI string in place, and the basemap labels where OpenStreetMap has a name in that language. Parish and concelho names stay as they are. On first visit the language follows `?lang=`, then the saved choice, then the browser languages (any `pt*` → PT), then English.
 - **Light, dark or automatic theme:** a theme button next to the language toggle cycles Auto (follows the system, live) → Light → Dark. The page and the basemap start in the chosen theme, with no flash.
 - **Shareable views:** the map view, the selection, the filters and the selector all live in the URL (see [URL parameters](#url-parameters)).
 
-![Peneda-Gerês with the protected-areas overlays on: PNCT parishes shaded, the RNAP outline and the Natura 2000 hatch, and the Soajo parish panel with its share under protection](docs/screenshots/desktop-protected.jpg)
+![Peneda-Gerês with the protected-areas overlays on: PNCT parishes shaded, the RNAP outline and the Natura 2000 hatch, the Soajo parish panel with its share under protection, and the PT | EN and theme controls in the legend header](docs/screenshots/desktop-protected.jpg)
 
 The screenshot is generated with `npm run shots:readme` (in `web/`, with `npm run preview` running).
 
@@ -63,7 +64,7 @@ Only needed to rebuild the data from the sources.
 
 ```sh
 uv sync
-uv run make all      # download (checksum-verified) → parse → match → geo → topo → shapes → outline → protected → pytest
+uv run make all      # download (checksum-verified) → parse → match → geo → topo → shapes → outline → protected → concelhos → pytest
 ```
 
 `make download` fetches two sources. Each download is checked against a SHA-256 before it is kept:
@@ -76,6 +77,8 @@ Git ignores both downloads. `make all` runs the download as a dependency, so you
 The protected-areas step also downloads, once, into `data/external/protected/` (gitignored):
 - the ICNF RNAP layer, paged from the ArcGIS service (~7 MB);
 - the EEA Natura 2000 end-2024 GeoPackage (1.36 GB, EU-wide, SHA-256 pinned).
+
+The concelho step fetches the INE indicators once into `data/external/ine/` (gitignored). `make concelhos-fetch` re-fetches them (`REFRESH=1` replaces the cache, e.g. for next year's estimates). The câmara contacts are curated by hand in `data/contacts/camaras.csv`; `make concelhos` stops on a row that fails `scripts/validate_contacts.py`.
 
 `make protected-fetch` re-fetches them on demand (`REFRESH=1` downloads the GeoPackage again); `cd web && npm run data:protected` does the same plus the rebuild. Which source feeds which category is set in `scripts/protected_config.py`. See [data/ATTRIBUTION.md](data/ATTRIBUTION.md).
 
@@ -90,16 +93,19 @@ The protected-areas step also downloads, once, into `data/external/protected/` (
 | `make outline` | `scripts/build_outline.py` → `web/data/outline.json` (the camera outline) |
 | `make protected-fetch` | `scripts/fetch_protected.py` → `data/external/protected/<source>/` plus `fetch.json` (source URL, licence, fetch time) |
 | `make protected` | `scripts/build_protected.py` → `web/data/protected.topo.json` (display overlay), `web/data/protection.json` (shares per DICOFRE/DICO), `web/data/protected.meta.json` (categories, bundled), `data/processed/protected_sites.csv` |
-| `make test` | `pytest` (`tests/test_pipeline.py`, `tests/test_shapes.py`, `tests/test_outline.py`, `tests/test_protected.py`, `tests/test_fetch_protected.py`) |
+| `make concelhos-fetch` | `scripts/fetch_ine.py` → `data/external/ine/` plus `fetch.json` (INE population estimates, ageing index, Censuses 2011/2021) |
+| `make concelhos` | `scripts/build_concelhos.py` → `data/concelhos.json` (with the curators' notes) and `web/data/concelhos.json` (population and contacts per DICO, loaded on the first concelho card) |
+| `make test` | `pytest` (`tests/test_pipeline.py`, `tests/test_shapes.py`, `tests/test_outline.py`, `tests/test_protected.py`, `tests/test_fetch_protected.py`, `tests/test_concelhos.py`) |
 | `make web` | `npm ci && npm test && npm run build` in `web/` → static `web/dist/` |
-| `make e2e` | `npm ci`, builds, then runs the Playwright smoke tests (`web/tests/e2e`). Screenshots go to `web/test-results/screenshots/` (ignored by git) |
+| `make e2e` | `npm ci`, builds, then runs the Playwright e2e suite (`web/tests/e2e`). Screenshots go to `web/test-results/screenshots/` (ignored by git) |
 | `make clean` | Removes `data/interim`, `data/processed` and `web/data` |
 
 mapshaper runs through `npx` at a pinned version (`mapshaper@0.7.68`), with its npm cache in `./.npm-cache`.
 
 Committed outputs:
 
-- `web/data/*.json` (`pnct.topo.json`, `shapes.json`, `outline.json`, `protected.topo.json`, `protection.json`, `protected.meta.json`)
+- `web/data/*.json` (`pnct.topo.json`, `shapes.json`, `outline.json`, `protected.topo.json`, `protection.json`, `protected.meta.json`, `concelhos.json`)
+- `data/concelhos.json` and `data/contacts/camaras.csv`
 - `data/interim/pnct_raw.csv`
 - `data/processed/*.csv` (`pnct_parishes.csv`, `unmatched.csv`, `shapes_quality.csv`, `protected_sites.csv`)
 
@@ -115,9 +121,9 @@ Not committed (ignored, rebuilt by `make`):
 
 | Command | What it runs |
 |---|---|
-| `uv run pytest -q` | Pipeline and shape tests in `tests/`. They read `data/processed/*.geojson`, so on a fresh clone run `uv run make all` first. |
-| `cd web && npm test` | Vitest: the polyline codec, the shapes, and the link snapshot. |
-| `cd web && npm run test:e2e` | Builds, then runs the Playwright smoke tests against a local preview server on port 4173. |
+| `uv run pytest -q` | Pipeline, shape, protected-area and concelho-data tests in `tests/`. They read `data/processed/*.geojson`, so on a fresh clone run `uv run make all` first. |
+| `cd web && npm test` | Vitest: the polyline codec, the shapes, the link snapshot, camera, layers and theme, the concelho card, PT/EN key parity and the UI-text guard. |
+| `cd web && npm run test:e2e` | Builds, then runs the Playwright e2e suite (both languages, both themes, desktop and 375 px phone with emulated iPhone insets) against a local preview server on port 4173. |
 | `cd web && npm run test:all` | pytest, Vitest and e2e, in that order. |
 | `cd web && E2E_BASE_URL=https://pnct.singledev.eu/ npm run test:e2e:remote` | The e2e suite against a deployed site. |
 
@@ -140,11 +146,12 @@ Live at https://pnct.singledev.eu (Pages project `pnct-map`, production branch `
 
 ## Data and attribution
 
-This text matches the About panel on the site.
+This text matches the About panel on the site, plus the concelho card's own source lines.
 
 - **PNCT territories:** the official list dated 4 February 2026, published by IEFP: https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf
 - **Boundaries:** CAOP 2025 © Direção-Geral do Território, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). "Informação geográfica cedida pela Direção-Geral do Território." Simplified for the web. Landing page: https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop
 - **Basemap:** [OpenFreeMap](https://openfreemap.org), © OpenMapTiles, © OpenStreetMap contributors (ODbL).
+- **Population (concelho card):** INE, population estimates 2025 and Censuses 2011/2021, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Câmara contacts are from each câmara's website. Both are credited in the card itself.
 - **Protected areas:** RNAP © ICNF (reuse terms not confirmed yet), fetched 2026-10-17; Natura 2000 end-2024 © EEA, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The overlay and the "under protection" shares are an indicator, not a verdict: check the municipal PDM. Details and licence status: [data/ATTRIBUTION.md](data/ATTRIBUTION.md).
 - **Unofficial tool.** Always confirm eligibility with the official sources. This project is not affiliated with Idealista.
 
@@ -164,6 +171,9 @@ The code is under the MIT licence (see `LICENSE`). The data keeps its own licenc
 - `docs/ROADMAP.md`: what's done, what's next, the backlog, past decisions and open items.
 - `CHANGELOG.md`: releases.
 - `CLAUDE.md`: starting context for Claude Code sessions (commands, invariants, conventions).
+- `docs/i18n-glossary.md`: the EN → PT terms and the European-Portuguese conventions for UI text.
+- `data/ATTRIBUTION.md`: every data source with its licence status.
+- `docs/reports/`: one report per task. The list below covers the early ones; [docs/ROADMAP.md](docs/ROADMAP.md) links every report since.
 
 - `docs/reports/phase1-pipeline.md`: the data pipeline, and why CAOP 2025 was chosen over 2024.
 - `docs/reports/phase2-map.md`: the map UI, with test results.
@@ -253,7 +263,11 @@ npm run test:e2e                   # build + Playwright e2e tests
 ```
 
 - **Base path:** the default is `/` (the site is served from the domain root). Set `BASE_PATH` for a sub-path build.
-- **Static data:** the app reads only `web/data/pnct.topo.json`, `web/data/shapes.json` (loaded when the first PNCT panel opens) and the OpenFreeMap "positron" basemap. There is no backend. Vite content-hashes both data files into `/assets/`.
+- **Static data:** there is no backend. The app reads `web/data/`, which Vite content-hashes into `/assets/`:
+  - `pnct.topo.json` (preloaded) and `outline.json` / `protected.meta.json` (bundled);
+  - `shapes.json` (when the first PNCT panel opens), `protection.json` (the first panel), `protected.topo.json` (the first overlay toggle) and `concelhos.json` (the first concelho card).
+
+  The basemap is OpenFreeMap "positron" (light) or "dark".
 - **Shareable state:** the URL hash holds the view; see [URL parameters](#url-parameters).
 - **Property search:**
   - `src/links.ts` `getLinks(parish, concelho, options)` lazy-loads `data/shapes.json` on first use and caches it.
@@ -261,7 +275,7 @@ npm run test:e2e                   # build + Playwright e2e tests
   - The selector (Comprar/Arrendar, Terrenos/Casas/Prédios, land filters) persists in the hash (`op`, `t`, `land`) and in localStorage.
   - Unit tests: `npm test` (Vitest).
 
-- **Language and theme:** every UI string is in `src/strings.en.ts` and `src/strings.pt.ts` (same `Strings` type, so a missing key doesn't compile); `index.html` has no text of its own, only `data-i18n` keys. `src/ui-text.guard.test.ts` fails on UI-looking literals elsewhere. The theme choice (`pnct-map:theme`) is applied by an inline boot script in `index.html` before the CSS; its SHA-256 is in the CSP in `public/_headers` (checked by `src/i18n.test.ts`), so **editing the boot script means updating that hash**.
+- **Language and theme:** PT wording follows [docs/i18n-glossary.md](docs/i18n-glossary.md). Every UI string is in `src/strings.en.ts` and `src/strings.pt.ts` (same `Strings` type, so a missing key doesn't compile); `index.html` has no text of its own, only `data-i18n` keys. `src/ui-text.guard.test.ts` fails on UI-looking literals elsewhere. The theme choice (`pnct-map:theme`) is applied by an inline boot script in `index.html` before the CSS; its SHA-256 is in the CSP in `public/_headers` (checked by `src/i18n.test.ts`), so **editing the boot script means updating that hash**.
 
 #### URL parameters
 

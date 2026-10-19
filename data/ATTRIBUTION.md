@@ -1,6 +1,6 @@
 # Data attribution and licence status
 
-Sources behind the committed data in `web/data/` and `data/processed/`. The site credits the same sources in the map attribution, the phone bottom-sheet credit and the About panel.
+Sources behind the committed data in `web/data/` and `data/processed/`. The site credits the boundaries, the basemap and the protected areas in the map attribution, the phone bottom-sheet credit and the About panel. The concelho card credits INE and the câmara websites in its own source lines. Every credit is shown in English or Portuguese with the UI language.
 
 | Data | Provider | Edition | URL | Licence | Status |
 |---|---|---|---|---|---|
@@ -18,6 +18,7 @@ Sources behind the committed data in `web/data/` and `data/processed/`. The site
 
 - `natura-icnf` (ICNF `BDG/RN2000`, layers ZPE and SIC) is ready as a drop-in alternative to `natura-eea`, under the same unconfirmed ICNF terms as RNAP.
 - Each fetch records the source URL, licence and UTC fetch time in `data/external/protected/<source>/fetch.json` (not committed). The build copies these into the per-field `meta` of `web/data/protection.json` and into `web/data/protected.meta.json`.
+- `protected.meta.json` also carries each category's Portuguese display labels (source title, "as of", licence, Natura designations), from `PtLabels` in `protected_config.py`.
 - The EEA GeoPackage (1.36 GB, EU-wide) is pinned by SHA-256 `fc947b01…964f42` in `protected_config.py`. The ICNF service is live and has no version, so its "as of" date is the fetch date.
 
 ## Concelho card: population and contacts
@@ -25,5 +26,5 @@ Sources behind the committed data in `web/data/` and `data/processed/`. The site
 `scripts/concelhos_config.py` lists the INE indicators. `make concelhos-fetch` caches the raw responses and a `fetch.json` (URL, period, INE update date, fetch time) in the gitignored `data/external/ine/`; `make concelhos` builds `data/concelhos.json` and `web/data/concelhos.json`, with this meta per field.
 
 - The population change compares two Census counts (2011 and 2021), never an annual estimate with a Census: since 2021 the estimates are administrative-based and differ from the Census by up to ±20% per municipality in the same year.
-- The card's source line reads "INE, population estimates <year>, Censuses 2011/2021 · CC BY 4.0".
+- The card's source line reads "INE, population estimates <year>, Censuses 2011/2021 · CC BY 4.0" (PT: "Fonte: INE, estimativas da população <year>, Censos 2011/2021 · CC BY 4.0").
 
