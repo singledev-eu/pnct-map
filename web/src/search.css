@@ -8,6 +8,7 @@
   padding: 4px 0;
   list-style: none;
   max-height: 60vh;
+  max-height: 60dvh;
   overflow: auto;
   background: var(--panel-bg);
   color: var(--text);
