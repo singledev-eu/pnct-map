@@ -1,4 +1,5 @@
 import type { BrowserContext, Page } from "@playwright/test";
+import { labelField } from "../../src/basemap";
 import { STYLE_URLS } from "../../src/theme";
 import { expect, test, trackErrors, waitForFullIdle, waitForParishes, waitForParishView } from "./helpers";
 
@@ -109,6 +110,32 @@ test("the browser language picks PT, and the toggle switches in place, keeping t
   await context.close();
 });
 
+/** The city label layer: positron's label_city, Dark Matter's place_city. */
+const CITY = { light: "label_city", dark: "place_city" };
+const placeLabel = (page: Page, theme: "light" | "dark" = "light") => page.evaluate((id) => window.pnctMap.getLayoutProperty(id, "text-field"), CITY[theme]);
+
+test("basemap labels follow the language, in both themes and across a theme switch", async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.goto("/?lang=pt");
+  await waitForParishes(page);
+  expect(await placeLabel(page)).toEqual(labelField("pt"));
+
+  await page.getByTestId("lang-en").click();
+  await expect.poll(() => placeLabel(page)).toEqual(labelField("en"));
+
+  await page.getByTestId("lang-pt").click();
+  await page.getByTestId("theme-button").click();
+  await page.getByTestId("theme-button").click(); // → Dark: a new basemap style, labels still in PT
+  await expect(body(page)).toHaveAttribute("data-map-theme", "dark");
+  expect(await placeLabel(page, "dark")).toEqual(labelField("pt"));
+  // Sevilla is in the tiles as name:pt "Sevilha": the PT label at the country view shows it.
+  await page.evaluate(() => window.pnctMap.jumpTo({ center: [-6.2, 37.6], zoom: 7 }));
+  await waitForFullIdle(page);
+  const names = await page.evaluate(() => window.pnctMap.queryRenderedFeatures({ layers: ["place_city", "place_city_large"] }).map((f: { properties: Record<string, string> }) => f.properties["name:pt"]));
+  expect(names).toContain("Sevilha");
+  expect(errors).toEqual([]);
+});
+
 test("the choice persists across reloads, and ?lang= overrides it", async ({ page }) => {
   await page.goto("/");
   await waitForParishes(page);
@@ -137,7 +164,7 @@ test("About lists every credit in PT", async ({ page }) => {
   const about = page.locator("#about");
   await expect(about.locator("h2")).toHaveText("Sobre este mapa");
   for (const name of ["lista oficial", "CAOP 2025", "CC BY 4.0", "OpenFreeMap", "OpenMapTiles", "OpenStreetMap"]) await expect(about.getByRole("link", { name, exact: true }).first()).toBeVisible();
-  await expect(about).toContainText("colaboradores do OpenStreetMap");
+  await expect(about).toContainText("contribuidores do OpenStreetMap");
   await expect(page.getByTestId("about-protected")).toContainText("condições de reutilização não confirmadas");
   await expect(page.getByTestId("about-protected").getByRole("link")).toHaveCount(3); // RNAP, Natura, Natura's licence
 });

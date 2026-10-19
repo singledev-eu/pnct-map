@@ -1,6 +1,6 @@
 import type { StyleSpecification } from "maplibre-gl";
 import { describe, expect, it } from "vitest";
-import { basemapStyle, DARK_PLACE_LABEL, latinLabels, NO_REF_LENGTH } from "./basemap";
+import { basemapStyle, DARK_PLACE_LABEL, labelField, latinLabels, NO_REF_LENGTH, setLabelLanguage } from "./basemap";
 
 // The positron label expression (OpenFreeMap, 2026-10).
 const POSITRON_LABEL = [
@@ -38,10 +38,40 @@ describe("basemapStyle", () => {
   const paint = (s: StyleSpecification) => (s.layers[0] as { paint: Record<string, unknown> }).paint["text-color"];
 
   it("brightens place names in dark only, on top of the Latin-only labels", () => {
-    expect(paint(basemapStyle("light")(undefined, style))).toBe("rgb(101,101,101)");
-    const dark = basemapStyle("dark")(undefined, style);
+    expect(paint(basemapStyle("light", "en")(undefined, style))).toBe("rgb(101,101,101)");
+    const dark = basemapStyle("dark", "en")(undefined, style);
     expect(paint(dark)).toBe(DARK_PLACE_LABEL);
     expect(JSON.stringify(dark)).not.toContain("name:nonlatin\"]]");
+  });
+});
+
+describe("label language", () => {
+  const label = (id: string) => ({ id, type: "symbol", source: "omt", "source-layer": "place", layout: { "text-field": POSITRON_LABEL } });
+  const shield = { id: "shield", type: "symbol", source: "omt", layout: { "text-field": ["to-string", ["get", "ref"]] } };
+  const input = { version: 8, sources: {}, layers: [label("place_city"), shield] } as unknown as StyleSpecification;
+  const field = (s: StyleSpecification, i = 0) => (s.layers[i] as { layout: Record<string, unknown> }).layout["text-field"];
+
+  it("prefers name:<lang>, then the Latin name, then name_en (EN) or the local name (PT)", () => {
+    expect(labelField("pt")).toEqual(["coalesce", ["get", "name:pt"], ["case", ["has", "name:nonlatin"], ["get", "name:latin"], ["get", "name"]]]);
+    expect(labelField("en")).toEqual(["coalesce", ["get", "name:en"], ["case", ["has", "name:nonlatin"], ["get", "name:latin"], ["coalesce", ["get", "name_en"], ["get", "name"]]]]);
+  });
+
+  it("localizes the name labels in both themes and leaves the road refs alone", () => {
+    for (const theme of ["light", "dark"] as const) {
+      for (const lang of ["pt", "en"] as const) {
+        const out = basemapStyle(theme, lang)(undefined, input);
+        expect(field(out)).toEqual(labelField(lang));
+        expect(field(out, 1)).toEqual(["to-string", ["get", "ref"]]);
+        expect(JSON.stringify(field(out))).not.toContain('["get","name:nonlatin"]'); // still no non-Latin text
+      }
+    }
+  });
+
+  it("switches the labels of a loaded style in place", () => {
+    const style = basemapStyle("light", "en")(undefined, input);
+    const set: [string, unknown][] = [];
+    setLabelLanguage({ getStyle: () => style, setLayoutProperty: (id, name, value) => name === "text-field" && set.push([id, value]) }, "pt");
+    expect(set).toEqual([["place_city", labelField("pt")]]);
   });
 });
 
@@ -64,7 +94,7 @@ describe("shield filters", () => {
   const style = { version: 8, sources: {}, layers: [shield, other] } as unknown as StyleSpecification;
 
   it("gives a missing ref_length a stand-in above the limit, in the filter only", () => {
-    const [patched, water] = basemapStyle("light")(undefined, style).layers as unknown as (typeof shield)[];
+    const [patched, water] = basemapStyle("light", "en")(undefined, style).layers as unknown as (typeof shield)[];
     expect(patched.filter[1]).toEqual(["<=", ["coalesce", ["get", "ref_length"], NO_REF_LENGTH], 6]);
     expect(NO_REF_LENGTH).toBeGreaterThan(6); // a road without a ref still fails the filter, as before
     expect(patched.filter.slice(2)).toEqual(shield.filter.slice(2));

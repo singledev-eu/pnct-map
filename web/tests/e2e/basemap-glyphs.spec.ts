@@ -1,6 +1,6 @@
 import { expect, test, trackErrors, waitForFullIdle } from "./helpers";
 
-// The basemap labels are Latin-only (src/basemap.ts). Before that, a view reaching below 36.6°N
+// The basemap labels are Latin-only (src/basemap.ts), in both UI languages. Before that, a view reaching below 36.6°N
 // loaded the z6 tile 6/30/25 (northern Morocco) and MapLibre fetched the Arabic and Tifinagh glyph
 // ranges. This test checks those ranges are never requested, with Moroccan tiles certainly loaded.
 const TANGIER = { lng: -5.81, lat: 35.77 };
@@ -19,14 +19,16 @@ function tileOf(lng: number, lat: number, z: number): { x: number; y: number } {
 test.describe("phone portrait (390×844)", () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
 
-  test("no Arabic or Tifinagh glyph ranges are requested, even with Moroccan tiles loaded", async ({ page }) => {
+  // In both UI languages: the labels prefer name:pt / name:en, with the Latin-only fallback.
+  for (const lang of ["en", "pt"] as const)
+  test(`no Arabic or Tifinagh glyph ranges are requested, even with Moroccan tiles loaded (${lang})`, async ({ page }) => {
     const errors = trackErrors(page);
     // Context level: MapLibre fetches tiles and glyphs from a web worker, which page-level
     // listeners do not see. Registered before goto so nothing is missed.
     const urls: string[] = [];
     page.context().on("request", (request) => urls.push(decodeURIComponent(request.url())));
 
-    await page.goto("/");
+    await page.goto(`/?lang=${lang}`);
     // Label glyphs are only fetched once the symbol layers are laid out, so the basemap has to be
     // fully idle; this is the one test where waitForFullIdle (not waitForParishView) is needed.
     await waitForFullIdle(page);

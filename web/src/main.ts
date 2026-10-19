@@ -3,7 +3,7 @@ import "./style.css";
 import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent, type StyleSpecification } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { renderAbout } from "./about";
-import { basemapStyle } from "./basemap";
+import { basemapStyle, setLabelLanguage } from "./basemap";
 import { BOUNDS_MARGIN, cameraLimits, protectedFade, constrainView, fitCenter, fitZoom, MAINLAND, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
@@ -79,12 +79,12 @@ map.setMissingStyleImageResolver((id) => {
   else map.addImage(id, { width: 1, height: 1, data: new Uint8Array(4) });
 });
 // Set here rather than as the `style` option so the label patch (basemap.ts) applies before any tile is parsed.
-map.setStyle(STYLE_URLS[theme], { transformStyle: basemapStyle(theme) });
+map.setStyle(STYLE_URLS[theme], { transformStyle: basemapStyle(theme, lang) });
 
 // A theme switch (the theme button, or the OS under Auto) swaps the basemap. Once the app has added
 // its layers (start), the switch carries them over with the new palette (themeStyle, set in start),
 // and style.load restores the rest.
-let themeStyle = (previous: StyleSpecification | undefined, next: StyleSpecification) => basemapStyle(theme)(previous, next);
+let themeStyle = (previous: StyleSpecification | undefined, next: StyleSpecification) => basemapStyle(theme, lang)(previous, next);
 const applyTheme = () => {
   const next = resolveTheme(themePref, darkQuery.matches);
   applyPageTheme(next, themePref);
@@ -191,6 +191,7 @@ const settings = mountSettings(
       settings.render();
       addAttribution();
       wasCompact = isCompact();
+      if (map.isStyleLoaded()) setLabelLanguage(map, next); // otherwise the pending style gets it from basemapStyle
       renderAbout(aboutDialog);
       onLangChange();
     },
@@ -510,7 +511,7 @@ function start(data: MapData): void {
   // current style, which keeps the sources, their feature state, the filters and the camera. If
   // MapLibre has to rebuild the style from scratch instead, the sources come back without feature
   // state or the hatch image, so both are restored here either way.
-  themeStyle = (previous, next) => withAppLayers(previous, basemapStyle(theme)(previous, next), appLayers(filter, limits.levelZoom, PALETTES[theme], overlays));
+  themeStyle = (previous, next) => withAppLayers(previous, basemapStyle(theme, lang)(previous, next), appLayers(filter, limits.levelZoom, PALETTES[theme], overlays));
   map.on("style.load", () => {
     if (!map.getSource(PARISH_SOURCE)) addLayers(map, data, filter, limits.levelZoom, PALETTES[theme]);
     if (overlayData && overlays.loaded && !map.getSource(overlaySource(CATEGORY_IDS[0]))) addOverlays(map, overlayData, overlays, filter, limits.levelZoom, PALETTES[theme]);

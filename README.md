@@ -15,7 +15,7 @@ Features:
   - **Only PNCT** (focus mode): it hides everything outside PNCT territory, and those parishes don't respond to hover, clicks or search.
 - **Idealista links:** for each PNCT parish, a polygon search link, with a selector for buying or renting, property type and land filters. When the whole concelho is PNCT, the municipality page is linked too.
 - **Nature protection:** RNAP (ICNF) and Natura 2000 (EEA) overlays, faded in once zoomed past the country view, and the share of each parish or concelho under protection in its panel. A "?" next to the legend heading explains what protection means for buying land.
-- **Português / English:** a PT | EN toggle in the legend header switches every UI string in place (place names stay as they are). On first visit the language follows `?lang=`, then the saved choice, then the browser languages (any `pt*` → PT), then English.
+- **Português / English:** a PT | EN toggle in the legend header switches every UI string in place, and the basemap labels where OpenStreetMap has a name in that language. Parish and concelho names stay as they are. On first visit the language follows `?lang=`, then the saved choice, then the browser languages (any `pt*` → PT), then English.
 - **Light, dark or automatic theme:** a theme button next to the language toggle cycles Auto (follows the system, live) → Light → Dark. The page and the basemap start in the chosen theme, with no flash.
 - **Shareable views:** the map view, the selection, the filters and the selector all live in the URL (see [URL parameters](#url-parameters)).
 

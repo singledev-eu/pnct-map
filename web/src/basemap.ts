@@ -1,4 +1,5 @@
-import type { StyleSpecification } from "maplibre-gl";
+import type { ExpressionSpecification, StyleSpecification } from "maplibre-gl";
+import type { Lang } from "./strings";
 import type { Theme } from "./theme";
 
 /**
@@ -30,6 +31,38 @@ export function latinLabels(_previous: StyleSpecification | undefined, next: Sty
         : layer,
     ),
   };
+}
+
+/**
+ * Basemap labels in the UI language. The OpenMapTiles tiles carry name:pt and name:en (Sevilla →
+ * "Sevilha" / "Seville", Lisboa → "Lisboa" / "Lisbon"). A label shows name:<lang> when the feature
+ * has one, and otherwise what it showed before: the Latin name where there is a non-Latin one (so
+ * still no Arabic or Tifinagh glyphs), else name_en (EN) or the local name (PT). Applied to every
+ * label layer whose text-field is positron's / Dark Matter's name expression (the same in both
+ * themes): at load through basemapStyle, on a language switch through setLabelLanguage.
+ */
+const IS_NAME_LABEL = JSON.stringify(["has", "name:nonlatin"]);
+const isNameLabel = (field: unknown) => JSON.stringify(field ?? "").includes(IS_NAME_LABEL);
+
+export function labelField(lang: Lang): ExpressionSpecification {
+  const local: ExpressionSpecification = lang === "en" ? ["coalesce", ["get", "name_en"], ["get", "name"]] : ["get", "name"];
+  return ["coalesce", ["get", `name:${lang}`], ["case", ["has", "name:nonlatin"], ["get", "name:latin"], local]];
+}
+
+function localLabels(style: StyleSpecification, lang: Lang): StyleSpecification {
+  return {
+    ...style,
+    layers: style.layers.map((layer) =>
+      layer.type === "symbol" && isNameLabel(layer.layout?.["text-field"]) ? { ...layer, layout: { ...layer.layout, "text-field": labelField(lang) } } : layer,
+    ),
+  };
+}
+
+/** Switches the basemap labels of the current style to `lang`, in place (no style reload). */
+export function setLabelLanguage(map: { getStyle(): StyleSpecification; setLayoutProperty(id: string, name: string, value: unknown): void }, lang: Lang): void {
+  for (const layer of map.getStyle().layers) {
+    if (layer.type === "symbol" && isNameLabel(layer.layout?.["text-field"])) map.setLayoutProperty(layer.id, "text-field", labelField(lang));
+  }
 }
 
 /**
@@ -77,10 +110,10 @@ function shieldFilters(style: StyleSpecification): StyleSpecification {
   };
 }
 
-/** transformStyle for the basemap of `theme`: Latin-only labels and quiet shield filters, plus brighter place names in dark. */
-export function basemapStyle(theme: Theme) {
+/** transformStyle for the basemap of `theme`: labels in `lang` (Latin-only fallback), quiet shield filters, plus brighter place names in dark. */
+export function basemapStyle(theme: Theme, lang: Lang) {
   return (previous: StyleSpecification | undefined, next: StyleSpecification): StyleSpecification => {
-    const style = shieldFilters(latinLabels(previous, next));
+    const style = shieldFilters(localLabels(latinLabels(previous, next), lang));
     return theme === "dark" ? brightPlaceLabels(style) : style;
   };
 }
