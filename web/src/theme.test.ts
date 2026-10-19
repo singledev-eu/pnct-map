@@ -16,7 +16,7 @@ const asTokens = (p: MapPalette) => ({ pnct: p.pnct, other: p.other, "parish-lin
 describe("theme palette", () => {
   it("matches the legend tokens in style.css", () => {
     expect(mapTokens(":root {")).toEqual(asTokens(PALETTES.light));
-    expect(mapTokens("@media (prefers-color-scheme: dark) {\n  :root {")).toEqual(asTokens(PALETTES.dark));
+    expect(mapTokens(':root[data-theme="dark"] {')).toEqual(asTokens(PALETTES.dark));
   });
 
   it("matches the RNAP tint token in style.css", () => {

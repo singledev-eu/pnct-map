@@ -24,6 +24,20 @@ CACHE = ROOT / "data/external/protected"  # gitignored (data/external/)
 
 
 @dataclass(frozen=True)
+class PtLabels:
+    """The Portuguese versions of a source's display labels, for the web app's PT/EN toggle.
+
+    Empty fields fall back to the English (default) ones. `types` maps the `type` labels as built
+    (type_labels values, or the source's own designations) to Portuguese; unlisted ones show as is.
+    """
+
+    title: str = ""
+    release: str = ""
+    licence: str = ""
+    types: dict[str, str] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
 class ArcGisSource:
     """An ArcGIS REST MapServer, queried page by page (f=geojson, outSR=4326)."""
 
@@ -40,6 +54,7 @@ class ArcGisSource:
     licence_confirmed: bool
     release: str | None = None  # dataset version, if the source states one; else the fetch date stands for it
     page_size: int = 25  # well under maxRecordCount; RNAP parks are large polygons
+    pt: PtLabels = field(default_factory=lambda: PtLabels())
 
     @property
     def url(self) -> str:
@@ -71,6 +86,7 @@ class FileSource:
     licence_url: str | None = None
     licence_confirmed: bool = False
     release: str | None = None
+    pt: PtLabels = field(default_factory=lambda: PtLabels())
 
     def cache_dir(self) -> Path:
         return CACHE / self.id
@@ -81,6 +97,12 @@ class FileSource:
 
 # Natura 2000 site types: A = SPA (Birds Directive), B = SCI/SAC (Habitats Directive), C = both.
 NATURA_TYPES = {"A": "ZPE (Birds Directive)", "B": "ZEC/SIC (Habitats Directive)", "C": "ZPE + ZEC (both Directives)"}
+NATURA_TYPES_PT = {
+    "ZPE (Birds Directive)": "ZPE (Diretiva Aves)",
+    "ZEC/SIC (Habitats Directive)": "ZEC/SIC (Diretiva Habitats)",
+    "ZPE + ZEC (both Directives)": "ZPE + ZEC (ambas as Diretivas)",
+}
+UNCONFIRMED_PT = "Condições de reutilização não confirmadas"
 
 SOURCES: dict[str, ArcGisSource | FileSource] = {
     "rnap-icnf": ArcGisSource(
@@ -95,6 +117,7 @@ SOURCES: dict[str, ArcGisSource | FileSource] = {
         licence="Reuse terms not confirmed",
         licence_url=None,
         licence_confirmed=False,
+        pt=PtLabels(licence=UNCONFIRMED_PT),  # the RNAP designations are already Portuguese
     ),
     "natura-eea": FileSource(
         id="natura-eea",
@@ -115,6 +138,7 @@ SOURCES: dict[str, ArcGisSource | FileSource] = {
         licence_url="https://creativecommons.org/licenses/by/4.0/",
         licence_confirmed=True,
         release="end 2024",
+        pt=PtLabels(title="Natura 2000 (vetorial), versão de fim de 2024", release="fim de 2024", types=NATURA_TYPES_PT),
     ),
     # Drop-in alternative for "natura": ICNF's own Natura 2000 layers (ZPE, SIC). Same licence caveat as RNAP.
     "natura-icnf": ArcGisSource(
@@ -129,6 +153,7 @@ SOURCES: dict[str, ArcGisSource | FileSource] = {
         licence="Reuse terms not confirmed",
         licence_url=None,
         licence_confirmed=False,
+        pt=PtLabels(licence=UNCONFIRMED_PT, types=NATURA_TYPES_PT),
     ),
 }
 

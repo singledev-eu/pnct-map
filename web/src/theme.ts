@@ -1,12 +1,46 @@
 /**
- * Light/dark theme, from the OS/browser setting only (prefers-color-scheme; no manual toggle).
- * The UI follows through CSS custom properties (style.css); the map through the basemap style URL
- * and the data-layer palette below. Keep the palette in step with the --map-* tokens in style.css
- * (theme.test.ts checks it).
+ * Light/dark theme. The viewer picks Auto (the default: follows prefers-color-scheme, live), Light
+ * or Dark (both ignore the system). The choice is kept in localStorage; index.html's inline boot
+ * script reads it before the CSS and sets <html data-theme> to the resolved theme, so the page and
+ * the basemap start in it (the boot script mirrors resolveTheme/loadThemePref; theme.test.ts runs
+ * both). The UI follows through CSS custom properties (style.css, keyed on data-theme); the map
+ * through the basemap style URL and the data-layer palette below. Keep the palette in step with
+ * the --map-* tokens in style.css (theme.test.ts checks it).
  */
 export type Theme = "light" | "dark";
+export type ThemePref = "auto" | Theme;
 
 export const DARK_QUERY = "(prefers-color-scheme: dark)";
+export const THEME_STORAGE_KEY = "pnct-map:theme";
+const PREFS: readonly ThemePref[] = ["auto", "light", "dark"];
+
+/** The theme button's cycle: Auto → Light → Dark → Auto. */
+export const nextThemePref = (pref: ThemePref): ThemePref => PREFS[(PREFS.indexOf(pref) + 1) % PREFS.length];
+
+export const resolveTheme = (pref: ThemePref, systemDark: boolean): Theme => (pref === "auto" ? (systemDark ? "dark" : "light") : pref);
+
+/** The saved choice; Auto when there is none, it isn't valid, or storage is unavailable. */
+export function loadThemePref(storage: () => Storage = () => window.localStorage): ThemePref {
+  try {
+    const v = storage().getItem(THEME_STORAGE_KEY);
+    return PREFS.includes(v as ThemePref) ? (v as ThemePref) : "auto";
+  } catch {
+    return "auto";
+  }
+}
+
+/** Saves the choice (Auto removes it). Without storage the choice lasts for this page only. */
+export function saveThemePref(pref: ThemePref, storage: () => Storage = () => window.localStorage): void {
+  try {
+    if (pref === "auto") storage().removeItem(THEME_STORAGE_KEY);
+    else storage().setItem(THEME_STORAGE_KEY, pref);
+  } catch {
+    // Storage may be unavailable (private mode, blocked).
+  }
+}
+
+/** Browser UI colour per theme (<meta name="theme-color">, also in index.html). */
+export const THEME_COLORS: Record<Theme, string> = { light: "#0f8a7e", dark: "#0c0c0c" };
 
 /**
  * OpenFreeMap styles. "dark" is OpenFreeMap's build of Dark Matter: same tiles (OpenMapTiles
@@ -67,3 +101,17 @@ export const PALETTES: Record<Theme, MapPalette> = {
 };
 
 export const themeOf = (query: { matches: boolean }): Theme => (query.matches ? "dark" : "light");
+
+/**
+ * Applies the resolved theme to the page: <html data-theme> (style.css) and the browser UI colour.
+ * Under Auto the two media-keyed theme-color metas keep following the system; a forced theme sets
+ * both to its colour.
+ */
+export function applyPageTheme(theme: Theme, pref: ThemePref, doc: Document = document): void {
+  doc.documentElement.dataset.theme = theme;
+  doc.documentElement.dataset.themePref = pref;
+  for (const meta of doc.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) {
+    const own = meta.media.includes("dark") ? "dark" : "light";
+    meta.content = THEME_COLORS[pref === "auto" ? own : theme];
+  }
+}

@@ -1,8 +1,21 @@
 /**
- * UI strings for the protected-areas overlay, kept together for the planned PT/EN toggle: a
- * Portuguese table with the same shape can replace `en` without touching the code that uses it.
- * (The older UI strings still live next to their code: index.html, panel.ts, main.ts.)
+ * Every user-visible UI string, per language: strings.en.ts and strings.pt.ts each export one
+ * `Strings` object, so a key missing from either is a compile error. Place names (parishes,
+ * concelhos, districts) come from the data and are never translated. Data-derived labels (the
+ * protected-area sources) carry both languages in their data meta (protected.ts).
+ *
+ * `t`, `tc`, `sheet` and `ui` are live bindings: setLang swaps them, and the importing modules
+ * read them at render time, so main.ts re-renders after a switch (applyLanguage).
+ * Index.html has no text of its own: its elements name a `ui` key in data-i18n (i18n.ts applyStatic).
  */
+import type { LandFilter, Operation, PropertyType } from "./idealista";
+import type { ThemePref } from "./theme";
+import { en } from "./strings.en";
+import { pt } from "./strings.pt";
+
+export type Lang = "pt" | "en";
+export const LANGS: readonly Lang[] = ["pt", "en"];
+
 export interface ProtectedStrings {
   legendHeading: string;
   /** Legend toggle label per category id (protected.meta.json); unknown ids fall back to the source title. */
@@ -39,69 +52,8 @@ export interface ProtectedStrings {
   licenceUnconfirmed: string;
 }
 
-export const en: ProtectedStrings = {
-  legendHeading: "Nature protection",
-  toggle: { rnap: "Protected areas (RNAP)", natura: "Natura 2000" },
-  short: { rnap: "RNAP", natura: "Natura" },
-  legendSources: "Sources",
-  disclaimer: "Indicator, not a verdict — check the municipal PDM.",
-  panelHeading: "Nature protection",
-  summary: (any, parts) => `Under protection: ${any}${parts.length > 1 ? ` (${parts.join(", ")})` : ""}`,
-  areasLabel: "Areas",
-  naturaBoth: "ZPE + ZEC",
-  zoomHint: "Zoom in to see protected areas",
-  explainer: {
-    button: "What does protection mean?",
-    title: "What does “protected” mean for buying land?",
-    items: [
-      {
-        lead: "You can still buy and own it.",
-        body: "Protection limits what you can do on the land (building, clearing, some farming), not who can own it.",
-      },
-      {
-        lead: "Natural parks and reserves (RNAP)",
-        body: "have zones with different rules. Core areas are the strictest; complementary areas and villages allow more, under the park’s management plan.",
-      },
-      {
-        lead: "Natura 2000",
-        body: "isn’t a building ban. It usually means an extra environmental assessment for new projects.",
-      },
-      {
-        lead: "What usually decides whether you can build:",
-        body: "the municipal plan (PDM) classification — *urbano* vs *rústico* — and whether the plot is in REN or RAN reserves.",
-      },
-      {
-        lead: "Before you buy, ask the câmara for a PIP",
-        body: "(*Pedido de Informação Prévia*). It’s a formal answer about what can be built on that specific plot.",
-      },
-      {
-        lead: "Ruins registered as *artigo urbano*",
-        body: "are a common way to build in rural areas, but rebuilding still depends on the PDM and any protection rules.",
-      },
-    ],
-    footnote: "This map is an indicator, not a verdict. Always check the municipal PDM.",
-    close: "Close",
-  },
-  toggleLoading: "Loading…",
-  loading: "Loading protection data…",
-  loadError: "Could not load the protection data. Please try again.",
-  overlayError: "Could not load the protected areas. Please try again.",
-  creditLead: "Protected areas",
-  aboutHeading: "Protected areas",
-  aboutBody:
-    "The overlays and the share of each parish or concelho under protection come from the sources below. They are an indicator of where building is likely restricted, not a verdict: the municipal PDM decides.",
-  licenceUnconfirmed: "reuse terms not confirmed",
-};
-
-/** The active language. */
-export const t: ProtectedStrings = en;
-
-/**
- * UI strings for the concelho card (concelho.ts), with the same PT/EN plan as `en` above. Numbers
- * and dates are formatted with `locale`.
- */
+/** The concelho card (concelho.ts). Numbers and dates are formatted with `ui.locale`. */
 export interface ConcelhoStrings {
-  locale: string;
   /** Summary of the collapsed section in the parish panel. */
   parishSummary: (name: string) => string;
   loading: string;
@@ -133,63 +85,184 @@ export interface ConcelhoStrings {
   noPdm: string;
   contactsSource: (checked: string) => string;
   notYet: string;
+  /** Link label; the issue it opens is in English in both languages (ISSUE, below: it's for the maintainers). */
   report: string;
   snit: string;
   newTab: string;
-  issueTitle: (name: string, dico: string) => string;
-  issueBody: (name: string, dico: string, current: string[], asOf: string) => string;
 }
 
-export const concelhoEn: ConcelhoStrings = {
-  locale: "en-GB",
-  parishSummary: (name) => `Concelho: ${name}`,
-  loading: "Loading concelho data…",
-  loadError: "Could not load the concelho data. Please try again.",
-  populationHeading: "Population",
-  population: (people, year) => `${people} people (${year})`,
-  censusChange: (pct) => `${pct} from 2011 to 2021 (Censuses)`,
-  density: (value) => `${value} people/km²`,
-  // Reads the same below 1 ("0.8 older people (65+) per child"): no singular/plural switch needed.
-  ageing: (ratio, national) => `${ratio} older people (65+) per child (Portugal: ${national})`,
-  ageingHelp: (index, national) => `Ageing index ${index} (Portugal: ${national}): people aged 65 and over per 100 children under 15. Source: INE.`,
-  ageingHelpLabel: "About this figure (ageing index)",
-  wholeConcelho: "Figures for the whole concelho",
-  missing: "—",
-  missingNote: "not available",
-  populationSource: (year) => `Source: INE, population estimates ${year}, Censuses 2011/2021 · CC BY 4.0`,
-  contactsHeading: "Câmara Municipal",
-  website: "Website",
-  urbanism: "Urbanism",
-  noUrbanism: "No urbanism page found on the câmara's site",
-  pdm: "PDM in force",
-  pdmDocuments: "PDM documents",
-  pdmUnclear: "Version in force not stated — check with the câmara.",
-  noPdm: "No PDM page found on the câmara's site",
-  contactsSource: (checked) => `Source: câmara website, checked ${checked}`,
-  notYet: "Câmara contacts: not yet available",
-  report: "Report outdated info",
-  snit: "Official PDM maps: SNIT (DGT)",
-  newTab: "opens in a new tab",
-  issueTitle: (name, dico) => `Outdated info: ${name} (${dico})`,
-  issueBody: (name, dico, current, asOf) =>
-    [`Concelho: ${name} (DICO ${dico})`, "", `Current data (checked ${asOf}):`, ...current.map((l) => `- ${l}`), "", "What changed?", "", ""].join("\n"),
-};
-
-/** The active language for the concelho card. */
-export const tc: ConcelhoStrings = concelhoEn;
-
 /** The phone bottom sheet (sheet.ts, panel.ts). */
-export const sheet = {
-  expand: "Expand panel",
-  collapse: "Collapse panel",
-  credits: "Map credits",
+export interface SheetStrings {
+  expand: string;
+  collapse: string;
+  credits: string;
+}
+
+/**
+ * Everything else: the static page (index.html, by data-i18n key), the toolbar, legend, tooltip,
+ * search, panel, property links, credits, About, the language/theme controls and error states.
+ * Strings with {name} placeholders are filled with links by i18n.ts fill().
+ */
+export interface UiStrings {
+  /** BCP 47 tag for Intl and <html lang>. */
+  locale: string;
+  /** Document title and meta description. */
+  title: string;
+  description: string;
+  // index.html (data-i18n keys)
+  mapLabel: string;
+  searchLabel: string;
+  searchPlaceholder: string;
+  districtLabel: string;
+  allDistricts: string;
+  onlyPnct: string;
+  onlyPnctTitle: string;
+  onlyPnctLabel: string;
+  legend: string;
+  legendWhole: string;
+  legendPartial: string;
+  legendNotPnct: string;
+  legendPnctParish: string;
+  legendOtherParish: string;
+  legendBoundary: string;
+  overlaysLabel: string;
+  aboutButton: string;
+  loadingMap: string;
+  // error states (status line)
+  basemapError: string;
+  dataError: string;
+  // language and theme controls (controls.ts)
+  settingsLabel: string;
+  langLabel: string;
+  /** Accessible name per language button; contains the visible "PT"/"EN" (WCAG 2.5.3). */
+  langNames: Record<Lang, string>;
+  /** Theme button: accessible name and tooltip stating the current state. */
+  theme: Record<ThemePref, string>;
+  // tooltip and search
+  concelhoSub: (distrito: string) => string;
+  pnctYes: string;
+  pnctNo: string;
+  pnctAll: string;
+  pnctSome: (pnct: number, total: number) => string;
+  kind: { concelho: string; parish: string };
+  noMatches: string;
+  /** Screen-reader suffix of a PNCT search result. */
+  pnctMark: string;
+  // panel
+  parishes: (n: number) => string;
+  coverageWhole: (n: number) => string;
+  coverageNone: (name: string, n: number) => string;
+  coveragePartial: (name: string, pnct: number, n: number) => string;
+  badgePnct: string;
+  badgeOther: string;
+  factConcelho: string;
+  factDistrito: string;
+  factDicofre: string;
+  factParishes: string;
+  closePanel: string;
+  kickerParish: string;
+  kickerConcelho: string;
+  concelhoCoverage: string;
+  pnctCoverage: string;
+  showConcelho: (name: string) => string;
+  showAll: string;
+  pnctParishes: string;
+  propertySearch: string;
+  searchOptions: string;
+  operation: string;
+  propertyType: string;
+  landType: string;
+  operations: Record<Operation, string>;
+  types: Record<PropertyType, string>;
+  land: Record<LandFilter, string>;
+  linksLoading: string;
+  linksNone: string;
+  linksError: string;
+  linksDisclaimer: string;
+  notPnctParish: string;
+  // property links (links.ts)
+  linkParish: string;
+  linkParishDescription: string;
+  linkApprox: string;
+  linkMunicipality: (name: string) => string;
+  linkMunicipalityDescription: string;
+  // credits: map attribution and the phone sheet
+  attributionBoundaries: string;
+  sheetBoundaries: string;
+  // About dialog. **bold**; {placeholders} are links.
+  about: {
+    title: string;
+    intro: string;
+    unofficial: string;
+    sourcesHeading: string;
+    pnctLabel: string;
+    /** {list}: the IEFP list link (listLink). */
+    pnct: string;
+    listLink: string;
+    boundariesLabel: string;
+    /** {caop}, {licence}. */
+    boundaries: string;
+    basemapLabel: string;
+    /** {openfreemap}, {openmaptiles}, {osm}. */
+    basemap: string;
+    notAffiliated: string;
+    close: string;
+  };
+}
+
+export interface Strings {
+  ui: UiStrings;
+  protected: ProtectedStrings;
+  concelho: ConcelhoStrings;
+  sheet: SheetStrings;
+}
+
+export const STRINGS: Record<Lang, Strings> = { en, pt };
+
+/** The active language and its tables (live bindings, see the header). English until setLang. */
+export let lang: Lang = "en";
+export let ui: UiStrings = en.ui;
+export let t: ProtectedStrings = en.protected;
+export let tc: ConcelhoStrings = en.concelho;
+export let sheet: SheetStrings = en.sheet;
+
+export function setLang(next: Lang): void {
+  lang = next;
+  ({ ui, protected: t, concelho: tc, sheet } = STRINGS[next]);
+}
+
+/**
+ * The "Report outdated info" GitHub issue, in English in both languages: it's read by the
+ * maintainers, not shown in the UI.
+ */
+export const ISSUE = {
+  title: (name: string, dico: string) => `Outdated info: ${name} (${dico})`,
+  body: (name: string, dico: string, current: string[], asOf: string) =>
+    [`Concelho: ${name} (DICO ${dico})`, "", `Current data (checked ${asOf}):`, ...current.map((l) => `- ${l}`), "", "What changed?", "", ""].join("\n"),
+  fields: {
+    website: "Website",
+    email: "Email",
+    phone: "Phone",
+    urbanism: "Urbanism page",
+    pdm: "PDM page",
+    pdmStatus: "PDM status",
+    population: (year: number) => `Population ${year}`,
+  },
 };
 
 /** Shares below this (but above 0) are mostly boundary mismatches; they show as "<0.5%". The data keeps the exact value. */
 export const SMALL_SHARE = 0.5;
 
-/** "0%", "<0.5%", "12.3%", "100%": one decimal, none for whole numbers. */
+/**
+ * `value` in the active locale: "8,360" / "8 360" (grouped from four digits in both, unlike
+ * pt-PT's default, which starts at five), "4.2" / "4,2".
+ */
+export function formatNumber(value: number, digits = 0, extra: Intl.NumberFormatOptions = {}): string {
+  return new Intl.NumberFormat(ui.locale, { minimumFractionDigits: digits, maximumFractionDigits: digits, useGrouping: "always", ...extra }).format(value);
+}
+
+/** "0%", "<0.5%", "12.3%", "100%" ("12,3%" in PT): one decimal, none for whole numbers. */
 export function formatPct(value: number): string {
-  if (value > 0 && value < SMALL_SHARE) return `<${SMALL_SHARE}%`;
-  return `${Number.isInteger(value) ? value : value.toFixed(1)}%`;
+  if (value > 0 && value < SMALL_SHARE) return `<${formatNumber(SMALL_SHARE, 1)}%`;
+  return `${formatNumber(value, Number.isInteger(value) ? 0 : 1)}%`;
 }

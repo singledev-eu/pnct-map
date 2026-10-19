@@ -2,35 +2,43 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
 import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent, type StyleSpecification } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
+import { renderAbout } from "./about";
 import { basemapStyle } from "./basemap";
 import { BOUNDS_MARGIN, cameraLimits, protectedFade, constrainView, fitCenter, fitZoom, MAINLAND, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
 import { addLayers, addOverlays, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, overlaySource, PARISH_FILL, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, withAppLayers, type FilterState, type OverlayState } from "./layers";
+import { mountSettings } from "./controls";
+import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountLegend, mountOverlayToggles } from "./legend";
 import { h, Panel } from "./panel";
 import { loadOptions, saveOptions } from "./prefs";
-import { attributionHtml, CATEGORY_IDS, credits, loadOverlay, type OverlayData } from "./protected";
+import { attributionHtml, CATEGORY_IDS, loadOverlay, type OverlayData } from "./protected";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
-import { t } from "./strings";
-import { DARK_QUERY, PALETTES, STYLE_URLS, themeOf, type Theme } from "./theme";
+import { lang, setLang, t, ui, type Lang } from "./strings";
+import { applyPageTheme, DARK_QUERY, loadThemePref, nextThemePref, PALETTES, resolveTheme, saveThemePref, STYLE_URLS, themeOf, type Theme, type ThemePref } from "./theme";
 // ?url makes Vite emit the file content-hashed under assets/; index.html preloads the same file.
 import DATA_URL from "../data/pnct.topo.json?url";
 
 setWorkerUrl(workerUrl);
 
-// The theme follows the OS/browser setting (theme.ts); it is read before the map is created, so a
-// dark-mode visitor never loads the light basemap. style.css follows the same media query.
+// The language (i18n.ts): every string below is read from the active table, so it is set first.
+setLang(initialLang());
+applyStatic();
+
+// The theme: the viewer's choice (Auto follows the OS/browser setting; theme.ts). index.html's boot
+// script has already applied it to the page; it is read again here before the map is created, so
+// the basemap starts in it and never switches after load.
 const darkQuery = window.matchMedia(DARK_QUERY);
-let theme: Theme = themeOf(darkQuery);
-document.documentElement.dataset.theme = theme;
+let themePref: ThemePref = loadThemePref();
+let theme: Theme = resolveTheme(themePref, darkQuery.matches);
+applyPageTheme(theme, themePref);
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const status = $<HTMLDivElement>("status");
 const tooltip = $<HTMLDivElement>("tooltip");
 const districtSelect = $<HTMLSelectElement>("district-select");
 const onlyPnctInput = $<HTMLInputElement>("only-pnct");
-const aboutDialog = $<HTMLDialogElement>("about");
 
 const isNarrow = () => window.matchMedia("(max-width: 640px)").matches;
 
@@ -73,16 +81,21 @@ map.setMissingStyleImageResolver((id) => {
 // Set here rather than as the `style` option so the label patch (basemap.ts) applies before any tile is parsed.
 map.setStyle(STYLE_URLS[theme], { transformStyle: basemapStyle(theme) });
 
-// A live OS theme switch swaps the basemap. Once the app has added its layers (start), the switch
-// carries them over with the new palette (themeStyle, set in start), and style.load restores the rest.
+// A theme switch (the theme button, or the OS under Auto) swaps the basemap. Once the app has added
+// its layers (start), the switch carries them over with the new palette (themeStyle, set in start),
+// and style.load restores the rest.
 let themeStyle = (previous: StyleSpecification | undefined, next: StyleSpecification) => basemapStyle(theme)(previous, next);
-darkQuery.addEventListener("change", () => {
-  const next = themeOf(darkQuery);
+const applyTheme = () => {
+  const next = resolveTheme(themePref, darkQuery.matches);
+  applyPageTheme(next, themePref);
   if (next === theme) return;
   theme = next;
-  document.documentElement.dataset.theme = theme;
   document.body.dataset.mapTheme = "pending"; // set to the theme on the new style's first frame (start)
   map.setStyle(STYLE_URLS[theme], { transformStyle: (previous, next) => themeStyle(previous, next) });
+};
+// Light and Dark ignore the system; Auto follows it live.
+darkQuery.addEventListener("change", () => {
+  if (themePref === "auto" && themeOf(darkQuery) !== theme) applyTheme();
 });
 // Keep the centre of the visible area over mainland at every zoom, not just the viewport inside
 // maxBounds (camera.ts: constrainView, OUTLINE). MapLibre runs this on every camera change (drag,
@@ -118,11 +131,20 @@ map.touchZoomRotate.disableRotation();
 map.addControl(new NavigationControl({ showCompass: false }), "bottom-right");
 // No `compact` option: MapLibre shows the full line on wide maps and the compact ⓘ button at
 // ≤ 640 px. It opens the compact view on load, so start it collapsed; the text is one tap away.
-map.addControl(new AttributionControl({ customAttribution: ["Boundaries: CAOP 2025 © DGT (CC BY 4.0)", attributionHtml()] }), "bottom-right");
-const attribution = map.getContainer().querySelector<HTMLElement>(".maplibregl-ctrl-attrib")!;
+// A language switch replaces the control (its custom lines are fixed at creation).
+let attributionControl: AttributionControl | null = null;
+let attribution!: HTMLElement;
 const isCompact = () => attribution.classList.contains("maplibregl-compact");
 const collapseAttribution = () => attribution.classList.remove("maplibregl-compact-show"); // as MapLibre does on drag
-collapseAttribution();
+const addAttribution = () => {
+  if (attributionControl) map.removeControl(attributionControl);
+  attributionControl = new AttributionControl({ customAttribution: [ui.attributionBoundaries, attributionHtml()] });
+  // Before the zoom buttons, where it was first added (bottom-right stacks controls in order).
+  map.addControl(attributionControl, "bottom-right");
+  attribution = map.getContainer().querySelector<HTMLElement>(".maplibregl-ctrl-attrib")!;
+  collapseAttribution();
+};
+addAttribution();
 let wasCompact = isCompact();
 map.on("resize", () => {
   // Rotating or resizing into the compact layout re-opens it; keep it collapsed.
@@ -149,6 +171,37 @@ mountLegend(legendEl, window.matchMedia("(max-width: 640px)"));
 const trackLegend = () => document.documentElement.style.setProperty("--legend-right", `${Math.ceil(legendEl.getBoundingClientRect().right)}px`);
 new ResizeObserver(trackLegend).observe(legendEl);
 window.addEventListener("resize", trackLegend);
+
+// ---- language and theme controls (legend header) ---------------------------------
+// Usable from the first paint, before the map data is in. A language switch re-renders in place
+// (no reload): the static page, the controls, the attribution and About here, the rest through
+// onLangChange (set in start).
+const aboutDialog = $<HTMLDialogElement>("about");
+renderAbout(aboutDialog);
+$("about-open").addEventListener("click", () => aboutDialog.showModal());
+let onLangChange = () => {};
+const settings = mountSettings(
+  $("settings"),
+  { lang: () => lang, theme: () => themePref },
+  {
+    lang: (next: Lang) => {
+      setLang(next);
+      rememberLang(next);
+      applyStatic();
+      settings.render();
+      addAttribution();
+      wasCompact = isCompact();
+      renderAbout(aboutDialog);
+      onLangChange();
+    },
+    cycleTheme: () => {
+      themePref = nextThemePref(themePref);
+      saveThemePref(themePref);
+      settings.render();
+      applyTheme();
+    },
+  },
+);
 
 type Selection = { kind: "parish"; dicofre: string } | { kind: "concelho"; code: string } | null;
 
@@ -299,10 +352,10 @@ function start(data: MapData): void {
     if (target.kind === "concelho") {
       const { c } = target;
       setHover({ source: CONCELHO_SOURCE, id: featureId(c.code) });
-      const coverage = c.pnctCount === 0 ? "PNCT: no" : c.pnctCount === c.parishCount ? "PNCT: all parishes" : `PNCT: ${c.pnctCount} of ${c.parishCount} parishes`;
+      const coverage = c.pnctCount === 0 ? ui.pnctNo : c.pnctCount === c.parishCount ? ui.pnctAll : ui.pnctSome(c.pnctCount, c.parishCount);
       tooltip.replaceChildren(
         h("strong", {}, c.name),
-        h("span", {}, `Concelho · ${c.distrito}`),
+        h("span", {}, ui.concelhoSub(c.distrito)),
         h("span", { class: c.pnctCount ? "tt-pnct" : "tt-other" }, coverage),
       );
     } else {
@@ -311,7 +364,7 @@ function start(data: MapData): void {
       tooltip.replaceChildren(
         h("strong", {}, p.freguesia),
         h("span", {}, p.concelho),
-        h("span", { class: p.pnct ? "tt-pnct" : "tt-other" }, p.pnct ? "PNCT: yes" : "PNCT: no"),
+        h("span", { class: p.pnct ? "tt-pnct" : "tt-other" }, p.pnct ? ui.pnctYes : ui.pnctNo),
       );
     }
     tooltip.style.transform = `translate(${e.point.x + 14}px, ${e.point.y + 14}px)`;
@@ -335,24 +388,28 @@ function start(data: MapData): void {
   });
 
   // ---- search -----------------------------------------------------------------
-  const items: SearchItem[] = [
-    ...[...data.concelhos.values()].map<SearchItem>((c) => ({
-      kind: "concelho",
-      id: c.code,
-      label: c.name,
-      sublabel: `Concelho · ${c.distrito}`,
-      pnct: c.pnctCount > 0,
-    })),
-    ...[...data.parishes.values()].map<SearchItem>((p) => ({
-      kind: "parish",
-      id: p.dicofre,
-      label: p.freguesia,
-      sublabel: `${p.concelho} · ${p.distrito}`,
-      pnct: p.pnct,
-    })),
-  ];
-  const allIndex = createSearchIndex(items);
-  const pnctIndex = createSearchIndex(items.filter((item) => item.pnct)); // concelhos: at least one PNCT parish
+  // Built in the active language (the concelho sublabel); a language switch rebuilds them.
+  const buildIndexes = () => {
+    const items: SearchItem[] = [
+      ...[...data.concelhos.values()].map<SearchItem>((c) => ({
+        kind: "concelho",
+        id: c.code,
+        label: c.name,
+        sublabel: ui.concelhoSub(c.distrito),
+        pnct: c.pnctCount > 0,
+      })),
+      ...[...data.parishes.values()].map<SearchItem>((p) => ({
+        kind: "parish",
+        id: p.dicofre,
+        label: p.freguesia,
+        sublabel: `${p.concelho} · ${p.distrito}`,
+        pnct: p.pnct,
+      })),
+    ];
+    // concelhos in pnctIndex: at least one PNCT parish
+    return { allIndex: createSearchIndex(items), pnctIndex: createSearchIndex(items.filter((item) => item.pnct)) };
+  };
+  let { allIndex, pnctIndex } = buildIndexes();
   const search = mountSearch({
     input: $("search-input"),
     list: $("search-list"),
@@ -466,20 +523,16 @@ function start(data: MapData): void {
   });
   document.body.dataset.mapTheme = theme;
 
-  // ---- about ------------------------------------------------------------------
-  $("about-open").addEventListener("click", () => aboutDialog.showModal());
-  $("about-protected").replaceChildren(
-    h("strong", {}, `${t.aboutHeading}:`),
-    " ",
-    ...credits().flatMap((c, i) => [
-      i ? "; " : "",
-      h("a", { href: c.url, target: "_blank", rel: "noopener noreferrer" }, c.label),
-      ` (${c.asOf}, `,
-      c.licenceUrl ? h("a", { href: c.licenceUrl, target: "_blank", rel: "noopener noreferrer" }, c.licence) : c.licence,
-      ")",
-    ]),
-    `. ${t.aboutBody}`,
-  );
+  // ---- language switch ------------------------------------------------------------
+  // Everything start() rendered: the legend toggles, the search indexes and an open search list,
+  // the tooltip, and the panel (re-rendered for the same selection, without moving the camera).
+  onLangChange = () => {
+    toggles.relabel();
+    ({ allIndex, pnctIndex } = buildIndexes());
+    search.close();
+    clearHover();
+    if (selection) select(selection);
+  };
 
   // ---- restore from hash ----------------------------------------------------------
   const restore = (fly: boolean, s: HashState = readHash()) => {
@@ -530,7 +583,7 @@ function start(data: MapData): void {
 map.on("error", (e) => {
   if (!map.isStyleLoaded() && document.body.dataset.parishesLoaded !== "true") {
     console.error(e.error);
-    status.textContent = "Could not load the basemap. Please check your connection and reload.";
+    status.textContent = ui.basemapError;
     status.classList.add("status-error");
   }
 });
@@ -541,6 +594,6 @@ Promise.all([loadData(DATA_URL), new Promise<void>((resolve) => map.once("style.
   .then(([data]) => start(data))
   .catch((err: unknown) => {
     console.error(err);
-    status.textContent = "Could not load the map data. Please reload the page.";
+    status.textContent = ui.dataError;
     status.classList.add("status-error");
   });

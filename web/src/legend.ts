@@ -3,6 +3,7 @@
  * Algarve at the country view; a tap expands it. The viewer's choice is kept in localStorage
  * (when available). Wide screens always show it expanded, without the toggle.
  */
+import { rich } from "./i18n";
 import { h } from "./panel";
 import { CATEGORIES, categoryLabel, sourceLabel } from "./protected";
 import { t } from "./strings";
@@ -48,31 +49,44 @@ export function mountLegend(legend: HTMLElement, narrow: MediaQueryList): void {
  * the "?" explainer (mountExplainer). `onChange` gets the category and its new state. Returns `sync`,
  * which re-syncs the checkboxes (hash navigation), `setLoading`, which marks the rows of the given
  * categories as loading (spinner and "Loading…", aria-busy) while the overlay file is fetched on the
- * first switch-on, and `setZoomHint`, which shows "Zoom in to see protected areas" (main.ts: while an
- * overlay is on but faded out at country zoom).
+ * first switch-on, `setZoomHint`, which shows "Zoom in to see protected areas" (main.ts: while an
+ * overlay is on but faded out at country zoom), and `relabel`, which re-reads the strings after a
+ * language switch (the state and focus stay).
  */
 export function mountOverlayToggles(
   container: HTMLElement,
   isOn: (cat: string) => boolean,
   onChange: (cat: string, on: boolean) => void,
-): { sync: () => void; setLoading: (cats: ReadonlySet<string>) => void; setZoomHint: (show: boolean) => void } {
+): { sync: () => void; setLoading: (cats: ReadonlySet<string>) => void; setZoomHint: (show: boolean) => void; relabel: () => void } {
   const inputs = CATEGORIES.map((c) => {
     const input = h("input", { type: "checkbox", "data-overlay": c.id, "data-testid": `overlay-${c.id}` });
     input.addEventListener("change", () => onChange(c.id, input.checked));
-    const loading = h("span", { class: "overlay-loading", "data-testid": `overlay-loading-${c.id}`, role: "status" }, h("span", { class: "spinner", "aria-hidden": "true" }), t.toggleLoading);
+    const loadingText = h("span", {});
+    const loading = h("span", { class: "overlay-loading", "data-testid": `overlay-loading-${c.id}`, role: "status" }, h("span", { class: "spinner", "aria-hidden": "true" }), loadingText);
     loading.hidden = true;
-    const row = h("label", { class: "legend-row legend-overlay" }, input, h("span", { class: `swatch swatch-${c.id}`, "aria-hidden": "true" }), categoryLabel(c), loading);
-    return { id: c.id, input, row, loading };
+    const label = h("span", {});
+    const row = h("label", { class: "legend-row legend-overlay" }, input, h("span", { class: `swatch swatch-${c.id}`, "aria-hidden": "true" }), label, loading);
+    return { id: c.id, c, input, row, label, loading, loadingText };
   });
-  const help = h("button", { type: "button", class: "help-button", "aria-label": t.explainer.button, "data-testid": "protection-help" }, "?");
-  const hint = h("p", { class: "legend-hint", "data-testid": "overlay-zoom-hint" }, t.zoomHint);
+  const help = h("button", { type: "button", class: "help-button", "data-testid": "protection-help" }, "?");
+  const hint = h("p", { class: "legend-hint", "data-testid": "overlay-zoom-hint" });
   hint.hidden = true;
-  container.replaceChildren(
-    h("div", { class: "legend-heading-row" }, h("p", { class: "legend-heading" }, t.legendHeading), help),
-    ...inputs.map((i) => i.row),
-    hint,
-    h("p", { class: "legend-note", "data-testid": "overlay-note" }, `${t.legendSources}: ${CATEGORIES.map(sourceLabel).join(" · ")}. ${t.disclaimer}`),
-  );
+  const heading = h("p", { class: "legend-heading" });
+  const note = h("p", { class: "legend-note", "data-testid": "overlay-note" });
+  container.replaceChildren(h("div", { class: "legend-heading-row" }, heading, help), ...inputs.map((i) => i.row), hint, note);
+  const explainer = mountExplainer(help);
+  const relabel = () => {
+    for (const i of inputs) {
+      i.label.textContent = categoryLabel(i.c);
+      i.loadingText.textContent = t.toggleLoading;
+    }
+    help.setAttribute("aria-label", t.explainer.button);
+    hint.textContent = t.zoomHint;
+    heading.textContent = t.legendHeading;
+    note.textContent = `${t.legendSources}: ${CATEGORIES.map(sourceLabel).join(" · ")}. ${t.disclaimer}`;
+    explainer.relabel();
+  };
+  relabel();
   const sync = () => {
     for (const { id, input } of inputs) input.checked = isOn(id);
   };
@@ -83,31 +97,34 @@ export function mountOverlayToggles(
     }
   };
   sync();
-  mountExplainer(help);
-  return { sync, setLoading, setZoomHint: (show) => (hint.hidden = !show) };
-}
-
-/** `text` with *emphasis* as <em> (explainer strings). */
-function rich(text: string): (string | HTMLElement)[] {
-  return text.split(/(\*[^*]+\*)/).filter(Boolean).map((part) => (/^\*[^*]+\*$/.test(part) ? h("em", {}, part.slice(1, -1)) : part));
+  return { sync, setLoading, setZoomHint: (show) => (hint.hidden = !show), relabel };
 }
 
 /**
  * The "?" explainer: what protection means for buying land (strings.ts). A popover beside the legend
  * on wide screens, a bottom sheet over a backdrop on phones (style.css). Esc, a click or tap outside,
  * or its close button closes it, and focus goes back to the "?" button; tabbing out of it closes it
- * and leaves focus where it went.
+ * and leaves focus where it went. `relabel` re-renders its text in the active language.
  */
-export function mountExplainer(button: HTMLButtonElement): void {
+export function mountExplainer(button: HTMLButtonElement): { relabel: () => void } {
   const titleId = "explainer-title";
-  const close = h("button", { type: "button", class: "explainer-close", "aria-label": t.explainer.close }, "×");
+  const close = h("button", { type: "button", class: "explainer-close" }, "×");
+  const title = h("h2", { id: titleId });
+  const list = h("ul", {});
+  const footnote = h("em", {});
   const pop = h(
     "div",
     { id: "protection-explainer", class: "explainer", role: "dialog", "aria-labelledby": titleId, tabindex: "-1", "data-testid": "protection-explainer" },
-    h("div", { class: "explainer-header" }, h("h2", { id: titleId }, t.explainer.title), close),
-    h("ul", {}, ...t.explainer.items.map((item) => h("li", {}, h("strong", {}, ...rich(item.lead)), " ", ...rich(item.body)))),
-    h("p", { class: "explainer-footnote" }, h("em", {}, t.explainer.footnote)),
+    h("div", { class: "explainer-header" }, title, close),
+    list,
+    h("p", { class: "explainer-footnote" }, footnote),
   );
+  const relabel = () => {
+    close.setAttribute("aria-label", t.explainer.close);
+    title.textContent = t.explainer.title;
+    list.replaceChildren(...t.explainer.items.map((item) => h("li", {}, h("strong", {}, ...rich(item.lead)), " ", ...rich(item.body))));
+    footnote.textContent = t.explainer.footnote;
+  };
   const backdrop = h("div", { class: "explainer-backdrop", "aria-hidden": "true" });
   pop.hidden = backdrop.hidden = true;
   button.setAttribute("aria-haspopup", "dialog");
@@ -160,4 +177,5 @@ export function mountExplainer(button: HTMLButtonElement): void {
   });
   button.addEventListener("click", () => (isOpen() ? hide(true) : open()));
   close.addEventListener("click", () => hide(true));
+  return { relabel };
 }

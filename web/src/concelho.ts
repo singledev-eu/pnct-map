@@ -7,7 +7,7 @@
 import type { Concelho } from "./data";
 import { h } from "./panel";
 import { cachedJson } from "./protected";
-import { tc } from "./strings";
+import { formatNumber, ISSUE, tc, ui } from "./strings";
 // Content-hashed by Vite, fetched on first use.
 import DATA_URL from "../data/concelhos.json?url";
 
@@ -43,17 +43,17 @@ export interface ConcelhoData {
 
 export const loadConcelhos = cachedJson<ConcelhoData>(DATA_URL);
 
-const number = (value: number, digits = 0) => new Intl.NumberFormat(tc.locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
-/** "−14.0%", "+3.1%", "0.0%": one decimal, a real minus sign. */
-export const signedPct = (value: number) => `${new Intl.NumberFormat(tc.locale, { minimumFractionDigits: 1, maximumFractionDigits: 1, signDisplay: "exceptZero" }).format(value).replace("-", "−")}%`;
+const number = (value: number, digits = 0) => formatNumber(value, digits);
+/** "−14.0%", "+3.1%", "0.0%" ("−14,0%" in PT): one decimal, a real minus sign. */
+export const signedPct = (value: number) => `${formatNumber(value, 1, { signDisplay: "exceptZero" }).replace("-", "−")}%`;
 /** The ageing-index line: the index as a ratio, one decimal ("4.2 older people (65+) per child (Portugal: 1.9)"). */
 export const ageingText = (index: number, national: number) => tc.ageing(number(index / 100, 1), number(national / 100, 1));
 /** The ⓘ text with the index itself, rounded ("Ageing index 418 (Portugal: 189): …"). */
 export const ageingHelpText = (index: number, national: number) => tc.ageingHelp(number(index), number(national));
 /** One decimal below 100 people/km², none above. */
 const densityText = (value: number) => number(value, value < 100 ? 1 : 0);
-/** "October 2026" from "2026-10-18". */
-const monthYear = (iso: string) => new Intl.DateTimeFormat(tc.locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${iso}T00:00:00Z`));
+/** "October 2026" ("outubro de 2026") from "2026-10-18". */
+const monthYear = (iso: string) => new Intl.DateTimeFormat(ui.locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${iso}T00:00:00Z`));
 
 /** A new-tab link; `hidden` is read before the text by screen readers only ("Website: cm-x.pt"). */
 const external = (href: string, text: string, attrs: Record<string, string> = {}, hidden = "") =>
@@ -66,19 +66,22 @@ function value(v: number | null, render: (v: number) => string): Node[] {
   return v === null ? [document.createTextNode(tc.missing), h("span", { class: "muted" }, ` (${tc.missingNote})`)] : [document.createTextNode(render(v))];
 }
 
-/** The pre-filled "Report outdated info" issue: title, body (DICO, current values, as_of) and the data label. */
+/** A missing value in the issue body (tc.missing is the same in the UI). */
+const MISSING = "—";
+
+/** The pre-filled "Report outdated info" issue: title, body (DICO, current values, as_of) and the data label. English in both languages. */
 export function issueUrl(base: string, c: Pick<Concelho, "code" | "name">, f: ConcelhoFacts | undefined, year: number): string {
   const k = f?.contacts;
   const current = [
-    `Website: ${k?.website ?? tc.missing}`,
-    `Email: ${k?.email ?? tc.missing}`,
-    `Phone: ${k?.phone ?? tc.missing}`,
-    `Urbanism page: ${k?.urbanism_url ?? tc.missing}`,
-    `PDM page: ${k?.pdm_url ?? tc.missing}`,
-    `PDM status: ${k?.pdm_status ?? tc.missing}`,
-    `Population ${year}: ${f?.population ?? tc.missing}`,
+    `${ISSUE.fields.website}: ${k?.website ?? MISSING}`,
+    `${ISSUE.fields.email}: ${k?.email ?? MISSING}`,
+    `${ISSUE.fields.phone}: ${k?.phone ?? MISSING}`,
+    `${ISSUE.fields.urbanism}: ${k?.urbanism_url ?? MISSING}`,
+    `${ISSUE.fields.pdm}: ${k?.pdm_url ?? MISSING}`,
+    `${ISSUE.fields.pdmStatus}: ${k?.pdm_status ?? MISSING}`,
+    `${ISSUE.fields.population(year)}: ${f?.population ?? MISSING}`,
   ];
-  const params = new URLSearchParams({ title: tc.issueTitle(c.name, c.code), body: tc.issueBody(c.name, c.code, current, k?.as_of ?? tc.missing), labels: "data" });
+  const params = new URLSearchParams({ title: ISSUE.title(c.name, c.code), body: ISSUE.body(c.name, c.code, current, k?.as_of ?? MISSING), labels: "data" });
   return `${base}?${params}`;
 }
 

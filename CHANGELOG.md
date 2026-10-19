@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.6.0 (unreleased, on preview)
+
+### For users
+
+- **Português / English:** a compact PT | EN toggle in the legend header. Every UI string has a European Portuguese version: toolbar, legend, tooltips, search, panels, the concelho card, the protection explainer, the zoom hint, aria-labels, credits, About, error and empty states. Place names are never translated. Numbers and dates follow the language ("8 360", "4,2", "outubro de 2026" in PT). The "Report outdated info" issue stays in English (it's for the maintainers); its link label is translated.
+  - On load: `?lang=pt|en`, then the saved choice, then the browser languages (any `pt*` → PT), then English. Switching saves the choice and writes `?lang=` into the address (the `#…` view is kept), so a copied link opens in the same language. The switch happens in place: no reload, the camera, selection, overlays and filters stay.
+  - `<html lang>`, the page title and the meta description follow the language.
+- **Theme: Auto / Light / Dark:** a button next to the language toggle cycles through the three, its icon and accessible name stating the current one ("Theme: Auto (system)"). Auto follows the system as before, including live changes; Light and Dark ignore it. The choice is saved; without storage the page stays on Auto. The page and the basemap start in the chosen theme (an inline script sets it before the CSS loads), so there is no flash of the other theme. The phone browser bar colour follows a forced theme too.
+- On phones both controls sit in the collapsed legend chip, so they're one tap away without opening anything.
+
+### Infrastructure
+
+- `web/src/strings.ts` (types, live `ui` / `t` / `tc` / `sheet` bindings, `setLang`, locale-aware `formatNumber` / `formatPct`), `strings.en.ts`, `strings.pt.ts`; `i18n.ts` (detection, `?lang=`, `data-i18n` filling); `controls.ts` (the toggle and theme button); `about.ts` (About rendered from strings). `index.html` has no text of its own.
+- `protected.meta.json` carries Portuguese display labels per category (`pt`: source, as-of, licence, area designations), from `PtLabels` in `scripts/protected_config.py`. The overlay and share files are unchanged.
+- Dark tokens in `style.css` are keyed on `:root[data-theme="dark"]` instead of the media query.
+- CSP: `script-src` allows the boot script by its SHA-256.
+- Tests: Vitest `i18n.test.ts` (PT/EN key parity, detection order, number formats, the theme state machine and storage fallback, boot script ↔ `theme.ts` parity, the CSP hash) and `ui-text.guard.test.ts` (no UI text outside the strings module; heuristic, limits documented in the file); pytest PT meta labels; e2e `i18n-theme.spec.ts` (both languages, persistence, `?lang=` override, live switch, forced themes with no flash, Auto following the system, no storage, keyboard, a 375 px phone in PT). `web/scripts/i18n_shots.mjs` for review screenshots.
+
 ## 0.5.0 (2026-10-18)
 
 ### For users

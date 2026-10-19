@@ -1,6 +1,7 @@
 :root {
-  /* Theme tokens. Every UI colour comes from here; the dark values follow in the media query below
-     (the theme follows prefers-color-scheme only). The --map-* tokens are the data-layer palette
+  /* Theme tokens. Every UI colour comes from here; the dark values follow under data-theme="dark",
+     which index.html's boot script and theme.ts set from the viewer's choice (Auto follows
+     prefers-color-scheme). The --map-* tokens are the data-layer palette
      for the legend swatches and must match PALETTES in theme.ts (checked by theme.test.ts). */
   --bg: #f6f6f4;
   --panel-bg: #ffffff;
@@ -27,38 +28,37 @@
   --map-natura: #7c3aed;
   --radius: 10px;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
 /* Dark theme: neutral greys a step above the Dark Matter basemap (#0c0c0c). Text contrast on
    --panel-bg: --text 13.3:1, --muted 6.9:1, --accent 7.8:1, --accent-strong 11.2:1, --warning 8.5:1,
    --error 7.8:1; the lowest pair, --muted on --hover, is 5.9:1 (WCAG AA: 4.5). */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0c0c0c;
-    --panel-bg: #1c2024;
-    --legend-bg: rgba(28, 32, 36, 0.94);
-    --text: #e6e8ea;
-    --muted: #a0a9b2;
-    --accent: #3cc7b4;
-    --accent-strong: #8ae6d8;
-    --accent-soft: #163c38;
-    --hover: #272d32;
-    --border: #353c43;
-    --badge-other-bg: #2a3036;
-    --warning: #e3b45a;
-    --error: #f59b9b;
-    --handle: #4b535b;
-    --backdrop: rgba(0, 0, 0, 0.6);
-    --shadow: 0 4px 18px rgba(0, 0, 0, 0.55);
-    --map-pnct: #22b8a7;
-    --map-other: #94a3b8;
-    --map-parish-line: #7d8b95;
-    --map-concelho-line: #a9b5be;
-    --map-rnap: #fb923c;
-    --map-rnap-tint: 16%; /* PALETTES.dark.rnapTint */
-    --map-natura: #b79cff;
-  }
+:root[data-theme="dark"] {
+  --bg: #0c0c0c;
+  --panel-bg: #1c2024;
+  --legend-bg: rgba(28, 32, 36, 0.94);
+  --text: #e6e8ea;
+  --muted: #a0a9b2;
+  --accent: #3cc7b4;
+  --accent-strong: #8ae6d8;
+  --accent-soft: #163c38;
+  --hover: #272d32;
+  --border: #353c43;
+  --badge-other-bg: #2a3036;
+  --warning: #e3b45a;
+  --error: #f59b9b;
+  --handle: #4b535b;
+  --backdrop: rgba(0, 0, 0, 0.6);
+  --shadow: 0 4px 18px rgba(0, 0, 0, 0.55);
+  --map-pnct: #22b8a7;
+  --map-other: #94a3b8;
+  --map-parish-line: #7d8b95;
+  --map-concelho-line: #a9b5be;
+  --map-rnap: #fb923c;
+  --map-rnap-tint: 16%; /* PALETTES.dark.rnapTint */
+  --map-natura: #b79cff;
+  color-scheme: dark;
 }
 
 * {
@@ -531,6 +531,88 @@ body:not([data-level="parish"]) .legend-parish {
 /* Only on narrow screens (see the media query below and legend.ts). */
 .legend-toggle {
   display: none;
+}
+
+/* Header row: the "Legend" title (the toggle button on phones) and the language/theme controls
+   (controls.ts). On phones it is the collapsed legend chip, so the controls stay one tap away. */
+.legend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.legend-title {
+  font-weight: 600;
+}
+
+.settings {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.lang-option,
+.theme-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.lang-option {
+  min-width: 30px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.lang-option:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+.lang-option:last-child {
+  border-left: 1px solid var(--border);
+  border-radius: 0 5px 5px 0;
+}
+
+.lang-option[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--panel-bg);
+  cursor: default;
+}
+
+.theme-button {
+  width: 28px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+}
+
+.lang-option:not([aria-pressed="true"]):hover,
+.theme-button:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+
+.lang-option:focus-visible,
+.theme-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  position: relative; /* above the neighbouring button */
 }
 
 .legend-chevron::after {
@@ -1031,30 +1113,29 @@ dialog a {
   color: color-mix(in srgb, var(--text) 75%, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  .maplibregl-ctrl.maplibregl-ctrl-attrib:not(.maplibregl-compact) {
-    background-color: color-mix(in srgb, var(--panel-bg) 75%, transparent);
-  }
+/* Dark theme (data-theme, see :root). */
+:root[data-theme="dark"] .maplibregl-ctrl.maplibregl-ctrl-attrib:not(.maplibregl-compact) {
+  background-color: color-mix(in srgb, var(--panel-bg) 75%, transparent);
+}
 
-  .maplibregl-ctrl-group:not(:empty) {
-    box-shadow: 0 0 0 1px var(--border);
-  }
+:root[data-theme="dark"] .maplibregl-ctrl-group:not(:empty) {
+  box-shadow: 0 0 0 1px var(--border);
+}
 
-  .maplibregl-ctrl button .maplibregl-ctrl-icon {
-    filter: invert(1);
-  }
+:root[data-theme="dark"] .maplibregl-ctrl button .maplibregl-ctrl-icon {
+  filter: invert(1);
+}
 
-  /* The compact ⓘ is the button's own background, so a filter would also invert its focus ring;
-     use MapLibre's icon with a light fill instead. */
-  .maplibregl-ctrl-attrib-button {
-    background-color: var(--panel-bg); /* MapLibre: translucent white */
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20fill-rule%3D%22evenodd%22%20fill%3D%22%23e6e8ea%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20d%3D%22M4%2010a6%206%200%201%200%2012%200%206%206%200%201%200-12%200m5-3a1%201%200%201%200%202%200%201%201%200%201%200-2%200m0%203a1%201%200%201%201%202%200v3a1%201%200%201%201-2%200%22%2F%3E%3C%2Fsvg%3E");
-  }
+/* The compact ⓘ is the button's own background, so a filter would also invert its focus ring;
+   use MapLibre's icon with a light fill instead. */
+:root[data-theme="dark"] .maplibregl-ctrl-attrib-button {
+  background-color: var(--panel-bg); /* MapLibre: translucent white */
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20fill-rule%3D%22evenodd%22%20fill%3D%22%23e6e8ea%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20d%3D%22M4%2010a6%206%200%201%200%2012%200%206%206%200%201%200-12%200m5-3a1%201%200%201%200%202%200%201%201%200%201%200-2%200m0%203a1%201%200%201%201%202%200v3a1%201%200%201%201-2%200%22%2F%3E%3C%2Fsvg%3E");
+}
 
-  .maplibregl-ctrl button:not(:disabled):hover,
-  .maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-button {
-    background-color: var(--hover);
-  }
+:root[data-theme="dark"] .maplibregl-ctrl button:not(:disabled):hover,
+:root[data-theme="dark"] .maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-button {
+  background-color: var(--hover);
 }
 
 /* Keep attribution and zoom controls clear of the open side panel. */
@@ -1187,11 +1268,34 @@ dialog a {
     padding: 8px 10px;
   }
 
+  .legend-header {
+    margin: -4px -2px 4px;
+    gap: 8px;
+  }
+
+  .legend-title {
+    display: none;
+  }
+
+  /* Comfortable tap targets for the controls. */
+  .lang-option,
+  .theme-button {
+    height: 32px;
+  }
+
+  .lang-option {
+    min-width: 34px;
+  }
+
+  .theme-button {
+    width: 34px;
+  }
+
   .legend-toggle {
     display: flex;
     align-items: center;
     min-height: 36px;
-    margin: -4px -2px 4px;
+    margin: 0;
     padding: 0 4px;
     border: 0;
     background: none;
@@ -1218,7 +1322,7 @@ dialog a {
     padding: 4px 8px;
   }
 
-  .legend-collapsed .legend-toggle {
+  .legend-collapsed .legend-header {
     margin: 0;
   }
 

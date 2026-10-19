@@ -1,4 +1,5 @@
 import "./search.css";
+import { ui } from "./strings";
 
 export type SearchKind = "parish" | "concelho";
 
@@ -6,7 +7,7 @@ export interface SearchItem {
   kind: SearchKind;
   id: string; // parish: 6-digit dicofre; concelho: 4-digit code (dicofre prefix)
   label: string; // parish: freguesia name; concelho: concelho name
-  sublabel: string; // "Concelho · Distrito"
+  sublabel: string; // "Concelho · Distrito" (in the active language: main.ts rebuilds the items on a switch)
   pnct: boolean; // parish: is PNCT; concelho: has >= 1 PNCT parish
 }
 
@@ -182,16 +183,13 @@ function highlight(label: string, nq: string): DocumentFragment {
 
 export interface SearchWidget {
   clear(): void;
+  /** Closes the result list, keeping the typed text. */
+  close(): void;
   setValue(text: string): void;
   focus(): void;
 }
 
 let uid = 0;
-
-const KIND_TAG: Record<SearchKind, string> = {
-  concelho: "Concelho",
-  parish: "Freguesia",
-};
 
 export function mountSearch(opts: {
   input: HTMLInputElement;
@@ -247,7 +245,7 @@ export function mountSearch(opts: {
 
     const tag = document.createElement("span");
     tag.className = `search-tag search-tag-${item.kind}`;
-    tag.textContent = KIND_TAG[item.kind];
+    tag.textContent = ui.kind[item.kind];
 
     const body = document.createElement("span");
     body.className = "search-body";
@@ -262,7 +260,7 @@ export function mountSearch(opts: {
       label.append(dot);
       const sr = document.createElement("span");
       sr.className = "search-sr";
-      sr.textContent = " (PNCT)";
+      sr.textContent = ui.pnctMark;
       label.append(sr);
     }
 
@@ -292,7 +290,7 @@ export function mountSearch(opts: {
       li.className = "search-empty";
       li.setAttribute("role", "option");
       li.setAttribute("aria-disabled", "true");
-      li.textContent = "No matches";
+      li.textContent = ui.noMatches;
       list.append(li);
       setOpen(true);
     } else {
@@ -367,6 +365,9 @@ export function mountSearch(opts: {
       results = [];
       options = [];
       list.replaceChildren();
+      setOpen(false);
+    },
+    close() {
       setOpen(false);
     },
     setValue(text: string) {

@@ -91,6 +91,18 @@ def test_categories_follow_config(stats, cats):
     assert [c["id"] for c in meta["categories"]] == cats
     for c in meta["categories"]:
         assert c["url"].startswith("https://") and c["as_of"] and c["fetched_at"] and "licence_confirmed" in c
+        # Portuguese display labels for the web app's PT/EN toggle (protected_config.PtLabels).
+        assert set(c["pt"]) == {"source", "as_of", "licence", "types"} and c["pt"]["source"] and c["pt"]["as_of"], c["id"]
+
+
+def test_pt_type_labels_cover_the_built_types(stats):
+    """Every translated designation is one the data uses, and every Natura designation has a translation."""
+    meta = {c["id"]: c for c in json.loads(META.read_text(encoding="utf-8"))["categories"]}
+    used = {(a["cat"], a["type"]) for a in stats["areas"]}
+    for cat, m in meta.items():
+        assert set(m["pt"]["types"]) <= {t for c, t in used if c == cat}, cat
+    if "natura" in meta:
+        assert {t for c, t in used if c == "natura"} <= set(meta["natura"]["pt"]["types"])
 
 
 def test_per_field_meta(stats, cats):

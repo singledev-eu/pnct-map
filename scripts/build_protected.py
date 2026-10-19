@@ -195,6 +195,16 @@ def field_meta(src: ArcGisSource | FileSource, fetched: dict) -> dict:
     }
 
 
+def pt_meta(src: ArcGisSource | FileSource, en: dict) -> dict:
+    """The display labels in Portuguese (protected.meta.json "pt"), falling back to the English ones."""
+    return {
+        "source": f"{src.provider}: {src.pt.title or src.title}",
+        "as_of": src.pt.release or en["as_of"],
+        "licence": src.pt.licence or src.licence,
+        "types": src.pt.types,
+    }
+
+
 def gz_size(path: Path) -> int:
     return len(gzip.compress(path.read_bytes(), 9))
 
@@ -275,7 +285,8 @@ def main() -> None:
     }
     OUT_STATS.write_text(json.dumps(stats, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     OUT_META.write_text(
-        json.dumps({"categories": [{"id": cat, **sources_meta[cat]} for cat in cats]}, ensure_ascii=False, indent=2) + "\n",
+        json.dumps({"categories": [{"id": cat, **sources_meta[cat], "pt": pt_meta(sources[cat], sources_meta[cat])} for cat in cats]}, ensure_ascii=False, indent=2)
+        + "\n",
         encoding="utf-8",
     )
 

@@ -1,5 +1,6 @@
 import type { Concelho, Parish } from "./data";
 import { municipalityUrl, polygonUrl, type SearchOptions } from "./idealista";
+import { ui } from "./strings";
 import SHAPES_URL from "../data/shapes.json?url"; // content-hashed by Vite
 
 export interface PropertyLink {
@@ -39,9 +40,9 @@ const isWholeConcelhoPnct = (c: Concelho) => c.parishCount > 0 && c.pnctCount ==
 
 function municipalityLink(c: Concelho, opts: SearchOptions): PropertyLink {
   return {
-    label: `List view for all of ${c.name}`,
+    label: ui.linkMunicipality(c.name),
     url: municipalityUrl(c.name, opts),
-    description: "The whole concelho is PNCT, so its Idealista municipality page matches it.",
+    description: ui.linkMunicipalityDescription,
   };
 }
 
@@ -55,10 +56,10 @@ export async function getLinks(parish: Parish, concelho: Concelho, opts: SearchO
   const links: PropertyLink[] = [];
   if (shape) {
     links.push({
-      label: "Search this parish on Idealista",
+      label: ui.linkParish,
       url: polygonUrl(shape.shape, opts),
-      description: "Map search limited to the parish outline.",
-      note: shape.approx ? "Approximate area: this parish has detached parts." : undefined,
+      description: ui.linkParishDescription,
+      note: shape.approx ? ui.linkApprox : undefined,
     });
   }
   if (isWholeConcelhoPnct(concelho)) links.push(municipalityLink(concelho, opts));

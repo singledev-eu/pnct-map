@@ -15,6 +15,8 @@ Features:
   - **Only PNCT** (focus mode): it hides everything outside PNCT territory, and those parishes don't respond to hover, clicks or search.
 - **Idealista links:** for each PNCT parish, a polygon search link, with a selector for buying or renting, property type and land filters. When the whole concelho is PNCT, the municipality page is linked too.
 - **Nature protection:** RNAP (ICNF) and Natura 2000 (EEA) overlays, faded in once zoomed past the country view, and the share of each parish or concelho under protection in its panel. A "?" next to the legend heading explains what protection means for buying land.
+- **Português / English:** a PT | EN toggle in the legend header switches every UI string in place (place names stay as they are). On first visit the language follows `?lang=`, then the saved choice, then the browser languages (any `pt*` → PT), then English.
+- **Light, dark or automatic theme:** a theme button next to the language toggle cycles Auto (follows the system, live) → Light → Dark. The page and the basemap start in the chosen theme, with no flash.
 - **Shareable views:** the map view, the selection, the filters and the selector all live in the URL (see [URL parameters](#url-parameters)).
 
 ![Peneda-Gerês with the protected-areas overlays on: PNCT parishes shaded, the RNAP outline and the Natura 2000 hatch, and the Soajo parish panel with its share under protection](docs/screenshots/desktop-protected.jpg)
@@ -259,9 +261,11 @@ npm run test:e2e                   # build + Playwright e2e tests
   - The selector (Comprar/Arrendar, Terrenos/Casas/Prédios, land filters) persists in the hash (`op`, `t`, `land`) and in localStorage.
   - Unit tests: `npm test` (Vitest).
 
+- **Language and theme:** every UI string is in `src/strings.en.ts` and `src/strings.pt.ts` (same `Strings` type, so a missing key doesn't compile); `index.html` has no text of its own, only `data-i18n` keys. `src/ui-text.guard.test.ts` fails on UI-looking literals elsewhere. The theme choice (`pnct-map:theme`) is applied by an inline boot script in `index.html` before the CSS; its SHA-256 is in the CSP in `public/_headers` (checked by `src/i18n.test.ts`), so **editing the boot script means updating that hash**.
+
 #### URL parameters
 
-All state is in the hash, e.g. `https://pnct.singledev.eu/#map=10/41.79/-8.58&f=160763&focus=1`.
+All state is in the hash, e.g. `https://pnct.singledev.eu/#map=10/41.79/-8.58&f=160763&focus=1`, except the language, which is a query parameter: `?lang=pt` or `?lang=en` (e.g. `https://pnct.singledev.eu/?lang=pt#c=0505`). It overrides the saved choice for that link, and the toggle writes it, so a copied link opens in the same language.
 
 | Parameter | Meaning |
 |---|---|

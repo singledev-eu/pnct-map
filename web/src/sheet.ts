@@ -5,7 +5,7 @@
  * real button, the keyboard and screen-reader path: it toggles half/full and says which via
  * aria-expanded. Without motion (prefers-reduced-motion), snaps happen at once.
  */
-import { sheet as t } from "./strings";
+import { sheet } from "./strings";
 
 const NARROW = "(max-width: 640px)";
 const REDUCED = "(prefers-reduced-motion: reduce)";
@@ -19,7 +19,7 @@ export type SheetState = "half" | "full";
 export function setSheetState(root: HTMLElement, handle: HTMLButtonElement, state: SheetState): void {
   root.dataset.sheet = state;
   handle.setAttribute("aria-expanded", String(state === "full"));
-  handle.setAttribute("aria-label", state === "full" ? t.collapse : t.expand);
+  handle.setAttribute("aria-label", state === "full" ? sheet.collapse : sheet.expand);
 }
 
 /** Wires the handle (click/keyboard toggle) and the touch/mouse drag on `zones` (the handle and the header). */

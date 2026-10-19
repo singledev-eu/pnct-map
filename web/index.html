@@ -3,6 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Theme boot: before any CSS, so the page paints in the chosen theme. Mirrors theme.ts
+         loadThemePref/resolveTheme (theme.test.ts runs both); its hash is in public/_headers (CSP). -->
+    <script>
+      (function () {
+        var pref = "auto";
+        try {
+          var v = localStorage.getItem("pnct-map:theme");
+          if (v === "light" || v === "dark") pref = v;
+        } catch (e) {}
+        var dark = pref === "auto" ? matchMedia("(prefers-color-scheme: dark)").matches : pref === "dark";
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme-pref", pref);
+      })();
+    </script>
     <title>Mapa PNCT · Territórios de Coesão Territorial | PNCT map of Portugal</title>
     <meta name="description" content="Mapa das freguesias abrangidas pelo Programa Nacional para a Coesão Territorial (PNCT) em Portugal continental, com ligações de pesquisa de imóveis no Idealista. Ferramenta não oficial. Map of the parishes covered by Portugal's PNCT territorial cohesion programme. Unofficial tool." />
     <link rel="canonical" href="https://pnct.singledev.eu/" />
@@ -32,79 +46,54 @@
     <meta name="twitter:image:alt" content="Mapa de Portugal continental com as freguesias do PNCT destacadas" />
   </head>
   <body>
-    <div id="map" aria-label="Map of mainland Portugal with PNCT parishes"></div>
+    <!-- No text here: every string comes from src/strings.*.ts by its data-i18n key (i18n.ts applyStatic). -->
+    <div id="map" data-i18n-attr="aria-label:mapLabel"></div>
 
     <div class="toolbar">
       <div class="search">
-        <label class="visually-hidden" for="search-input">Search parishes and concelhos</label>
-        <input id="search-input" type="search" placeholder="Search parish or concelho…" autocomplete="off" spellcheck="false" />
+        <label class="visually-hidden" for="search-input" data-i18n="searchLabel"></label>
+        <input id="search-input" type="search" data-i18n-attr="placeholder:searchPlaceholder" autocomplete="off" spellcheck="false" />
         <ul id="search-list" hidden></ul>
       </div>
       <div class="filters">
-        <label class="visually-hidden" for="district-select">District</label>
+        <label class="visually-hidden" for="district-select" data-i18n="districtLabel"></label>
         <select id="district-select">
-          <option value="">All districts</option>
+          <option value="" data-i18n="allDistricts"></option>
         </select>
-        <label class="toggle" title="Hide parishes outside PNCT territory">
-          <input id="only-pnct" type="checkbox" aria-label="Only PNCT: hide parishes outside PNCT territory" />
-          <span>Only PNCT</span>
+        <label class="toggle" data-i18n-attr="title:onlyPnctTitle">
+          <input id="only-pnct" type="checkbox" data-i18n-attr="aria-label:onlyPnctLabel" />
+          <span data-i18n="onlyPnct"></span>
         </label>
       </div>
     </div>
 
     <aside id="panel" class="panel" hidden aria-live="polite" data-testid="panel"></aside>
 
-    <div class="legend" role="group" aria-label="Legend">
-      <button id="legend-toggle" type="button" class="legend-toggle" aria-expanded="true" aria-controls="legend-body">
-        Legend<span class="legend-chevron" aria-hidden="true"></span>
-      </button>
+    <div class="legend" role="group" data-i18n-attr="aria-label:legend">
+      <div class="legend-header">
+        <button id="legend-toggle" type="button" class="legend-toggle" aria-expanded="true" aria-controls="legend-body">
+          <span data-i18n="legend"></span><span class="legend-chevron" aria-hidden="true"></span>
+        </button>
+        <span class="legend-title" aria-hidden="true" data-i18n="legend"></span>
+        <div id="settings" class="settings" role="group" data-i18n-attr="aria-label:settingsLabel" data-testid="settings"></div>
+      </div>
       <div id="legend-body" class="legend-body">
-      <div class="legend-row legend-concelho"><span class="swatch swatch-pnct"></span>Whole concelho PNCT</div>
-      <div class="legend-row legend-concelho"><span class="swatch swatch-partial"></span>Partly PNCT</div>
-      <div class="legend-row legend-concelho legend-row-other"><span class="swatch swatch-other"></span>Not PNCT</div>
-      <div class="legend-row legend-parish"><span class="swatch swatch-pnct"></span>PNCT parish</div>
-      <div class="legend-row legend-parish legend-row-other"><span class="swatch swatch-other"></span>Other parish</div>
-      <div class="legend-row"><span class="swatch swatch-line"></span>Concelho boundary</div>
-      <div id="legend-protected" class="legend-protected" role="group" aria-label="Nature protection overlays" data-testid="legend-protected"></div>
-      <button id="about-open" type="button" class="link-button">About</button>
+      <div class="legend-row legend-concelho"><span class="swatch swatch-pnct"></span><span data-i18n="legendWhole"></span></div>
+      <div class="legend-row legend-concelho"><span class="swatch swatch-partial"></span><span data-i18n="legendPartial"></span></div>
+      <div class="legend-row legend-concelho legend-row-other"><span class="swatch swatch-other"></span><span data-i18n="legendNotPnct"></span></div>
+      <div class="legend-row legend-parish"><span class="swatch swatch-pnct"></span><span data-i18n="legendPnctParish"></span></div>
+      <div class="legend-row legend-parish legend-row-other"><span class="swatch swatch-other"></span><span data-i18n="legendOtherParish"></span></div>
+      <div class="legend-row"><span class="swatch swatch-line"></span><span data-i18n="legendBoundary"></span></div>
+      <div id="legend-protected" class="legend-protected" role="group" data-i18n-attr="aria-label:overlaysLabel" data-testid="legend-protected"></div>
+      <button id="about-open" type="button" class="link-button" data-i18n="aboutButton"></button>
       </div>
     </div>
 
     <div id="tooltip" class="tooltip" hidden role="tooltip"></div>
-    <div id="status" class="status" role="status">Loading map…</div>
+    <div id="status" class="status" role="status" data-i18n="loadingMap"></div>
 
-    <dialog id="about" aria-labelledby="about-title">
-      <form method="dialog">
-        <h2 id="about-title">About this map</h2>
-        <p>
-          Shaded parishes are territories covered by the <strong>Programa Nacional para a Coesão Territorial (PNCT)</strong>.
-        </p>
-        <p><strong>Unofficial tool.</strong> Always confirm eligibility with the official sources.</p>
-        <h3>Data sources</h3>
-        <ul>
-          <li>
-            <strong>PNCT territories:</strong>
-            <a href="https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf" target="_blank" rel="noopener noreferrer">official list</a>
-            dated 4 February 2026, published by IEFP.
-          </li>
-          <li>
-            <strong>Boundaries:</strong>
-            <a href="https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" target="_blank" rel="noopener noreferrer">CAOP 2025</a>
-            © Direção-Geral do Território,
-            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
-            “Informação geográfica cedida pela Direção-Geral do Território.” Simplified for the web.
-          </li>
-          <li>
-            <strong>Basemap:</strong> <a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer">OpenFreeMap</a>,
-            © <a href="https://openmaptiles.org" target="_blank" rel="noopener noreferrer">OpenMapTiles</a>,
-            © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors.
-          </li>
-          <li id="about-protected" data-testid="about-protected"></li>
-        </ul>
-        <p class="muted">Property-search links open idealista.pt. This site is not affiliated with Idealista.</p>
-        <button type="submit" class="button">Close</button>
-      </form>
-    </dialog>
+    <!-- Filled by about.ts. -->
+    <dialog id="about" aria-labelledby="about-title"></dialog>
 
     <script type="module" src="/src/main.ts"></script>
   </body>

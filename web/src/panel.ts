@@ -1,10 +1,10 @@
 import { concelhoCard, concelhoDetails } from "./concelho";
 import type { Concelho, Parish } from "./data";
-import { LAND_FILTERS, type LandFilter, type Operation, type PropertyType, type SearchOptions } from "./idealista";
+import { LAND_FILTERS, type Operation, type PropertyType, type SearchOptions } from "./idealista";
 import { getConcelhoLinks, getLinks, type PropertyLink } from "./links";
 import { credits, loadProtection, panelAreas, type Protection, type ProtectionData } from "./protected";
 import { attachSheet, setSheetState } from "./sheet";
-import { formatPct, sheet, t } from "./strings";
+import { formatPct, sheet, t, ui } from "./strings";
 
 type Child = Node | string | null | undefined | false;
 
@@ -26,41 +26,27 @@ export interface PanelCallbacks {
   onOptionsChange: (opts: SearchOptions) => void;
 }
 
-const plural = (n: number) => `${n} ${n === 1 ? "parish" : "parishes"}`;
-
-const OPERATIONS: [Operation, string][] = [
-  ["comprar", "Comprar"],
-  ["arrendar", "Arrendar"],
-];
-const TYPES: [PropertyType, string][] = [
-  ["terrenos", "Terrenos"],
-  ["casas", "Casas"],
-  ["predios", "Prédios"],
-];
-const LAND_LABELS: Record<LandFilter, string> = {
-  "terreno-urbano": "Urbano",
-  "terreno-urbanizavel": "Urbanizável",
-  "terreno-nao-urbanizavel": "Não urbanizável",
-};
+const OPERATIONS: Operation[] = ["comprar", "arrendar"];
+const TYPES: PropertyType[] = ["terrenos", "casas", "predios"];
 
 function coverage(c: Concelho): HTMLElement {
   let text: string;
   let kind: string;
   if (c.pnctCount === c.parishCount) {
-    text = `All ${plural(c.parishCount)} are PNCT.`;
+    text = ui.coverageWhole(c.parishCount);
     kind = "whole";
   } else if (c.pnctCount === 0) {
-    text = `No parish in ${c.name} is PNCT (0 of ${plural(c.parishCount)}).`;
+    text = ui.coverageNone(c.name, c.parishCount);
     kind = "none";
   } else {
-    text = `Only some parishes of ${c.name} are PNCT: ${c.pnctCount} of ${plural(c.parishCount)}.`;
+    text = ui.coveragePartial(c.name, c.pnctCount, c.parishCount);
     kind = "partial";
   }
   return h("p", { class: `coverage coverage-${kind}`, "data-testid": "pnct-count", "data-pnct": String(c.pnctCount) }, text);
 }
 
 function badge(pnct: boolean): HTMLElement {
-  return h("span", { class: `badge ${pnct ? "badge-pnct" : "badge-other"}`, "data-testid": "pnct-status" }, pnct ? "PNCT territory" : "Not PNCT");
+  return h("span", { class: `badge ${pnct ? "badge-pnct" : "badge-other"}`, "data-testid": "pnct-status" }, pnct ? ui.badgePnct : ui.badgeOther);
 }
 
 function facts(rows: [string, string][]): HTMLElement {
@@ -94,7 +80,7 @@ function sheetCredit(): HTMLElement {
   return h(
     "p",
     { id: "sheet-credit", class: "sheet-credit", "data-testid": "sheet-credit" },
-    "Boundaries ",
+    `${ui.sheetBoundaries} `,
     creditLink("https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop", "CAOP 2025"),
     " ©\u00a0DGT, CC\u00a0BY\u00a04.0 · ", // non-breaking spaces keep each "©" with its name when the line wraps
     creditLink("https://openfreemap.org/", "OpenFreeMap"),
@@ -163,7 +149,7 @@ export class Panel {
   }
 
   private open(title: string, kicker: string, ...body: Child[]): void {
-    const close = h("button", { class: "panel-close", type: "button", "aria-label": "Close panel" }, "×");
+    const close = h("button", { class: "panel-close", type: "button", "aria-label": ui.closePanel }, "×");
     close.addEventListener("click", () => this.cb.onClose());
     // Phone sheet only (hidden on wide screens): the drag handle (sheet.ts) and the credits toggle.
     const handle = h("button", { type: "button", class: "sheet-handle", "data-testid": "sheet-handle" });
@@ -192,34 +178,34 @@ export class Panel {
   }
 
   private selector(): HTMLElement {
-    const form = h("form", { class: "search-options", "aria-label": "Property search options", "data-testid": "search-options" });
+    const form = h("form", { class: "search-options", "aria-label": ui.searchOptions, "data-testid": "search-options" });
     form.addEventListener("submit", (e) => e.preventDefault());
 
-    const radios = <T extends string>(name: string, legend: string, choices: [T, string][], current: T) =>
+    const radios = <T extends string>(name: string, legend: string, choices: T[], labels: Record<T, string>, current: T) =>
       h(
         "fieldset",
         { class: "segmented" },
         h("legend", { class: "visually-hidden" }, legend),
-        ...choices.map(([value, label]) => {
+        ...choices.map((value) => {
           const input = h("input", { type: "radio", name, value });
           input.checked = value === current;
-          return h("label", {}, input, h("span", {}, label));
+          return h("label", {}, input, h("span", {}, labels[value]));
         }),
       );
 
     const land = h(
       "fieldset",
       { class: "land-filters" },
-      h("legend", {}, "Land type"),
+      h("legend", {}, ui.landType),
       ...LAND_FILTERS.map((f) => {
         const input = h("input", { type: "checkbox", name: "land", value: f });
         input.checked = this.options.land.includes(f);
-        return h("label", {}, input, h("span", {}, LAND_LABELS[f]));
+        return h("label", {}, input, h("span", {}, ui.land[f]));
       }),
     );
     land.hidden = this.options.type !== "terrenos";
 
-    form.append(radios("op", "Operation", OPERATIONS, this.options.op), radios("type", "Property type", TYPES, this.options.type), land);
+    form.append(radios("op", ui.operation, OPERATIONS, ui.operations, this.options.op), radios("type", ui.propertyType, TYPES, ui.types, this.options.type), land);
 
     form.addEventListener("change", () => {
       const data = new FormData(form);
@@ -241,36 +227,36 @@ export class Panel {
     const token = ++this.renderToken;
     this.refreshLinks = () => {
       const opts = this.options;
-      status.textContent = "Loading links…";
+      status.textContent = ui.linksLoading;
       Promise.resolve(load(opts))
         .then((links) => {
           if (token !== this.renderToken) return; // the panel moved on
           renderLinks(list, links);
-          status.textContent = links.length ? "" : "No search links available.";
+          status.textContent = links.length ? "" : ui.linksNone;
         })
         .catch((err: unknown) => {
           if (token !== this.renderToken) return;
           console.error(err);
           list.replaceChildren();
-          status.textContent = "Could not load the search area. Please try again.";
+          status.textContent = ui.linksError;
         });
     };
     this.refreshLinks();
     return h(
       "section",
       { "data-testid": "property-search" },
-      h("h3", {}, "Property search"),
+      h("h3", {}, ui.propertySearch),
       this.selector(),
       list,
       status,
-      h("p", { class: "disclaimer" }, "Links open idealista.pt in a new tab. This site isn't affiliated with Idealista."),
+      h("p", { class: "disclaimer" }, ui.linksDisclaimer),
     );
   }
 
   showParish(p: Parish, c: Concelho): void {
     this.renderToken++;
     this.refreshLinks = null;
-    const showConcelho = h("button", { type: "button", class: "link-button" }, `Show all of ${c.name}`);
+    const showConcelho = h("button", { type: "button", class: "link-button" }, ui.showConcelho(c.name));
     showConcelho.addEventListener("click", () => this.cb.onSelectConcelho(c.code));
 
     const property = p.pnct
@@ -278,20 +264,20 @@ export class Panel {
       : h(
           "section",
           { "data-testid": "property-search" },
-          h("h3", {}, "Property search"),
-          h("p", { class: "muted" }, "This parish isn't in the PNCT list, so there are no property-search links for it."),
+          h("h3", {}, ui.propertySearch),
+          h("p", { class: "muted" }, ui.notPnctParish),
         );
 
     this.open(
       p.freguesia,
-      "Freguesia",
+      ui.kickerParish,
       badge(p.pnct),
       facts([
-        ["Concelho", p.concelho],
-        ["Distrito", p.distrito],
-        ["DICOFRE", p.dicofre],
+        [ui.factConcelho, p.concelho],
+        [ui.factDistrito, p.distrito],
+        [ui.factDicofre, p.dicofre],
       ]),
-      h("section", {}, h("h3", {}, "Concelho coverage"), coverage(c), showConcelho),
+      h("section", {}, h("h3", {}, ui.concelhoCoverage), coverage(c), showConcelho),
       concelhoDetails(c),
       protectionSection("freguesias", p.dicofre),
       property,
@@ -312,20 +298,20 @@ export class Panel {
 
     let parishes: HTMLElement | null = null;
     if (whole) {
-      parishes = h("details", { class: "all-parishes" }, h("summary", {}, "Show all"), list);
+      parishes = h("details", { class: "all-parishes" }, h("summary", {}, ui.showAll), list);
     } else if (pnct.length) {
-      parishes = h("section", {}, h("h3", {}, "PNCT parishes"), list);
+      parishes = h("section", {}, h("h3", {}, ui.pnctParishes), list);
     }
 
     this.open(
       c.name,
-      "Concelho",
+      ui.kickerConcelho,
       badge(c.pnctCount > 0),
       facts([
-        ["Distrito", c.distrito],
-        ["Parishes", String(c.parishCount)],
+        [ui.factDistrito, c.distrito],
+        [ui.factParishes, String(c.parishCount)],
       ]),
-      h("section", {}, h("h3", {}, "PNCT coverage"), coverage(c), whole ? parishes : null),
+      h("section", {}, h("h3", {}, ui.pnctCoverage), coverage(c), whole ? parishes : null),
       concelhoCard(c),
       protectionSection("concelhos", c.code),
       whole ? null : parishes,

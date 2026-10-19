@@ -1,7 +1,7 @@
 import { feature } from "topojson-client";
 import type { GeometryCollection, Topology } from "topojson-specification";
 import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
-import { t } from "./strings";
+import { lang, t } from "./strings";
 // Bundled (< 1 KB): which categories exist, with source, version and licence. Built by scripts/build_protected.py,
 // which leaves a category out when protected_config.py disables it; the legend, panel and credits follow.
 import META from "../data/protected.meta.json";
@@ -19,9 +19,11 @@ export interface CategoryMeta {
   licence: string;
   licence_url: string | null;
   licence_confirmed: boolean;
+  /** The display labels in Portuguese (scripts/protected_config.py PtLabels); `types` maps area designations. */
+  pt: { source: string; as_of: string; licence: string; types: Record<string, string> };
 }
 
-export const CATEGORIES: CategoryMeta[] = META.categories;
+export const CATEGORIES = META.categories as CategoryMeta[];
 export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);
 
 /** Per parish (DICOFRE) or concelho (DICO): `<category>_pct`, `any_pct` (0–100) and indexes into `areas`. */
@@ -68,7 +70,16 @@ export const loadOverlay = cachedJson<OverlayData>(TOPO_URL, (json) => {
   return Object.fromEntries(CATEGORY_IDS.map((id) => [id, feature(topo, topo.objects[id]) as OverlayData[string]]));
 });
 
-export const categoryLabel = (c: CategoryMeta) => t.toggle[c.id] ?? c.source;
+/** A category's display labels in the active language (the data meta carries both). */
+const labels = (c: CategoryMeta) => (lang === "pt" ? c.pt : c);
+
+export const categoryLabel = (c: CategoryMeta) => t.toggle[c.id] ?? labels(c).source;
+
+/** An area's designation in the active language ("ZPE (Birds Directive)" → "ZPE (Diretiva Aves)"); RNAP's are Portuguese already. */
+const typeLabel = (cat: string, type: string) => {
+  const c = CATEGORIES.find((m) => m.id === cat);
+  return (lang === "pt" && c?.pt.types[type]) || type;
+};
 
 /**
  * The areas as listed in the panel, in the given order. A Natura 2000 name designated under both
@@ -80,7 +91,7 @@ export function panelAreas(areas: ProtectedArea[]): { name: string; type: string
   const natura = new Map<string, { name: string; type: string }>();
   for (const a of areas) {
     if (a.cat !== "natura") {
-      out.push({ name: a.name, type: a.type });
+      out.push({ name: a.name, type: typeLabel(a.cat, a.type) });
       continue;
     }
     const seen = natura.get(a.name);
@@ -88,7 +99,7 @@ export function panelAreas(areas: ProtectedArea[]): { name: string; type: string
       seen.type = t.naturaBoth;
       continue;
     }
-    const row = { name: a.name, type: a.type };
+    const row = { name: a.name, type: typeLabel(a.cat, a.type) };
     natura.set(a.name, row);
     out.push(row);
   }
@@ -98,9 +109,9 @@ export function panelAreas(areas: ProtectedArea[]): { name: string; type: string
 const provider = (c: CategoryMeta) => c.source.split(":")[0];
 
 /** "ICNF, 2026-10-17" / "EEA, end 2024". */
-export const sourceLabel = (c: CategoryMeta) => `${provider(c)}, ${c.as_of}`;
+export const sourceLabel = (c: CategoryMeta) => `${provider(c)}, ${labels(c).as_of}`;
 
-const licenceText = (c: CategoryMeta) => (c.licence_confirmed ? c.licence : t.licenceUnconfirmed);
+const licenceText = (c: CategoryMeta) => (c.licence_confirmed ? labels(c).licence : t.licenceUnconfirmed);
 
 const escape = (s: string) => s.replace(/[&<>"]/g, (ch) => `&${({ "&": "amp", "<": "lt", ">": "gt", '"': "quot" })[ch]};`);
 
@@ -108,12 +119,12 @@ const escape = (s: string) => s.replace(/[&<>"]/g, (ch) => `&${({ "&": "amp", "<
 export function attributionHtml(): string {
   const parts = CATEGORIES.map((c) => {
     const link = `<a href="${escape(c.url)}" target="_blank" rel="noopener noreferrer">${escape(`${t.short[c.id] ?? c.id} © ${provider(c)}`)}</a>`;
-    return c.licence_confirmed ? `${link} (${escape(c.licence)})` : link;
+    return c.licence_confirmed ? `${link} (${escape(labels(c).licence)})` : link;
   });
   return `${escape(t.creditLead)}: ${parts.join(" · ")}`;
 }
 
 /** The categories as credit entries (phone sheet credit, About panel). */
 export function credits(): { label: string; url: string; licence: string; licenceUrl: string | null; asOf: string }[] {
-  return CATEGORIES.map((c) => ({ label: `${t.short[c.id] ?? c.id} © ${provider(c)}`, url: c.url, licence: licenceText(c), licenceUrl: c.licence_url, asOf: c.as_of }));
+  return CATEGORIES.map((c) => ({ label: `${t.short[c.id] ?? c.id} © ${provider(c)}`, url: c.url, licence: licenceText(c), licenceUrl: c.licence_url, asOf: labels(c).as_of }));
 }

@@ -8,7 +8,13 @@
       "fetched_at": "2026-10-17T19:41:55Z",
       "licence": "Reuse terms not confirmed",
       "licence_url": null,
-      "licence_confirmed": false
+      "licence_confirmed": false,
+      "pt": {
+        "source": "ICNF: Rede Nacional de Áreas Protegidas (RNAP)",
+        "as_of": "2026-10-17",
+        "licence": "Condições de reutilização não confirmadas",
+        "types": {}
+      }
     },
     {
       "id": "natura",
@@ -18,7 +24,17 @@
       "fetched_at": "2026-10-17T19:41:24Z",
       "licence": "CC BY 4.0",
       "licence_url": "https://creativecommons.org/licenses/by/4.0/",
-      "licence_confirmed": true
+      "licence_confirmed": true,
+      "pt": {
+        "source": "EEA: Natura 2000 (vetorial), versão de fim de 2024",
+        "as_of": "fim de 2024",
+        "licence": "CC BY 4.0",
+        "types": {
+          "ZPE (Birds Directive)": "ZPE (Diretiva Aves)",
+          "ZEC/SIC (Habitats Directive)": "ZEC/SIC (Diretiva Habitats)",
+          "ZPE + ZEC (both Directives)": "ZPE + ZEC (ambas as Diretivas)"
+        }
+      }
     }
   ]
 }

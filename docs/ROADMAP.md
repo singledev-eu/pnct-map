@@ -30,13 +30,14 @@ Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (20
 
 ## Next
 
+- **0.6.0 on preview:** PT/EN language toggle and Auto/Light/Dark theme ([report](reports/0.6.0-i18n-theme.md)). Waiting for the phone check and the PT glossary review before production.
+
 - Confirm ICNF's reuse terms for RNAP (and for BDG/RN2000, if Natura switches source). Until then RNAP is credited as "reuse terms not confirmed"; dropping it is one line in `scripts/protected_config.py`.
 
 ## Backlog
 
 - Protected areas v2: other restriction layers (REN, RAN, PDM zoning), per-site tooltips.
 - Concelho card v2: câmara contacts for the 93 concelhos without PNCT parishes; a yearly refresh of the INE estimates (mid-June) and an `--online` re-check of the contacts.
-- PT/EN language toggle. Today the UI is English, with a PT-first title and description.
 - Cloudflare Web Analytics (cookieless). Undecided.
 - Eventual migration from Cloudflare Pages to Workers static assets. Wrangler 4.149 already steers new projects there; `pnct-map` was created on classic Pages with `--force`.
 

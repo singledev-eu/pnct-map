@@ -18,8 +18,9 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
   - `layers.ts`: MapLibre layers and filters.
   - `data.ts`: TopoJSON → GeoJSON, indexes.
   - `links.ts` and `idealista.ts`: Idealista URLs.
-  - `theme.ts`: light/dark from `prefers-color-scheme`: basemap style URLs and the map palette (mirrored by the `--map-*` CSS tokens).
-  - `protected.ts`: protected-areas data and credits; `strings.ts`: their UI strings (for the PT/EN toggle).
+  - `theme.ts`: the Auto/Light/Dark choice (Auto follows `prefers-color-scheme`), basemap style URLs and the map palette (mirrored by the `--map-*` CSS tokens).
+  - `protected.ts`: protected-areas data and credits.
+  - `strings.ts` (types, live bindings, formatters) with `strings.en.ts` / `strings.pt.ts`: every UI string. `i18n.ts`: language detection, `?lang=`, `data-i18n`. `controls.ts`: PT | EN toggle and theme button. `about.ts`: the About dialog.
   - `panel.ts`, `search.ts`, `hash.ts`, `prefs.ts`.
 - `web/tests/e2e/`: Playwright specs. Shared waits are in `helpers.ts`.
 - `web/scripts/`:
@@ -62,6 +63,8 @@ cd web && npm run deploy              # same, to production (main). Only after t
 - **Attribution:** it must stay complete wherever it's shown: CAOP 2025 © DGT (CC BY 4.0), OpenFreeMap, © OpenMapTiles, © OpenStreetMap contributors, and the protected-area sources (ICNF RNAP, EEA Natura 2000; generated from `protected.meta.json`), with links. That covers the map control, the bottom-sheet credit and the About panel. Licence status: `data/ATTRIBUTION.md`.
 - **Protected-area sources:** fetched offline only, never from the browser. `scripts/protected_config.py` is the single switch per category. Shares are computed on unsimplified CAOP and site geometry in EPSG:3763.
 - **Parish layer readiness:** the app adds the parish layers on `style.load`, not `load`. `data-parishes-loaded` marks the first parish frame and `data-ready` the first full idle. `window.pnctMap` exposes the map for tests.
+- **UI text:** only in `strings.en.ts` / `strings.pt.ts` (same keys; `ui-text.guard.test.ts` checks the rest). `index.html` uses `data-i18n` keys. Data-derived labels carry both languages in their meta.
+- **Theme boot script:** the inline `<script>` in `index.html` is allowed by its SHA-256 in `public/_headers`; change one, update the other (`i18n.test.ts` checks).
 - **e2e waits:** wait for the parish layer (`waitForParishes` / `waitForParishView`), not the basemap. Use `waitForFullIdle` only before screenshots. No `waitForTimeout`.
 
 ## Working conventions
