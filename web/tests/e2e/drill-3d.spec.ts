@@ -421,3 +421,61 @@ test("with a protected-areas overlay on, the slab turns translucent so the overl
   await page.getByTestId("overlay-natura").uncheck();
   await expect.poll(() => opacity("concelho-slab")).toBe(1);
 });
+
+// ---- the same fit rule without 3D: 3D switched off, and reduced motion (flat, instant) -------------
+for (const mode of ["flat", "reduced-motion"] as const) {
+  for (const [device, use] of [
+    ["desktop", {}],
+    ["phone", { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }],
+  ] as const) {
+    test.describe(`fit, ${mode}, ${device}`, () => {
+      test.use(use);
+      test.beforeEach(async ({ page }) => {
+        if (mode === "flat") await page.addInitScript(() => localStorage.setItem("pnct-map:3d", "off"));
+        else await page.emulateMedia({ reducedMotion: "reduce" });
+      });
+      const flat = async (page: Page) => expect(await camera(page)).toEqual({ pitch: 0, bearing: 0 });
+      /** Under reduced motion the camera is already at rest on the next frame: the move was instant. */
+      const instant = async (page: Page) => {
+        if (mode === "reduced-motion") expect(await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => r(window.pnctMap.isMoving()))))).toBe(false);
+      };
+
+      test("click: a parish inside the selected concelho is refitted", async ({ page }) => {
+        await page.goto(`/#c=${VILA_REAL}`);
+        await expectFramed(page, "concelho", VILA_REAL);
+        await flat(page);
+        const p = (await pointIn(page, MATEUS))!; // flat: no slab, the ground point is the one to hit
+        if (device === "phone") await page.touchscreen.tap(p.x, p.y);
+        else await page.mouse.click(p.x, p.y);
+        await expect(page).toHaveURL(new RegExp(`[#&]f=${MATEUS}`));
+        await instant(page);
+        await expectFramed(page, "parish", MATEUS);
+        await flat(page);
+      });
+
+      test("search: a parish and a concelho are framed", async ({ page }) => {
+        await page.goto("/");
+        await waitForParishes(page);
+        await searchAndPick(page, "Mateus", /Vila Real/);
+        await instant(page);
+        await expectFramed(page, "parish", MATEUS);
+        await searchAndPick(page, "Viseu", /Concelho · Viseu/);
+        await expectFramed(page, "concelho", "1823");
+        await flat(page);
+      });
+
+      test("panel list: a parish picked from the concelho panel is framed", async ({ page }) => {
+        await page.goto("/#c=1823");
+        await waitForParishView(page);
+        const entry = page.getByTestId("pnct-parish-list").locator("button").first();
+        const name = (await entry.textContent())!.trim();
+        await entry.click();
+        await expect(page.getByTestId("panel").getByTestId("panel-title")).toHaveText(name);
+        await instant(page);
+        const dicofre = new URLSearchParams(new URL(page.url()).hash.slice(1)).get("f")!;
+        await expectFramed(page, "parish", dicofre);
+        await flat(page);
+      });
+    });
+  }
+}

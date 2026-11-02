@@ -294,6 +294,37 @@ export function groundUnder(s: { x: number; y: number }, elevation: number, view
   return { x: (d * u) / depth, y: (d * v * cp) / depth };
 }
 
+/**
+ * The footprint (lng/lat points) as drawn by a camera at `center`/`zoom` with `view`: its share of the
+ * visible area (the map minus `pad`; the larger of its width and height shares) and whether it is
+ * wholly inside that area.
+ */
+export function measureFootprint(
+  points: [number, number][],
+  size: Size,
+  pad: Padding,
+  view: { pitch: number; bearing: number; fov: number },
+  center: [number, number],
+  zoom: number,
+): { share: number; inside: boolean } {
+  const cam: View = { ...view, height: size.height };
+  const world = TILE_SIZE * 2 ** zoom;
+  const [cx, cy] = [mercX(center[0]), mercY(center[1])];
+  let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity];
+  for (const [lng, lat] of points) {
+    const s = projectGround((mercX(lng) - cx) * world, (mercY(lat) - cy) * world, cam);
+    if (!s) return { share: Infinity, inside: false };
+    [x0, x1, y0, y1] = [Math.min(x0, s.x), Math.max(x1, s.x), Math.min(y0, s.y), Math.max(y1, s.y)];
+  }
+  const aw = Math.max(1, size.width - pad.left - pad.right);
+  const ah = Math.max(1, size.height - pad.top - pad.bottom);
+  const [hw, hh] = [size.width / 2, size.height / 2];
+  return {
+    share: Math.max((x1 - x0) / aw, (y1 - y0) / ah),
+    inside: x0 >= pad.left - hw - 0.5 && x1 <= hw - pad.right + 0.5 && y0 >= pad.top - hh - 0.5 && y1 <= hh - pad.bottom + 0.5,
+  };
+}
+
 export interface ProjectedFit {
   center: [number, number];
   zoom: number;
@@ -360,9 +391,7 @@ export function fitProjected(
       if (share > 0) z = clampZ(z + 0.85 * Math.log2((opts.fill ?? 0.7) / share));
     }
   }
-  const b = box();
-  const share = b ? Math.max((b.x1 - b.x0) / aw, (b.y1 - b.y0) / ah) : Infinity;
-  const [hw, hh] = [size.width / 2, size.height / 2];
-  const inside = !!b && b.x0 >= pad.left - hw - 0.5 && b.x1 <= hw - pad.right + 0.5 && b.y0 >= pad.top - hh - 0.5 && b.y1 <= hh - pad.bottom + 0.5;
-  return { center: [lngOf(c[0]), latOf(c[1])], zoom: z, share, inside };
+  const center: [number, number] = [lngOf(c[0]), latOf(c[1])];
+  const { share, inside } = measureFootprint(points, size, pad, view, center, z);
+  return { center, zoom: z, share, inside };
 }

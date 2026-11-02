@@ -4,7 +4,7 @@ import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setW
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { renderAbout } from "./about";
 import { basemapStyle, setLabelLanguage } from "./basemap";
-import { BOUNDS_MARGIN, cameraLimits, protectedFade, constrainView, fitCenter, fitProjected, fitZoom, groundOffset, groundUnder, MAINLAND, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
+import { BOUNDS_MARGIN, cameraLimits, protectedFade, constrainView, fitCenter, fitProjected, fitZoom, groundOffset, groundUnder, MAINLAND, measureFootprint, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { metresPerPixel } from "./edges";
 import { DURATION_3D, FILL_3D, load3dPref, PHONE_QUERY, REDUCED_MOTION_QUERY, save3dPref, Slabs, view3dFor, type SlabTarget } from "./drill";
@@ -298,30 +298,41 @@ function start(data: MapData): void {
   };
 
   /**
-   * Frames a 3D selection in the visible area (left of the panel, above the sheet) at its pitch and
-   * bearing, measured on its projected footprint (camera.ts fitProjected). If, centred at the current
-   * zoom, it covers 35–85% of the area and fits, the camera only tilts and centres; otherwise it
-   * refits to cover FILL of it. A concelho stays past the concelho level (its parishes clickable)
-   * unless it would then overflow. Returns the zoom the camera ends at.
+   * Frames a selection in the visible area (left of the panel, above the sheet), in 3D at its pitch
+   * and bearing, flat otherwise; measured on its projected footprint (camera.ts fitProjected). The
+   * rule: if the footprint already covers 35–85% of the visible area and fits, the zoom stays (3D:
+   * tilt and centre; flat: the camera doesn't move at all, or only centres if part of the feature is
+   * outside the area); otherwise refit to cover FILL_3D of it. Zoom caps, in every mode: parish 14,
+   * concelho 12 (the flat fit's former 12 / 11 left 777 parishes and 5 concelhos under 35% of the
+   * desktop's visible area; docs/reports/3d-drilldown-flat-fit.md). A concelho stays past the concelho level (its parishes clickable)
+   * unless it would then overflow. Eased (3D 1.4 s, flat 0.9 s), at once under reduced motion or
+   * `animate` false. Returns the zoom the camera ends at.
    */
-  const frame3d = (s: NonNullable<Selection>, animate: boolean): number => {
+  const frame = (s: NonNullable<Selection>, animate: boolean): number => {
     const { pitch, bearing } = viewFor(s);
+    const tilted = is3d();
     const container = map.getContainer();
     const size = { width: container.clientWidth, height: container.clientHeight };
     const pad = fitPadding(true);
     const view = { pitch, bearing, fov: map.getVerticalFieldOfView() };
     const points = footprint(s);
-    if (!points.length) return map.getZoom();
+    const zoom = map.getZoom();
+    if (!points.length) return zoom;
     const maxZoom = s.kind === "parish" ? 14 : 12;
     const minZoom = s.kind === "concelho" ? limits.levelZoom + 0.5 : limits.minZoom;
-    const zoom = map.getZoom();
+    const duration = animate ? motion(tilted ? DURATION_3D : 900) : 0;
+    const zoomOk = zoom >= minZoom && zoom <= maxZoom;
+    const okShare = (share: number) => share >= 0.35 && share <= 0.85;
+    if (!tilted && zoomOk && !map.getPitch() && !map.getBearing()) {
+      const now = measureFootprint(points, size, pad, view, map.getCenter().toArray() as [number, number], zoom);
+      if (now.inside && okShare(now.share)) return zoom; // already well framed: leave the camera alone
+    }
     let target = fitProjected(points, size, pad, view, { zoom, fixedZoom: true });
-    const keep = target.inside && target.share >= 0.35 && target.share <= 0.85 && zoom >= minZoom && zoom <= maxZoom;
-    if (!keep) {
+    if (!(target.inside && okShare(target.share) && zoomOk)) {
       target = fitProjected(points, size, pad, view, { zoom, fill: FILL_3D, minZoom, maxZoom });
       if (!target.inside) target = fitProjected(points, size, pad, view, { zoom, fill: FILL_3D, minZoom: limits.minZoom, maxZoom });
     }
-    map.easeTo({ center: target.center, zoom: target.zoom, pitch, bearing, duration: animate ? motion(DURATION_3D) : 0 });
+    map.easeTo({ center: target.center, zoom: target.zoom, pitch, bearing, duration });
     return target.zoom;
   };
 
@@ -352,8 +363,8 @@ function start(data: MapData): void {
   );
 
   /**
-   * `fly`: frame the camera on the selection. `tilt`: in 3D, frame it (a click; flat, the camera
-   * stays). Neither: the camera stays (a re-render after a language or focus switch).
+   * `fly` (search, panel, link) or `tilt` (a click on the map): frame the camera on the selection
+   * (frame). Neither: the camera stays (a re-render after a language or focus switch).
    */
   function select(next: Selection, opts: { fly?: boolean; tilt?: boolean; animate?: boolean } = {}): void {
     const moves = opts.fly || opts.tilt;
@@ -361,8 +372,7 @@ function start(data: MapData): void {
     selection = next;
     setPanelOpen(next !== null);
     let zoom = map.getZoom();
-    const camera3d = moves && next && is3d();
-    if (camera3d) zoom = frame3d(next, animate);
+    if (moves && next) zoom = frame(next, animate);
     if (moves || !next) slabs.set(slabTarget(next), animate, zoom);
     if (next?.kind === "parish") {
       const p = data.parishes.get(next.dicofre);
@@ -370,7 +380,6 @@ function start(data: MapData): void {
       setSelectedIds([featureId(p.dicofre)]);
       panel.showParish(p, data.concelhos.get(concelhoCode(p.dicofre))!);
       writeHash({ f: p.dicofre, c: null });
-      if (opts.fly && !camera3d) fit(data.parishBounds.get(p.dicofre), 12, opts.animate);
     } else if (next?.kind === "concelho") {
       const c = data.concelhos.get(next.code);
       if (!c) return select(null);
@@ -378,8 +387,6 @@ function start(data: MapData): void {
       setSelectedIds([], c.parishes.filter((p) => p.pnct || !filter.focus).map((p) => featureId(p.dicofre)), featureId(c.code));
       panel.showConcelho(c);
       writeHash({ c: c.code, f: null });
-      // Always past the concelho level (and its fade), so the parishes inside become clickable.
-      if (opts.fly && !camera3d) fit(data.concelhoBounds.get(c.code), 11, opts.animate, limits.levelZoom + 0.5);
     } else {
       setSelectedIds([]);
       panel.close();
@@ -650,7 +657,7 @@ function start(data: MapData): void {
   // Switched on: tilt onto the selection in place and raise its slab. Off (or reduced motion turned
   // on): lower the slab and level the camera.
   onView3dChange = () => {
-    const zoom = is3d() && selection ? frame3d(selection, true) : map.getZoom();
+    const zoom = is3d() && selection ? frame(selection, true) : map.getZoom();
     slabs.set(slabTarget(selection), !reducedMotion.matches, zoom);
     if (!is3d() || !selection) level0();
   };

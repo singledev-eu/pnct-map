@@ -67,7 +67,7 @@ export function save3dPref(on: boolean, storage: () => Storage = () => window.lo
 /** Camera tilt for a selected feature. */
 export const PITCH = 50;
 const PITCH_PHONE = 40;
-/** Share of the visible area a refitted 3D selection covers (main.ts frame3d; refit outside 35–85%). */
+/** Share of the visible area a refitted selection covers, 3D or flat (main.ts frame; refit outside 35–85%). */
 export const FILL_3D = 0.7;
 /** Duration of the tilt-and-fit move and of the slab rising, ms. */
 export const DURATION_3D = 1400;

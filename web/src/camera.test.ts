@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, fitProjected, groundOffset, groundUnder, projectGround, clipRing, insideRing, LEVEL_OFFSET, MAINLAND, nearestOnRing, OUTLINE, OUTLINE_MERC, paddingOffset, type Padding, type Size } from "./camera";
+import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, fitProjected, measureFootprint, groundOffset, groundUnder, projectGround, clipRing, insideRing, LEVEL_OFFSET, MAINLAND, nearestOnRing, OUTLINE, OUTLINE_MERC, paddingOffset, type Padding, type Size } from "./camera";
 
 const DESKTOP = { width: 1440, height: 900 };
 const PHONE = { width: 390, height: 844 };
@@ -348,5 +348,19 @@ describe("fitProjected", () => {
   it("matches the flat fit on a flat, north-up map", () => {
     const fit = fitProjected(ring, DESKTOP, { top: 80, left: 40, bottom: 40, right: 400 }, { pitch: 0, bearing: 0, fov: 36.87 }, { zoom: 8, fill: 1 });
     expect(fit.zoom).toBeCloseTo(fitZoom([-7.74, 41.27, -7.69, 41.3], DESKTOP, { top: 80, left: 40, bottom: 40, right: 400 }), 3);
+  });
+});
+
+describe("measureFootprint", () => {
+  const ring: [number, number][] = [[-7.74, 41.27], [-7.69, 41.27], [-7.69, 41.3], [-7.74, 41.3]];
+  const pad: Padding = { top: 120, left: 24, right: 24, bottom: 422 };
+  const flat = { pitch: 0, bearing: 0, fov: 36.87 };
+  it("agrees with a fit, and sees a feature off to the side as outside", () => {
+    const fit = fitProjected(ring, PHONE, pad, flat, { zoom: 9, fill: 0.7, maxZoom: 16 });
+    const m = measureFootprint(ring, PHONE, pad, flat, fit.center, fit.zoom);
+    expect(m.share).toBeCloseTo(fit.share, 6);
+    expect(m.inside).toBe(true);
+    const off = measureFootprint(ring, PHONE, pad, flat, [fit.center[0] + 0.05, fit.center[1]], fit.zoom);
+    expect(off.inside).toBe(false);
   });
 });
