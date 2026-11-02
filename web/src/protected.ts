@@ -1,6 +1,6 @@
-import { feature } from "topojson-client";
+import { feature, merge } from "topojson-client";
 import type { GeometryCollection, Topology } from "topojson-specification";
-import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
+import type { Feature, FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import { lang, t } from "./strings";
 // Bundled (< 1 KB): which categories exist, with source, version and licence. Built by scripts/build_protected.py,
 // which leaves a category out when protected_config.py disables it; the legend, panel and credits follow.
@@ -9,6 +9,9 @@ import META from "../data/protected.meta.json";
 // shares when the panel first opens. Neither is on the initial-load path.
 import TOPO_URL from "../data/protected.topo.json?url";
 import STATS_URL from "../data/protection.json?url";
+// The overlay cut per display parish, for the 3D selection's slab top: fetched once an overlay is on
+// and something is selected.
+import SLAB_URL from "../data/protected-slab.topo.json?url";
 
 export interface CategoryMeta {
   id: string;
@@ -68,6 +71,37 @@ export const loadProtection = cachedJson<ProtectionData>(STATS_URL);
 export const loadOverlay = cachedJson<OverlayData>(TOPO_URL, (json) => {
   const topo = json as Topology<Record<string, GeometryCollection<{ pnct: boolean }>>>;
   return Object.fromEntries(CATEGORY_IDS.map((id) => [id, feature(topo, topo.objects[id]) as OverlayData[string]]));
+});
+
+type SlabPiece = Feature<Polygon | MultiPolygon, { dicofre: string; pnct: boolean }>;
+type SlabTopo = Topology<Record<string, GeometryCollection<{ dicofre: string; pnct: boolean }>>>;
+
+/**
+ * The protected parts of a parish or concelho, per category (scripts/build_protected.py write_slab):
+ * `pieces` for the fill (one per parish, with its PNCT flag), `outline` for the rim. A concelho's
+ * outline merges its parishes' pieces along their shared arcs, so the parish cuts don't show.
+ */
+export interface SlabProtected {
+  parts(kind: "parish" | "concelho", code: string, cat: string): { pieces: SlabPiece[]; outline: Polygon | MultiPolygon | null };
+}
+
+export const loadSlabProtected = cachedJson<SlabProtected>(SLAB_URL, (json) => {
+  const topo = json as SlabTopo;
+  const byParish: Record<string, Map<string, { geom: SlabTopo["objects"][string]["geometries"][number]; piece: SlabPiece }>> = {};
+  for (const [cat, obj] of Object.entries(topo.objects)) {
+    const fc = feature(topo, obj) as unknown as FeatureCollection<Polygon | MultiPolygon, { dicofre: string; pnct: boolean }>;
+    byParish[cat] = new Map(obj.geometries.map((g, i) => [(g.properties as { dicofre: string }).dicofre, { geom: g, piece: fc.features[i] as SlabPiece }]));
+  }
+  return {
+    parts(kind, code, cat) {
+      const m = byParish[cat];
+      if (!m) return { pieces: [], outline: null };
+      const hits = kind === "parish" ? [m.get(code)].filter((x) => !!x) : [...m.values()].filter((x) => x.piece.properties.dicofre.startsWith(code));
+      if (!hits.length) return { pieces: [], outline: null };
+      const outline = kind === "parish" ? hits[0].piece.geometry : (merge(topo, hits.map((h) => h.geom) as never) as MultiPolygon);
+      return { pieces: hits.map((h) => h.piece), outline };
+    },
+  };
 });
 
 /** A category's display labels in the active language (the data meta carries both). */

@@ -17,7 +17,7 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
 - `tests/`: pytest for the pipeline, shapes, outline, protected areas and concelho data.
 - `web/data/`: committed, built by the pipeline.
   - `pnct.topo.json` (display geometry), `shapes.json` (Idealista link shapes), `outline.json` (the camera outline, bundled).
-  - Protected areas: `protected.topo.json` (overlay, lazy), `protection.json` (shares per DICOFRE/DICO, lazy) and `protected.meta.json` (categories with EN and PT labels, bundled).
+  - Protected areas: `protected.topo.json` (overlay, lazy), `protected-slab.topo.json` (the overlay cut per parish, for the slab top, lazy), `protection.json` (shares per DICOFRE/DICO, lazy) and `protected.meta.json` (categories with EN and PT labels, bundled).
   - `concelhos.json` (population and contacts, lazy).
 - `web/src/`:
   - `main.ts`: app wiring, selection, focus mode, hash.
@@ -94,7 +94,7 @@ cd web && npm run deploy              # same, to production (main). Only after t
 - **No invented values:** data shown in the UI is never estimated or filled in. A missing value shows "—" with a note ("not available" / "não disponível").
 - **3D selection:**
   - Each slab layer holds only the selected feature (a filter by code). Slab colour follows eligibility (PNCT colour, neutral, or neutral with the PNCT parishes raised); never PNCT colour for a non-PNCT feature.
-  - Every line layer (app and basemap) is below the extrusions, and slabs are opaque (translucent only while a protected-areas overlay is on), so no ground line shows through or across a slab. Edges are rims extruded on the slab top (`edges.ts`), never ground lines over it. Only basemap labels are drawn over slabs.
+  - Every line layer (app and basemap) is below the extrusions, and slabs are always opaque, so no ground line shows through or across a slab. With a protected-areas overlay on, the selection's protected parts are drawn on the slab top (`protected-slab.topo.json`, built by `build_protected.py`), luminance-matched to the slab so labels keep AA (`contrast.test.ts`). Edges are rims extruded on the slab top (`edges.ts`), never ground lines over it. Only basemap labels are drawn over slabs.
   - Framing uses the projected footprint at the final pitch/bearing (`fitProjected`); hit tests on a slab top look at the ground under it (`groundUnder`).
   - Pitch and bearing belong to a selection: clearing it, turning 3D off or reduced motion levels the camera. Under `prefers-reduced-motion` there is no tilt, no slab, and selections jump. The constrain's padding offset goes through `groundOffset`, so camera limits hold with pitch.
 - **e2e waits:** wait for the parish layer (`waitForParishes` / `waitForParishView`), not the basemap. Use `waitForFullIdle` only before screenshots. No `waitForTimeout`.

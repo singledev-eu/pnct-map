@@ -15,7 +15,7 @@ import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountLegend, mountOverlayToggles } from "./legend";
 import { h, Panel } from "./panel";
 import { loadOptions, saveOptions } from "./prefs";
-import { attributionHtml, CATEGORY_IDS, loadOverlay, type OverlayData } from "./protected";
+import { attributionHtml, CATEGORY_IDS, loadOverlay, loadSlabProtected, type OverlayData } from "./protected";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
 import { lang, setLang, t, ui, type Lang } from "./strings";
 import { applyPageTheme, DARK_QUERY, loadThemePref, nextThemePref, PALETTES, resolveTheme, saveThemePref, STYLE_URLS, themeOf, type Theme, type ThemePref } from "./theme";
@@ -628,8 +628,15 @@ function start(data: MapData): void {
     }
     document.body.dataset.mapIdle = "false";
     setOverlayVisibility(map, overlays);
-    slabs.setGlass(overlays.visible.size > 0);
+    syncSlabProtected();
     markOverlays();
+  }
+  /** The protected parts on the slab top follow the overlays that are on (loaded on first need). */
+  function syncSlabProtected(): void {
+    if (!overlays.visible.size) return slabs.setProtected(overlays.visible, null);
+    loadSlabProtected()
+      .then((d) => slabs.setProtected(overlays.visible, d))
+      .catch((err: unknown) => console.error(err)); // the ground overlay still shows; the slab just lacks its part
   }
   const toggles = mountOverlayToggles($("legend-protected"), (cat) => overlays.visible.has(cat), (cat, on) => {
     if (on) overlays.visible.add(cat);

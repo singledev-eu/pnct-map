@@ -1,5 +1,6 @@
 import type { ExpressionSpecification, LayerSpecification, Map as MapLibreMap, StyleSpecification } from "maplibre-gl";
 import { FADE, protectedFade } from "./camera";
+import { extrusionTop, luminance, over, parseHex, toHex } from "./contrast";
 import type { MapData } from "./data";
 import type { OverlayData } from "./protected";
 import type { MapPalette } from "./theme";
@@ -211,6 +212,39 @@ export const PARISH_RIM = "parish-rim";
 export const HOVER_POP = "hover-pop";
 export const HOVER_RIM = "hover-rim";
 export const PARISH_HOVER_LINE = "parish-hover-line";
+/**
+ * The protected areas on the slab top (drill.ts setProtected): the selection's part of each overlay
+ * that is on, from protected-slab.topo.json, as thin extrusions on the slab with their own rims.
+ * The slab itself stays opaque; outside it the ground overlay shows under the veil as before.
+ */
+export const PROTECTED_SLAB_SOURCE = "slab-protected";
+export const PROTECTED_EDGE_SOURCE = "slab-protected-edges";
+export const protectedTop = (cat: string) => `slab-protected-${cat}`;
+export const PROTECTED_RIM = "slab-protected-rim";
+/** Categories drawn on the slab (protected_config.py ids). */
+export const SLAB_CATEGORIES = ["rnap", "natura"] as const;
+/** Share of the category colour mixed into the slab colour of its on-slab part. */
+export const SLAB_TINT: Record<(typeof SLAB_CATEGORIES)[number], number> = { rnap: 0.16, natura: 0.2 };
+/**
+ * The paint of a category's on-slab part: the slab colour tinted towards the category's, then
+ * brought back to the slab's own luminance (blended with black or white), so the labels over it keep
+ * the slab's contrast (contrast.test.ts) and only the hue says "protected".
+ */
+export function slabTint(slab: string, cat: (typeof SLAB_CATEGORIES)[number], colors: MapPalette): string {
+  const base = parseHex(slab);
+  const tinted = over(parseHex(colors[cat]), SLAB_TINT[cat], base);
+  const target = luminance(extrusionTop(base));
+  const toward: [number, number, number] = luminance(extrusionTop(tinted)) > target ? [0, 0, 0] : [1, 1, 1];
+  let lo = 0;
+  let hi = 1;
+  for (let i = 0; i < 24; i++) {
+    const mid = (lo + hi) / 2;
+    const y = luminance(extrusionTop(over(toward, mid, tinted)));
+    if (toward[0] === 0 ? y > target : y < target) lo = mid;
+    else hi = mid;
+  }
+  return toHex(over(toward, hi, tinted));
+}
 export const CONCELHO_HOVER_LINE = "concelho-hover-line";
 
 export interface Extrusion {
@@ -286,6 +320,10 @@ export function slabLayers(slab: SlabState, colors: MapPalette, filter: FilterSt
     extrusion(PARISH_RIM, EDGE_SOURCE, edgeFilter("parish"), pnctColor(colors.rim, colors.rimNeutral), rims[PARISH_RIM]),
     extrusion(HOVER_POP, PARISH_SOURCE, slabFilter("dicofre", hv.code), pnctColor(colors.pop, colors.popNeutral), hv),
     extrusion(HOVER_RIM, HOVER_EDGE_SOURCE, ["literal", true], pnctColor(colors.rim, colors.rimNeutral), rims[HOVER_RIM]),
+    ...SLAB_CATEGORIES.map((cat) =>
+      extrusion(protectedTop(cat), PROTECTED_SLAB_SOURCE, ["==", ["get", "cat"], cat], pnctColor(slabTint(colors.slab, cat, colors), slabTint(colors.slabNeutral, cat, colors)), rims[protectedTop(cat)]),
+    ),
+    extrusion(PROTECTED_RIM, PROTECTED_EDGE_SOURCE, ["literal", true], ["match", ["get", "cat"], "rnap", colors.rnap, colors.natura], rims[PROTECTED_RIM]),
   ];
 }
 
@@ -294,11 +332,21 @@ export function rimHeights(slab: SlabState): Record<string, { base: number; heig
   const c = slab.concelho;
   const p = slab.parish;
   const hv = slab.hover;
-  // The rims stay opaque while their slab is up, also when it is translucent (overlays on, drill.ts).
+  // The rims are opaque while their slab is up.
   const solid = (o: number) => (o > 0 ? 1 : 0);
   // A partly-PNCT concelho's rims rise above its PNCT tops, which would otherwise cover them.
   const tops = c.partial ? 2 * rimLift(c.height) : 0;
+  // The protected parts sit on the raised slab (the parish while it is up, else the concelho), above
+  // its PNCT tops and below its rims; their own rim a little higher.
+  const onParish = !!p.code && p.opacity > 0;
+  const under = onParish ? { h: p.height, o: p.opacity, tops: 0 } : { h: c.height, o: c.opacity, tops };
+  const lift = rimLift(under.h);
+  // RNAP above Natura 2000 where they overlap (different heights: no z-fighting between the two).
+  const step: Record<string, number> = { natura: 0.35, rnap: 0.5 };
+  const protectedTops = Object.fromEntries(SLAB_CATEGORIES.map((cat) => [protectedTop(cat), { base: under.h, height: under.h + under.tops + step[cat] * lift, opacity: solid(under.o) }]));
   return {
+    ...protectedTops,
+    [PROTECTED_RIM]: { base: under.h, height: under.h + under.tops + 0.8 * lift, opacity: solid(under.o) },
     [CONCELHO_PNCT_TOP]: { base: c.height, height: c.height + 2 * rimLift(c.height), opacity: c.opacity },
     [CONCELHO_INNER_RIM]: { base: c.height, height: c.height + tops + rimLift(c.height), opacity: solid(c.opacity) },
     [CONCELHO_RIM]: { base: c.height, height: c.height + tops + rimLift(c.height), opacity: solid(c.opacity) },
@@ -410,6 +458,8 @@ export function addLayers(map: MapLibreMap, data: MapData, filter: FilterState, 
   // The slab edges (drill.ts fills them per selection); maxzoom 16, so the thin quads stay sharp.
   map.addSource(EDGE_SOURCE, { type: "geojson", data: EMPTY_FC, maxzoom: 16 });
   map.addSource(HOVER_EDGE_SOURCE, { type: "geojson", data: EMPTY_FC, maxzoom: 16 });
+  map.addSource(PROTECTED_SLAB_SOURCE, { type: "geojson", data: EMPTY_FC, maxzoom: 14 });
+  map.addSource(PROTECTED_EDGE_SOURCE, { type: "geojson", data: EMPTY_FC, maxzoom: 16 });
   setPatternImages(map, colors);
   const basemap = map.getStyle().layers;
   const before = basemap[appLayerIndex(basemap)]?.id;

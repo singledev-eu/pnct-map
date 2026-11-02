@@ -12,6 +12,7 @@ import type { GeoJSONSource, Map as MapLibreMap } from "maplibre-gl";
 
 type PaintProp = Parameters<MapLibreMap["setPaintProperty"]>[1];
 import type { Bounds, MapData } from "./data";
+import type { SlabProtected } from "./protected";
 import type { MapPalette } from "./theme";
 import { edgeQuads, metresPerPixel, sharedEdgeQuads } from "./edges";
 import {
@@ -28,6 +29,11 @@ import {
   PARISH_SLAB,
   pnctTopFilter,
   popLift,
+  PROTECTED_EDGE_SOURCE,
+  PROTECTED_RIM,
+  PROTECTED_SLAB_SOURCE,
+  protectedTop,
+  SLAB_CATEGORIES,
   rimHeights,
   rimLift,
   SLAB_VEIL,
@@ -105,8 +111,8 @@ const RIM_PX = 2.4;
 const INNER_RIM_PX = 1.1;
 const HOVER_MS = 160;
 const OPAQUE = 1;
-/** Slab opacity while a protected-areas overlay is on, so its hatch shows on the selection. */
-const GLASS = 0.55;
+/** The protected areas' rim on the slab, px. */
+const PROTECTED_RIM_PX = 1.6;
 
 type Paint = { base: number; height: number; opacity: number };
 
@@ -152,6 +158,17 @@ export class Slabs {
     this.s.veil = target ? 1 : 0;
     this.paint(SLAB_VEIL, { "background-opacity": this.s.veil * this.palette().veilOpacity }, animate ? DURATION_3D / 2 : 0);
     this.buildEdges();
+    this.buildProtected();
+    // The protected parts ride on the raised slab: up from the ground with a new one, else moved.
+    const code = target?.code ?? null;
+    const rims = rimHeights(this.s);
+    const fresh = code !== this.protectedOf && code !== null;
+    this.protectedOf = code;
+    this.animate(
+      [...SLAB_CATEGORIES.map(protectedTop), PROTECTED_RIM].map((layer) => ({ layer, to: rims[layer], from: fresh ? { base: 0, height: 0, opacity: rims[layer].opacity } : undefined })),
+      animate ? DURATION_3D : 0,
+      "protected",
+    );
   }
 
   /** Rebuilds the rims for a new zoom (they are a fixed number of px wide), if it moved enough. */
@@ -159,6 +176,7 @@ export class Slabs {
     if (Math.abs(zoom - this.zoom) < 0.4) return;
     this.zoom = zoom;
     this.buildEdges();
+    this.buildProtected();
     if (this.s.hover.code) this.buildHoverEdge(this.s.hover.code);
   }
 
@@ -166,6 +184,18 @@ export class Slabs {
   restore(): void {
     this.setData(EDGE_SOURCE, this.edges);
     this.setData(HOVER_EDGE_SOURCE, this.hoverEdge);
+    this.setData(PROTECTED_SLAB_SOURCE, this.protectedFill);
+    this.setData(PROTECTED_EDGE_SOURCE, this.protectedEdges);
+  }
+
+  /**
+   * The protected areas drawn on the slab top: the selection's part of each category in `visible`
+   * (an overlay that is on), from `data` (null: not loaded yet, or no overlay on).
+   */
+  setProtected(visible: ReadonlySet<string>, data: SlabProtected | null): void {
+    this.protectedOn = new Set(visible);
+    this.protectedData = data;
+    this.buildProtected();
   }
 
   /**
@@ -252,23 +282,12 @@ export class Slabs {
     this.map.triggerRepaint();
   }
   private tokens: Record<string, object> = {};
-  private glass = false;
-  private slabOpacity = () => (this.glass ? GLASS : OPAQUE);
-
-  /**
-   * Translucent slabs while a protected-areas overlay is on: the overlays are ground layers, under
-   * an opaque slab they would vanish exactly over the selection. The rims stay opaque.
-   */
-  setGlass(on: boolean): void {
-    if (on === this.glass) return;
-    this.glass = on;
-    for (const kind of ["concelho", "parish"] as const) {
-      const s = this.s[kind];
-      if (!s.code || s.opacity === 0) continue;
-      s.opacity = this.slabOpacity();
-      for (const st of this.stack(kind, s.height, s.opacity)) this.extrude(st.layer, st.to, 300);
-    }
-  }
+  private slabOpacity = () => OPAQUE;
+  private protectedOn = new Set<string>();
+  private protectedOf: string | null = null;
+  private protectedData: SlabProtected | null = null;
+  private protectedFill: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
+  private protectedEdges: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
 
   /** The slab layer and its rim/top layers, with their paint for a slab of `height`. */
   private stack(kind: "concelho" | "parish", height: number, opacity: number): { layer: string; to: Paint }[] {
@@ -318,6 +337,7 @@ export class Slabs {
         this.filter(CONCELHO_PNCT_TOP, pnctTopFilter(null));
       } else this.filter(PARISH_SLAB, slabFilter("dicofre", null));
       this.buildEdges();
+      this.buildProtected();
     };
     clearTimeout(this.clearTimers[kind]);
     if (duration) this.clearTimers[kind] = setTimeout(empty, duration + 50);
@@ -344,6 +364,29 @@ export class Slabs {
     }
     this.edges = { type: "FeatureCollection", features };
     this.setData(EDGE_SOURCE, this.edges);
+  }
+
+  /** The fill pieces and rim quads of the protected parts on the raised slab, at this.zoom. */
+  private buildProtected(): void {
+    const fill: GeoJSON.Feature[] = [];
+    const edges: GeoJSON.Feature[] = [];
+    const p = this.s.parish;
+    const c = this.s.concelho;
+    const target = p.code ? { kind: "parish" as const, code: p.code } : c.code ? { kind: "concelho" as const, code: c.code } : null;
+    if (target && this.protectedData) {
+      const bounds = target.kind === "parish" ? this.data.parishBounds.get(target.code) : this.data.concelhoBounds.get(target.code);
+      const w = PROTECTED_RIM_PX * metresPerPixel(this.zoom, bounds ? centreLat(bounds) : 39.5);
+      for (const cat of SLAB_CATEGORIES) {
+        if (!this.protectedOn.has(cat)) continue;
+        const { pieces, outline } = this.protectedData.parts(target.kind, target.code, cat);
+        for (const piece of pieces) fill.push({ type: "Feature", geometry: piece.geometry, properties: { cat, pnct: piece.properties.pnct, dicofre: piece.properties.dicofre } });
+        if (outline) for (const q of edgeQuads(outline, w, "inward")) edges.push({ type: "Feature", geometry: q, properties: { cat } });
+      }
+    }
+    this.protectedFill = { type: "FeatureCollection", features: fill };
+    this.protectedEdges = { type: "FeatureCollection", features: edges };
+    this.setData(PROTECTED_SLAB_SOURCE, this.protectedFill);
+    this.setData(PROTECTED_EDGE_SOURCE, this.protectedEdges);
   }
 
   private buildHoverEdge(dicofre: string): void {

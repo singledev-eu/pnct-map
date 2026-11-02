@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { DARK_PLACE_LABEL } from "./basemap";
 import { AA, contrast, extrusionTop, over, parseHex, toHex } from "./contrast";
+import { SLAB_CATEGORIES, slabTint } from "./layers";
 import { PALETTES, type Theme } from "./theme";
 
 /**
@@ -15,8 +16,6 @@ const PLACE_LABELS: Record<Theme, string[]> = { light: ["#000000", "#333333"], d
 const LAND: Record<Theme, string> = { light: "#f2f3f0", dark: "#0c0c0c" };
 /** Fill opacity of a PNCT parish next to the selection, in its concelho (layers.ts parishFillOpacity "grouped"). */
 const NEIGHBOUR_FILL = 0.68;
-/** Translucent slab opacity while an overlay is on (drill.ts GLASS). */
-const GLASS = 0.55;
 
 const tops = (theme: Theme) => {
   const p = PALETTES[theme];
@@ -47,9 +46,9 @@ describe.each(["light", "dark"] as const)("slab tops, %s theme", (theme) => {
     for (const label of PLACE_LABELS[theme]) expect(contrast(label, top)).toBeGreaterThanOrEqual(AA);
   });
 
-  it("place labels reach AA on the translucent slab (overlay on) over the veiled land", () => {
-    for (const paint of [PALETTES[theme].slab, PALETTES[theme].slabNeutral]) {
-      const top = over(extrusionTop(paint), GLASS, veiled(theme, false));
+  it.each(SLAB_CATEGORIES)("place labels reach AA on the %s part drawn on the slab top", (cat) => {
+    for (const slab of [PALETTES[theme].slab, PALETTES[theme].slabNeutral]) {
+      const top = extrusionTop(slabTint(slab, cat, PALETTES[theme]));
       for (const label of PLACE_LABELS[theme]) expect(contrast(label, top)).toBeGreaterThanOrEqual(AA);
     }
   });

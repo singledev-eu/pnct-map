@@ -20,6 +20,11 @@ Outputs:
                                   dissolved, clipped to mainland land, simplified (mapshaper,
                                   topology-preserving), and split along the display PNCT outline
                                   into parts with pnct true/false (focus mode hides the false ones)
+  web/data/protected-slab.topo.json  the same simplified overlay cut by the display parishes: one
+                                  object per category, one piece per parish (dicofre, pnct), with the
+                                  parishes' own arcs, so a concelho's pieces merge (topojson merge)
+                                  into its protected area without the inner parish cuts. The 3D
+                                  selection draws them on the slab top (web/src/drill.ts).
   web/data/protected.meta.json    the categories with source, version and licence (bundled with the app)
   data/processed/protected_sites.csv  every site: category, code, name, type, area, mainland share
 The build prints the data quirks (repaired geometries, missing names, overlaps) and fails if an
@@ -50,6 +55,7 @@ PARISHES_DISPLAY = ROOT / "data/processed/parishes_all.geojson"
 INTERIM = ROOT / "data/interim/protected"
 OUT_STATS = ROOT / "web/data/protection.json"
 OUT_TOPO = ROOT / "web/data/protected.topo.json"
+OUT_SLAB = ROOT / "web/data/protected-slab.topo.json"
 OUT_META = ROOT / "web/data/protected.meta.json"
 OUT_SITES = ROOT / "data/processed/protected_sites.csv"
 
@@ -62,6 +68,9 @@ QUANTIZATION = "120000"  # as build_topo.py: ~4.8 m steps
 # Gzipped budgets. The overlay loads only when a toggle is first switched on and the shares only
 # when the panel first opens, so neither is on the initial-load path.
 TOPO_BUDGET_GZ = 220 * 1024
+# The overlay cut per display parish (the 3D selection draws its protected parts on the slab top).
+# Loaded only while an overlay is on and something is selected.
+SLAB_BUDGET_GZ = 320 * 1024
 STATS_BUDGET_GZ = 40 * 1024
 
 
@@ -183,6 +192,29 @@ def write_display(categories: dict[str, gpd.GeoDataFrame], land) -> None:
     subprocess.run(cmd, check=True, env=env)
 
 
+def write_slab(categories: list[str]) -> None:
+    """The simplified categories (write_display step 1) cut by each display parish -> OUT_SLAB."""
+    env = {**os.environ, "npm_config_cache": str(ROOT / ".npm-cache"), "npm_config_update_notifier": "false"}
+    simplified = INTERIM / "simplified"
+    cmd = ["npx", "-y", MAPSHAPER, "-i", "combine-files", *[str(simplified / f"{cat}.json") for cat in categories], str(PARISHES_DISPLAY),
+           "-target", "parishes_all", "-filter-fields", "dicofre,pnct"]
+    for cat in categories:
+        # -clip on a copy of the parishes keeps each parish's fields on its part inside the category.
+        cmd += ["-target", "parishes_all", "-clip", cat, "+", f"name={cat}_slab"]
+    for cat in categories:
+        cmd += ["-target", cat, "-drop"]
+    cmd += ["-target", "parishes_all", "-drop"]
+    for cat in categories:
+        cmd += ["-target", f"{cat}_slab", "-rename-layers", cat]
+    cmd += ["-o", str(OUT_SLAB), "format=topojson", f"target={','.join(categories)}", f"quantization={QUANTIZATION}"]
+    subprocess.run(cmd, check=True, env=env)
+    # A piece that quantization collapses comes out as a null geometry; drop it.
+    topo = json.loads(OUT_SLAB.read_text(encoding="utf-8"))
+    for obj in topo["objects"].values():
+        obj["geometries"] = [g for g in obj["geometries"] if g.get("type")]
+    OUT_SLAB.write_text(json.dumps(topo, separators=(",", ":")), encoding="utf-8")
+
+
 def field_meta(src: ArcGisSource | FileSource, fetched: dict) -> dict:
     return {
         "source": f"{src.provider}: {src.title}",
@@ -210,6 +242,10 @@ def gz_size(path: Path) -> int:
 
 
 def main() -> None:
+    if "--slab-only" in sys.argv:  # rebuild OUT_SLAB from the simplified overlay of the last full build
+        write_slab(list(enabled()))
+        report_sizes(((OUT_SLAB, SLAB_BUDGET_GZ),))
+        return
     sources = enabled()
     if not sources:
         raise SystemExit("no protected-area category enabled in protected_config.CATEGORIES")
@@ -291,7 +327,12 @@ def main() -> None:
     )
 
     write_display(categories, land)
-    for path, budget in ((OUT_TOPO, TOPO_BUDGET_GZ), (OUT_STATS, STATS_BUDGET_GZ), (OUT_META, None)):
+    write_slab(cats)
+    report_sizes(((OUT_TOPO, TOPO_BUDGET_GZ), (OUT_SLAB, SLAB_BUDGET_GZ), (OUT_STATS, STATS_BUDGET_GZ), (OUT_META, None)))
+
+
+def report_sizes(outputs) -> None:
+    for path, budget in outputs:
         gz = gz_size(path)
         print(f"{path.relative_to(ROOT)}: {path.stat().st_size / 1024:.0f} KB raw, {gz / 1024:.1f} KB gzipped")
         if budget and gz > budget:

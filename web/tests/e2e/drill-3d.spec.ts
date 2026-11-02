@@ -411,15 +411,40 @@ test("every line layer is below the slabs, which are opaque; edges are rims on t
   expect(await page.evaluate(() => window.pnctMap.querySourceFeatures("slab-edges", { filter: ["==", ["get", "role"], "concelho"] }).length)).toBeGreaterThan(0);
 });
 
-test("with a protected-areas overlay on, the slab turns translucent so the overlay shows; rims stay opaque", async ({ page }) => {
-  await page.goto(`/#c=${VILA_REAL}&pa=natura`);
-  await waitForParishView(page);
-  await expect(page.locator("body")).toHaveAttribute("data-overlays", "natura");
+test("with protected-areas overlays on, the slab stays opaque and carries only the selection's protected parts", async ({ page }) => {
+  const ODEMIRA = "0211";
+  const PARISH = "021120"; // São Salvador e Santa Maria: RNAP and Natura 2000
   const opacity = (id: string) => page.evaluate((layer) => window.pnctMap.getPaintProperty(layer, "fill-extrusion-opacity"), id);
-  await expect.poll(() => opacity("concelho-slab")).toBeLessThan(1);
-  expect(await opacity("concelho-rim")).toBe(1);
+  const pieces = () =>
+    page.evaluate(async () => {
+      const fc = (await (window.pnctMap.getSource("slab-protected") as unknown as { getData(): Promise<GeoJSON.FeatureCollection> }).getData());
+      return fc.features.map((f) => ({ cat: f.properties!.cat as string, dicofre: f.properties!.dicofre as string }));
+    });
+
+  await page.goto(`/#c=${ODEMIRA}&pa=rnap,natura`);
+  await waitForParishView(page);
+  await expect(page.locator("body")).toHaveAttribute("data-overlays", "natura,rnap");
+  expect(await opacity("concelho-slab")).toBe(1);
+  await expect.poll(async () => (await pieces()).length).toBeGreaterThan(0);
+  const concelho = await pieces();
+  expect(concelho.every((p) => p.dicofre.startsWith(ODEMIRA))).toBe(true);
+  expect(new Set(concelho.map((p) => p.cat))).toEqual(new Set(["rnap", "natura"]));
+  // The parts sit on the slab top.
+  const slabTop = (await slab(page, "concelho-slab")).height;
+  await expect.poll(() => page.evaluate(() => window.pnctMap.getPaintProperty("slab-protected-natura", "fill-extrusion-base"))).toBe(slabTop);
+
+  // Drill into a parish: only its own parts.
+  await searchAndPick(page, "São Salvador e Santa Maria", /Odemira/);
+  await waitForParishView(page);
+  expect(await opacity("parish-slab")).toBe(1);
+  await expect.poll(async () => (await pieces()).every((p) => p.dicofre === PARISH) && (await pieces()).length > 0).toBe(true);
+
+  // Each toggle on its own.
   await page.getByTestId("overlay-natura").uncheck();
-  await expect.poll(() => opacity("concelho-slab")).toBe(1);
+  await expect.poll(async () => new Set((await pieces()).map((p) => p.cat))).toEqual(new Set(["rnap"]));
+  await page.getByTestId("overlay-rnap").uncheck();
+  await expect.poll(async () => (await pieces()).length).toBe(0);
+  expect(await opacity("parish-slab")).toBe(1);
 });
 
 // ---- the same fit rule without 3D: 3D switched off, and reduced motion (flat, instant) -------------

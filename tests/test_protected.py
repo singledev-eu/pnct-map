@@ -185,3 +185,43 @@ def test_sites_csv():
     sites = pd.read_csv(ROOT / "data/processed/protected_sites.csv", dtype=str)
     assert {"category", "code", "name", "type", "area_ha", "mainland_ha"} <= set(sites.columns)
     assert not sites.duplicated(["category", "code"]).any()
+
+
+# ---- the slab cut (protected-slab.topo.json): the overlay per display parish ---------------------
+
+SLAB = ROOT / "web/data/protected-slab.topo.json"
+
+
+@pytest.fixture(scope="module")
+def slab():
+    return json.loads(SLAB.read_text(encoding="utf-8"))
+
+
+def test_slab_has_one_object_per_category(slab, cats):
+    assert list(slab["objects"]) == cats
+
+
+def test_slab_pieces_are_parishes_with_their_pnct_flag(slab):
+    parishes = {f["properties"]["dicofre"]: f["properties"]["pnct"] for f in json.loads(PARISHES_GEOJSON.read_text(encoding="utf-8"))["features"]}
+    for cat, obj in slab["objects"].items():
+        geoms = obj["geometries"]
+        assert geoms, cat
+        codes = [g["properties"]["dicofre"] for g in geoms]
+        assert len(codes) == len(set(codes)), f"{cat}: one piece per parish"
+        for g in geoms:
+            assert g["type"] in ("Polygon", "MultiPolygon")
+            assert g["properties"]["pnct"] == parishes[g["properties"]["dicofre"]]
+
+
+def test_slab_covers_the_parishes_the_shares_call_protected(slab, stats, cats):
+    """Every parish ≥ 5% inside a category has a piece of it (the cut is simplified, so small shares may drop out)."""
+    for cat in cats:
+        have = {g["properties"]["dicofre"] for g in slab["objects"][cat]["geometries"]}
+        want = {k for k, v in blocks(stats, "freguesias").items() if v[f"{cat}_pct"] >= 5}
+        assert want <= have, f"{cat}: missing {sorted(want - have)[:10]}"
+    for code in PENEDA_GERES:
+        assert code in {g["properties"]["dicofre"] for g in slab["objects"]["rnap"]["geometries"]}
+
+
+def test_slab_within_budget():
+    assert gzip.compress(SLAB.read_bytes()).__len__() <= bp.SLAB_BUDGET_GZ
