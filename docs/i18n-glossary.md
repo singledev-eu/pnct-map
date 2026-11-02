@@ -45,6 +45,10 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | Whole concelho PNCT / Partly PNCT | Concelho inteiro no PNCT / Parcialmente no PNCT |
 | Concelho boundary | Limite de concelho |
 | Legend | Legenda |
+| Housing and income (card) | Habitação e rendimentos |
+| median price of homes sold | valor mediano das vendas de habitações (INE: alojamentos familiares) |
+| gross income declared per taxpayer | rendimento bruto declarado por sujeito passivo |
+| average monthly earnings of employees | ganho médio mensal dos trabalhadores por conta de outrem |
 | Concelho coverage / PNCT coverage | Cobertura do concelho / Cobertura PNCT |
 | Property search | Pesquisa de imóveis |
 | Property type / Land type / Operation | Tipo de imóvel / Tipo de terreno / Operação |

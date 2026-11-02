@@ -1,5 +1,10 @@
 {
  "estimate_year": 2025,
+ "periods": {
+  "sale_price_m2": "2025",
+  "income_per_taxpayer": "2024",
+  "monthly_earnings": "2024"
+ },
  "fields": {
   "population": {
    "source": "INE, Estimativas Anuais da População Residente, 31 Dec 2025 (0012917)",
@@ -41,6 +46,27 @@
    "licence": "CC BY 4.0",
    "ine_updated": "2026-06-22"
   },
+  "sale_price_m2": {
+   "source": "INE, Valor mediano das vendas de alojamentos familiares, €/m², 2025 (0012255)",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0012255&lingua=PT",
+   "as_of": "2025",
+   "licence": "CC BY 4.0",
+   "ine_updated": "2026-04-24"
+  },
+  "income_per_taxpayer": {
+   "source": "INE, Rendimento bruto declarado por sujeito passivo, 2024 (0012748)",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0012748&lingua=PT",
+   "as_of": "2024",
+   "licence": "CC BY 4.0",
+   "ine_updated": "2026-07-24"
+  },
+  "monthly_earnings": {
+   "source": "INE, Ganho médio mensal (MTSSS/GEP, Quadros de Pessoal), 2024 (0012656)",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0012656&lingua=PT",
+   "as_of": "2024",
+   "licence": "CC BY 4.0",
+   "ine_updated": "2026-03-27"
+  },
   "contacts": {
    "source": "Câmara websites, curated by hand (generic institutional contacts only)",
    "url": "https://github.com/singledev-eu/pnct-map/blob/main/data/contacts/camaras.csv",
@@ -50,7 +76,10 @@
  },
  "national": {
   "ageing_index": 188.8,
-  "population": 11424031
+  "population": 11424031,
+  "sale_price_m2": 2076.0,
+  "income_per_taxpayer": 17063.0,
+  "monthly_earnings": 1576.0
  },
  "mainland": {
   "population": 10912573.0,
@@ -67,6 +96,9 @@
    "census_change": -3.4,
    "density": 151.0,
    "ageing_index": 209.4,
+   "sale_price_m2": 1250.0,
+   "income_per_taxpayer": 15477.0,
+   "monthly_earnings": 1383.6,
    "contacts": {
     "website": "https://www.cm-agueda.pt/",
     "email": "geral@cm-agueda.pt",
@@ -85,6 +117,9 @@
    "census_change": -1.6,
    "density": 166.0,
    "ageing_index": 191.4,
+   "sale_price_m2": 1322.0,
+   "income_per_taxpayer": 14985.0,
+   "monthly_earnings": 1454.1,
    "contacts": null
   },
   "0103": {
@@ -94,6 +129,9 @@
    "census_change": -5.6,
    "density": 135.1,
    "ageing_index": 260.0,
+   "sale_price_m2": 856.0,
+   "income_per_taxpayer": 14904.0,
+   "monthly_earnings": 1301.8,
    "contacts": null
   },
   "0104": {
@@ -103,6 +141,9 @@
    "census_change": -5.4,
    "density": 65.2,
    "ageing_index": 226.1,
+   "sale_price_m2": 1057.0,
+   "income_per_taxpayer": 13148.0,
+   "monthly_earnings": 1263.6,
    "contacts": {
     "website": "https://www.cm-arouca.pt/",
     "email": "geral@cm-arouca.pt",
@@ -121,6 +162,9 @@
    "census_change": 3.2,
    "density": 462.6,
    "ageing_index": 174.7,
+   "sale_price_m2": 2343.0,
+   "income_per_taxpayer": 19306.0,
+   "monthly_earnings": 1618.7,
    "contacts": null
   },
   "0106": {
@@ -130,6 +174,9 @@
    "census_change": -6.9,
    "density": 138.0,
    "ageing_index": 222.2,
+   "sale_price_m2": 962.0,
+   "income_per_taxpayer": 12024.0,
+   "monthly_earnings": 1162.5,
    "contacts": {
     "website": "https://www.cm-castelo-paiva.pt/",
     "email": "geral@cm-castelo-paiva.pt",
@@ -148,6 +195,9 @@
    "census_change": -2.3,
    "density": 1541.3,
    "ageing_index": 276.6,
+   "sale_price_m2": 2703.0,
+   "income_per_taxpayer": 17154.0,
+   "monthly_earnings": 1344.3,
    "contacts": null
   },
   "0108": {
@@ -157,6 +207,9 @@
    "census_change": -2.9,
    "density": 256.5,
    "ageing_index": 196.3,
+   "sale_price_m2": 1296.0,
+   "income_per_taxpayer": 15164.0,
+   "monthly_earnings": 1600.6,
    "contacts": null
   },
   "0109": {
@@ -166,6 +219,9 @@
    "census_change": -1.9,
    "density": 660.9,
    "ageing_index": 193.2,
+   "sale_price_m2": 1636.0,
+   "income_per_taxpayer": 14942.0,
+   "monthly_earnings": 1407.5,
    "contacts": null
   },
   "0110": {
@@ -175,6 +231,9 @@
    "census_change": 1.7,
    "density": 589.3,
    "ageing_index": 174.2,
+   "sale_price_m2": 2188.0,
+   "income_per_taxpayer": 17495.0,
+   "monthly_earnings": 1538.8,
    "contacts": null
   },
   "0111": {
@@ -184,6 +243,9 @@
    "census_change": -5.3,
    "density": 180.3,
    "ageing_index": 251.8,
+   "sale_price_m2": 1133.0,
+   "income_per_taxpayer": 15885.0,
+   "monthly_earnings": 1440.7,
    "contacts": null
   },
   "0112": {
@@ -193,6 +255,9 @@
    "census_change": -1.0,
    "density": 142.2,
    "ageing_index": 162.0,
+   "sale_price_m2": 1355.0,
+   "income_per_taxpayer": 14328.0,
+   "monthly_earnings": 1202.9,
    "contacts": null
   },
   "0113": {
@@ -202,6 +267,9 @@
    "census_change": -3.6,
    "density": 434.7,
    "ageing_index": 221.2,
+   "sale_price_m2": 1333.0,
+   "income_per_taxpayer": 14922.0,
+   "monthly_earnings": 1462.8,
    "contacts": null
   },
   "0114": {
@@ -211,6 +279,9 @@
    "census_change": 0.5,
    "density": 294.3,
    "ageing_index": 159.4,
+   "sale_price_m2": 1337.0,
+   "income_per_taxpayer": 14996.0,
+   "monthly_earnings": 1408.0,
    "contacts": null
   },
   "0115": {
@@ -220,6 +291,9 @@
    "census_change": -0.8,
    "density": 393.3,
    "ageing_index": 193.9,
+   "sale_price_m2": 1713.0,
+   "income_per_taxpayer": 16192.0,
+   "monthly_earnings": 1494.3,
    "contacts": null
   },
   "0116": {
@@ -229,6 +303,9 @@
    "census_change": 2.0,
    "density": 3020.4,
    "ageing_index": 213.9,
+   "sale_price_m2": 1678.0,
+   "income_per_taxpayer": 16012.0,
+   "monthly_earnings": 1431.2,
    "contacts": null
   },
   "0117": {
@@ -238,6 +315,9 @@
    "census_change": -10.5,
    "density": 91.0,
    "ageing_index": 260.5,
+   "sale_price_m2": 769.0,
+   "income_per_taxpayer": 14271.0,
+   "monthly_earnings": 1382.9,
    "contacts": {
     "website": "https://www.cm-sever.pt/",
     "email": "cm.sever@cm-sever.pt",
@@ -256,6 +336,9 @@
    "census_change": 0.2,
    "density": 154.8,
    "ageing_index": 166.7,
+   "sale_price_m2": 1684.0,
+   "income_per_taxpayer": 14435.0,
+   "monthly_earnings": 1371.9,
    "contacts": null
   },
   "0119": {
@@ -265,6 +348,9 @@
    "census_change": -7.0,
    "density": 149.8,
    "ageing_index": 268.8,
+   "sale_price_m2": 1250.0,
+   "income_per_taxpayer": 15137.0,
+   "monthly_earnings": 1471.1,
    "contacts": {
     "website": "https://www.cm-valedecambra.pt/",
     "email": "geral@cm-valedecambra.pt",
@@ -283,6 +369,9 @@
    "census_change": -4.1,
    "density": 20.3,
    "ageing_index": 226.4,
+   "sale_price_m2": 833.0,
+   "income_per_taxpayer": 16691.0,
+   "monthly_earnings": 1660.8,
    "contacts": {
     "website": "https://www.mun-aljustrel.pt/",
     "email": "geral@mun-aljustrel.pt",
@@ -301,6 +390,9 @@
    "census_change": -9.9,
    "density": 9.0,
    "ageing_index": 280.3,
+   "sale_price_m2": 950.0,
+   "income_per_taxpayer": 15691.0,
+   "monthly_earnings": 1227.4,
    "contacts": {
     "website": "https://cm-almodovar.pt/",
     "email": "geral@cm-almodovar.pt",
@@ -319,6 +411,9 @@
    "census_change": -8.9,
    "density": 8.9,
    "ageing_index": 200.9,
+   "sale_price_m2": 920.0,
+   "income_per_taxpayer": 14854.0,
+   "monthly_earnings": 1284.9,
    "contacts": {
     "website": "https://www.cm-alvito.pt/",
     "email": "geral@cm-alvito.pt",
@@ -337,6 +432,9 @@
    "census_change": -21.6,
    "density": 8.4,
    "ageing_index": 243.2,
+   "sale_price_m2": 499.0,
+   "income_per_taxpayer": 13184.0,
+   "monthly_earnings": 1098.2,
    "contacts": {
     "website": "https://www.cm-barrancos.pt/",
     "email": "geral@cm-barrancos.pt",
@@ -355,6 +453,9 @@
    "census_change": -6.9,
    "density": 34.6,
    "ageing_index": 162.4,
+   "sale_price_m2": 1195.0,
+   "income_per_taxpayer": 17368.0,
+   "monthly_earnings": 1372.2,
    "contacts": {
     "website": "https://www.cm-beja.pt/",
     "email": "geral@cm-beja.pt",
@@ -373,6 +474,9 @@
    "census_change": -5.5,
    "density": 12.5,
    "ageing_index": 218.1,
+   "sale_price_m2": 810.0,
+   "income_per_taxpayer": 18711.0,
+   "monthly_earnings": 2346.4,
    "contacts": {
     "website": "https://cm-castroverde.pt/",
     "email": "geral@cm-castroverde.pt",
@@ -391,6 +495,9 @@
    "census_change": -10.4,
    "density": 27.0,
    "ageing_index": 192.4,
+   "sale_price_m2": 657.0,
+   "income_per_taxpayer": 15031.0,
+   "monthly_earnings": 1178.1,
    "contacts": {
     "website": "https://www.cm-cuba.pt/",
     "email": "geral@cm-cuba.pt",
@@ -409,6 +516,9 @@
    "census_change": -6.9,
    "density": 14.8,
    "ageing_index": 244.6,
+   "sale_price_m2": 776.0,
+   "income_per_taxpayer": 13224.0,
+   "monthly_earnings": 1410.3,
    "contacts": {
     "website": "https://ferreiradoalentejo.pt/",
     "email": "geral@cm-ferreira-alentejo.pt",
@@ -427,6 +537,9 @@
    "census_change": -14.7,
    "density": 4.6,
    "ageing_index": 414.2,
+   "sale_price_m2": 704.0,
+   "income_per_taxpayer": 13299.0,
+   "monthly_earnings": 1120.8,
    "contacts": {
     "website": "https://www.cm-mertola.pt/",
     "email": "geral@cm-mertola.pt",
@@ -445,6 +558,9 @@
    "census_change": -12.6,
    "density": 14.2,
    "ageing_index": 179.5,
+   "sale_price_m2": 686.0,
+   "income_per_taxpayer": 13927.0,
+   "monthly_earnings": 1220.6,
    "contacts": {
     "website": "https://www.cm-moura.pt/",
     "email": "cmmoura@cm-moura.pt",
@@ -463,6 +579,9 @@
    "census_change": 13.3,
    "density": 25.6,
    "ageing_index": 179.2,
+   "sale_price_m2": 1708.0,
+   "income_per_taxpayer": 11436.0,
+   "monthly_earnings": 1144.9,
    "contacts": {
     "website": "https://www.cm-odemira.pt/",
     "email": "geral@cm-odemira.pt",
@@ -481,6 +600,9 @@
    "census_change": -10.2,
    "density": 7.7,
    "ageing_index": 301.5,
+   "sale_price_m2": 911.0,
+   "income_per_taxpayer": 14808.0,
+   "monthly_earnings": 1176.7,
    "contacts": {
     "website": "https://cm-ourique.pt/",
     "email": "geral@cm-ourique.pt",
@@ -499,6 +621,9 @@
    "census_change": -11.9,
    "density": 13.0,
    "ageing_index": 240.6,
+   "sale_price_m2": 691.0,
+   "income_per_taxpayer": 13800.0,
+   "monthly_earnings": 1176.9,
    "contacts": {
     "website": "https://www.cm-serpa.pt/",
     "email": "geral@cm-serpa.pt",
@@ -517,6 +642,9 @@
    "census_change": -12.8,
    "density": 17.4,
    "ageing_index": 203.6,
+   "sale_price_m2": 700.0,
+   "income_per_taxpayer": 14354.0,
+   "monthly_earnings": 1348.4,
    "contacts": {
     "website": "https://cm-vidigueira.pt/",
     "email": "geral@cm-vidigueira.pt",
@@ -535,6 +663,9 @@
    "census_change": -1.6,
    "density": 240.9,
    "ageing_index": 180.1,
+   "sale_price_m2": 1392.0,
+   "income_per_taxpayer": 13605.0,
+   "monthly_earnings": 1237.7,
    "contacts": {
     "website": "https://amares.pt/",
     "email": "geral@municipioamares.pt",
@@ -553,6 +684,9 @@
    "census_change": -3.0,
    "density": 323.3,
    "ageing_index": 176.7,
+   "sale_price_m2": 1571.0,
+   "income_per_taxpayer": 13793.0,
+   "monthly_earnings": 1267.0,
    "contacts": null
   },
   "0303": {
@@ -562,6 +696,9 @@
    "census_change": 6.5,
    "density": 1159.4,
    "ageing_index": 151.5,
+   "sale_price_m2": 1996.0,
+   "income_per_taxpayer": 17913.0,
+   "monthly_earnings": 1544.8,
    "contacts": null
   },
   "0304": {
@@ -571,6 +708,9 @@
    "census_change": -6.9,
    "density": 64.1,
    "ageing_index": 213.4,
+   "sale_price_m2": 880.0,
+   "income_per_taxpayer": 12282.0,
+   "monthly_earnings": 1092.0,
    "contacts": {
     "website": "https://cabeceirasdebasto.pt/",
     "email": "servicoatendimentounico@cabeceirasdebasto.pt",
@@ -589,6 +729,9 @@
    "census_change": -12.2,
    "density": 89.8,
    "ageing_index": 238.3,
+   "sale_price_m2": 813.0,
+   "income_per_taxpayer": 11922.0,
+   "monthly_earnings": 1104.8,
    "contacts": {
     "website": "https://www.mun-celoricodebasto.pt/",
     "email": "geral@mun-celoricodebasto.pt",
@@ -607,6 +750,9 @@
    "census_change": 2.6,
    "density": 409.5,
    "ageing_index": 154.0,
+   "sale_price_m2": 2118.0,
+   "income_per_taxpayer": 15780.0,
+   "monthly_earnings": 1244.7,
    "contacts": null
   },
   "0307": {
@@ -616,6 +762,9 @@
    "census_change": -4.2,
    "density": 230.0,
    "ageing_index": 211.5,
+   "sale_price_m2": 1263.0,
+   "income_per_taxpayer": 13153.0,
+   "monthly_earnings": 1165.2,
    "contacts": {
     "website": "https://www.cm-fafe.pt/",
     "email": "geral@cm-fafe.pt",
@@ -634,6 +783,9 @@
    "census_change": -0.8,
    "density": 686.9,
    "ageing_index": 183.6,
+   "sale_price_m2": 1607.0,
+   "income_per_taxpayer": 14797.0,
+   "monthly_earnings": 1290.2,
    "contacts": {
     "website": "https://www.cm-guimaraes.pt/",
     "email": "geral@cm-guimaraes.pt",
@@ -652,6 +804,9 @@
    "census_change": -0.7,
    "density": 168.9,
    "ageing_index": 189.3,
+   "sale_price_m2": 1308.0,
+   "income_per_taxpayer": 12660.0,
+   "monthly_earnings": 1128.6,
    "contacts": {
     "website": "https://povoadelanhoso.pt/",
     "email": "geral@mun-planhoso.pt",
@@ -670,6 +825,9 @@
    "census_change": -12.3,
    "density": 22.9,
    "ageing_index": 316.0,
+   "sale_price_m2": 1042.0,
+   "income_per_taxpayer": 12324.0,
+   "monthly_earnings": 1184.4,
    "contacts": {
     "website": "https://www.cm-terrasdebouro.pt/",
     "email": "geral@cm-terrasdebouro.pt",
@@ -688,6 +846,9 @@
    "census_change": -8.0,
    "density": 53.9,
    "ageing_index": 321.7,
+   "sale_price_m2": 1070.0,
+   "income_per_taxpayer": 12272.0,
+   "monthly_earnings": 1104.0,
    "contacts": {
     "website": "https://cm-vminho.pt/",
     "email": "geral@cm-vminho.pt",
@@ -706,6 +867,9 @@
    "census_change": -0.2,
    "density": 713.3,
    "ageing_index": 171.5,
+   "sale_price_m2": 1747.0,
+   "income_per_taxpayer": 15295.0,
+   "monthly_earnings": 1461.1,
    "contacts": null
   },
   "0313": {
@@ -715,6 +879,9 @@
    "census_change": -3.0,
    "density": 217.1,
    "ageing_index": 164.8,
+   "sale_price_m2": 1456.0,
+   "income_per_taxpayer": 13064.0,
+   "monthly_earnings": 1183.4,
    "contacts": {
     "website": "https://www.cm-vilaverde.pt/",
     "email": "geral@cm-vilaverde.pt",
@@ -733,6 +900,9 @@
    "census_change": 0.7,
    "density": 1029.9,
    "ageing_index": 157.5,
+   "sale_price_m2": 1423.0,
+   "income_per_taxpayer": 13562.0,
+   "monthly_earnings": 1178.0,
    "contacts": null
   },
   "0401": {
@@ -742,6 +912,9 @@
    "census_change": -15.3,
    "density": 13.1,
    "ageing_index": 485.3,
+   "sale_price_m2": 418.0,
+   "income_per_taxpayer": 12813.0,
+   "monthly_earnings": 1083.6,
    "contacts": {
     "website": "https://www.cm-alfandegadafe.pt/",
     "email": "municipio@cm-alfandegadafe.pt",
@@ -760,6 +933,9 @@
    "census_change": -2.1,
    "density": 32.6,
    "ageing_index": 255.2,
+   "sale_price_m2": 1134.0,
+   "income_per_taxpayer": 16810.0,
+   "monthly_earnings": 1385.5,
    "contacts": {
     "website": "https://www.cm-braganca.pt/",
     "email": "cmb@cm-braganca.pt",
@@ -778,6 +954,9 @@
    "census_change": -13.9,
    "density": 18.7,
    "ageing_index": 429.4,
+   "sale_price_m2": 308.0,
+   "income_per_taxpayer": 12403.0,
+   "monthly_earnings": 1138.0,
    "contacts": {
     "website": "https://www.cm-carrazedadeansiaes.pt/",
     "email": "geral@cmca.pt",
@@ -796,6 +975,9 @@
    "census_change": -14.9,
    "density": 12.1,
    "ageing_index": 354.9,
+   "sale_price_m2": 271.0,
+   "income_per_taxpayer": 12767.0,
+   "monthly_earnings": 1131.6,
    "contacts": {
     "website": "https://www.cm-freixoespadacinta.pt/",
     "email": "geral@cm-fec.pt",
@@ -814,6 +996,9 @@
    "census_change": -9.7,
    "density": 19.8,
    "ageing_index": 381.4,
+   "sale_price_m2": 797.0,
+   "income_per_taxpayer": 13077.0,
+   "monthly_earnings": 1201.2,
    "contacts": {
     "website": "https://www.cm-macedodecavaleiros.pt/",
     "email": "geral@cm-macedodecavaleiros.pt",
@@ -832,6 +1017,9 @@
    "census_change": -13.6,
    "density": 12.4,
    "ageing_index": 469.2,
+   "sale_price_m2": 547.0,
+   "income_per_taxpayer": 13954.0,
+   "monthly_earnings": 1136.4,
    "contacts": {
     "website": "https://www.cm-mdouro.pt/",
     "email": "geral@cm-mdouro.pt",
@@ -850,6 +1038,9 @@
    "census_change": -10.3,
    "density": 33.0,
    "ageing_index": 317.2,
+   "sale_price_m2": 973.0,
+   "income_per_taxpayer": 14483.0,
+   "monthly_earnings": 1234.8,
    "contacts": {
     "website": "https://www.cm-mirandela.pt/",
     "email": "geral@cm-mirandela.pt",
@@ -868,6 +1059,9 @@
    "census_change": -13.0,
    "density": 10.6,
    "ageing_index": 454.0,
+   "sale_price_m2": 342.0,
+   "income_per_taxpayer": 13502.0,
+   "monthly_earnings": 1181.3,
    "contacts": {
     "website": "https://www.mogadouro.pt/",
     "email": "geral@mogadouro.pt",
@@ -886,6 +1080,9 @@
    "census_change": -20.4,
    "density": 12.2,
    "ageing_index": 511.4,
+   "sale_price_m2": 338.0,
+   "income_per_taxpayer": 12905.0,
+   "monthly_earnings": 1089.4,
    "contacts": {
     "website": "https://www.cm-moncorvo.pt/",
     "email": "geral@torredemoncorvo.pt",
@@ -904,6 +1101,9 @@
    "census_change": -9.7,
    "density": 21.7,
    "ageing_index": 374.0,
+   "sale_price_m2": 476.0,
+   "income_per_taxpayer": 12315.0,
+   "monthly_earnings": 1162.8,
    "contacts": {
     "website": "https://www.cm-vilaflor.pt/",
     "email": "geral@cm-vilaflor.pt",
@@ -922,6 +1122,9 @@
    "census_change": -11.1,
    "density": 7.7,
    "ageing_index": 555.9,
+   "sale_price_m2": 430.0,
+   "income_per_taxpayer": 12451.0,
+   "monthly_earnings": 1096.9,
    "contacts": {
     "website": "https://www.cm-vimioso.pt/",
     "email": "gi.cmv@cm-vimioso.pt",
@@ -940,6 +1143,9 @@
    "census_change": -14.3,
    "density": 10.4,
    "ageing_index": 687.0,
+   "sale_price_m2": 323.0,
+   "income_per_taxpayer": 12125.0,
+   "monthly_earnings": 1119.6,
    "contacts": {
     "website": "https://www.cm-vinhais.pt/",
     "email": "geral@cm-vinhais.pt",
@@ -958,6 +1164,9 @@
    "census_change": -9.5,
    "density": 52.0,
    "ageing_index": 304.2,
+   "sale_price_m2": 619.0,
+   "income_per_taxpayer": 13308.0,
+   "monthly_earnings": 1137.2,
    "contacts": {
     "website": "https://www.cm-belmonte.pt/",
     "email": "geral@cm-belmonte.pt",
@@ -976,6 +1185,9 @@
    "census_change": -6.8,
    "density": 40.5,
    "ageing_index": 236.5,
+   "sale_price_m2": 966.0,
+   "income_per_taxpayer": 16412.0,
+   "monthly_earnings": 1295.2,
    "contacts": {
     "website": "https://www.cm-castelobranco.pt/",
     "email": "camara@cm-castelobranco.pt",
@@ -994,6 +1206,9 @@
    "census_change": -10.3,
    "density": 91.9,
    "ageing_index": 280.2,
+   "sale_price_m2": 1114.0,
+   "income_per_taxpayer": 15282.0,
+   "monthly_earnings": 1310.4,
    "contacts": {
     "website": "https://www.cm-covilha.pt/",
     "email": "info@cm-covilha.pt",
@@ -1012,6 +1227,9 @@
    "census_change": -9.3,
    "density": 39.6,
    "ageing_index": 285.7,
+   "sale_price_m2": 774.0,
+   "income_per_taxpayer": 14211.0,
+   "monthly_earnings": 1262.8,
    "contacts": {
     "website": "https://www.cm-fundao.pt/",
     "email": "geral@cm-fundao.pt",
@@ -1030,6 +1248,9 @@
    "census_change": -14.0,
    "density": 5.9,
    "ageing_index": 417.9,
+   "sale_price_m2": 412.0,
+   "income_per_taxpayer": 13144.0,
+   "monthly_earnings": 1262.2,
    "contacts": {
     "website": "https://www.cm-idanhanova.pt/",
     "email": "geral@cm-idanhanova.pt",
@@ -1048,6 +1269,9 @@
    "census_change": -14.3,
    "density": 9.6,
    "ageing_index": 619.3,
+   "sale_price_m2": 487.0,
+   "income_per_taxpayer": 13292.0,
+   "monthly_earnings": 1248.1,
    "contacts": {
     "website": "https://cm-oleiros.pt/",
     "email": "geral@cm-oleiros.pt",
@@ -1066,6 +1290,9 @@
    "census_change": -16.1,
    "density": 7.7,
    "ageing_index": 486.2,
+   "sale_price_m2": 408.0,
+   "income_per_taxpayer": 13021.0,
+   "monthly_earnings": 1142.1,
    "contacts": {
     "website": "https://www.cm-penamacor.pt/",
     "email": "secretaria.gap@cm-penamacor.pt",
@@ -1084,6 +1311,9 @@
    "census_change": -13.8,
    "density": 17.6,
    "ageing_index": 434.8,
+   "sale_price_m2": 569.0,
+   "income_per_taxpayer": 13754.0,
+   "monthly_earnings": 1289.3,
    "contacts": {
     "website": "https://www.cm-proencanova.pt/",
     "email": "geral@cm-proencanova.pt",
@@ -1102,6 +1332,9 @@
    "census_change": -7.0,
    "density": 33.8,
    "ageing_index": 291.2,
+   "sale_price_m2": 852.0,
+   "income_per_taxpayer": 12868.0,
+   "monthly_earnings": 1179.2,
    "contacts": {
     "website": "https://www.cm-serta.pt/",
     "email": "geral@cm-serta.pt",
@@ -1120,6 +1353,9 @@
    "census_change": -5.0,
    "density": 16.9,
    "ageing_index": 296.9,
+   "sale_price_m2": 609.0,
+   "income_per_taxpayer": 13688.0,
+   "monthly_earnings": 1062.8,
    "contacts": {
     "website": "https://www.cm-viladerei.pt/",
     "email": "geral@cm-viladerei.pt",
@@ -1138,6 +1374,9 @@
    "census_change": -6.7,
    "density": 10.4,
    "ageing_index": 315.1,
+   "sale_price_m2": 446.0,
+   "income_per_taxpayer": 14839.0,
+   "monthly_earnings": 1590.1,
    "contacts": {
     "website": "https://www.cm-vvrodao.pt/",
     "email": "geral@cm-vvrodao.pt",
@@ -1156,6 +1395,9 @@
    "census_change": -8.9,
    "density": 34.4,
    "ageing_index": 310.4,
+   "sale_price_m2": 680.0,
+   "income_per_taxpayer": 13225.0,
+   "monthly_earnings": 1163.1,
    "contacts": {
     "website": "https://www.cm-arganil.pt/",
     "email": "geral@cm-arganil.pt",
@@ -1174,6 +1416,9 @@
    "census_change": -6.5,
    "density": 91.5,
    "ageing_index": 256.8,
+   "sale_price_m2": 1108.0,
+   "income_per_taxpayer": 14692.0,
+   "monthly_earnings": 1391.4,
    "contacts": null
   },
   "0603": {
@@ -1183,6 +1428,9 @@
    "census_change": -1.8,
    "density": 489.5,
    "ageing_index": 221.6,
+   "sale_price_m2": 2095.0,
+   "income_per_taxpayer": 21451.0,
+   "monthly_earnings": 1528.3,
    "contacts": null
   },
   "0604": {
@@ -1192,6 +1440,9 @@
    "census_change": -2.0,
    "density": 127.7,
    "ageing_index": 180.8,
+   "sale_price_m2": 1524.0,
+   "income_per_taxpayer": 17918.0,
+   "monthly_earnings": 1331.8,
    "contacts": {
     "website": "https://cm-condeixa.pt/",
     "email": "geral@cm-condeixa.pt",
@@ -1210,6 +1461,9 @@
    "census_change": -5.1,
    "density": 173.7,
    "ageing_index": 250.4,
+   "sale_price_m2": 1718.0,
+   "income_per_taxpayer": 17164.0,
+   "monthly_earnings": 1499.2,
    "contacts": null
   },
   "0606": {
@@ -1219,6 +1473,9 @@
    "census_change": -10.5,
    "density": 14.5,
    "ageing_index": 436.8,
+   "sale_price_m2": 614.0,
+   "income_per_taxpayer": 13121.0,
+   "monthly_earnings": 1089.0,
    "contacts": {
     "website": "https://www.cm-gois.pt/",
     "email": "correio@cm-gois.pt",
@@ -1237,6 +1494,9 @@
    "census_change": -3.4,
    "density": 131.1,
    "ageing_index": 201.5,
+   "sale_price_m2": 1333.0,
+   "income_per_taxpayer": 15355.0,
+   "monthly_earnings": 1297.4,
    "contacts": {
     "website": "https://cm-lousa.pt/",
     "email": "geral@cm-lousa.pt",
@@ -1255,6 +1515,9 @@
    "census_change": -2.8,
    "density": 102.3,
    "ageing_index": 251.3,
+   "sale_price_m2": 1472.0,
+   "income_per_taxpayer": 14742.0,
+   "monthly_earnings": 1238.8,
    "contacts": null
   },
   "0609": {
@@ -1264,6 +1527,9 @@
    "census_change": -8.4,
    "density": 97.4,
    "ageing_index": 262.2,
+   "sale_price_m2": 887.0,
+   "income_per_taxpayer": 14404.0,
+   "monthly_earnings": 1176.4,
    "contacts": {
     "website": "https://cm-mirandadocorvo.pt/",
     "email": "camara@cm-mirandadocorvo.pt",
@@ -1282,6 +1548,9 @@
    "census_change": -6.1,
    "density": 110.5,
    "ageing_index": 216.1,
+   "sale_price_m2": 1109.0,
+   "income_per_taxpayer": 15638.0,
+   "monthly_earnings": 1304.3,
    "contacts": null
   },
   "0611": {
@@ -1291,6 +1560,9 @@
    "census_change": -6.9,
    "density": 85.5,
    "ageing_index": 258.8,
+   "sale_price_m2": 729.0,
+   "income_per_taxpayer": 13071.0,
+   "monthly_earnings": 1214.2,
    "contacts": {
     "website": "https://www.cm-oliveiradohospital.pt/",
     "email": "geral@cm-oliveiradohospital.pt",
@@ -1309,6 +1581,9 @@
    "census_change": -8.9,
    "density": 8.3,
    "ageing_index": 611.7,
+   "sale_price_m2": 324.0,
+   "income_per_taxpayer": 13182.0,
+   "monthly_earnings": 1136.4,
    "contacts": {
     "website": "https://www.cm-pampilhosadaserra.pt/",
     "email": "municipio@cm-pampilhosadaserra.pt",
@@ -1327,6 +1602,9 @@
    "census_change": -14.0,
    "density": 60.5,
    "ageing_index": 367.8,
+   "sale_price_m2": 594.0,
+   "income_per_taxpayer": 13103.0,
+   "monthly_earnings": 1420.3,
    "contacts": {
     "website": "https://www.cm-penacova.pt/",
     "email": "geral@cm-penacova.pt",
@@ -1345,6 +1623,9 @@
    "census_change": -9.1,
    "density": 42.5,
    "ageing_index": 292.3,
+   "sale_price_m2": 759.0,
+   "income_per_taxpayer": 13687.0,
+   "monthly_earnings": 1280.7,
    "contacts": {
     "website": "https://www.cm-penela.pt/",
     "email": "geral@cm-penela.pt",
@@ -1363,6 +1644,9 @@
    "census_change": -10.3,
    "density": 66.0,
    "ageing_index": 335.5,
+   "sale_price_m2": 852.0,
+   "income_per_taxpayer": 15163.0,
+   "monthly_earnings": 1294.1,
    "contacts": {
     "website": "https://cm-soure.pt/",
     "email": "geral@cm-soure.pt",
@@ -1381,6 +1665,9 @@
    "census_change": -7.5,
    "density": 58.4,
    "ageing_index": 268.8,
+   "sale_price_m2": 751.0,
+   "income_per_taxpayer": 12887.0,
+   "monthly_earnings": 1237.9,
    "contacts": {
     "website": "https://cm-tabua.pt/",
     "email": "geral@cm-tabua.pt",
@@ -1399,6 +1686,9 @@
    "census_change": -6.6,
    "density": 88.9,
    "ageing_index": 231.1,
+   "sale_price_m2": 945.0,
+   "income_per_taxpayer": 13639.0,
+   "monthly_earnings": 1296.7,
    "contacts": {
     "website": "https://www.cm-vilanovadepoiares.pt/",
     "email": "geral@cm-vilanovadepoiares.pt",
@@ -1417,6 +1707,9 @@
    "census_change": -14.2,
    "density": 9.2,
    "ageing_index": 346.7,
+   "sale_price_m2": 717.0,
+   "income_per_taxpayer": 13372.0,
+   "monthly_earnings": 1211.3,
    "contacts": {
     "website": "https://www.cm-alandroal.pt/",
     "email": "geral@cm-alandroal.pt",
@@ -1435,6 +1728,9 @@
    "census_change": -10.3,
    "density": 10.0,
    "ageing_index": 229.4,
+   "sale_price_m2": 1195.0,
+   "income_per_taxpayer": 15512.0,
+   "monthly_earnings": 1248.9,
    "contacts": {
     "website": "https://www.cm-arraiolos.pt/",
     "email": "geral@cm-arraiolos.pt",
@@ -1453,6 +1749,9 @@
    "census_change": -12.3,
    "density": 45.1,
    "ageing_index": 258.2,
+   "sale_price_m2": 818.0,
+   "income_per_taxpayer": 14091.0,
+   "monthly_earnings": 1247.7,
    "contacts": {
     "website": "https://www.cm-borba.pt/",
     "email": "geral@cm-borba.pt",
@@ -1471,6 +1770,9 @@
    "census_change": -11.4,
    "density": 25.0,
    "ageing_index": 232.5,
+   "sale_price_m2": 846.0,
+   "income_per_taxpayer": 15460.0,
+   "monthly_earnings": 1268.0,
    "contacts": {
     "website": "https://www.cm-estremoz.pt/",
     "email": "geral@cm-estremoz.pt",
@@ -1489,6 +1791,9 @@
    "census_change": -5.3,
    "density": 44.8,
    "ageing_index": 186.4,
+   "sale_price_m2": 2140.0,
+   "income_per_taxpayer": 18842.0,
+   "monthly_earnings": 1484.5,
    "contacts": {
     "website": "https://www.cm-evora.pt/",
     "email": "cmevora@cm-evora.pt",
@@ -1507,6 +1812,9 @@
    "census_change": -9.4,
    "density": 13.5,
    "ageing_index": 244.3,
+   "sale_price_m2": 1429.0,
+   "income_per_taxpayer": 15453.0,
+   "monthly_earnings": 1248.5,
    "contacts": {
     "website": "https://www.cm-montemornovo.pt/",
     "email": "geral@cm-montemornovo.pt",
@@ -1525,6 +1833,9 @@
    "census_change": -16.9,
    "density": 9.3,
    "ageing_index": 394.8,
+   "sale_price_m2": 994.0,
+   "income_per_taxpayer": 14980.0,
+   "monthly_earnings": 1261.1,
    "contacts": {
     "website": "https://www.cm-mora.pt/",
     "email": "geral@cm-mora.pt",
@@ -1543,6 +1854,9 @@
    "census_change": -11.7,
    "density": 9.1,
    "ageing_index": 196.2,
+   "sale_price_m2": 585.0,
+   "income_per_taxpayer": 13643.0,
+   "monthly_earnings": 1195.8,
    "contacts": {
     "website": "https://www.cm-mourao.pt/",
     "email": "expediente@cm-mourao.pt",
@@ -1561,6 +1875,9 @@
    "census_change": -10.6,
    "density": 9.5,
    "ageing_index": 262.3,
+   "sale_price_m2": 785.0,
+   "income_per_taxpayer": 13082.0,
+   "monthly_earnings": 1277.2,
    "contacts": {
     "website": "https://www.cm-portel.pt/",
     "email": "geral@mail.cm-portel.pt",
@@ -1579,6 +1896,9 @@
    "census_change": -10.6,
    "density": 17.4,
    "ageing_index": 224.2,
+   "sale_price_m2": 899.0,
+   "income_per_taxpayer": 13776.0,
+   "monthly_earnings": 1224.9,
    "contacts": {
     "website": "https://www.cm-redondo.pt/",
     "email": "geral@cm-redondo.pt",
@@ -1597,6 +1917,9 @@
    "census_change": -8.8,
    "density": 22.8,
    "ageing_index": 210.3,
+   "sale_price_m2": 1094.0,
+   "income_per_taxpayer": 14789.0,
+   "monthly_earnings": 1237.2,
    "contacts": {
     "website": "https://www.cm-reguengos-monsaraz.pt/",
     "email": "geral@cm-reguengos-monsaraz.pt",
@@ -1615,6 +1938,9 @@
    "census_change": -5.1,
    "density": 57.8,
    "ageing_index": 215.5,
+   "sale_price_m2": 1533.0,
+   "income_per_taxpayer": 15330.0,
+   "monthly_earnings": 1360.2,
    "contacts": {
     "website": "https://www.cm-vendasnovas.pt/",
     "email": "geral@cm-vendasnovas.pt",
@@ -1633,6 +1959,9 @@
    "census_change": -7.4,
    "density": 14.2,
    "ageing_index": 186.8,
+   "sale_price_m2": 903.0,
+   "income_per_taxpayer": 15020.0,
+   "monthly_earnings": 1187.2,
    "contacts": {
     "website": "https://www.cm-vianadoalentejo.pt/",
     "email": "camara@cm-vianadoalentejo.pt",
@@ -1651,6 +1980,9 @@
    "census_change": -11.2,
    "density": 37.8,
    "ageing_index": 270.6,
+   "sale_price_m2": 825.0,
+   "income_per_taxpayer": 14952.0,
+   "monthly_earnings": 1369.3,
    "contacts": {
     "website": "https://www.cm-vilavicosa.pt/",
     "email": "geral@cm-vilavicosa.pt",
@@ -1669,6 +2001,9 @@
    "census_change": 8.2,
    "density": 450.5,
    "ageing_index": 135.2,
+   "sale_price_m2": 3285.0,
+   "income_per_taxpayer": 14664.0,
+   "monthly_earnings": 1276.6,
    "contacts": null
   },
   "0802": {
@@ -1678,6 +2013,9 @@
    "census_change": -13.5,
    "density": 4.3,
    "ageing_index": 626.3,
+   "sale_price_m2": 951.0,
+   "income_per_taxpayer": 13691.0,
+   "monthly_earnings": 1208.3,
    "contacts": {
     "website": "https://cm-alcoutim.pt/",
     "email": "geral@cm-alcoutim.pt",
@@ -1696,6 +2034,9 @@
    "census_change": 2.7,
    "density": 23.0,
    "ageing_index": 178.2,
+   "sale_price_m2": 3288.0,
+   "income_per_taxpayer": 13322.0,
+   "monthly_earnings": 1167.1,
    "contacts": {
     "website": "https://cm-aljezur.pt/",
     "email": "geral@cm-aljezur.pt",
@@ -1714,6 +2055,9 @@
    "census_change": -4.6,
    "density": 25.2,
    "ageing_index": 283.4,
+   "sale_price_m2": 2406.0,
+   "income_per_taxpayer": 14627.0,
+   "monthly_earnings": 1155.1,
    "contacts": {
     "website": "https://cm-castromarim.pt/",
     "email": "expediente@cm-castromarim.pt",
@@ -1732,6 +2076,9 @@
    "census_change": 4.0,
    "density": 396.2,
    "ageing_index": 171.0,
+   "sale_price_m2": 2985.0,
+   "income_per_taxpayer": 18117.0,
+   "monthly_earnings": 1484.1,
    "contacts": null
   },
   "0806": {
@@ -1741,6 +2088,9 @@
    "census_change": 3.3,
    "density": 323.5,
    "ageing_index": 189.2,
+   "sale_price_m2": 3107.0,
+   "income_per_taxpayer": 15519.0,
+   "monthly_earnings": 1345.0,
    "contacts": null
   },
   "0807": {
@@ -1750,6 +2100,9 @@
    "census_change": 7.9,
    "density": 191.2,
    "ageing_index": 212.4,
+   "sale_price_m2": 3801.0,
+   "income_per_taxpayer": 15459.0,
+   "monthly_earnings": 1271.5,
    "contacts": null
   },
   "0808": {
@@ -1759,6 +2112,9 @@
    "census_change": 3.1,
    "density": 123.7,
    "ageing_index": 168.9,
+   "sale_price_m2": 3993.0,
+   "income_per_taxpayer": 15768.0,
+   "monthly_earnings": 1346.7,
    "contacts": {
     "website": "https://www.cm-loule.pt/",
     "email": "geral@cm-loule.pt",
@@ -1777,6 +2133,9 @@
    "census_change": -9.6,
    "density": 14.2,
    "ageing_index": 311.0,
+   "sale_price_m2": 1636.0,
+   "income_per_taxpayer": 12833.0,
+   "monthly_earnings": 1127.6,
    "contacts": {
     "website": "https://www.cm-monchique.pt/",
     "email": "geral@cm-monchique.pt",
@@ -1795,6 +2154,9 @@
    "census_change": -1.7,
    "density": 373.1,
    "ageing_index": 167.1,
+   "sale_price_m2": 2614.0,
+   "income_per_taxpayer": 15145.0,
+   "monthly_earnings": 1250.0,
    "contacts": null
   },
   "0811": {
@@ -1804,6 +2166,9 @@
    "census_change": 7.6,
    "density": 429.1,
    "ageing_index": 152.3,
+   "sale_price_m2": 2953.0,
+   "income_per_taxpayer": 15418.0,
+   "monthly_earnings": 1294.3,
    "contacts": null
   },
   "0812": {
@@ -1813,6 +2178,9 @@
    "census_change": 5.5,
    "density": 80.2,
    "ageing_index": 201.4,
+   "sale_price_m2": 2301.0,
+   "income_per_taxpayer": 15868.0,
+   "monthly_earnings": 1237.6,
    "contacts": null
   },
   "0813": {
@@ -1822,6 +2190,9 @@
    "census_change": 1.7,
    "density": 67.5,
    "ageing_index": 168.9,
+   "sale_price_m2": 2746.0,
+   "income_per_taxpayer": 14368.0,
+   "monthly_earnings": 1270.3,
    "contacts": {
     "website": "https://www.cm-silves.pt/",
     "email": "expediente@cm-silves.pt",
@@ -1840,6 +2211,9 @@
    "census_change": 5.2,
    "density": 54.4,
    "ageing_index": 273.0,
+   "sale_price_m2": 3103.0,
+   "income_per_taxpayer": 14830.0,
+   "monthly_earnings": 1203.8,
    "contacts": {
     "website": "https://cm-tavira.pt/",
     "email": "camara@cm-tavira.pt",
@@ -1858,6 +2232,9 @@
    "census_change": 8.7,
    "density": 39.5,
    "ageing_index": 193.8,
+   "sale_price_m2": 3189.0,
+   "income_per_taxpayer": 14049.0,
+   "monthly_earnings": 1258.5,
    "contacts": {
     "website": "https://www.cm-viladobispo.pt/",
     "email": "geral@cm-viladobispo.pt",
@@ -1876,6 +2253,9 @@
    "census_change": -1.7,
    "density": 364.9,
    "ageing_index": 231.3,
+   "sale_price_m2": 2914.0,
+   "income_per_taxpayer": 14188.0,
+   "monthly_earnings": 1258.2,
    "contacts": null
   },
   "0901": {
@@ -1885,6 +2265,9 @@
    "census_change": -4.4,
    "density": 23.7,
    "ageing_index": 401.1,
+   "sale_price_m2": 410.0,
+   "income_per_taxpayer": 12486.0,
+   "monthly_earnings": 1088.3,
    "contacts": {
     "website": "https://www.cm-aguiardabeira.pt/",
     "email": "geral@cm-aguiardabeira.pt",
@@ -1903,6 +2286,9 @@
    "census_change": -18.7,
    "density": 10.7,
    "ageing_index": 562.0,
+   "sale_price_m2": 321.0,
+   "income_per_taxpayer": 14265.0,
+   "monthly_earnings": 1163.0,
    "contacts": {
     "website": "https://www.cm-almeida.pt/",
     "email": "camara@cm-almeida.pt",
@@ -1921,6 +2307,9 @@
    "census_change": -14.4,
    "density": 26.5,
    "ageing_index": 361.8,
+   "sale_price_m2": 494.0,
+   "income_per_taxpayer": 13419.0,
+   "monthly_earnings": 1260.9,
    "contacts": {
     "website": "https://www.cm-celoricodabeira.pt/",
     "email": "geral@cm-celoricodabeira.pt",
@@ -1939,6 +2328,9 @@
    "census_change": -17.8,
    "density": 9.6,
    "ageing_index": 350.8,
+   "sale_price_m2": 263.0,
+   "income_per_taxpayer": 13068.0,
+   "monthly_earnings": 1124.3,
    "contacts": {
     "website": "https://www.cm-fcr.pt/",
     "email": "cm-fcr@cm-fcr.pt",
@@ -1957,6 +2349,9 @@
    "census_change": -11.7,
    "density": 31.6,
    "ageing_index": 361.5,
+   "sale_price_m2": 464.0,
+   "income_per_taxpayer": 12789.0,
+   "monthly_earnings": 1099.3,
    "contacts": {
     "website": "https://www.cm-fornosdealgodres.pt/",
     "email": "geral@cm-fornosdealgodres.pt",
@@ -1975,6 +2370,9 @@
    "census_change": -13.0,
    "density": 39.8,
    "ageing_index": 397.7,
+   "sale_price_m2": 500.0,
+   "income_per_taxpayer": 13259.0,
+   "monthly_earnings": 1223.0,
    "contacts": {
     "website": "https://www.cm-gouveia.pt/",
     "email": "geral@cm-gouveia.pt",
@@ -1993,6 +2391,9 @@
    "census_change": -5.7,
    "density": 57.1,
    "ageing_index": 245.6,
+   "sale_price_m2": 950.0,
+   "income_per_taxpayer": 17206.0,
+   "monthly_earnings": 1452.3,
    "contacts": {
     "website": "https://www.mun-guarda.pt/",
     "email": "geral@mun-guarda.pt",
@@ -2011,6 +2412,9 @@
    "census_change": -15.2,
    "density": 24.3,
    "ageing_index": 471.7,
+   "sale_price_m2": 397.0,
+   "income_per_taxpayer": 12903.0,
+   "monthly_earnings": 1166.5,
    "contacts": {
     "website": "https://cm-manteigas.pt/",
     "email": "geral@cm-manteigas.pt",
@@ -2029,6 +2433,9 @@
    "census_change": -11.0,
    "density": 15.3,
    "ageing_index": 471.3,
+   "sale_price_m2": 411.0,
+   "income_per_taxpayer": 12573.0,
+   "monthly_earnings": 1116.6,
    "contacts": {
     "website": "https://www.cm-meda.pt/",
     "email": "geral@cm-meda.pt",
@@ -2047,6 +2454,9 @@
    "census_change": -15.9,
    "density": 16.6,
    "ageing_index": 480.5,
+   "sale_price_m2": 476.0,
+   "income_per_taxpayer": 12790.0,
+   "monthly_earnings": 1150.2,
    "contacts": {
     "website": "https://www.cm-pinhel.pt/",
     "email": "cm-pinhel@cm-pinhel.pt",
@@ -2065,6 +2475,9 @@
    "census_change": -10.1,
    "density": 11.4,
    "ageing_index": 461.1,
+   "sale_price_m2": 402.0,
+   "income_per_taxpayer": 13533.0,
+   "monthly_earnings": 1171.5,
    "contacts": {
     "website": "https://www.cm-sabugal.pt/",
     "email": "geral@cm-sabugal.pt",
@@ -2083,6 +2496,9 @@
    "census_change": -11.9,
    "density": 49.6,
    "ageing_index": 364.0,
+   "sale_price_m2": 699.0,
+   "income_per_taxpayer": 13502.0,
+   "monthly_earnings": 1197.6,
    "contacts": {
     "website": "https://cm-seia.pt/",
     "email": "cm-seia@cm-seia.pt",
@@ -2101,6 +2517,9 @@
    "census_change": -14.8,
    "density": 22.2,
    "ageing_index": 399.5,
+   "sale_price_m2": 469.0,
+   "income_per_taxpayer": 13215.0,
+   "monthly_earnings": 1219.5,
    "contacts": {
     "website": "https://www.cm-trancoso.pt/",
     "email": "geral@cm-trancoso.pt",
@@ -2119,6 +2538,9 @@
    "census_change": -13.8,
    "density": 14.6,
    "ageing_index": 441.1,
+   "sale_price_m2": 467.0,
+   "income_per_taxpayer": 12845.0,
+   "monthly_earnings": 1196.9,
    "contacts": {
     "website": "https://cm-fozcoa.pt/",
     "email": "correio@cm-fozcoa.pt",
@@ -2137,6 +2559,9 @@
    "census_change": -3.0,
    "density": 149.2,
    "ageing_index": 216.6,
+   "sale_price_m2": 1750.0,
+   "income_per_taxpayer": 14959.0,
+   "monthly_earnings": 1312.6,
    "contacts": null
   },
   "1002": {
@@ -2146,6 +2571,9 @@
    "census_change": -14.4,
    "density": 40.0,
    "ageing_index": 370.8,
+   "sale_price_m2": 644.0,
+   "income_per_taxpayer": 13117.0,
+   "monthly_earnings": 1214.4,
    "contacts": {
     "website": "https://www.cm-alvaiazere.pt/",
     "email": "geral@cm-alvaiazere.pt",
@@ -2164,6 +2592,9 @@
    "census_change": -11.1,
    "density": 69.6,
    "ageing_index": 312.4,
+   "sale_price_m2": 701.0,
+   "income_per_taxpayer": 13727.0,
+   "monthly_earnings": 1259.2,
    "contacts": {
     "website": "https://www.cm-ansiao.pt/",
     "email": "geral@cm-ansiao.pt",
@@ -2182,6 +2613,9 @@
    "census_change": -1.6,
    "density": 164.8,
    "ageing_index": 184.3,
+   "sale_price_m2": 1366.0,
+   "income_per_taxpayer": 15794.0,
+   "monthly_earnings": 1393.5,
    "contacts": null
   },
   "1005": {
@@ -2191,6 +2625,9 @@
    "census_change": -3.4,
    "density": 157.4,
    "ageing_index": 211.6,
+   "sale_price_m2": 1548.0,
+   "income_per_taxpayer": 14681.0,
+   "monthly_earnings": 1239.1,
    "contacts": null
   },
   "1006": {
@@ -2200,6 +2637,9 @@
    "census_change": -1.6,
    "density": 230.7,
    "ageing_index": 211.8,
+   "sale_price_m2": 1962.0,
+   "income_per_taxpayer": 16008.0,
+   "monthly_earnings": 1343.3,
    "contacts": null
   },
   "1007": {
@@ -2209,6 +2649,9 @@
    "census_change": -17.1,
    "density": 41.1,
    "ageing_index": 480.2,
+   "sale_price_m2": 659.0,
+   "income_per_taxpayer": 12514.0,
+   "monthly_earnings": 1171.8,
    "contacts": {
     "website": "https://www.cm-castanheiradepera.pt/",
     "email": "camara@cm-castanheiradepera.pt",
@@ -2227,6 +2670,9 @@
    "census_change": -14.4,
    "density": 31.3,
    "ageing_index": 400.8,
+   "sale_price_m2": 639.0,
+   "income_per_taxpayer": 13314.0,
+   "monthly_earnings": 1158.2,
    "contacts": {
     "website": "https://www.cm-figueirodosvinhos.pt/",
     "email": "secretaria@cm-figueirodosvinhos.pt",
@@ -2245,6 +2691,9 @@
    "census_change": 1.4,
    "density": 258.1,
    "ageing_index": 167.4,
+   "sale_price_m2": 1814.0,
+   "income_per_taxpayer": 17194.0,
+   "monthly_earnings": 1450.4,
    "contacts": null
   },
   "1010": {
@@ -2254,6 +2703,9 @@
    "census_change": 0.8,
    "density": 243.0,
    "ageing_index": 181.9,
+   "sale_price_m2": 1435.0,
+   "income_per_taxpayer": 16095.0,
+   "monthly_earnings": 1619.2,
    "contacts": null
   },
   "1011": {
@@ -2263,6 +2715,9 @@
    "census_change": -1.8,
    "density": 207.0,
    "ageing_index": 221.9,
+   "sale_price_m2": 2332.0,
+   "income_per_taxpayer": 14399.0,
+   "monthly_earnings": 1297.9,
    "contacts": null
   },
   "1012": {
@@ -2272,6 +2727,9 @@
    "census_change": 1.3,
    "density": 98.3,
    "ageing_index": 217.0,
+   "sale_price_m2": 2160.0,
+   "income_per_taxpayer": 15787.0,
+   "monthly_earnings": 1294.0,
    "contacts": null
   },
   "1013": {
@@ -2281,6 +2739,9 @@
    "census_change": -13.4,
    "density": 29.0,
    "ageing_index": 404.6,
+   "sale_price_m2": 616.0,
+   "income_per_taxpayer": 13052.0,
+   "monthly_earnings": 1163.4,
    "contacts": {
     "website": "https://www.cm-pedrogaogrande.pt/",
     "email": "geral@cm-pedrogaogrande.pt",
@@ -2299,6 +2760,9 @@
    "census_change": -4.8,
    "density": 390.2,
    "ageing_index": 201.0,
+   "sale_price_m2": 2082.0,
+   "income_per_taxpayer": 14895.0,
+   "monthly_earnings": 1232.2,
    "contacts": null
   },
   "1015": {
@@ -2308,6 +2772,9 @@
    "census_change": -7.4,
    "density": 87.8,
    "ageing_index": 231.6,
+   "sale_price_m2": 1136.0,
+   "income_per_taxpayer": 14584.0,
+   "monthly_earnings": 1335.3,
    "contacts": {
     "website": "https://www.cm-pombal.pt/",
     "email": "geral@cm-pombal.pt",
@@ -2326,6 +2793,9 @@
    "census_change": -4.7,
    "density": 95.7,
    "ageing_index": 198.4,
+   "sale_price_m2": 1156.0,
+   "income_per_taxpayer": 15015.0,
+   "monthly_earnings": 1428.5,
    "contacts": null
   },
   "1101": {
@@ -2335,6 +2805,9 @@
    "census_change": 2.7,
    "density": 166.7,
    "ageing_index": 133.4,
+   "sale_price_m2": 1798.0,
+   "income_per_taxpayer": 16124.0,
+   "monthly_earnings": 1463.9,
    "contacts": null
   },
   "1102": {
@@ -2344,6 +2817,9 @@
    "census_change": 4.5,
    "density": 205.5,
    "ageing_index": 118.8,
+   "sale_price_m2": 2070.0,
+   "income_per_taxpayer": 19515.0,
+   "monthly_earnings": 1388.5,
    "contacts": null
   },
   "1103": {
@@ -2353,6 +2829,9 @@
    "census_change": -1.8,
    "density": 86.6,
    "ageing_index": 171.3,
+   "sale_price_m2": 1650.0,
+   "income_per_taxpayer": 15666.0,
+   "monthly_earnings": 1330.9,
    "contacts": null
   },
   "1104": {
@@ -2362,6 +2841,9 @@
    "census_change": -6.0,
    "density": 81.6,
    "ageing_index": 244.4,
+   "sale_price_m2": 1398.0,
+   "income_per_taxpayer": 14765.0,
+   "monthly_earnings": 1244.0,
    "contacts": null
   },
   "1105": {
@@ -2371,6 +2853,9 @@
    "census_change": 3.7,
    "density": 2490.9,
    "ageing_index": 167.1,
+   "sale_price_m2": 4550.0,
+   "income_per_taxpayer": 23227.0,
+   "monthly_earnings": 1532.2,
    "contacts": null
   },
   "1106": {
@@ -2380,6 +2865,9 @@
    "census_change": -1.2,
    "density": 6578.8,
    "ageing_index": 173.7,
+   "sale_price_m2": 4875.0,
+   "income_per_taxpayer": 25891.0,
+   "monthly_earnings": 2120.9,
    "contacts": null
   },
   "1107": {
@@ -2389,6 +2877,9 @@
    "census_change": 1.1,
    "density": 1417.1,
    "ageing_index": 147.7,
+   "sale_price_m2": 3057.0,
+   "income_per_taxpayer": 18009.0,
+   "monthly_earnings": 1526.6,
    "contacts": null
   },
   "1108": {
@@ -2398,6 +2889,9 @@
    "census_change": 2.0,
    "density": 204.2,
    "ageing_index": 183.0,
+   "sale_price_m2": 1979.0,
+   "income_per_taxpayer": 15112.0,
+   "monthly_earnings": 1254.5,
    "contacts": null
   },
   "1109": {
@@ -2407,6 +2901,9 @@
    "census_change": 12.8,
    "density": 329.7,
    "ageing_index": 117.6,
+   "sale_price_m2": 2860.0,
+   "income_per_taxpayer": 19644.0,
+   "monthly_earnings": 1341.4,
    "contacts": null
   },
   "1110": {
@@ -2416,6 +2913,9 @@
    "census_change": -0.3,
    "density": 4098.6,
    "ageing_index": 180.0,
+   "sale_price_m2": 4187.0,
+   "income_per_taxpayer": 25973.0,
+   "monthly_earnings": 2214.4,
    "contacts": null
   },
   "1111": {
@@ -2425,6 +2925,9 @@
    "census_change": 2.1,
    "density": 1409.5,
    "ageing_index": 127.3,
+   "sale_price_m2": 2733.0,
+   "income_per_taxpayer": 17079.0,
+   "monthly_earnings": 1531.1,
    "contacts": null
   },
   "1112": {
@@ -2434,6 +2937,9 @@
    "census_change": 3.8,
    "density": 227.6,
    "ageing_index": 127.6,
+   "sale_price_m2": 1860.0,
+   "income_per_taxpayer": 16356.0,
+   "monthly_earnings": 1238.9,
    "contacts": null
   },
   "1113": {
@@ -2443,6 +2949,9 @@
    "census_change": 4.5,
    "density": 233.0,
    "ageing_index": 166.2,
+   "sale_price_m2": 2150.0,
+   "income_per_taxpayer": 16118.0,
+   "monthly_earnings": 1313.8,
    "contacts": null
   },
   "1114": {
@@ -2452,6 +2961,9 @@
    "census_change": 0.5,
    "density": 477.7,
    "ageing_index": 138.2,
+   "sale_price_m2": 2605.0,
+   "income_per_taxpayer": 17982.0,
+   "monthly_earnings": 1559.2,
    "contacts": null
   },
   "1115": {
@@ -2461,6 +2973,9 @@
    "census_change": -2.1,
    "density": 8640.7,
    "ageing_index": 154.8,
+   "sale_price_m2": 2986.0,
+   "income_per_taxpayer": 16899.0,
+   "monthly_earnings": 1885.4,
    "contacts": null
   },
   "1116": {
@@ -2470,6 +2985,9 @@
    "census_change": 2.0,
    "density": 6997.4,
    "ageing_index": 135.8,
+   "sale_price_m2": 3282.0,
+   "income_per_taxpayer": 17345.0,
+   "monthly_earnings": 1255.9,
    "contacts": null
   },
   "1201": {
@@ -2479,6 +2997,9 @@
    "census_change": -14.5,
    "density": 8.8,
    "ageing_index": 268.0,
+   "sale_price_m2": 432.0,
+   "income_per_taxpayer": 14515.0,
+   "monthly_earnings": 1156.8,
    "contacts": {
     "website": "https://cm-alter-chao.pt/",
     "email": "geral@cm-alter-chao.pt",
@@ -2497,6 +3018,9 @@
    "census_change": -11.9,
    "density": 9.0,
    "ageing_index": 251.9,
+   "sale_price_m2": 726.0,
+   "income_per_taxpayer": 14467.0,
+   "monthly_earnings": 1179.7,
    "contacts": {
     "website": "https://cm-arronches.pt/",
     "email": "geral@cm-arronches.pt",
@@ -2515,6 +3039,9 @@
    "census_change": -16.6,
    "density": 6.0,
    "ageing_index": 291.2,
+   "sale_price_m2": 755.0,
+   "income_per_taxpayer": 14155.0,
+   "monthly_earnings": 1252.2,
    "contacts": {
     "website": "https://cm-avis.pt/",
     "email": "geral@cm-avis.pt",
@@ -2533,6 +3060,9 @@
    "census_change": -4.9,
    "density": 33.4,
    "ageing_index": 174.4,
+   "sale_price_m2": 691.0,
+   "income_per_taxpayer": 15958.0,
+   "monthly_earnings": 1582.0,
    "contacts": {
     "website": "https://www.cm-campo-maior.pt/",
     "email": "geral@cm-campo-maior.pt",
@@ -2551,6 +3081,9 @@
    "census_change": -8.5,
    "density": 11.4,
    "ageing_index": 343.8,
+   "sale_price_m2": 705.0,
+   "income_per_taxpayer": 15438.0,
+   "monthly_earnings": 1193.3,
    "contacts": {
     "website": "https://www.cm-castelo-vide.pt/",
     "email": "cm.castvide@mail.telepac.pt",
@@ -2569,6 +3102,9 @@
    "census_change": -13.0,
    "density": 8.3,
    "ageing_index": 321.5,
+   "sale_price_m2": 504.0,
+   "income_per_taxpayer": 14121.0,
+   "monthly_earnings": 1101.8,
    "contacts": {
     "website": "https://cm-crato.pt/",
     "email": "geral@cm-crato.pt",
@@ -2587,6 +3123,9 @@
    "census_change": -10.2,
    "density": 34.7,
    "ageing_index": 183.8,
+   "sale_price_m2": 923.0,
+   "income_per_taxpayer": 15265.0,
+   "monthly_earnings": 1237.1,
    "contacts": {
     "website": "https://cm-elvas.pt/",
     "email": "geral@cm-elvas.pt",
@@ -2605,6 +3144,9 @@
    "census_change": -16.2,
    "density": 11.9,
    "ageing_index": 343.6,
+   "sale_price_m2": 564.0,
+   "income_per_taxpayer": 14530.0,
+   "monthly_earnings": 1211.2,
    "contacts": {
     "website": "https://cm-fronteira.pt/",
     "email": "municipio@cm-fronteira.pt",
@@ -2623,6 +3165,9 @@
    "census_change": -17.9,
    "density": 11.0,
    "ageing_index": 501.5,
+   "sale_price_m2": 529.0,
+   "income_per_taxpayer": 13648.0,
+   "monthly_earnings": 1152.9,
    "contacts": {
     "website": "https://cm-gaviao.pt/",
     "email": "geral@cm-gaviao.pt",
@@ -2641,6 +3186,9 @@
    "census_change": -14.0,
    "density": 18.8,
    "ageing_index": 349.3,
+   "sale_price_m2": 639.0,
+   "income_per_taxpayer": 13517.0,
+   "monthly_earnings": 1055.2,
    "contacts": {
     "website": "https://www.cm-marvao.pt/",
     "email": "geral@cm-marvao.pt",
@@ -2659,6 +3207,9 @@
    "census_change": -10.1,
    "density": 6.8,
    "ageing_index": 228.9,
+   "sale_price_m2": 499.0,
+   "income_per_taxpayer": 13867.0,
+   "monthly_earnings": 1257.7,
    "contacts": {
     "website": "https://cm-monforte.pt/",
     "email": "cmmonforte@mail.telepac.pt",
@@ -2677,6 +3228,9 @@
    "census_change": -20.1,
    "density": 10.4,
    "ageing_index": 430.5,
+   "sale_price_m2": 500.0,
+   "income_per_taxpayer": 14188.0,
+   "monthly_earnings": 1121.7,
    "contacts": {
     "website": "https://www.cm-nisa.pt/",
     "email": "geral@cm-nisa.pt",
@@ -2695,6 +3249,9 @@
    "census_change": -8.8,
    "density": 18.7,
    "ageing_index": 259.0,
+   "sale_price_m2": 902.0,
+   "income_per_taxpayer": 13384.0,
+   "monthly_earnings": 1283.7,
    "contacts": {
     "website": "https://www.cm-pontedesor.pt/",
     "email": "geral@cm-pontedesor.pt",
@@ -2713,6 +3270,9 @@
    "census_change": -10.4,
    "density": 53.7,
    "ageing_index": 238.1,
+   "sale_price_m2": 1037.0,
+   "income_per_taxpayer": 17066.0,
+   "monthly_earnings": 1352.2,
    "contacts": {
     "website": "https://www.cm-portalegre.pt/",
     "email": "municipio@cm-portalegre.pt",
@@ -2731,6 +3291,9 @@
    "census_change": -14.1,
    "density": 16.1,
    "ageing_index": 273.8,
+   "sale_price_m2": 695.0,
+   "income_per_taxpayer": 13475.0,
+   "monthly_earnings": 1229.2,
    "contacts": {
     "website": "https://cm-sousel.pt/",
     "email": "geral@cm-sousel.pt",
@@ -2749,6 +3312,9 @@
    "census_change": -7.4,
    "density": 174.8,
    "ageing_index": 219.7,
+   "sale_price_m2": 1176.0,
+   "income_per_taxpayer": 12983.0,
+   "monthly_earnings": 1239.9,
    "contacts": {
     "website": "https://www.cm-amarante.pt/",
     "email": "geral@cm-amarante.pt",
@@ -2767,6 +3333,9 @@
    "census_change": -14.6,
    "density": 97.2,
    "ageing_index": 250.7,
+   "sale_price_m2": 778.0,
+   "income_per_taxpayer": 11807.0,
+   "monthly_earnings": 1181.5,
    "contacts": {
     "website": "https://cm-baiao.pt/",
     "email": "geral@cm-baiao.pt",
@@ -2785,6 +3354,9 @@
    "census_change": -3.8,
    "density": 496.2,
    "ageing_index": 175.4,
+   "sale_price_m2": 1094.0,
+   "income_per_taxpayer": 12566.0,
+   "monthly_earnings": 1179.2,
    "contacts": null
   },
   "1304": {
@@ -2794,6 +3366,9 @@
    "census_change": -2.2,
    "density": 1293.2,
    "ageing_index": 202.4,
+   "sale_price_m2": 2138.0,
+   "income_per_taxpayer": 15606.0,
+   "monthly_earnings": 1329.5,
    "contacts": null
   },
   "1305": {
@@ -2803,6 +3378,9 @@
    "census_change": -0.0,
    "density": 525.4,
    "ageing_index": 135.3,
+   "sale_price_m2": 1294.0,
+   "income_per_taxpayer": 12441.0,
+   "monthly_earnings": 1172.6,
    "contacts": null
   },
   "1306": {
@@ -2812,6 +3390,9 @@
    "census_change": -0.2,
    "density": 1713.3,
    "ageing_index": 171.8,
+   "sale_price_m2": 2370.0,
+   "income_per_taxpayer": 19251.0,
+   "monthly_earnings": 1638.2,
    "contacts": null
   },
   "1307": {
@@ -2821,6 +3402,9 @@
    "census_change": -7.3,
    "density": 251.8,
    "ageing_index": 173.0,
+   "sale_price_m2": 1271.0,
+   "income_per_taxpayer": 12046.0,
+   "monthly_earnings": 1183.2,
    "contacts": {
     "website": "https://www.cm-marco-canaveses.pt/",
     "email": "info@cm-marco-canaveses.pt",
@@ -2839,6 +3423,9 @@
    "census_change": -1.7,
    "density": 2914.6,
    "ageing_index": 214.9,
+   "sale_price_m2": 3004.0,
+   "income_per_taxpayer": 19313.0,
+   "monthly_earnings": 1820.3,
    "contacts": null
   },
   "1309": {
@@ -2848,6 +3435,9 @@
    "census_change": -1.3,
    "density": 809.5,
    "ageing_index": 146.9,
+   "sale_price_m2": 1461.0,
+   "income_per_taxpayer": 12669.0,
+   "monthly_earnings": 1196.5,
    "contacts": null
   },
   "1310": {
@@ -2857,6 +3447,9 @@
    "census_change": -2.9,
    "density": 566.9,
    "ageing_index": 143.8,
+   "sale_price_m2": 1568.0,
+   "income_per_taxpayer": 13016.0,
+   "monthly_earnings": 1242.5,
    "contacts": null
   },
   "1311": {
@@ -2866,6 +3459,9 @@
    "census_change": -3.6,
    "density": 337.9,
    "ageing_index": 159.2,
+   "sale_price_m2": 1422.0,
+   "income_per_taxpayer": 13281.0,
+   "monthly_earnings": 1328.0,
    "contacts": null
   },
   "1312": {
@@ -2875,6 +3471,9 @@
    "census_change": -2.4,
    "density": 6602.5,
    "ageing_index": 220.4,
+   "sale_price_m2": 3347.0,
+   "income_per_taxpayer": 22391.0,
+   "monthly_earnings": 1929.7,
    "contacts": null
   },
   "1313": {
@@ -2884,6 +3483,9 @@
    "census_change": 1.3,
    "density": 880.3,
    "ageing_index": 174.7,
+   "sale_price_m2": 2271.0,
+   "income_per_taxpayer": 15458.0,
+   "monthly_earnings": 1323.9,
    "contacts": null
   },
   "1314": {
@@ -2893,6 +3495,9 @@
    "census_change": -5.3,
    "density": 511.2,
    "ageing_index": 248.5,
+   "sale_price_m2": 1651.0,
+   "income_per_taxpayer": 14957.0,
+   "monthly_earnings": 1374.7,
    "contacts": null
   },
   "1315": {
@@ -2902,6 +3507,9 @@
    "census_change": 0.9,
    "density": 1316.9,
    "ageing_index": 173.3,
+   "sale_price_m2": 2079.0,
+   "income_per_taxpayer": 15940.0,
+   "monthly_earnings": 1387.7,
    "contacts": null
   },
   "1316": {
@@ -2911,6 +3519,9 @@
    "census_change": 1.6,
    "density": 578.7,
    "ageing_index": 167.7,
+   "sale_price_m2": 2163.0,
+   "income_per_taxpayer": 16599.0,
+   "monthly_earnings": 1487.3,
    "contacts": null
   },
   "1317": {
@@ -2920,6 +3531,9 @@
    "census_change": 0.5,
    "density": 1918.5,
    "ageing_index": 191.8,
+   "sale_price_m2": 2474.0,
+   "income_per_taxpayer": 17400.0,
+   "monthly_earnings": 1495.9,
    "contacts": null
   },
   "1318": {
@@ -2929,6 +3543,9 @@
    "census_change": -1.2,
    "density": 576.5,
    "ageing_index": 180.2,
+   "sale_price_m2": 1792.0,
+   "income_per_taxpayer": 15007.0,
+   "monthly_earnings": 1466.9,
    "contacts": null
   },
   "1401": {
@@ -2938,6 +3555,9 @@
    "census_change": -12.7,
    "density": 50.5,
    "ageing_index": 285.2,
+   "sale_price_m2": 908.0,
+   "income_per_taxpayer": 15195.0,
+   "monthly_earnings": 1422.4,
    "contacts": {
     "website": "https://www.cm-abrantes.pt/",
     "email": "geral@cm-abrantes.pt",
@@ -2956,6 +3576,9 @@
    "census_change": -10.1,
    "density": 104.6,
    "ageing_index": 246.8,
+   "sale_price_m2": 820.0,
+   "income_per_taxpayer": 13907.0,
+   "monthly_earnings": 1401.4,
    "contacts": null
   },
   "1403": {
@@ -2965,6 +3588,9 @@
    "census_change": -5.8,
    "density": 108.8,
    "ageing_index": 195.7,
+   "sale_price_m2": 1463.0,
+   "income_per_taxpayer": 14799.0,
+   "monthly_earnings": 1343.2,
    "contacts": null
   },
   "1404": {
@@ -2974,6 +3600,9 @@
    "census_change": -9.4,
    "density": 81.0,
    "ageing_index": 225.8,
+   "sale_price_m2": 1250.0,
+   "income_per_taxpayer": 14388.0,
+   "monthly_earnings": 1254.8,
    "contacts": null
   },
   "1405": {
@@ -2983,6 +3612,9 @@
    "census_change": 2.4,
    "density": 65.1,
    "ageing_index": 128.7,
+   "sale_price_m2": 1941.0,
+   "income_per_taxpayer": 16815.0,
+   "monthly_earnings": 1434.2,
    "contacts": null
   },
   "1406": {
@@ -2992,6 +3624,9 @@
    "census_change": -5.2,
    "density": 160.7,
    "ageing_index": 193.1,
+   "sale_price_m2": 1486.0,
+   "income_per_taxpayer": 16321.0,
+   "monthly_earnings": 1369.9,
    "contacts": null
   },
   "1407": {
@@ -3001,6 +3636,9 @@
    "census_change": -15.7,
    "density": 11.6,
    "ageing_index": 280.3,
+   "sale_price_m2": 833.0,
+   "income_per_taxpayer": 13749.0,
+   "monthly_earnings": 1302.7,
    "contacts": {
     "website": "https://www.cm-chamusca.pt/",
     "email": "geral@cm-chamusca.pt",
@@ -3019,6 +3657,9 @@
    "census_change": -6.4,
    "density": 50.4,
    "ageing_index": 210.8,
+   "sale_price_m2": 851.0,
+   "income_per_taxpayer": 15962.0,
+   "monthly_earnings": 1431.4,
    "contacts": {
     "website": "https://www.cm-constancia.pt/",
     "email": "geral@cm-constancia.pt",
@@ -3037,6 +3678,9 @@
    "census_change": -13.0,
    "density": 16.1,
    "ageing_index": 299.2,
+   "sale_price_m2": 1326.0,
+   "income_per_taxpayer": 14637.0,
+   "monthly_earnings": 1300.3,
    "contacts": {
     "website": "https://www.cm-coruche.pt/",
     "email": "geral@cm-coruche.pt",
@@ -3055,6 +3699,9 @@
    "census_change": -0.3,
    "density": 1802.4,
    "ageing_index": 121.6,
+   "sale_price_m2": 1536.0,
+   "income_per_taxpayer": 17517.0,
+   "monthly_earnings": 1444.6,
    "contacts": null
   },
   "1411": {
@@ -3064,6 +3711,9 @@
    "census_change": -9.5,
    "density": 42.6,
    "ageing_index": 285.6,
+   "sale_price_m2": 803.0,
+   "income_per_taxpayer": 13407.0,
+   "monthly_earnings": 1252.8,
    "contacts": {
     "website": "https://cm-ferreiradozezere.pt/",
     "email": "geral@cm-ferreiradozezere.pt",
@@ -3082,6 +3732,9 @@
    "census_change": -8.7,
    "density": 67.0,
    "ageing_index": 230.8,
+   "sale_price_m2": 1108.0,
+   "income_per_taxpayer": 15730.0,
+   "monthly_earnings": 1376.9,
    "contacts": null
   },
   "1413": {
@@ -3091,6 +3744,9 @@
    "census_change": -12.8,
    "density": 15.8,
    "ageing_index": 427.8,
+   "sale_price_m2": 348.0,
+   "income_per_taxpayer": 13916.0,
+   "monthly_earnings": 1161.7,
    "contacts": {
     "website": "https://www.cm-macao.pt/",
     "email": "geral@cm-macao.pt",
@@ -3109,6 +3765,9 @@
    "census_change": -0.9,
    "density": 93.2,
    "ageing_index": 159.2,
+   "sale_price_m2": 1233.0,
+   "income_per_taxpayer": 14542.0,
+   "monthly_earnings": 1330.5,
    "contacts": null
   },
   "1415": {
@@ -3118,6 +3777,9 @@
    "census_change": -2.5,
    "density": 98.2,
    "ageing_index": 192.2,
+   "sale_price_m2": 1712.0,
+   "income_per_taxpayer": 15328.0,
+   "monthly_earnings": 1276.1,
    "contacts": null
   },
   "1416": {
@@ -3127,6 +3789,9 @@
    "census_change": -5.0,
    "density": 125.6,
    "ageing_index": 191.3,
+   "sale_price_m2": 1391.0,
+   "income_per_taxpayer": 16721.0,
+   "monthly_earnings": 1414.5,
    "contacts": {
     "website": "https://www.cm-santarem.pt/",
     "email": "geral@cm-santarem.pt",
@@ -3145,6 +3810,9 @@
    "census_change": -10.8,
    "density": 40.0,
    "ageing_index": 313.2,
+   "sale_price_m2": 634.0,
+   "income_per_taxpayer": 14009.0,
+   "monthly_earnings": 1085.5,
    "contacts": {
     "website": "https://www.cm-sardoal.pt/",
     "email": "geral@cm-sardoal.pt",
@@ -3163,6 +3831,9 @@
    "census_change": -10.5,
    "density": 108.1,
    "ageing_index": 292.0,
+   "sale_price_m2": 1217.0,
+   "income_per_taxpayer": 15811.0,
+   "monthly_earnings": 1327.1,
    "contacts": {
     "website": "https://www.cm-tomar.pt/",
     "email": "presidencia@cm-tomar.pt",
@@ -3181,6 +3852,9 @@
    "census_change": -7.1,
    "density": 134.1,
    "ageing_index": 236.6,
+   "sale_price_m2": 1058.0,
+   "income_per_taxpayer": 16380.0,
+   "monthly_earnings": 1396.4,
    "contacts": null
   },
   "1420": {
@@ -3190,6 +3864,9 @@
    "census_change": -4.2,
    "density": 156.3,
    "ageing_index": 187.1,
+   "sale_price_m2": 1312.0,
+   "income_per_taxpayer": 17088.0,
+   "monthly_earnings": 1222.2,
    "contacts": {
     "website": "https://www.cm-vnbarquinha.pt/",
     "email": "geral@cm-vnbarquinha.pt",
@@ -3208,6 +3885,9 @@
    "census_change": -3.1,
    "density": 117.2,
    "ageing_index": 193.8,
+   "sale_price_m2": 1283.0,
+   "income_per_taxpayer": 14659.0,
+   "monthly_earnings": 1357.3,
    "contacts": {
     "website": "https://www.ourem.pt/",
     "email": "geral@mail.cm-ourem.pt",
@@ -3226,6 +3906,9 @@
    "census_change": -14.8,
    "density": 8.0,
    "ageing_index": 297.4,
+   "sale_price_m2": 1796.0,
+   "income_per_taxpayer": 14893.0,
+   "monthly_earnings": 1322.5,
    "contacts": {
     "website": "https://cm-alcacerdosal.pt/",
     "email": "geral@m-alcacerdosal.pt",
@@ -3244,6 +3927,9 @@
    "census_change": 9.0,
    "density": 159.0,
    "ageing_index": 130.6,
+   "sale_price_m2": 2765.0,
+   "income_per_taxpayer": 23166.0,
+   "monthly_earnings": 2497.8,
    "contacts": null
   },
   "1503": {
@@ -3253,6 +3939,9 @@
    "census_change": 1.8,
    "density": 2898.1,
    "ageing_index": 174.1,
+   "sale_price_m2": 3160.0,
+   "income_per_taxpayer": 19048.0,
+   "monthly_earnings": 1431.8,
    "contacts": null
   },
   "1504": {
@@ -3262,6 +3951,9 @@
    "census_change": -0.5,
    "density": 2521.7,
    "ageing_index": 179.8,
+   "sale_price_m2": 2508.0,
+   "income_per_taxpayer": 17077.0,
+   "monthly_earnings": 1421.0,
    "contacts": null
   },
   "1505": {
@@ -3271,6 +3963,9 @@
    "census_change": -6.8,
    "density": 18.5,
    "ageing_index": 211.3,
+   "sale_price_m2": 2426.0,
+   "income_per_taxpayer": 16090.0,
+   "monthly_earnings": 1495.3,
    "contacts": {
     "website": "https://www.cm-grandola.pt/",
     "email": "geral@cm-grandola.pt",
@@ -3289,6 +3984,9 @@
    "census_change": 0.3,
    "density": 1421.3,
    "ageing_index": 139.0,
+   "sale_price_m2": 2226.0,
+   "income_per_taxpayer": 15375.0,
+   "monthly_earnings": 1346.3,
    "contacts": null
   },
   "1507": {
@@ -3298,6 +3996,9 @@
    "census_change": 8.7,
    "density": 195.2,
    "ageing_index": 111.3,
+   "sale_price_m2": 2472.0,
+   "income_per_taxpayer": 17442.0,
+   "monthly_earnings": 1280.2,
    "contacts": null
   },
   "1508": {
@@ -3307,6 +4008,9 @@
    "census_change": 9.6,
    "density": 165.6,
    "ageing_index": 142.1,
+   "sale_price_m2": 2263.0,
+   "income_per_taxpayer": 18495.0,
+   "monthly_earnings": 1739.1,
    "contacts": null
   },
   "1509": {
@@ -3316,6 +4020,9 @@
    "census_change": -6.6,
    "density": 28.5,
    "ageing_index": 240.3,
+   "sale_price_m2": 1935.0,
+   "income_per_taxpayer": 18782.0,
+   "monthly_earnings": 1333.8,
    "contacts": {
     "website": "https://www.cm-santiagocacem.pt/",
     "email": "geral@cm-santiagocacem.pt",
@@ -3334,6 +4041,9 @@
    "census_change": 5.2,
    "density": 2077.0,
    "ageing_index": 143.8,
+   "sale_price_m2": 2654.0,
+   "income_per_taxpayer": 18069.0,
+   "monthly_earnings": 1584.8,
    "contacts": null
   },
   "1511": {
@@ -3343,6 +4053,9 @@
    "census_change": 5.8,
    "density": 303.7,
    "ageing_index": 144.2,
+   "sale_price_m2": 2765.0,
+   "income_per_taxpayer": 17869.0,
+   "monthly_earnings": 1303.0,
    "contacts": null
   },
   "1512": {
@@ -3352,6 +4065,9 @@
    "census_change": 1.9,
    "density": 613.3,
    "ageing_index": 169.6,
+   "sale_price_m2": 2468.0,
+   "income_per_taxpayer": 18518.0,
+   "monthly_earnings": 1503.6,
    "contacts": null
   },
   "1513": {
@@ -3361,6 +4077,9 @@
    "census_change": -0.3,
    "density": 83.3,
    "ageing_index": 167.4,
+   "sale_price_m2": 2340.0,
+   "income_per_taxpayer": 18486.0,
+   "monthly_earnings": 2189.5,
    "contacts": null
   },
   "1601": {
@@ -3370,6 +4089,9 @@
    "census_change": -9.3,
    "density": 45.7,
    "ageing_index": 352.1,
+   "sale_price_m2": 943.0,
+   "income_per_taxpayer": 12478.0,
+   "monthly_earnings": 1221.8,
    "contacts": {
     "website": "https://www.cmav.pt/",
     "email": "geral@cmav.pt",
@@ -3388,6 +4110,9 @@
    "census_change": -5.3,
    "density": 125.8,
    "ageing_index": 273.0,
+   "sale_price_m2": 1606.0,
+   "income_per_taxpayer": 15121.0,
+   "monthly_earnings": 1145.0,
    "contacts": {
     "website": "https://www.cm-caminha.pt/",
     "email": "geral@cm-caminha.pt",
@@ -3406,6 +4131,9 @@
    "census_change": -15.6,
    "density": 29.8,
    "ageing_index": 500.5,
+   "sale_price_m2": 710.0,
+   "income_per_taxpayer": 12679.0,
+   "monthly_earnings": 1162.5,
    "contacts": {
     "website": "https://www.cm-melgaco.pt/",
     "email": "geral@cm-melgaco.pt",
@@ -3424,6 +4152,9 @@
    "census_change": -7.4,
    "density": 86.3,
    "ageing_index": 299.0,
+   "sale_price_m2": 1200.0,
+   "income_per_taxpayer": 13141.0,
+   "monthly_earnings": 1242.7,
    "contacts": {
     "website": "https://www.cm-moncao.pt/",
     "email": "gap@cm-moncao.pt",
@@ -3442,6 +4173,9 @@
    "census_change": -6.2,
    "density": 63.1,
    "ageing_index": 301.6,
+   "sale_price_m2": 842.0,
+   "income_per_taxpayer": 12494.0,
+   "monthly_earnings": 1253.7,
    "contacts": {
     "website": "https://www.paredesdecoura.pt/",
     "email": "geral@paredesdecoura.pt",
@@ -3460,6 +4194,9 @@
    "census_change": -8.4,
    "density": 61.0,
    "ageing_index": 282.0,
+   "sale_price_m2": 1173.0,
+   "income_per_taxpayer": 12287.0,
+   "monthly_earnings": 1135.1,
    "contacts": {
     "website": "https://www.cmpb.pt/",
     "email": "geral@cmpb.pt",
@@ -3478,6 +4215,9 @@
    "census_change": -5.4,
    "density": 134.1,
    "ageing_index": 207.4,
+   "sale_price_m2": 1282.0,
+   "income_per_taxpayer": 13410.0,
+   "monthly_earnings": 1260.1,
    "contacts": {
     "website": "https://www.cm-pontedelima.pt/",
     "email": "geral@cm-pontedelima.pt",
@@ -3496,6 +4236,9 @@
    "census_change": -3.6,
    "density": 134.0,
    "ageing_index": 197.1,
+   "sale_price_m2": 1012.0,
+   "income_per_taxpayer": 12920.0,
+   "monthly_earnings": 1267.0,
    "contacts": {
     "website": "https://cm-valenca.pt/",
     "email": "geral@cm-valenca.pt",
@@ -3514,6 +4257,9 @@
    "census_change": -3.3,
    "density": 291.1,
    "ageing_index": 217.0,
+   "sale_price_m2": 1810.0,
+   "income_per_taxpayer": 16077.0,
+   "monthly_earnings": 1446.5,
    "contacts": {
     "website": "https://www.cm-viana-castelo.pt/",
     "email": "cmviana@cm-viana-castelo.pt",
@@ -3532,6 +4278,9 @@
    "census_change": -3.6,
    "density": 92.7,
    "ageing_index": 229.9,
+   "sale_price_m2": 1037.0,
+   "income_per_taxpayer": 13530.0,
+   "monthly_earnings": 1417.4,
    "contacts": {
     "website": "https://www.cm-vncerveira.pt/",
     "email": "geral@cm-vncerveira.pt",
@@ -3550,6 +4299,9 @@
    "census_change": -12.2,
    "density": 33.9,
    "ageing_index": 413.7,
+   "sale_price_m2": 492.0,
+   "income_per_taxpayer": 11706.0,
+   "monthly_earnings": 1202.5,
    "contacts": {
     "website": "https://www.cm-alijo.pt/",
     "email": "geral@cm-alijo.pt",
@@ -3568,6 +4320,9 @@
    "census_change": -13.0,
    "density": 14.9,
    "ageing_index": 420.1,
+   "sale_price_m2": 631.0,
+   "income_per_taxpayer": 11497.0,
+   "monthly_earnings": 1146.0,
    "contacts": {
     "website": "https://www.cm-boticas.pt/",
     "email": "municipio@cm-boticas.pt",
@@ -3586,6 +4341,9 @@
    "census_change": -8.9,
    "density": 64.3,
    "ageing_index": 314.7,
+   "sale_price_m2": 1151.0,
+   "income_per_taxpayer": 14390.0,
+   "monthly_earnings": 1250.4,
    "contacts": {
     "website": "https://www.chaves.pt/",
     "email": "municipio@chaves.pt",
@@ -3604,6 +4362,9 @@
    "census_change": -20.0,
    "density": 126.9,
    "ageing_index": 362.1,
+   "sale_price_m2": 536.0,
+   "income_per_taxpayer": 11862.0,
+   "monthly_earnings": 1082.7,
    "contacts": {
     "website": "https://www.cm-mesaofrio.pt/",
     "email": "geral@cm-mesaofrio.pt",
@@ -3622,6 +4383,9 @@
    "census_change": -14.5,
    "density": 36.3,
    "ageing_index": 320.9,
+   "sale_price_m2": 852.0,
+   "income_per_taxpayer": 11724.0,
+   "monthly_earnings": 1088.5,
    "contacts": {
     "website": "https://municipio.mondimdebasto.pt/",
     "email": "geral@cm-mondimdebasto.pt",
@@ -3640,6 +4404,9 @@
    "census_change": -12.1,
    "density": 10.8,
    "ageing_index": 501.8,
+   "sale_price_m2": 607.0,
+   "income_per_taxpayer": 11963.0,
+   "monthly_earnings": 1163.2,
    "contacts": {
     "website": "https://www.cm-montalegre.pt/",
     "email": "municipio@cm-montalegre.pt",
@@ -3658,6 +4425,9 @@
    "census_change": -11.9,
    "density": 26.9,
    "ageing_index": 465.2,
+   "sale_price_m2": 585.0,
+   "income_per_taxpayer": 12029.0,
+   "monthly_earnings": 1189.3,
    "contacts": {
     "website": "https://www.cm-murca.pt/",
     "email": "geral@cm-murca.pt",
@@ -3676,6 +4446,9 @@
    "census_change": -15.1,
    "density": 152.0,
    "ageing_index": 297.1,
+   "sale_price_m2": 1080.0,
+   "income_per_taxpayer": 13644.0,
+   "monthly_earnings": 1242.4,
    "contacts": {
     "website": "https://www.cm-pesoregua.pt/",
     "email": "cmregua@cmpr.pt",
@@ -3694,6 +4467,9 @@
    "census_change": -10.1,
    "density": 26.8,
    "ageing_index": 313.9,
+   "sale_price_m2": 385.0,
+   "income_per_taxpayer": 11542.0,
+   "monthly_earnings": 1285.9,
    "contacts": {
     "website": "https://www.cm-rpena.pt/",
     "email": "geral@cm-rpena.pt",
@@ -3712,6 +4488,9 @@
    "census_change": -12.8,
    "density": 35.5,
    "ageing_index": 383.5,
+   "sale_price_m2": 825.0,
+   "income_per_taxpayer": 12595.0,
+   "monthly_earnings": 1255.5,
    "contacts": {
     "website": "https://www.sabrosa.pt/",
     "email": "geral@cm-sabrosa.pt",
@@ -3730,6 +4509,9 @@
    "census_change": -17.1,
    "density": 87.2,
    "ageing_index": 433.1,
+   "sale_price_m2": 544.0,
+   "income_per_taxpayer": 11163.0,
+   "monthly_earnings": 1088.7,
    "contacts": {
     "website": "https://www.cm-smpenaguiao.pt/",
     "email": "geral@cm-smpenaguiao.pt",
@@ -3748,6 +4530,9 @@
    "census_change": -12.9,
    "density": 26.0,
    "ageing_index": 468.3,
+   "sale_price_m2": 650.0,
+   "income_per_taxpayer": 11171.0,
+   "monthly_earnings": 1084.8,
    "contacts": {
     "website": "https://valpacos.pt/",
     "email": "municipio@valpacos.pt",
@@ -3766,6 +4551,9 @@
    "census_change": -10.4,
    "density": 27.0,
    "ageing_index": 410.0,
+   "sale_price_m2": 736.0,
+   "income_per_taxpayer": 12299.0,
+   "monthly_earnings": 1162.4,
    "contacts": {
     "website": "https://cm-vpaguiar.pt/",
     "email": "geral@cm-vpaguiar.pt",
@@ -3784,6 +4572,9 @@
    "census_change": -4.4,
    "density": 139.8,
    "ageing_index": 209.5,
+   "sale_price_m2": 1519.0,
+   "income_per_taxpayer": 17131.0,
+   "monthly_earnings": 1427.2,
    "contacts": {
     "website": "https://www.cm-vilareal.pt/",
     "email": "geral@cm-vilareal.pt",
@@ -3802,6 +4593,9 @@
    "census_change": -9.8,
    "density": 47.3,
    "ageing_index": 353.0,
+   "sale_price_m2": 471.0,
+   "income_per_taxpayer": 12231.0,
+   "monthly_earnings": 1158.9,
    "contacts": {
     "website": "https://www.cm-armamar.pt/",
     "email": "atendimento@cm-armamar.pt",
@@ -3820,6 +4614,9 @@
    "census_change": -8.1,
    "density": 82.1,
    "ageing_index": 264.9,
+   "sale_price_m2": 674.0,
+   "income_per_taxpayer": 13755.0,
+   "monthly_earnings": 1293.8,
    "contacts": {
     "website": "https://www.cm-carregal.pt/",
     "email": "geral@cm-carregal.pt",
@@ -3838,6 +4635,9 @@
    "census_change": -10.5,
    "density": 35.4,
    "ageing_index": 349.8,
+   "sale_price_m2": 669.0,
+   "income_per_taxpayer": 11951.0,
+   "monthly_earnings": 1163.2,
    "contacts": {
     "website": "https://www.cm-castrodaire.pt/",
     "email": "geral@cm-castrodaire.pt",
@@ -3856,6 +4656,9 @@
    "census_change": -13.2,
    "density": 73.1,
    "ageing_index": 256.4,
+   "sale_price_m2": 500.0,
+   "income_per_taxpayer": 10786.0,
+   "monthly_earnings": 1166.4,
    "contacts": {
     "website": "https://cm-cinfaes.pt/",
     "email": "geral@cm-cinfaes.pt",
@@ -3874,6 +4677,9 @@
    "census_change": -8.9,
    "density": 149.7,
    "ageing_index": 285.1,
+   "sale_price_m2": 914.0,
+   "income_per_taxpayer": 14409.0,
+   "monthly_earnings": 1239.3,
    "contacts": {
     "website": "https://www.cm-lamego.pt/",
     "email": "geral@cm-lamego.pt",
@@ -3892,6 +4698,9 @@
    "census_change": -7.9,
    "density": 88.8,
    "ageing_index": 254.7,
+   "sale_price_m2": 694.0,
+   "income_per_taxpayer": 14282.0,
+   "monthly_earnings": 1477.8,
    "contacts": {
     "website": "https://www.cmmangualde.pt/",
     "email": "geral@cmmangualde.pt",
@@ -3910,6 +4719,9 @@
    "census_change": -7.9,
    "density": 45.0,
    "ageing_index": 265.4,
+   "sale_price_m2": 588.0,
+   "income_per_taxpayer": 13017.0,
+   "monthly_earnings": 1107.4,
    "contacts": {
     "website": "https://www.cm-moimenta.pt/",
     "email": "geral@cm-moimenta.pt",
@@ -3928,6 +4740,9 @@
    "census_change": -6.7,
    "density": 36.6,
    "ageing_index": 327.8,
+   "sale_price_m2": 736.0,
+   "income_per_taxpayer": 13973.0,
+   "monthly_earnings": 1448.0,
    "contacts": {
     "website": "https://www.cm-mortagua.pt/",
     "email": "mortagua@cm-mortagua.pt",
@@ -3946,6 +4761,9 @@
    "census_change": -6.5,
    "density": 110.9,
    "ageing_index": 251.3,
+   "sale_price_m2": 807.0,
+   "income_per_taxpayer": 14365.0,
+   "monthly_earnings": 1391.9,
    "contacts": {
     "website": "https://www.cm-nelas.pt/",
     "email": "geral@cm-nelas.pt",
@@ -3964,6 +4782,9 @@
    "census_change": -7.4,
    "density": 72.3,
    "ageing_index": 203.0,
+   "sale_price_m2": 975.0,
+   "income_per_taxpayer": 13926.0,
+   "monthly_earnings": 1452.6,
    "contacts": {
     "website": "https://cm-ofrades.pt/",
     "email": "geral@cm-ofrades.pt",
@@ -3982,6 +4803,9 @@
    "census_change": -7.8,
    "density": 53.3,
    "ageing_index": 331.9,
+   "sale_price_m2": 400.0,
+   "income_per_taxpayer": 12694.0,
+   "monthly_earnings": 1187.1,
    "contacts": {
     "website": "https://www.cm-penalvadocastelo.pt/",
     "email": "geral@cm-penalvadocastelo.pt",
@@ -4000,6 +4824,9 @@
    "census_change": -7.2,
    "density": 18.7,
    "ageing_index": 403.2,
+   "sale_price_m2": 318.0,
+   "income_per_taxpayer": 11961.0,
+   "monthly_earnings": 1034.1,
    "contacts": {
     "website": "https://www.cm-penedono.pt/",
     "email": "geral@cm-penedono.pt",
@@ -4018,6 +4845,9 @@
    "census_change": -11.6,
    "density": 77.3,
    "ageing_index": 281.4,
+   "sale_price_m2": 647.0,
+   "income_per_taxpayer": 11175.0,
+   "monthly_earnings": 1142.4,
    "contacts": {
     "website": "https://cm-resende.pt/",
     "email": "geral@cm-resende.pt",
@@ -4036,6 +4866,9 @@
    "census_change": -8.2,
    "density": 99.5,
    "ageing_index": 293.0,
+   "sale_price_m2": 720.0,
+   "income_per_taxpayer": 13954.0,
+   "monthly_earnings": 1199.8,
    "contacts": {
     "website": "https://cm-santacombadao.pt/",
     "email": "geral@cm-santacombadao.pt",
@@ -4054,6 +4887,9 @@
    "census_change": -14.0,
    "density": 24.3,
    "ageing_index": 294.2,
+   "sale_price_m2": 491.0,
+   "income_per_taxpayer": 11920.0,
+   "monthly_earnings": 1216.1,
    "contacts": {
     "website": "https://www.sjpesqueira.pt/",
     "email": "cmsjp@sjpesqueira.pt",
@@ -4072,6 +4908,9 @@
    "census_change": -10.2,
    "density": 45.5,
    "ageing_index": 317.2,
+   "sale_price_m2": 909.0,
+   "income_per_taxpayer": 13331.0,
+   "monthly_earnings": 1117.0,
    "contacts": {
     "website": "https://www.cm-spsul.pt/",
     "email": "geral@cm-spsul.pt",
@@ -4090,6 +4929,9 @@
    "census_change": -11.4,
    "density": 55.9,
    "ageing_index": 262.4,
+   "sale_price_m2": 703.0,
+   "income_per_taxpayer": 13133.0,
+   "monthly_earnings": 1097.2,
    "contacts": {
     "website": "https://www.cm-satao.pt/",
     "email": "geral@cm-satao.pt",
@@ -4108,6 +4950,9 @@
    "census_change": 0.4,
    "density": 21.6,
    "ageing_index": 358.1,
+   "sale_price_m2": 245.0,
+   "income_per_taxpayer": 12120.0,
+   "monthly_earnings": 1103.4,
    "contacts": {
     "website": "https://www.cm-sernancelhe.pt/",
     "email": "geral@cm-sernancelhe.pt",
@@ -4126,6 +4971,9 @@
    "census_change": -20.7,
    "density": 33.7,
    "ageing_index": 428.9,
+   "sale_price_m2": 589.0,
+   "income_per_taxpayer": 11576.0,
+   "monthly_earnings": 1239.1,
    "contacts": {
     "website": "https://www.cm-tabuaco.pt/",
     "email": "geral@cm-tabuaco.pt",
@@ -4144,6 +4992,9 @@
    "census_change": -8.5,
    "density": 74.4,
    "ageing_index": 220.4,
+   "sale_price_m2": 707.0,
+   "income_per_taxpayer": 12664.0,
+   "monthly_earnings": 1214.1,
    "contacts": {
     "website": "https://www.cm-tarouca.pt/",
     "email": "camara@cm-tarouca.pt",
@@ -4162,6 +5013,9 @@
    "census_change": -10.5,
    "density": 72.5,
    "ageing_index": 294.0,
+   "sale_price_m2": 771.0,
+   "income_per_taxpayer": 14344.0,
+   "monthly_earnings": 1360.1,
    "contacts": {
     "website": "https://www.cm-tondela.pt/",
     "email": "geral@cm-tondela.pt",
@@ -4180,6 +5034,9 @@
    "census_change": -9.9,
    "density": 25.1,
    "ageing_index": 303.1,
+   "sale_price_m2": 374.0,
+   "income_per_taxpayer": 12622.0,
+   "monthly_earnings": 1135.3,
    "contacts": {
     "website": "https://www.cm-vnpaiva.pt/",
     "email": "geral@cm-vnpaiva.pt",
@@ -4198,6 +5055,9 @@
    "census_change": 0.3,
    "density": 215.3,
    "ageing_index": 182.7,
+   "sale_price_m2": 1553.0,
+   "income_per_taxpayer": 17414.0,
+   "monthly_earnings": 1354.1,
    "contacts": {
     "website": "https://www.cm-viseu.pt/",
     "email": "geral@cmviseu.pt",
@@ -4216,6 +5076,9 @@
    "census_change": -9.3,
    "density": 49.9,
    "ageing_index": 288.1,
+   "sale_price_m2": 680.0,
+   "income_per_taxpayer": 13604.0,
+   "monthly_earnings": 1222.4,
    "contacts": {
     "website": "https://www.cm-vouzela.pt/",
     "email": "geral@cm-vouzela.pt",

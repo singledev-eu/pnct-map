@@ -74,6 +74,12 @@ export interface ConcelhoStrings {
   missing: string;
   missingNote: string;
   populationSource: (year: number) => string;
+  /** Housing and income (concelho.ts moneyBlock): values in euros, the period, Portugal's value (null: not shown). */
+  moneyHeading: string;
+  salePrice: (euros: string, year: string, national: string | null) => string;
+  income: (euros: string, year: string, national: string | null) => string;
+  earnings: (euros: string, year: string, national: string | null) => string;
+  moneySource: (sales: string, income: string, earnings: string) => string;
   contactsHeading: string;
   website: string;
   urbanism: string;

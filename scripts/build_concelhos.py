@@ -93,6 +93,9 @@ def build() -> dict:
             "census_change": pct_change(get("population_2021"), get("population_2011")),
             "density": None if pop is None else round(pop / area_km2[dico], 1),
             "ageing_index": get("ageing_index"),
+            "sale_price_m2": get("sale_price_m2"),
+            "income_per_taxpayer": get("income_per_taxpayer"),
+            "monthly_earnings": get("monthly_earnings"),
             "contacts": contacts.get(dico),
         }
 
@@ -116,6 +119,9 @@ def build() -> dict:
             "licence": cfg.LICENCE,
         },
         "ageing_index": src("ageing_index", f"Índice de envelhecimento {year}"),
+        "sale_price_m2": src("sale_price_m2", f"Valor mediano das vendas de alojamentos familiares, €/m², {q['sale_price_m2']['period']}"),
+        "income_per_taxpayer": src("income_per_taxpayer", f"Rendimento bruto declarado por sujeito passivo, {q['income_per_taxpayer']['period']}"),
+        "monthly_earnings": src("monthly_earnings", f"Ganho médio mensal (MTSSS/GEP, Quadros de Pessoal), {q['monthly_earnings']['period']}"),
         "contacts": {
             "source": "Câmara websites, curated by hand (generic institutional contacts only)",
             "url": "https://github.com/singledev-eu/pnct-map/blob/main/data/contacts/camaras.csv",
@@ -124,8 +130,14 @@ def build() -> dict:
         },
     }
     national = {"ageing_index": refs["ageing_index"][cfg.NATIONAL], "population": int(refs["population"][cfg.NATIONAL])}
+    for name in ("sale_price_m2", "income_per_taxpayer", "monthly_earnings"):
+        national[name] = refs[name].get(cfg.NATIONAL)
+        missing = [d for d in names if values[name].get(d) is None]
+        if missing:  # these fields are in the card only because every concelho has a value
+            raise SystemExit(f"{name}: no value for {len(missing)} concelhos, e.g. {missing[:5]}")
     return {
         "estimate_year": year,
+        "periods": {name: q[name]["period"] for name in ("sale_price_m2", "income_per_taxpayer", "monthly_earnings")},
         "fields": fields,
         "national": national,
         "mainland": {name: refs[name].get(cfg.MAINLAND) for name in ["population", "population_2011", "population_2021"]},
