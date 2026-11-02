@@ -31,7 +31,7 @@ Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (20
 
 ## Next
 
-- 3D drill-down selection (tilt, slab, "3D" setting): on preview, waiting for a phone check before release. [3d-drilldown](reports/3d-drilldown.md)
+- 3D drill-down selection (tilt, slab, "3D" setting): on preview with the testing fixes, waiting for approval; release as 0.7.0. [3d-drilldown](reports/3d-drilldown.md), [fixes](reports/3d-drilldown-fixes.md)
 - Confirm ICNF's reuse terms for RNAP (and for BDG/RN2000, if Natura switches source). Until then RNAP is credited as "reuse terms not confirmed"; dropping it is one line in `scripts/protected_config.py`.
 
 ## Backlog
