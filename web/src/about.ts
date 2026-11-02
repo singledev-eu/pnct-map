@@ -37,6 +37,7 @@ export function renderAbout(dialog: HTMLDialogElement): void {
         {},
         h("li", {}, h("strong", {}, a.pnctLabel), " ", ...fill(a.pnct, { list: link(IEFP_LIST, a.listLink) })),
         h("li", {}, h("strong", {}, a.boundariesLabel), " ", ...fill(a.boundaries, { caop: link(CAOP, "CAOP 2025"), licence: link(CC_BY, "CC BY 4.0") })),
+        h("li", { "data-testid": "about-relief" }, h("strong", {}, a.reliefLabel), " ", ...fill(a.relief, { mapterhorn: link("https://mapterhorn.com/attribution/", "© Mapterhorn"), licence: link(CC_BY, "CC BY 4.0") })),
         h(
           "li",
           {},

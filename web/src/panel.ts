@@ -90,6 +90,8 @@ function sheetCredit(): HTMLElement {
     creditLink("https://www.openstreetmap.org/copyright", "OpenStreetMap"),
     ` · ${t.creditLead} `,
     ...credits().flatMap((c, i) => [i ? " · " : "", creditLink(c.url, c.label.replace(/ /g, "\u00a0"))]),
+    ` · ${ui.sheetRelief} ©\u00a0`,
+    creditLink("https://mapterhorn.com/attribution/", "Mapterhorn"),
   );
 }
 
