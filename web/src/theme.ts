@@ -68,6 +68,10 @@ export interface MapPalette {
   /** Fill opacity of the RNAP tint (the outline carries it; in light mode a stronger tint muddies the PNCT teal). */
   rnapTint: number;
   natura: string;
+  /** 3D selection (layers.ts slabLayers): slab colour (the walls darken towards the base), its outline, and the veil over the rest of the map. */
+  slab: string;
+  slabLine: string;
+  veil: string;
 }
 
 export const PALETTES: Record<Theme, MapPalette> = {
@@ -83,6 +87,9 @@ export const PALETTES: Record<Theme, MapPalette> = {
     rnap: "#c2410c",
     rnapTint: 0.08,
     natura: "#7c3aed",
+    slab: "#0f8a7e",
+    slabLine: "#0b3d39",
+    veil: "#f6f6f4",
   },
   // On Dark Matter (background #0c0c0c): a brighter teal so PNCT stands out from the near-black
   // land, the selection lighter than PNCT (the light theme makes it darker), and grey lines kept
@@ -97,6 +104,9 @@ export const PALETTES: Record<Theme, MapPalette> = {
     rnap: "#fb923c",
     rnapTint: 0.16,
     natura: "#b79cff",
+    slab: "#22b8a7",
+    slabLine: "#c9f5ee",
+    veil: "#0c0c0c",
   },
 };
 

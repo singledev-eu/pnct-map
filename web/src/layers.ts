@@ -13,6 +13,11 @@ const PARISH_LINE = "parish-line";
 const PARISH_HIGHLIGHT = "parish-highlight";
 const CONCELHO_LINE = "concelho-line";
 const CONCELHO_HIGHLIGHT = "concelho-highlight";
+export const CONCELHO_SLAB = "concelho-slab";
+export const PARISH_SLAB = "parish-slab";
+export const SLAB_VEIL = "slab-veil";
+export const CONCELHO_SLAB_LINE = "concelho-slab-line";
+export const PARISH_SLAB_LINE = "parish-slab-line";
 export const HATCH_IMAGE = "pnct-hatch";
 export const NATURA_HATCH_IMAGE = "natura-hatch";
 
@@ -183,8 +188,58 @@ function protectedLevel(level: number, value: number): ExpressionSpecification {
 const overlayFillOpacity = (cat: string, level: number, colors: MapPalette) => protectedLevel(level, cat === "natura" ? 1 : colors.rnapTint);
 const overlayLineOpacity = (level: number) => protectedLevel(level, 0.9);
 
-/** The app's map layers, bottom to top, for the current filter, level zoom, theme palette and overlays. */
-export function appLayers(filter: FilterState, level: number, colors: MapPalette, overlays?: OverlayState): LayerSpecification[] {
+/**
+ * The 3D selection (drill.ts): the selected concelho or parish as an extruded slab. Each slab layer is
+ * filtered to one feature by its code (nothing when `code` is null), so the extrusion bucket only ever
+ * holds the selection. Height and opacity are constants, so paint transitions animate them (MapLibre
+ * doesn't transition data-driven values). The veil, a background layer above the app layers and below
+ * the slabs and basemap labels, fades the rest of the map; the outline, drawn over the slab, marks its
+ * footprint on the ground.
+ */
+export interface SlabState {
+  concelho: { code: string | null; height: number; opacity: number };
+  parish: { code: string | null; height: number; opacity: number };
+  /** Opacity of the veil (0: no selection or 3D off). */
+  veil: number;
+}
+export const NO_SLAB: SlabState = { concelho: { code: null, height: 0, opacity: 0 }, parish: { code: null, height: 0, opacity: 0 }, veil: 0 };
+
+/** Filter that keeps the feature whose `key` is `code`; with no code, nothing (an empty bucket). */
+export const slabFilter = (key: "code" | "dicofre", code: string | null): ExpressionSpecification => ["==", ["get", key], code ?? ""];
+
+export function slabLayers(slab: SlabState, colors: MapPalette): LayerSpecification[] {
+  const extrusion = (id: string, source: string, key: "code" | "dicofre", s: SlabState["parish"]): LayerSpecification => ({
+    id,
+    type: "fill-extrusion",
+    source,
+    filter: slabFilter(key, s.code),
+    paint: {
+      "fill-extrusion-color": colors.slab,
+      "fill-extrusion-height": s.height,
+      "fill-extrusion-base": 0,
+      "fill-extrusion-opacity": s.opacity,
+      "fill-extrusion-vertical-gradient": true,
+    },
+  });
+  const outline = (id: string, source: string, key: "code" | "dicofre", s: SlabState["parish"]): LayerSpecification => ({
+    id,
+    type: "line",
+    source,
+    filter: slabFilter(key, s.code),
+    layout: { "line-join": "round" },
+    paint: { "line-color": colors.slabLine, "line-width": 3, "line-opacity": s.opacity ? 1 : 0 },
+  });
+  return [
+    { id: SLAB_VEIL, type: "background", paint: { "background-color": colors.veil, "background-opacity": slab.veil } },
+    extrusion(CONCELHO_SLAB, CONCELHO_SOURCE, "code", slab.concelho),
+    extrusion(PARISH_SLAB, PARISH_SOURCE, "dicofre", slab.parish),
+    outline(CONCELHO_SLAB_LINE, CONCELHO_SOURCE, "code", slab.concelho),
+    outline(PARISH_SLAB_LINE, PARISH_SOURCE, "dicofre", slab.parish),
+  ];
+}
+
+/** The app's map layers, bottom to top, for the current filter, level zoom, theme palette, overlays and 3D selection. */
+export function appLayers(filter: FilterState, level: number, colors: MapPalette, overlays?: OverlayState, slab: SlabState = NO_SLAB): LayerSpecification[] {
   return [
     {
       id: CONCELHO_FILL,
@@ -259,6 +314,7 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
         "line-opacity": concelhoLevel(level, ["case", ["any", selected, hovered], 1, 0]),
       },
     },
+    ...slabLayers(slab, colors),
   ];
 }
 
@@ -277,13 +333,13 @@ export function appLayerIndex(layers: readonly LayerSpecification[]): number {
 }
 
 /** Adds the sources and the map layers between the basemap and its labels (appLayerIndex). `level`: see concelhoLevel. */
-export function addLayers(map: MapLibreMap, data: MapData, filter: FilterState, level: number, colors: MapPalette): void {
+export function addLayers(map: MapLibreMap, data: MapData, filter: FilterState, level: number, colors: MapPalette, slab: SlabState = NO_SLAB): void {
   map.addSource(PARISH_SOURCE, { type: "geojson", data: data.parishGeoJSON, maxzoom: 12 });
   map.addSource(CONCELHO_SOURCE, { type: "geojson", data: data.concelhoGeoJSON, maxzoom: 12 });
   setPatternImages(map, colors);
   const basemap = map.getStyle().layers;
   const before = basemap[appLayerIndex(basemap)]?.id;
-  for (const layer of appLayers(filter, level, colors)) map.addLayer(layer, before);
+  for (const layer of appLayers(filter, level, colors, undefined, slab)) map.addLayer(layer, before);
 }
 
 /**

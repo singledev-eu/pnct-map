@@ -17,6 +17,8 @@ export interface HashState {
   /** Overlay category ids from `pa=`, unvalidated (main.ts keeps the known ones). */
   overlays: string[];
   hasMapView: boolean;
+  /** The bearing in `map=` (zoom/lat/lng/bearing/pitch), 0 without one. */
+  bearing: number;
 }
 
 function params(): URLSearchParams {
@@ -34,6 +36,7 @@ export function readHash(): HashState {
     focus: p.get("focus") === "1" || p.get("pnct") === "1",
     overlays: (p.get("pa") ?? "").split(",").filter(Boolean),
     hasMapView: p.has(MAP_HASH_KEY),
+    bearing: Number(p.get(MAP_HASH_KEY)?.split("/")[3]) || 0,
   };
 }
 

@@ -1,7 +1,8 @@
 /**
  * The language and theme controls in the legend header (index.html #settings): a PT | EN segmented
  * toggle (two buttons, aria-pressed) and a theme button that cycles Auto → Light → Dark, its icon
- * and accessible name stating the current state ("Theme: Auto (system)"). The header stays visible
+ * and accessible name stating the current state ("Theme: Auto (system)"), and a "3D" toggle button
+ * (aria-pressed; disabled under prefers-reduced-motion, drill.ts). The header stays visible
  * when the phone legend is collapsed, so both are one tap away without opening anything.
  */
 import { h } from "./panel";
@@ -41,8 +42,8 @@ export interface SettingsControls {
 
 export function mountSettings(
   root: HTMLElement,
-  state: { lang: () => Lang; theme: () => ThemePref },
-  on: { lang: (next: Lang) => void; cycleTheme: () => void },
+  state: { lang: () => Lang; theme: () => ThemePref; view3d: () => { on: boolean; reduced: boolean } },
+  on: { lang: (next: Lang) => void; cycleTheme: () => void; toggle3d: () => void },
 ): SettingsControls {
   const langButtons = LANGS.map((l) => {
     const b = h("button", { type: "button", class: "lang-option", lang: l, "data-lang": l, "data-testid": `lang-${l}` }, l.toUpperCase());
@@ -54,7 +55,9 @@ export function mountSettings(
   const langGroup = h("div", { class: "lang-toggle", role: "group", "data-testid": "lang-toggle" }, ...langButtons);
   const themeButton = h("button", { type: "button", class: "theme-button", "data-testid": "theme-button" });
   themeButton.addEventListener("click", () => on.cycleTheme());
-  root.replaceChildren(langGroup, themeButton);
+  const view3dButton = h("button", { type: "button", class: "view3d-button", "data-testid": "view3d-button" }, "3D");
+  view3dButton.addEventListener("click", () => on.toggle3d());
+  root.replaceChildren(langGroup, themeButton, view3dButton);
 
   const render = () => {
     langGroup.setAttribute("aria-label", ui.langLabel);
@@ -69,6 +72,12 @@ export function mountSettings(
     themeButton.setAttribute("aria-label", ui.theme[pref]);
     themeButton.title = ui.theme[pref];
     themeButton.replaceChildren(icon(pref));
+    const { on: on3d, reduced } = state.view3d();
+    const label = reduced ? ui.view3d.reduced : on3d ? ui.view3d.on : ui.view3d.off;
+    view3dButton.setAttribute("aria-pressed", String(on3d && !reduced));
+    view3dButton.disabled = reduced;
+    view3dButton.setAttribute("aria-label", label);
+    view3dButton.title = label;
   };
   render();
   return { render };

@@ -26,14 +26,15 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
   - `links.ts` and `idealista.ts`: Idealista URLs.
   - `theme.ts`: the Auto/Light/Dark choice (Auto follows `prefers-color-scheme`), basemap style URLs and the map palette (mirrored by the `--map-*` CSS tokens).
   - `protected.ts`: protected-areas data and credits.
-  - `strings.ts` (types, live bindings, formatters) with `strings.en.ts` / `strings.pt.ts`: every UI string. `i18n.ts`: language detection, `?lang=`, `data-i18n`. `controls.ts`: PT | EN toggle and theme button. `about.ts`: the About dialog.
+  - `strings.ts` (types, live bindings, formatters) with `strings.en.ts` / `strings.pt.ts`: every UI string. `i18n.ts`: language detection, `?lang=`, `data-i18n`. `controls.ts`: PT | EN toggle, theme button and "3D" button. `about.ts`: the About dialog.
   - `concelho.ts`: the concelho card. `panel.ts`, `sheet.ts` (phone bottom sheet), `legend.ts` (legend, overlay toggles, explainer), `search.ts`, `hash.ts`, `prefs.ts`.
-  - `camera.ts`: camera limits and the mainland outline. `basemap.ts`: the basemap style patches (Latin-only fallback, label language, shield filters, dark labels).
+  - `drill.ts`: the 3D selection (tilt, slab animation, the "3D" setting, reduced motion); the slab layers are in `layers.ts`.
+  - `camera.ts`: camera limits, the mainland outline and `groundOffset` (padding offset under pitch/bearing). `basemap.ts`: the basemap style patches (Latin-only fallback, label language, shield filters, dark labels).
 - `web/tests/e2e/`: Playwright specs. Shared waits are in `helpers.ts`.
 - `web/scripts/`:
-  - `perf.mjs`: throttled load timing; `--toggles N` times the focus toggle.
+  - `perf.mjs`: throttled load timing; `--toggles N` times the focus toggle. `perf_3d.mjs`: the 3D selection on vs off on the same phone profile.
   - `shots.mjs`, `og_image.mjs`: screenshots and the share image. `readme_shot.mjs` (`npm run shots:readme`): the README screenshot.
-  - Review shots: `theme_shots.mjs`, `protected_shots.mjs`, `concelho_shots.mjs`, `i18n_shots.mjs` (PT/EN × light/dark), `phone_safe_area_shots.mjs` (iPhone insets, before/after). `settled.mjs` is their shared wait.
+  - Review shots: `drill_shots.mjs` (3D slab looks), `theme_shots.mjs`, `protected_shots.mjs`, `concelho_shots.mjs`, `i18n_shots.mjs` (PT/EN × light/dark), `phone_safe_area_shots.mjs` (iPhone insets, before/after). `settled.mjs` is their shared wait.
   - `e2e-flaky-report.mjs`: the flaky-test warning.
 - `web/public/`: `_headers` (caching, CSP, security headers), icons, OG image, robots.txt, sitemap.xml.
 - `docs/`: `ROADMAP.md`, `i18n-glossary.md` (EN → PT terms), `reports/<task>.md` (one per task), screenshots and perf data.
@@ -91,6 +92,7 @@ cd web && npm run deploy              # same, to production (main). Only after t
   - Generic institutional contacts only (geral@, the switchboard), no personal data.
   - Check the CSV with `scripts/validate_contacts.py` (`--online` re-checks the URLs).
 - **No invented values:** data shown in the UI is never estimated or filled in. A missing value shows "—" with a note ("not available" / "não disponível").
+- **3D selection:** each slab layer holds only the selected feature (a filter by code). Pitch and bearing belong to a selection: clearing it, turning 3D off or reduced motion levels the camera. Under `prefers-reduced-motion` there is no tilt, no slab, and selections jump. The constrain's padding offset goes through `groundOffset`, so camera limits hold with pitch.
 - **e2e waits:** wait for the parish layer (`waitForParishes` / `waitForParishView`), not the basemap. Use `waitForFullIdle` only before screenshots. No `waitForTimeout`.
 
 ## Working conventions

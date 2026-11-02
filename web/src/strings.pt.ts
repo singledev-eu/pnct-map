@@ -32,10 +32,11 @@ export const pt: Strings = {
     loadingMap: "A carregar o mapa…",
     basemapError: "Não foi possível carregar o mapa de base. Verifique a ligação e recarregue a página.",
     dataError: "Não foi possível carregar os dados do mapa. Recarregue a página.",
-    settingsLabel: "Idioma e tema",
+    settingsLabel: "Idioma, tema e vista 3D",
     langLabel: "Idioma",
     langNames: en.ui.langNames, // each language named in itself
     theme: { auto: "Tema: automático (sistema)", light: "Tema: claro", dark: "Tema: escuro" },
+    view3d: { on: "Vista 3D: ligada", off: "Vista 3D: desligada", reduced: "Vista 3D: desligada (movimento reduzido ativo)" },
     concelhoSub: (distrito) => `Concelho · ${distrito}`,
     pnctYes: "PNCT: sim",
     pnctNo: "PNCT: não",

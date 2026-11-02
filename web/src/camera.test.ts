@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, clipRing, insideRing, LEVEL_OFFSET, MAINLAND, nearestOnRing, OUTLINE, OUTLINE_MERC, paddingOffset, type Padding, type Size } from "./camera";
+import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, groundOffset, clipRing, insideRing, LEVEL_OFFSET, MAINLAND, nearestOnRing, OUTLINE, OUTLINE_MERC, paddingOffset, type Padding, type Size } from "./camera";
 
 const DESKTOP = { width: 1440, height: 900 };
 const PHONE = { width: 390, height: 844 };
@@ -277,5 +277,29 @@ describe("constrainView at min zoom (no slack)", () => {
     const south = [0, 0.25, 0.5, 1, 1.5, 2, 3, 5].map((dz) => constrainView([-8.94, 30], limits.minZoom + dz, limits).center[1]);
     for (let i = 1; i < south.length; i++) expect(south[i]).toBeLessThanOrEqual(south[i - 1] + 1e-9);
     expect(south.at(-1)).toBeGreaterThan(36.6); // the outline: ~20 km off Sagres
+  });
+});
+
+describe("groundOffset", () => {
+  const flat = { pitch: 0, bearing: 0, height: 900, fov: 36.87 };
+  it("is the screen offset on a flat, north-up map", () => {
+    expect(groundOffset({ x: 180, y: -20 }, flat)).toEqual({ x: 180, y: -20 });
+  });
+  it("turns with the bearing", () => {
+    const o = groundOffset({ x: 0, y: -100 }, { ...flat, bearing: 90 }); // screen up is east
+    expect(o.x).toBeCloseTo(100, 6);
+    expect(o.y).toBeCloseTo(0, 6);
+  });
+  it("stretches offsets away from the camera and shrinks those towards it when tilted", () => {
+    const view = { ...flat, pitch: 50 };
+    const far = groundOffset({ x: 0, y: -150 }, view);
+    const near = groundOffset({ x: 0, y: 150 }, view);
+    expect(-far.y).toBeGreaterThan(150 / Math.cos((50 * Math.PI) / 180));
+    expect(near.y).toBeGreaterThan(150); // still farther than flat: the ground is foreshortened
+    expect(near.y).toBeLessThan(-far.y);
+  });
+  it("matches the flat result for tiny offsets at a small pitch", () => {
+    const o = groundOffset({ x: 10, y: 0 }, { ...flat, pitch: 1e-6 });
+    expect(o.x).toBeCloseTo(10, 6);
   });
 });

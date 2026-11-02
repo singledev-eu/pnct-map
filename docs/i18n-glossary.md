@@ -75,4 +75,7 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | not available (missing value) | não disponível (shown after "—") |
 | Theme: Auto (system) / Light / Dark | Tema: automático (sistema) / claro / escuro |
 | Language | Idioma |
+| 3D view: on / off | Vista 3D: ligada / desligada |
+| reduced motion (the OS setting) | movimento reduzido (iOS/Android PT-PT: "Reduzir movimento") |
+| Language, theme and 3D view (settings group) | Idioma, tema e vista 3D |
 | Expand / Collapse panel | Expandir / Recolher painel |

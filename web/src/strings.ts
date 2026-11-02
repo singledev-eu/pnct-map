@@ -138,6 +138,8 @@ export interface UiStrings {
   langNames: Record<Lang, string>;
   /** Theme button: accessible name and tooltip stating the current state. */
   theme: Record<ThemePref, string>;
+  /** 3D button ("3D", drill.ts): accessible name and tooltip stating the current state; contains "3D". */
+  view3d: { on: string; off: string; reduced: string };
   // tooltip and search
   concelhoSub: (distrito: string) => string;
   pnctYes: string;

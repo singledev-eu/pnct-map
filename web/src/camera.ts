@@ -44,13 +44,50 @@ const mercY = (lat: number) => (1 - Math.log(Math.tan(Math.PI / 4 + (lat * Math.
 const lngOf = (x: number) => x * 360 - 180;
 const latOf = (y: number) => (360 / Math.PI) * Math.atan(Math.exp((1 - 2 * y) * Math.PI)) - 90;
 
-/** Zoom at which `b` just fits the padded viewport (what map.fitBounds would pick). */
-export function fitZoom(b: Bounds, size: Size, pad: Padding): number {
+/**
+ * Zoom at which `b` just fits the padded viewport (what map.fitBounds would pick). With a `bearing`
+ * (degrees), the box is fitted as the map turns it: its rotated extent must fit.
+ */
+export function fitZoom(b: Bounds, size: Size, pad: Padding, bearing = 0): number {
   const w = Math.max(1, size.width - pad.left - pad.right);
   const h = Math.max(1, size.height - pad.top - pad.bottom);
-  const dx = mercX(b[2]) - mercX(b[0]);
-  const dy = mercY(b[1]) - mercY(b[3]);
+  let dx = mercX(b[2]) - mercX(b[0]);
+  let dy = mercY(b[1]) - mercY(b[3]);
+  if (bearing) {
+    const [c, s] = [Math.abs(Math.cos((bearing * Math.PI) / 180)), Math.abs(Math.sin((bearing * Math.PI) / 180))];
+    [dx, dy] = [dx * c + dy * s, dx * s + dy * c];
+  }
   return Math.log2(Math.min(w / dx, h / dy) / TILE_SIZE);
+}
+
+/** A tilted, turned camera (degrees) on a map `height` px tall with a vertical field of view `fov` (degrees). */
+export interface View {
+  pitch: number;
+  bearing: number;
+  height: number;
+  fov: number;
+}
+
+/**
+ * Where a screen offset from the map centre lands on the ground, as a world offset at the current zoom
+ * (px, x east, y south). Flat and north-up it is the screen offset itself. With a pitch, a point below
+ * the centre is nearer the camera and one above it farther (exact for MapLibre's perspective camera:
+ * the eye sits cameraToCenterDistance = height / 2 / tan(fov / 2) from the centre); the bearing then
+ * turns it into map axes. Used both to place a fitted selection in the visible area and to find the
+ * visible area's centre for the camera outline (constrainView), so the two always agree.
+ */
+export function groundOffset(o: { x: number; y: number }, view: View): { x: number; y: number } {
+  const p = (view.pitch * Math.PI) / 180;
+  let [gx, gy] = [o.x, o.y];
+  if (p) {
+    const d = view.height / 2 / Math.tan((view.fov * Math.PI) / 360);
+    const a = Math.atan2(o.y, d); // the ray's angle below the centre ray
+    const eye = d * Math.cos(p); // the camera's height above the ground
+    gy = d * Math.sin(p) - eye * Math.tan(p - a);
+    gx = (o.x * eye) / Math.cos(p - a) / Math.hypot(d, o.y);
+  }
+  const t = (view.bearing * Math.PI) / 180;
+  return { x: gx * Math.cos(t) - gy * Math.sin(t), y: gx * Math.sin(t) + gy * Math.cos(t) };
 }
 
 /** Map centre that puts the centre of `b` in the middle of the padded area at `zoom`. */
@@ -59,6 +96,12 @@ export function fitCenter(b: Bounds, zoom: number, pad: Padding): [number, numbe
   const x = (mercX(b[0]) + mercX(b[2])) / 2 - (pad.left - pad.right) / 2 / world;
   const y = (mercY(b[1]) + mercY(b[3])) / 2 - (pad.top - pad.bottom) / 2 / world;
   return [lngOf(x), latOf(y)];
+}
+
+/** Map centre that puts the centre of `b` at the world offset `o` (px at `zoom`, x east, y south) from it: groundOffset of the padding. */
+export function offsetCenter(b: Bounds, zoom: number, o: { x: number; y: number }): [number, number] {
+  const world = TILE_SIZE * 2 ** zoom;
+  return [lngOf((mercX(b[0]) + mercX(b[2])) / 2 + o.x / world), latOf((mercY(b[1]) + mercY(b[3])) / 2 + o.y / world)];
 }
 
 /** Visible area of a map of `size` centred on `center` at `zoom`. */

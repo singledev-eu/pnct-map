@@ -561,7 +561,8 @@ body:not([data-level="parish"]) .legend-parish {
 }
 
 .lang-option,
-.theme-button {
+.theme-button,
+.view3d-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -603,13 +604,35 @@ body:not([data-level="parish"]) .legend-parish {
   color: var(--text);
 }
 
+.view3d-button {
+  min-width: 30px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.view3d-button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--panel-bg);
+}
+
+.view3d-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .lang-option:not([aria-pressed="true"]):hover,
+.view3d-button:not([aria-pressed="true"]):not(:disabled):hover,
 .theme-button:hover {
   background: var(--hover);
   color: var(--text);
 }
 
 .lang-option:focus-visible,
+.view3d-button:focus-visible,
 .theme-button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
@@ -1301,8 +1324,13 @@ dialog a {
 
   /* Comfortable tap targets for the controls. */
   .lang-option,
-  .theme-button {
+  .theme-button,
+  .view3d-button {
     height: 32px;
+  }
+
+  .view3d-button {
+    min-width: 34px;
   }
 
   .lang-option {
