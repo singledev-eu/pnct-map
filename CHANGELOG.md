@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.7.0 (2026-11-02)
+
+### For users
+
+- **3D selection:** selecting a concelho or a parish tilts the map (50°, 40° on phones) and turns it slightly. The same feature always turns the same way, so a shared link lands on the same view. The selection rises as a slab over a faded map, and clearing it levels the map again.
+  - **Drill-down:** selecting a parish inside the selected concelho lowers the concelho slab while the parish slab rises.
+  - **Colour follows eligibility:**
+    - PNCT parishes and whole-PNCT concelhos rise in the PNCT colour;
+    - other parishes and concelhos rise in a neutral slab;
+    - a partly-PNCT concelho is neutral with its PNCT parishes raised in the PNCT colour on top.
+  - **Edges:** the slab's edge and, on a concelho, its parish boundaries are thin rims on the slab top. Nothing on the ground shows through or across the slab; only place labels are drawn over it.
+  - **Hover (desktop):** hovering a parish inside a concelho slab pops it up. Elsewhere, the hover outline stays visible above the faded map.
+  - **Protected areas:** while an overlay is on, the slab turns translucent, so the protection hatch shows on the selection.
+  - **3D button** in the legend header ("3D view: on/off"): saved like the theme, and on by default, phones included. Under the system's reduced-motion setting there is no tilt and no slab, and the button is disabled.
+- **Better framing:** every selection (a map click, search, a panel link, a link) is fitted inside the visible part of the map, left of the panel or above the bottom sheet. It's sized to 70% of that area unless it already covers 35–85% of it. This works in 3D, flat and under reduced motion (instantly there).
+  - A parish clicked inside a selected concelho is no longer left tiny.
+  - Small parishes and concelhos zoom in further than before (up to zoom 14 and 12).
+- **Search box:** it shows the current selection's name however it was made (a map click, a panel link, a link), and empties when the selection is cleared. It used to keep the last query.
+
+### Infrastructure
+
+- `web/src/drill.ts`: the 3D setting, the slab, rim and hover pop-up animation (paint transitions on constant heights), and reduced motion. `web/src/edges.ts`: the rim geometry (edge quads, shared parish boundaries). Slab layers are in `layers.ts`. Each one is filtered to the selected feature, below the basemap labels, and every line layer sits below the slabs.
+- `web/src/camera.ts`: the tilted-camera maths for MapLibre's perspective camera:
+  - `groundOffset` keeps the outline camera constrain correct under pitch and bearing;
+  - `projectGround` and `groundUnder` handle hit tests on a slab top;
+  - `fitProjected` and `measureFootprint` frame the projected footprint.
+- Links keep a tilted view's bearing (MapLibre's hash drops it while rotation gestures are off).
+- Tests:
+  - e2e `drill-3d.spec.ts` (33 tests): select/deselect pitch, reduced motion, the button, theme switch, fit on phone and desktop in 3D, flat and reduced motion, hover, colour in light and dark, layer order, overlays;
+  - e2e `search-box.spec.ts`;
+  - Vitest `drill.test.ts`, `edges.test.ts` and the camera maths.
+- Scripts: `perf_3d.mjs` (the 3D selection on vs off on the throttled phone profile), `drill_review.mjs` and `drill_shots.mjs` (review and design-option screenshots), `readme_gif.mjs` (the README GIF).
+
 ## 0.6.0 (2026-10-19)
 
 ### For users
