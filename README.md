@@ -8,7 +8,8 @@ Features:
 
 - **Parish map:** all 3,049 mainland parishes, with the 1,861 PNCT parishes shaded, and concelho boundaries.
 - **Zoom levels:** concelhos (whole / partly / not PNCT) at country zoom, where a click zooms into one; parishes once zoomed in. Zoom-out and panning stop around mainland Portugal.
-- **Interaction:** hover tooltip, and a click opens a panel (side panel on desktop, bottom sheet on phones).
+- **Interaction:** hover tooltip, and a click opens a panel (side panel on desktop, bottom sheet on phones). Every selection is framed inside the visible part of the map.
+- **3D selection:** the map tilts onto the selected concelho or parish, which rises as a slab: in the PNCT colour if it is PNCT, neutral if not, and a partly-PNCT concelho neutral with its PNCT parishes raised on top. Selecting a parish inside the selected concelho drills into it, and hovering one (desktop) pops it up. A "3D" button in the legend header turns it off; the system's reduced-motion setting does too.
 - **Search and filters:**
   - Search across parishes and concelhos.
   - A district filter.
@@ -22,7 +23,9 @@ Features:
 
 ![Peneda-Gerês with the protected-areas overlays on: PNCT parishes shaded, the RNAP outline and the Natura 2000 hatch, the Soajo parish panel with its share under protection, and the PT | EN and theme controls in the legend header](docs/screenshots/desktop-protected.jpg)
 
-The screenshot is generated with `npm run shots:readme` (in `web/`, with `npm run preview` running).
+![The 3D selection on the live site: from the country view, the Vila Real concelho rises as a slab and the map tilts onto it; selecting the Mateus parish lowers the concelho and raises the parish; closing the panel levels the map](docs/screenshots/3d-drilldown.gif)
+
+The screenshot is generated with `npm run shots:readme` (in `web/`, with `npm run preview` running), the GIF with `node scripts/readme_gif.mjs` (in `web/`; it records https://pnct.singledev.eu, or `SHOT_BASE`).
 
 ## Quick start (map only)
 
