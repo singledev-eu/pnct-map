@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.1 (2026-11-02)
+
+### Maintenance: dependency updates
+
+Development and pipeline dependencies only. The built site is byte-identical to 0.7.0.
+
+- **Web (build and test tools):** vite 8.3.1 → 8.3.3, vitest 5.0.2 → 5.0.3 (with @vitest/mocker and @vitest/spy 5.0.3). Fixes the Vite and @vitest/mocker advisories.
+- **Pipeline (Python):** Pillow 12.3.0 → 13.0.0 (a major; it comes in through pdfplumber, needed no code changes) and certifi 2026.7.22 → 2026.10.23. Fixes the Pillow and certifi advisories. The rerun pipeline produces byte-identical data.
+- **Dependabot version updates:** weekly, grouped (npm development dependencies; uv), in `.github/dependabot.yml`.
+
 ## 0.7.0 (2026-11-02)
 
 ### For users
