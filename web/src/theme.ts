@@ -83,6 +83,9 @@ export interface MapPalette {
   pop: string;
   popNeutral: string;
   veil: string;
+  /** Concelho seats and district capitals (cities.ts): dot and label, and their halo. */
+  city: string;
+  cityHalo: string;
 }
 
 export const PALETTES: Record<Theme, MapPalette> = {
@@ -107,6 +110,8 @@ export const PALETTES: Record<Theme, MapPalette> = {
     pop: "#5fc5b9",
     popNeutral: "#d5dbe1",
     veil: "#f6f6f4",
+    city: "#111827",
+    cityHalo: "#ffffff",
   },
   // On Dark Matter (background #0c0c0c): a brighter teal so PNCT stands out from the near-black
   // land, the selection lighter than PNCT (the light theme makes it darker), and grey lines kept
@@ -130,6 +135,8 @@ export const PALETTES: Record<Theme, MapPalette> = {
     pop: "#86ece0",
     popNeutral: "#8f9ba7",
     veil: "#0c0c0c",
+    city: "#f3f4f6",
+    cityHalo: "#000000",
   },
 };
 

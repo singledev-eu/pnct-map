@@ -75,7 +75,9 @@ describe("slab stack", () => {
   it("draws every line below the first extrusion, and only extrusions after it", () => {
     const first = layers.findIndex((l) => l.type === "fill-extrusion");
     expect(layers.map((l) => l.type).lastIndexOf("line")).toBeLessThan(first);
-    expect(new Set(layers.slice(first).map((l) => l.type))).toEqual(new Set(["fill-extrusion"]));
+    // After the extrusions: only labels (the city labels, cities.ts), which are drawn over slabs.
+    expect(new Set(layers.slice(first).map((l) => l.type))).toEqual(new Set(["fill-extrusion", "symbol"]));
+    expect(layers.slice(first).filter((l) => l.type === "symbol").map((l) => l.id)).toEqual(["city-seats", "city-capitals"]);
   });
 
   it("puts the rims and the PNCT tops on the slab top, opaque even on a translucent slab", () => {

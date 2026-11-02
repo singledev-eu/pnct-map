@@ -98,13 +98,16 @@ describe("overlay layers", () => {
   it("are carried over a theme switch with their sources", () => {
     const data: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
     const sources: StyleSpecification["sources"] = Object.fromEntries(
-      ["parishes", "concelhos", "slab-edges", "hover-edge", ...CATEGORY_IDS.map(overlaySource)].map((id) => [id, { type: "geojson", data }]),
+      ["parishes", "concelhos", "slab-edges", "hover-edge", "cities", ...CATEGORY_IDS.map(overlaySource)].map((id) => [id, { type: "geojson", data }]),
     );
     const next: StyleSpecification = { version: 8, sources: {}, layers: [{ id: "bg", type: "background" }] };
     const layers = appLayers(FILTER, 7, PALETTES.dark, overlays(CATEGORY_IDS));
     const out = withAppLayers({ version: 8, sources, layers: [] }, next, layers);
     for (const cat of CATEGORY_IDS) expect(out.sources[overlaySource(cat)]).toBe(sources[overlaySource(cat)]);
-    expect(ids(out.layers)).toEqual(["bg", ...ids(layers)]);
+    // The city labels (cities.ts TOP) go above the basemap's own layers; the rest below its labels.
+    const top = layers.filter((l) => (l.metadata as Record<string, unknown> | undefined)?.["pnct:top"]);
+    expect(top.map((l) => l.id)).toEqual(["city-seats", "city-capitals"]);
+    expect(ids(out.layers)).toEqual(["bg", ...ids(layers.filter((l) => !top.includes(l))), ...ids(top)]);
   });
 });
 
@@ -120,7 +123,7 @@ describe("pattern images", () => {
   });
 
   it("has one image per hatch, in the palette's colours", () => {
-    expect(Object.keys(patternImages(PALETTES.light)).sort()).toEqual(["natura-hatch", "pnct-hatch"]);
+    expect(Object.keys(patternImages(PALETTES.light)).sort()).toEqual(["city-dot-capital", "city-dot-seat", "natura-hatch", "pnct-hatch"]);
     expect(patternImages(PALETTES.dark)["natura-hatch"].data).not.toEqual(patternImages(PALETTES.light)["natura-hatch"].data);
   });
 });

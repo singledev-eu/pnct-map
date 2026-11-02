@@ -1,6 +1,6 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
-import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setWorkerUrl, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent, type StyleSpecification } from "maplibre-gl";
+import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setWorkerUrl, type GeoJSONSource, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent, type StyleSpecification } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { renderAbout } from "./about";
 import { basemapStyle, setLabelLanguage } from "./basemap";
@@ -15,6 +15,7 @@ import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountLegend, mountOverlayToggles } from "./legend";
 import { h, Panel } from "./panel";
 import { loadOptions, saveOptions } from "./prefs";
+import { CITY_SOURCE, loadCities, loadCitiesPref, mountCityPointers, saveCitiesPref, type CitiesData } from "./cities";
 import { attributionHtml, CATEGORY_IDS, loadOverlay, type OverlayData } from "./protected";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
 import { lang, setLang, t, ui, type Lang } from "./strings";
@@ -230,7 +231,7 @@ reducedMotion.addEventListener("change", () => {
 type Selection = { kind: "parish"; dicofre: string } | { kind: "concelho"; code: string } | null;
 
 function start(data: MapData): void {
-  const filter: FilterState = { district: null, focus: initial.focus };
+  const filter: FilterState = { district: null, focus: initial.focus, cities: loadCitiesPref() };
   if (initial.district && data.districtBounds.has(initial.district)) filter.district = initial.district;
 
   // Focus mode hides everything outside PNCT territory. A link to something it would hide
@@ -381,6 +382,9 @@ function start(data: MapData): void {
     searchBox.setValue(label ?? "");
   };
 
+  /** Refreshes the edge pointers to off-screen towns (set once mounted, below). */
+  let updateCityPointers = () => {};
+
   function select(next: Selection, opts: { fly?: boolean; tilt?: boolean; animate?: boolean } = {}): void {
     const moves = opts.fly || opts.tilt;
     const animate = opts.animate !== false && !reducedMotion.matches;
@@ -409,6 +413,7 @@ function start(data: MapData): void {
       level0(opts.animate !== false);
     }
     syncSearchBox();
+    updateCityPointers();
   }
 
   // ---- zoom level -------------------------------------------------------------
@@ -591,6 +596,40 @@ function start(data: MapData): void {
   }
   setFocus(filter.focus);
 
+  // ---- concelho seats and district capitals (cities.ts) ------------------------------
+  let citiesData: CitiesData | null = null;
+  loadCities()
+    .then((d) => {
+      citiesData = d;
+      (map.getSource(CITY_SOURCE) as GeoJSONSource | undefined)?.setData(d);
+      updateCityPointers();
+    })
+    .catch((err: unknown) => console.error(err)); // the map works without them
+  updateCityPointers = mountCityPointers(
+    map,
+    () => citiesData,
+    () => {
+      const b = boundsOf(selection);
+      if (!selection || !b) return null;
+      return { dico: selection.kind === "parish" ? selection.dicofre.slice(0, 4) : selection.code, centre: [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2] };
+    },
+    () => fitPadding(panelOpen),
+    () => filter.cities !== false,
+    () => {
+      const origin = map.getContainer().getBoundingClientRect();
+      const r = legendEl.getBoundingClientRect();
+      return r.width ? [new DOMRect(r.left - origin.left, r.top - origin.top, r.width, r.height)] : [];
+    },
+  );
+  const citiesToggle = $<HTMLInputElement>("cities-toggle");
+  citiesToggle.checked = filter.cities !== false;
+  citiesToggle.addEventListener("change", () => {
+    filter.cities = citiesToggle.checked;
+    saveCitiesPref(citiesToggle.checked);
+    applyFilter(map, filter, limits.levelZoom, PALETTES[theme], CATEGORY_IDS);
+    updateCityPointers();
+  });
+
   // ---- protected areas ----------------------------------------------------------
   // body data-overlays lists the categories shown once their layers are in the style (e2e waits on it).
   const markOverlays = () => {
@@ -651,6 +690,7 @@ function start(data: MapData): void {
     if (overlayData && overlays.loaded && !map.getSource(overlaySource(CATEGORY_IDS[0]))) addOverlays(map, overlayData, overlays, filter, limits.levelZoom, PALETTES[theme]);
     setPatternImages(map, PALETTES[theme]);
     slabs.restore();
+    if (citiesData) (map.getSource(CITY_SOURCE) as GeoJSONSource | undefined)?.setData(citiesData);
     clearHover();
     setSelectedIds(selectedIds, groupIds, selectedConcelhoId);
     document.body.dataset.mapIdle = "false";

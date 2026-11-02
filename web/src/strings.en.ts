@@ -22,6 +22,8 @@ export const en: Strings = {
     legendPnctParish: "PNCT parish",
     legendOtherParish: "Other parish",
     legendBoundary: "Concelho boundary",
+    legendCities: "Towns (concelho seats)",
+    cityPointer: (name, km) => `${name}, ${km} km away, off the map`,
     overlaysLabel: "Nature protection overlays",
     aboutButton: "About",
     loadingMap: "Loading map…",

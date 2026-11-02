@@ -7,9 +7,9 @@ PNCT_SHA256 := c286ef77c16321e8c5124eeb92f8d3f0565dbe302787817a91fe526653e7cffc
 PNCT_PDF := data/raw/territorios-pnct-2026-02-04.pdf
 PY := uv run python
 
-.PHONY: all download parse match geo web-data shapes outline protected-fetch protected concelhos-fetch concelhos test web e2e clean
+.PHONY: all download parse match geo web-data shapes outline protected-fetch protected concelhos-fetch concelhos cities-fetch cities test web e2e clean
 
-all: web-data shapes outline protected concelhos test
+all: web-data shapes outline protected concelhos cities test
 
 download: $(CAOP_GPKG) $(PNCT_PDF)
 
@@ -86,11 +86,22 @@ web/data/concelhos.json: scripts/build_concelhos.py scripts/concelhos_config.py 
 test:
 	uv run pytest -q
 
-web: web-data shapes outline protected concelhos
+web: web-data shapes outline protected concelhos cities
 	cd web && npm ci && npm test && npm run build
 
-e2e: web-data shapes outline protected concelhos
+e2e: web-data shapes outline protected concelhos cities
 	cd web && npm ci && npm run test:e2e
+
+CITIES_FETCHED := data/external/osm/fetch.json
+cities-fetch:
+	$(PY) scripts/fetch_cities.py $(if $(REFRESH),--refresh)
+
+$(CITIES_FETCHED):
+	$(PY) scripts/fetch_cities.py
+
+cities: web/data/cities.json
+web/data/cities.json: scripts/build_cities.py $(CITIES_FETCHED) $(CAOP_GPKG)
+	$(PY) scripts/build_cities.py
 
 clean:
 	rm -rf data/interim data/processed web/data
