@@ -45,6 +45,8 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | Whole concelho PNCT / Partly PNCT | Concelho inteiro no PNCT / Parcialmente no PNCT |
 | Concelho boundary | Limite de concelho |
 | Legend | Legenda |
+| Towns (concelho seats) (legend) | Sedes de concelho |
+| Coruche · 10 km (edge pointer; aria: "…, 10 km away, off the map") | Coruche · 10 km (aria: "…, a 10 km, fora do mapa") |
 | Concelho coverage / PNCT coverage | Cobertura do concelho / Cobertura PNCT |
 | Property search | Pesquisa de imóveis |
 | Property type / Land type / Operation | Tipo de imóvel / Tipo de terreno / Operação |
