@@ -14,6 +14,7 @@ import { mountSettings } from "./controls";
 import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountLegend, mountOverlayToggles } from "./legend";
 import { h, Panel } from "./panel";
+import { mountShortlist, parseCodes, type Shortlist } from "./shortlist";
 import { loadOptions, saveOptions } from "./prefs";
 import { attributionHtml, CATEGORY_IDS, loadOverlay, type OverlayData } from "./protected";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
@@ -358,6 +359,8 @@ function start(data: MapData): void {
       onSelectParish: (dicofre) => select({ kind: "parish", dicofre }, { fly: true }),
       onSelectConcelho: (code) => select({ kind: "concelho", code }, { fly: true }),
       onOptionsChange: saveOptions,
+      isStarred: (code) => shortlist?.has(code) ?? false,
+      onToggleStar: (code) => shortlist?.toggle(code),
     },
     searchOptions,
   );
@@ -371,6 +374,7 @@ function start(data: MapData): void {
    * panel link, the hash), and is empty without one. Only a change of selection rewrites it, so a
    * re-render (language, focus mode) doesn't overwrite what the viewer is typing.
    */
+  let shortlist: Shortlist | null = null; // mounted below, after the search box
   let searchBox: { setValue: (text: string) => void } | null = null; // set once mounted (below)
   let shownInSearch: string | null = null;
   const syncSearchBox = () => {
@@ -554,6 +558,25 @@ function start(data: MapData): void {
   });
   searchBox = search;
 
+  // ---- shortlist (shortlist.ts) ------------------------------------------------------
+  shortlist = mountShortlist({
+    button: $<HTMLButtonElement>("shortlist-button"),
+    pop: $("shortlist"),
+    name: (code) => {
+      if (code.length === 6) {
+        const p = data.parishes.get(code);
+        return p ? { title: p.freguesia, sub: p.concelho } : null;
+      }
+      const c = data.concelhos.get(code);
+      return c ? { title: c.name, sub: ui.concelhoSub(c.distrito) } : null;
+    },
+    onSelect: (code) => select(code.length === 6 ? { kind: "parish", dicofre: code } : { kind: "concelho", code }, { fly: true }),
+    onSharedDone: () => writeHash({ list: null }),
+    onChange: () => panel.refreshStar(),
+  });
+  const sharedList = parseCodes(initial.list ?? "");
+  if (sharedList.length) shortlist.showShared(sharedList);
+
   // ---- filters ----------------------------------------------------------------
   const districtOptions = data.districts.map((d) => h("option", { value: d }, d));
   districtSelect.append(...districtOptions);
@@ -664,6 +687,8 @@ function start(data: MapData): void {
   // the tooltip, and the panel (re-rendered for the same selection, without moving the camera).
   onLangChange = () => {
     toggles.relabel();
+    shortlist?.relabel();
+    panel.refreshStar();
     ({ allIndex, pnctIndex } = buildIndexes());
     search.close();
     clearHover();
@@ -705,6 +730,8 @@ function start(data: MapData): void {
   } else level0(false);
   window.addEventListener("hashchange", () => {
     const s = readHash();
+    const list = parseCodes(s.list ?? "");
+    if (list.length) shortlist?.showShared(list);
     const focus = s.focus && !hiddenByFocus(s);
     if (focus !== filter.focus || s.focus !== focus) setFocus(focus);
     const visible = CATEGORY_IDS.filter((c) => s.overlays.includes(c));

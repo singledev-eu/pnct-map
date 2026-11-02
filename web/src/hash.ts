@@ -6,6 +6,7 @@
  *   #...&focus=1                    focus mode, "Only PNCT" (older links used pnct=1)
  *   #...&pa=rnap,natura             protected-areas overlays switched on (category ids)
  *   #...&op=arrendar&t=casas&land=urbano   property-search selector (see prefs.ts)
+ *   #list=160763,0808               a shared shortlist (shortlist.ts), shown apart from the viewer's own
  */
 export const MAP_HASH_KEY = "map";
 
@@ -19,6 +20,8 @@ export interface HashState {
   hasMapView: boolean;
   /** The bearing in `map=` (zoom/lat/lng/bearing/pitch), 0 without one. */
   bearing: number;
+  /** A shared shortlist from `list=`, raw (shortlist.ts parseCodes validates it), or null. */
+  list: string | null;
 }
 
 function params(): URLSearchParams {
@@ -37,10 +40,11 @@ export function readHash(): HashState {
     overlays: (p.get("pa") ?? "").split(",").filter(Boolean),
     hasMapView: p.has(MAP_HASH_KEY),
     bearing: Number(p.get(MAP_HASH_KEY)?.split("/")[3]) || 0,
+    list: p.get("list"),
   };
 }
 
-export function writeHash(update: Partial<Record<"f" | "c" | "d" | "focus" | "pnct" | "pa" | "op" | "t" | "land", string | null>>): void {
+export function writeHash(update: Partial<Record<"f" | "c" | "d" | "focus" | "pnct" | "pa" | "op" | "t" | "land" | "list", string | null>>): void {
   const p = params();
   for (const [k, v] of Object.entries(update)) {
     if (v === null || v === undefined || v === "") p.delete(k);

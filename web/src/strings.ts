@@ -127,6 +127,24 @@ export interface UiStrings {
   legendBoundary: string;
   overlaysLabel: string;
   aboutButton: string;
+  /** The shortlist (shortlist.ts): the star in the panel header and the list in the toolbar. */
+  shortlist: {
+    star: string;
+    unstar: string;
+    button: (n: number) => string;
+    title: string;
+    sharedTitle: string;
+    sharedNote: string;
+    empty: string;
+    copy: string;
+    copied: string;
+    copyManually: string;
+    linkLabel: string;
+    save: string;
+    saved: string;
+    close: string;
+    removeItem: (name: string) => string;
+  };
   loadingMap: string;
   // error states (status line)
   basemapError: string;
