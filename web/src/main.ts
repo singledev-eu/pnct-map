@@ -366,6 +366,21 @@ function start(data: MapData): void {
    * `fly` (search, panel, link) or `tilt` (a click on the map): frame the camera on the selection
    * (frame). Neither: the camera stays (a re-render after a language or focus switch).
    */
+  /**
+   * The search box shows the current selection's name, however it was made (search, a map click, a
+   * panel link, the hash), and is empty without one. Only a change of selection rewrites it, so a
+   * re-render (language, focus mode) doesn't overwrite what the viewer is typing.
+   */
+  let searchBox: { setValue: (text: string) => void } | null = null; // set once mounted (below)
+  let shownInSearch: string | null = null;
+  const syncSearchBox = () => {
+    const key = selection?.kind === "parish" ? `f${selection.dicofre}` : selection?.kind === "concelho" ? `c${selection.code}` : null;
+    if (key === shownInSearch || !searchBox) return;
+    shownInSearch = key;
+    const label = selection?.kind === "parish" ? data.parishes.get(selection.dicofre)?.freguesia : selection?.kind === "concelho" ? data.concelhos.get(selection.code)?.name : undefined;
+    searchBox.setValue(label ?? "");
+  };
+
   function select(next: Selection, opts: { fly?: boolean; tilt?: boolean; animate?: boolean } = {}): void {
     const moves = opts.fly || opts.tilt;
     const animate = opts.animate !== false && !reducedMotion.matches;
@@ -393,6 +408,7 @@ function start(data: MapData): void {
       writeHash({ f: null, c: null });
       level0(opts.animate !== false);
     }
+    syncSearchBox();
   }
 
   // ---- zoom level -------------------------------------------------------------
@@ -536,6 +552,7 @@ function start(data: MapData): void {
       select(item.kind === "parish" ? { kind: "parish", dicofre: item.id } : { kind: "concelho", code: item.id }, { fly: true });
     },
   });
+  searchBox = search;
 
   // ---- filters ----------------------------------------------------------------
   const districtOptions = data.districts.map((d) => h("option", { value: d }, d));
@@ -678,10 +695,6 @@ function start(data: MapData): void {
   const restore = (fly: boolean, s: HashState = readHash()) => {
     if (s.parish) select({ kind: "parish", dicofre: s.parish }, { fly, animate: false });
     else if (s.concelho) select({ kind: "concelho", code: s.concelho }, { fly, animate: false });
-    if (s.parish || s.concelho) {
-      const label = s.parish ? data.parishes.get(s.parish)?.freguesia : data.concelhos.get(s.concelho!)?.name;
-      if (label) search.setValue(label);
-    }
   };
   restore(!initial.hasMapView);
   // A selection from the link gets its slab at once; a tilted view (map=…/bearing/pitch) without a
