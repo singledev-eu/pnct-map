@@ -29,6 +29,8 @@ export const pt: Strings = {
     legendBoundary: "Limite de concelho",
     overlaysLabel: "Camadas de proteção da natureza",
     aboutButton: "Sobre",
+    countryButton: "Tudo",
+    countryLabel: "Ver o país inteiro",
     loadingMap: "A carregar o mapa…",
     basemapError: "Não foi possível carregar o mapa de base. Verifique a ligação e recarregue a página.",
     dataError: "Não foi possível carregar os dados do mapa. Recarregue a página.",
