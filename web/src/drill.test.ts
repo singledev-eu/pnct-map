@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { load3dPref, save3dPref, slabHeight, view3dFor, VIEW3D_STORAGE_KEY } from "./drill";
-import { appLayers, NO_SLAB, PARISH_SLAB, SLAB_VEIL, slabFilter } from "./layers";
+import { appLayers, CONCELHO_PNCT_TOP, CONCELHO_RIM, NO_SLAB, PARISH_SLAB, pnctTopFilter, rimHeights, rimLift, SLAB_VEIL, slabFilter } from "./layers";
 import { PALETTES } from "./theme";
 
 const memory = (init: Record<string, string> = {}) => {
@@ -61,9 +61,36 @@ describe("slab layers", () => {
     expect("filter" in slab && slab.filter).toEqual(slabFilter("dicofre", null));
     const ids = empty.map((l) => l.id);
     expect(ids.indexOf(SLAB_VEIL)).toBeGreaterThan(ids.indexOf("concelho-highlight"));
-    const one = appLayers({ district: null, focus: false }, 8, PALETTES.light, undefined, { ...NO_SLAB, parish: { code: "171415", height: 90, opacity: 0.92 } });
+    const one = appLayers({ district: null, focus: false }, 8, PALETTES.light, undefined, { ...NO_SLAB, parish: { code: "171415", base: 0, height: 90, opacity: 1 } });
     const raised = one.find((l) => l.id === PARISH_SLAB)!;
     expect("filter" in raised && raised.filter).toEqual(["==", ["get", "dicofre"], "171415"]);
     expect(raised.type === "fill-extrusion" && raised.paint?.["fill-extrusion-height"]).toBe(90);
+  });
+});
+
+describe("slab stack", () => {
+  const state = { ...NO_SLAB, concelho: { code: "1823", base: 0, height: 400, opacity: 0.55, partial: true } };
+  const layers = appLayers({ district: null, focus: false }, 8, PALETTES.dark, undefined, state);
+
+  it("draws every line below the first extrusion, and only extrusions after it", () => {
+    const first = layers.findIndex((l) => l.type === "fill-extrusion");
+    expect(layers.map((l) => l.type).lastIndexOf("line")).toBeLessThan(first);
+    expect(new Set(layers.slice(first).map((l) => l.type))).toEqual(new Set(["fill-extrusion"]));
+  });
+
+  it("puts the rims and the PNCT tops on the slab top, opaque even on a translucent slab", () => {
+    const rims = rimHeights(state);
+    expect(rims[CONCELHO_RIM]).toEqual({ base: 400, height: 400 + rimLift(400), opacity: 1 });
+    expect(rims[CONCELHO_PNCT_TOP].base).toBe(400);
+    expect(rims[CONCELHO_PNCT_TOP].opacity).toBe(0.55);
+    const rim = layers.find((l) => l.id === CONCELHO_RIM)!;
+    expect(rim.type === "fill-extrusion" && rim.paint?.["fill-extrusion-base"]).toBe(400);
+  });
+
+  it("raises only the PNCT parishes of a partly-PNCT concelho", () => {
+    const top = layers.find((l) => l.id === CONCELHO_PNCT_TOP)!;
+    expect("filter" in top && top.filter).toEqual(pnctTopFilter("1823"));
+    const none = appLayers({ district: null, focus: false }, 8, PALETTES.dark).find((l) => l.id === CONCELHO_PNCT_TOP)!;
+    expect("filter" in none && none.filter).toEqual(pnctTopFilter(null));
   });
 });

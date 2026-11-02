@@ -21,7 +21,7 @@ export interface Concelho {
   parishes: Parish[];
 }
 
-type Area = Polygon | MultiPolygon;
+export type Area = Polygon | MultiPolygon;
 type ParishFeature = Feature<Area, Parish>;
 type ConcelhoProps = { name: string; distrito: string; pnct_count: number; parish_count: number; code: string };
 type ConcelhoFeature = Feature<Area, ConcelhoProps>;
@@ -35,6 +35,9 @@ export interface MapData {
   parishBounds: Map<string, Bounds>;
   concelhoBounds: Map<string, Bounds>;
   districtBounds: Map<string, Bounds>;
+  /** Display geometry by dicofre / concelho code (the 3D fit and the slab edges, drill.ts). */
+  parishGeometry: Map<string, Area>;
+  concelhoGeometry: Map<string, Area>;
 }
 
 /** Numeric feature id used for feature-state (dicofre / concelho code as int). */
@@ -80,12 +83,15 @@ export async function loadData(url: string): Promise<MapData> {
   const concelhoBounds = new Map<string, Bounds>();
   const districtBounds = new Map<string, Bounds>();
   const codeByName = new Map<string, string>();
+  const parishGeometry = new Map<string, Area>();
+  const concelhoGeometry = new Map<string, Area>();
 
   for (const f of parishGeoJSON.features as ParishFeature[]) {
     const p = f.properties;
     const code = concelhoCode(p.dicofre);
     f.id = featureId(p.dicofre);
     parishes.set(p.dicofre, p);
+    parishGeometry.set(p.dicofre, f.geometry);
     const bounds = geometryBounds(f.geometry);
     parishBounds.set(p.dicofre, bounds);
     concelhoBounds.set(code, union(concelhoBounds.get(code), bounds));
@@ -106,6 +112,7 @@ export async function loadData(url: string): Promise<MapData> {
     if (!code) throw new Error(`No parishes for concelho ${f.properties.name}`);
     f.properties.code = code;
     f.id = featureId(code);
+    concelhoGeometry.set(code, f.geometry);
   }
 
   for (const c of concelhos.values()) {
@@ -122,5 +129,7 @@ export async function loadData(url: string): Promise<MapData> {
     parishBounds,
     concelhoBounds,
     districtBounds,
+    parishGeometry,
+    concelhoGeometry,
   };
 }

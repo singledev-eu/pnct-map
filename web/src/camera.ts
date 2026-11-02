@@ -98,12 +98,6 @@ export function fitCenter(b: Bounds, zoom: number, pad: Padding): [number, numbe
   return [lngOf(x), latOf(y)];
 }
 
-/** Map centre that puts the centre of `b` at the world offset `o` (px at `zoom`, x east, y south) from it: groundOffset of the padding. */
-export function offsetCenter(b: Bounds, zoom: number, o: { x: number; y: number }): [number, number] {
-  const world = TILE_SIZE * 2 ** zoom;
-  return [lngOf((mercX(b[0]) + mercX(b[2])) / 2 + o.x / world), latOf((mercY(b[1]) + mercY(b[3])) / 2 + o.y / world)];
-}
-
 /** Visible area of a map of `size` centred on `center` at `zoom`. */
 function viewBounds(center: [number, number], zoom: number, size: Size): Bounds {
   const world = TILE_SIZE * 2 ** zoom;
@@ -258,4 +252,117 @@ export function constrainView(center: [number, number], zoom: number, limits: Vi
   const visible: Point = [mercX(center[0]) - ox, mercY(center[1]) - oy];
   const [vx, vy] = insideRing(visible, area) ? visible : nearestOnRing(visible, area);
   return done([vx + ox, vy + oy]);
+}
+
+// ---- the tilted camera (3D selection, drill.ts) -------------------------------------------------
+// MapLibre's perspective camera, flat ground: the eye looks at the map centre from
+// d = height / 2 / tan(fov / 2) px away, tilted by `pitch` from straight down. Coordinates below are
+// px at the current zoom, relative to the map centre (the container centre: the app sets no
+// transform padding). "Screen-aligned" ground axes are the map's axes turned by the bearing: u to
+// the screen's right, v towards the screen's bottom (the camera).
+
+const eyeDistance = (view: View) => view.height / 2 / Math.tan((view.fov * Math.PI) / 360);
+
+/**
+ * The screen position (px from the container centre, x right, y down) of a point at world offset
+ * (dx east, dy south) from the map centre, `elevation` px above the ground; null if it is behind
+ * the camera.
+ */
+export function projectGround(dx: number, dy: number, view: View, elevation = 0): { x: number; y: number } | null {
+  const t = (view.bearing * Math.PI) / 180;
+  const p = (view.pitch * Math.PI) / 180;
+  const d = eyeDistance(view);
+  const [u, v] = [dx * Math.cos(t) + dy * Math.sin(t), -dx * Math.sin(t) + dy * Math.cos(t)];
+  const depth = d - v * Math.sin(p) - elevation * Math.cos(p);
+  if (depth <= d * 1e-3) return null;
+  return { x: (d * u) / depth, y: (d * (v * Math.cos(p) - elevation * Math.sin(p))) / depth };
+}
+
+/**
+ * For a screen point (px from the container centre) on a surface `elevation` px above the ground
+ * (a slab top), the screen point where the ground right below it is drawn. That is where the
+ * ground-level layers must be hit-tested to find what lies under the slab top.
+ */
+export function groundUnder(s: { x: number; y: number }, elevation: number, view: View): { x: number; y: number } {
+  const p = (view.pitch * Math.PI) / 180;
+  if (!p || !elevation) return s;
+  const d = eyeDistance(view);
+  const [sp, cp] = [Math.sin(p), Math.cos(p)];
+  const v = (s.y * (d - elevation * cp) + d * elevation * sp) / (d * cp + s.y * sp);
+  const u = (s.x * (d - v * sp - elevation * cp)) / d;
+  const depth = d - v * sp;
+  return { x: (d * u) / depth, y: (d * v * cp) / depth };
+}
+
+export interface ProjectedFit {
+  center: [number, number];
+  zoom: number;
+  /** Share of the visible area the footprint covers: the larger of its width and height shares. */
+  share: number;
+  /** The whole footprint is inside the visible area. */
+  inside: boolean;
+}
+
+/**
+ * Frames a footprint (lng/lat points, e.g. a feature's outer rings) for a tilted, turned camera:
+ * centres its *projected* bounding box in the visible area (the map minus `pad`) and, unless
+ * `fixedZoom` is given, picks the zoom at which it covers `fill` of that area, within
+ * [minZoom, maxZoom]. The near half of a tilted view is magnified, so the flat bounding box would
+ * overflow towards the bottom of the screen; this iterates on the projected one instead.
+ */
+export function fitProjected(
+  points: [number, number][],
+  size: Size,
+  pad: Padding,
+  view: { pitch: number; bearing: number; fov: number },
+  opts: { zoom: number; fixedZoom?: boolean; fill?: number; minZoom?: number; maxZoom?: number },
+): ProjectedFit {
+  const cam: View = { ...view, height: size.height };
+  const merc = points.map(([lng, lat]) => [mercX(lng), mercY(lat)] as Point);
+  const aw = Math.max(1, size.width - pad.left - pad.right);
+  const ah = Math.max(1, size.height - pad.top - pad.bottom);
+  // The visible area's centre, relative to the container centre.
+  const tc = { x: (pad.left - pad.right) / 2, y: (pad.top - pad.bottom) / 2 };
+  const xs = merc.map((m) => m[0]);
+  const ys = merc.map((m) => m[1]);
+  let c: Point = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
+  let z = opts.zoom;
+  const clampZ = (v: number) => Math.min(opts.maxZoom ?? 22, Math.max(opts.minZoom ?? 0, v));
+  const box = () => {
+    const world = TILE_SIZE * 2 ** z;
+    let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity];
+    for (const [mx, my] of merc) {
+      const s = projectGround((mx - c[0]) * world, (my - c[1]) * world, cam);
+      if (!s) return null;
+      if (s.x < x0) x0 = s.x;
+      if (s.x > x1) x1 = s.x;
+      if (s.y < y0) y0 = s.y;
+      if (s.y > y1) y1 = s.y;
+    }
+    return { x0, y0, x1, y1 };
+  };
+  for (let i = 0; i < 24; i++) {
+    const b = box();
+    if (!b) {
+      if (opts.fixedZoom) break;
+      z = clampZ(z - 0.5);
+      continue;
+    }
+    // Move the centre so the box's centre lands on the visible area's centre: the ground point drawn
+    // at the box centre goes where the ground point at the area centre is drawn now.
+    const bc = { x: (b.x0 + b.x1) / 2, y: (b.y0 + b.y1) / 2 };
+    const world = TILE_SIZE * 2 ** z;
+    const g1 = groundOffset(bc, cam);
+    const g0 = groundOffset(tc, cam);
+    c = [c[0] + (g1.x - g0.x) / world, c[1] + (g1.y - g0.y) / world];
+    if (!opts.fixedZoom) {
+      const share = Math.max((b.x1 - b.x0) / aw, (b.y1 - b.y0) / ah);
+      if (share > 0) z = clampZ(z + 0.85 * Math.log2((opts.fill ?? 0.7) / share));
+    }
+  }
+  const b = box();
+  const share = b ? Math.max((b.x1 - b.x0) / aw, (b.y1 - b.y0) / ah) : Infinity;
+  const [hw, hh] = [size.width / 2, size.height / 2];
+  const inside = !!b && b.x0 >= pad.left - hw - 0.5 && b.x1 <= hw - pad.right + 0.5 && b.y0 >= pad.top - hh - 0.5 && b.y1 <= hh - pad.bottom + 0.5;
+  return { center: [lngOf(c[0]), latOf(c[1])], zoom: z, share, inside };
 }

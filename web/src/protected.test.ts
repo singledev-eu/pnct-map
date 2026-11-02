@@ -98,7 +98,7 @@ describe("overlay layers", () => {
   it("are carried over a theme switch with their sources", () => {
     const data: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
     const sources: StyleSpecification["sources"] = Object.fromEntries(
-      ["parishes", "concelhos", ...CATEGORY_IDS.map(overlaySource)].map((id) => [id, { type: "geojson", data }]),
+      ["parishes", "concelhos", "slab-edges", "hover-edge", ...CATEGORY_IDS.map(overlaySource)].map((id) => [id, { type: "geojson", data }]),
     );
     const next: StyleSpecification = { version: 8, sources: {}, layers: [{ id: "bg", type: "background" }] };
     const layers = appLayers(FILTER, 7, PALETTES.dark, overlays(CATEGORY_IDS));

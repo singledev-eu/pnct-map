@@ -4,11 +4,12 @@ import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setW
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { renderAbout } from "./about";
 import { basemapStyle, setLabelLanguage } from "./basemap";
-import { BOUNDS_MARGIN, cameraLimits, protectedFade, constrainView, fitCenter, fitZoom, groundOffset, MAINLAND, offsetCenter, OUTLINE_MERC, paddingOffset, type CameraLimits, type Padding } from "./camera";
+import { BOUNDS_MARGIN, cameraLimits, protectedFade, constrainView, fitCenter, fitProjected, fitZoom, groundOffset, groundUnder, MAINLAND, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
-import { DURATION_3D, load3dPref, PHONE_QUERY, REDUCED_MOTION_QUERY, save3dPref, Slabs, view3dFor, type SlabTarget } from "./drill";
+import { metresPerPixel } from "./edges";
+import { DURATION_3D, FILL_3D, load3dPref, PHONE_QUERY, REDUCED_MOTION_QUERY, save3dPref, Slabs, view3dFor, type SlabTarget } from "./drill";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
-import { addLayers, addOverlays, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SOURCE, overlaySource, PARISH_FILL, PARISH_SLAB, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, withAppLayers, type FilterState, type OverlayState } from "./layers";
+import { addLayers, addOverlays, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SLAB, CONCELHO_SOURCE, HOVER_POP, overlaySource, PARISH_FILL, PARISH_SLAB, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, withAppLayers, type FilterState, type OverlayState } from "./layers";
 import { mountSettings } from "./controls";
 import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountLegend, mountOverlayToggles } from "./legend";
@@ -246,7 +247,7 @@ function start(data: MapData): void {
   }
 
   addLayers(map, data, filter, limits.levelZoom, PALETTES[theme]);
-  const slabs = new Slabs(map);
+  const slabs = new Slabs(map, data);
   // Protected-areas overlays: off unless the hash names them; the data loads on the first switch-on.
   const overlays: OverlayState & { visible: Set<string> } = {
     categories: CATEGORY_IDS,
@@ -275,34 +276,53 @@ function start(data: MapData): void {
     groupIds = group;
   };
 
-  /**
-   * The map centre that puts the centre of `b` in the middle of the padded area, for a camera at
-   * `zoom` with `pitch` and `bearing` (flat: fitCenter).
-   */
-  const centerFor = (b: Bounds, zoom: number, padding: Padding, pitch: number, bearing: number): [number, number] =>
-    pitch || bearing ? offsetCenter(b, zoom, groundOffset(paddingOffset(padding), { pitch, bearing, height: map.getContainer().clientHeight, fov: map.getVerticalFieldOfView() })) : fitCenter(b, zoom, padding);
-
   /** The camera tilt for the current selection: 3D on, or flat. */
   const viewFor = (s: Selection) => (s && is3d() ? view3dFor(s.kind === "parish" ? s.dicofre : s.code, phoneQuery.matches) : { pitch: 0, bearing: 0 });
 
-  /** Fits `b` into the padded view, no further in than `maxZoom` and no further out than `minZoom`; tilted for a 3D selection. */
+  /** Fits `b` into the padded view (flat), no further in than `maxZoom` and no further out than `minZoom`. */
   const fit = (b: Bounds | undefined, maxZoom: number, animate = true, minZoom = 0) => {
     if (!b) return;
     const padding = fitPadding(selection !== null);
     const canvas = map.getCanvas();
-    const { pitch, bearing } = viewFor(selection);
-    const fitted = fitZoom(b, { width: canvas.clientWidth, height: canvas.clientHeight }, padding, bearing);
+    const fitted = fitZoom(b, { width: canvas.clientWidth, height: canvas.clientHeight }, padding);
     const zoom = Math.min(maxZoom, Math.max(minZoom, fitted));
-    const duration = animate ? motion(pitch ? DURATION_3D : 900) : 0;
-    map.easeTo({ center: centerFor(b, zoom, padding, pitch, bearing), zoom, pitch, bearing, duration });
+    map.easeTo({ center: fitCenter(b, zoom, padding), zoom, pitch: 0, bearing: 0, duration: animate ? motion(900) : 0 });
   };
 
-  /** Tilts the camera onto the selection without changing the zoom (a click on a parish, 3D switched on). */
-  const tiltOnto = (b: Bounds | undefined, animate: boolean) => {
-    if (!b) return;
-    const { pitch, bearing } = viewFor(selection);
+  /** The outer rings of a selection's display geometry: what the 3D framing must keep on screen. */
+  const footprint = (s: NonNullable<Selection>): [number, number][] => {
+    const geom = s.kind === "parish" ? data.parishGeometry.get(s.dicofre) : data.concelhoGeometry.get(s.code);
+    if (!geom) return [];
+    const polygons = geom.type === "Polygon" ? [geom.coordinates] : geom.coordinates;
+    return polygons.flatMap((polygon) => polygon[0] as [number, number][]);
+  };
+
+  /**
+   * Frames a 3D selection in the visible area (left of the panel, above the sheet) at its pitch and
+   * bearing, measured on its projected footprint (camera.ts fitProjected). If, centred at the current
+   * zoom, it covers 35–85% of the area and fits, the camera only tilts and centres; otherwise it
+   * refits to cover FILL of it. A concelho stays past the concelho level (its parishes clickable)
+   * unless it would then overflow. Returns the zoom the camera ends at.
+   */
+  const frame3d = (s: NonNullable<Selection>, animate: boolean): number => {
+    const { pitch, bearing } = viewFor(s);
+    const container = map.getContainer();
+    const size = { width: container.clientWidth, height: container.clientHeight };
+    const pad = fitPadding(true);
+    const view = { pitch, bearing, fov: map.getVerticalFieldOfView() };
+    const points = footprint(s);
+    if (!points.length) return map.getZoom();
+    const maxZoom = s.kind === "parish" ? 14 : 12;
+    const minZoom = s.kind === "concelho" ? limits.levelZoom + 0.5 : limits.minZoom;
     const zoom = map.getZoom();
-    map.easeTo({ center: centerFor(b, zoom, fitPadding(true), pitch, bearing), zoom, pitch, bearing, duration: animate ? motion(DURATION_3D) : 0 });
+    let target = fitProjected(points, size, pad, view, { zoom, fixedZoom: true });
+    const keep = target.inside && target.share >= 0.35 && target.share <= 0.85 && zoom >= minZoom && zoom <= maxZoom;
+    if (!keep) {
+      target = fitProjected(points, size, pad, view, { zoom, fill: FILL_3D, minZoom, maxZoom });
+      if (!target.inside) target = fitProjected(points, size, pad, view, { zoom, fill: FILL_3D, minZoom: limits.minZoom, maxZoom });
+    }
+    map.easeTo({ center: target.center, zoom: target.zoom, pitch, bearing, duration: animate ? motion(DURATION_3D) : 0 });
+    return target.zoom;
   };
 
   /** Levels the camera (pitch and bearing 0), keeping the centre of the visible area inside the limits. */
@@ -332,23 +352,25 @@ function start(data: MapData): void {
   );
 
   /**
-   * `fly`: fit the camera to the selection. `tilt`: in 3D, tilt onto it without zooming (a click).
-   * Neither: the camera stays (a re-render after a language or focus switch).
+   * `fly`: frame the camera on the selection. `tilt`: in 3D, frame it (a click; flat, the camera
+   * stays). Neither: the camera stays (a re-render after a language or focus switch).
    */
   function select(next: Selection, opts: { fly?: boolean; tilt?: boolean; animate?: boolean } = {}): void {
     const moves = opts.fly || opts.tilt;
     const animate = opts.animate !== false && !reducedMotion.matches;
     selection = next;
-    if (moves || !next) slabs.set(slabTarget(next), animate);
     setPanelOpen(next !== null);
+    let zoom = map.getZoom();
+    const camera3d = moves && next && is3d();
+    if (camera3d) zoom = frame3d(next, animate);
+    if (moves || !next) slabs.set(slabTarget(next), animate, zoom);
     if (next?.kind === "parish") {
       const p = data.parishes.get(next.dicofre);
       if (!p) return select(null);
       setSelectedIds([featureId(p.dicofre)]);
       panel.showParish(p, data.concelhos.get(concelhoCode(p.dicofre))!);
       writeHash({ f: p.dicofre, c: null });
-      if (opts.fly) fit(data.parishBounds.get(p.dicofre), 12, opts.animate);
-      else if (opts.tilt && is3d()) tiltOnto(data.parishBounds.get(p.dicofre), animate);
+      if (opts.fly && !camera3d) fit(data.parishBounds.get(p.dicofre), 12, opts.animate);
     } else if (next?.kind === "concelho") {
       const c = data.concelhos.get(next.code);
       if (!c) return select(null);
@@ -357,7 +379,7 @@ function start(data: MapData): void {
       panel.showConcelho(c);
       writeHash({ c: c.code, f: null });
       // Always past the concelho level (and its fade), so the parishes inside become clickable.
-      if (opts.fly) fit(data.concelhoBounds.get(c.code), 11, opts.animate, limits.levelZoom + 0.5);
+      if (opts.fly && !camera3d) fit(data.concelhoBounds.get(c.code), 11, opts.animate, limits.levelZoom + 0.5);
     } else {
       setSelectedIds([]);
       panel.close();
@@ -396,20 +418,41 @@ function start(data: MapData): void {
       // the moment between toggling and the filtered tiles being drawn.
       return c && !(filter.focus && c.pnctCount === 0) ? ({ kind: "concelho", c } as const) : null;
     }
-    // The raised slab first: its top hides the ground behind it, so a click on it is the selection.
-    const layers = map.getLayer(PARISH_SLAB) ? [PARISH_SLAB, PARISH_FILL] : [PARISH_FILL];
-    const dicofre = map.queryRenderedFeatures([point.x, point.y], { layers })[0]?.properties.dicofre as string | undefined;
+    const dicofre = parishAt(point);
     const p = dicofre ? data.parishes.get(dicofre) : undefined;
     return p && !(filter.focus && !p.pnct) ? ({ kind: "parish", p } as const) : null;
   };
 
+  /**
+   * The parish drawn at `point`. A raised slab hides the ground behind it: on the selected parish's
+   * slab or a popped-up parish that is the answer; on a concelho slab's top, the parish is the one
+   * on the ground right under that point of the top (camera.ts groundUnder), not the one behind it.
+   */
+  function parishAt(point: { x: number; y: number }): string | undefined {
+    const raised = [HOVER_POP, PARISH_SLAB].filter((id) => map.getLayer(id));
+    const onSlab = map.queryRenderedFeatures([point.x, point.y], { layers: raised })[0]?.properties.dicofre as string | undefined;
+    if (onSlab) return onSlab;
+    let at = point;
+    const top = slabs.concelhoTop();
+    if (top && map.queryRenderedFeatures([point.x, point.y], { layers: [CONCELHO_SLAB] }).length) {
+      const el = map.getContainer();
+      const [w, h] = [el.clientWidth / 2, el.clientHeight / 2];
+      const elevation = top.height / metresPerPixel(map.getZoom(), map.getCenter().lat);
+      const g = groundUnder({ x: point.x - w, y: point.y - h }, elevation, currentView());
+      at = { x: g.x + w, y: g.y + h };
+    }
+    return map.queryRenderedFeatures([at.x, at.y], { layers: [PARISH_FILL] })[0]?.properties.dicofre as string | undefined;
+  }
+
   // ---- hover + tooltip ----------------------------------------------------------
   let hover: { source: string; id: number } | null = null;
-  const setHover = (next: { source: string; id: number } | null) => {
+  const setHover = (next: { source: string; id: number } | null, dicofre: string | null = null) => {
     if (next?.source === hover?.source && next?.id === hover?.id) return;
     if (hover) map.setFeatureState(hover, { hover: false });
     if (next) map.setFeatureState(next, { hover: true });
     hover = next;
+    // Inside a concelho slab, the hovered parish pops up (its ground outline is under the slab).
+    slabs.hover(dicofre);
   };
 
   map.on("mousemove", (e: MapMouseEvent) => {
@@ -427,7 +470,7 @@ function start(data: MapData): void {
       );
     } else {
       const { p } = target;
-      setHover({ source: PARISH_SOURCE, id: featureId(p.dicofre) });
+      setHover({ source: PARISH_SOURCE, id: featureId(p.dicofre) }, p.dicofre);
       tooltip.replaceChildren(
         h("strong", {}, p.freguesia),
         h("span", {}, p.concelho),
@@ -561,6 +604,7 @@ function start(data: MapData): void {
     }
     document.body.dataset.mapIdle = "false";
     setOverlayVisibility(map, overlays);
+    slabs.setGlass(overlays.visible.size > 0);
     markOverlays();
   }
   const toggles = mountOverlayToggles($("legend-protected"), (cat) => overlays.visible.has(cat), (cat, on) => {
@@ -582,6 +626,7 @@ function start(data: MapData): void {
     if (!map.getSource(PARISH_SOURCE)) addLayers(map, data, filter, limits.levelZoom, PALETTES[theme], slabs.state());
     if (overlayData && overlays.loaded && !map.getSource(overlaySource(CATEGORY_IDS[0]))) addOverlays(map, overlayData, overlays, filter, limits.levelZoom, PALETTES[theme]);
     setPatternImages(map, PALETTES[theme]);
+    slabs.restore();
     clearHover();
     setSelectedIds(selectedIds, groupIds, selectedConcelhoId);
     document.body.dataset.mapIdle = "false";
@@ -605,14 +650,15 @@ function start(data: MapData): void {
   // Switched on: tilt onto the selection in place and raise its slab. Off (or reduced motion turned
   // on): lower the slab and level the camera.
   onView3dChange = () => {
-    slabs.set(slabTarget(selection), !reducedMotion.matches);
-    if (is3d() && selection) tiltOnto(boundsOf(selection), true);
-    else level0();
+    const zoom = is3d() && selection ? frame3d(selection, true) : map.getZoom();
+    slabs.set(slabTarget(selection), !reducedMotion.matches, zoom);
+    if (!is3d() || !selection) level0();
   };
   // Zooming out to the concelho level by hand levels a tilted camera: tilted, the country view
   // would show the horizon instead of the whole mainland.
   map.on("zoomend", (e) => {
     if ("originalEvent" in e && e.originalEvent && map.getZoom() < limits.levelZoom) level0();
+    slabs.refreshEdges(map.getZoom()); // the rims stay a few px wide
   });
 
   // MapLibre's hash ignores the bearing (map=zoom/lat/lng/bearing/pitch) while rotation gestures
@@ -634,7 +680,7 @@ function start(data: MapData): void {
   // A selection from the link gets its slab at once; a tilted view (map=…/bearing/pitch) without a
   // 3D selection is levelled.
   if (selection && is3d()) {
-    slabs.set(slabTarget(selection), false);
+    slabs.set(slabTarget(selection), false, map.getZoom());
     if (initial.hasMapView) restoreBearing(initial.bearing); // otherwise the fit above has just set it
   } else level0(false);
   window.addEventListener("hashchange", () => {

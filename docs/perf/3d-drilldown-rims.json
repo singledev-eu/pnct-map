@@ -1,0 +1,195 @@
+{
+  "profile": {
+    "device": "Pixel 7",
+    "network": "Fast 3G",
+    "cpuThrottlingRate": 4
+  },
+  "runs": [
+    {
+      "run": 0,
+      "view3d": "on",
+      "steps": {
+        "concelho": {
+          "fps": 55,
+          "worst": 100,
+          "idle": 18510,
+          "tiles": 13
+        },
+        "parish": {
+          "fps": 60,
+          "worst": 33,
+          "idle": 11622,
+          "tiles": 19
+        },
+        "close": {
+          "fps": 60,
+          "worst": 17,
+          "idle": 1035,
+          "tiles": 0
+        }
+      }
+    },
+    {
+      "run": 0,
+      "view3d": "off",
+      "steps": {
+        "concelho": {
+          "fps": 54,
+          "worst": 83,
+          "idle": 17573,
+          "tiles": 10
+        },
+        "parish": {
+          "fps": 61,
+          "worst": 17,
+          "idle": 15802,
+          "tiles": 14
+        },
+        "close": {
+          "fps": null,
+          "worst": null,
+          "idle": 1517,
+          "tiles": 0
+        }
+      }
+    },
+    {
+      "run": 1,
+      "view3d": "on",
+      "steps": {
+        "concelho": {
+          "fps": 55,
+          "worst": 100,
+          "idle": 18270,
+          "tiles": 13
+        },
+        "parish": {
+          "fps": 60,
+          "worst": 17,
+          "idle": 11170,
+          "tiles": 19
+        },
+        "close": {
+          "fps": 61,
+          "worst": 17,
+          "idle": 1044,
+          "tiles": 0
+        }
+      }
+    },
+    {
+      "run": 1,
+      "view3d": "off",
+      "steps": {
+        "concelho": {
+          "fps": 54,
+          "worst": 67,
+          "idle": 17465,
+          "tiles": 10
+        },
+        "parish": {
+          "fps": 60,
+          "worst": 17,
+          "idle": 15982,
+          "tiles": 14
+        },
+        "close": {
+          "fps": null,
+          "worst": null,
+          "idle": 1512,
+          "tiles": 0
+        }
+      }
+    },
+    {
+      "run": 2,
+      "view3d": "on",
+      "steps": {
+        "concelho": {
+          "fps": 55,
+          "worst": 100,
+          "idle": 19173,
+          "tiles": 13
+        },
+        "parish": {
+          "fps": 60,
+          "worst": 33,
+          "idle": 11591,
+          "tiles": 19
+        },
+        "close": {
+          "fps": 60,
+          "worst": 17,
+          "idle": 1048,
+          "tiles": 0
+        }
+      }
+    },
+    {
+      "run": 2,
+      "view3d": "off",
+      "steps": {
+        "concelho": {
+          "fps": 54,
+          "worst": 83,
+          "idle": 17648,
+          "tiles": 10
+        },
+        "parish": {
+          "fps": 60,
+          "worst": 17,
+          "idle": 16067,
+          "tiles": 14
+        },
+        "close": {
+          "fps": null,
+          "worst": null,
+          "idle": 1511,
+          "tiles": 0
+        }
+      }
+    }
+  ],
+  "median": {
+    "on": {
+      "concelho": {
+        "fps": 55,
+        "worst": 100,
+        "idle": 18510,
+        "tiles": 13
+      },
+      "parish": {
+        "fps": 60,
+        "worst": 33,
+        "idle": 11591,
+        "tiles": 19
+      },
+      "close": {
+        "fps": 60,
+        "worst": 17,
+        "idle": 1044,
+        "tiles": 0
+      }
+    },
+    "off": {
+      "concelho": {
+        "fps": 54,
+        "worst": 83,
+        "idle": 17573,
+        "tiles": 10
+      },
+      "parish": {
+        "fps": 60,
+        "worst": 17,
+        "idle": 15982,
+        "tiles": 14
+      },
+      "close": {
+        "fps": null,
+        "worst": null,
+        "idle": 1512,
+        "tiles": 0
+      }
+    }
+  }
+}

@@ -16,8 +16,6 @@ const CONCELHO_HIGHLIGHT = "concelho-highlight";
 export const CONCELHO_SLAB = "concelho-slab";
 export const PARISH_SLAB = "parish-slab";
 export const SLAB_VEIL = "slab-veil";
-export const CONCELHO_SLAB_LINE = "concelho-slab-line";
-export const PARISH_SLAB_LINE = "parish-slab-line";
 export const HATCH_IMAGE = "pnct-hatch";
 export const NATURA_HATCH_IMAGE = "natura-hatch";
 
@@ -189,54 +187,125 @@ const overlayFillOpacity = (cat: string, level: number, colors: MapPalette) => p
 const overlayLineOpacity = (level: number) => protectedLevel(level, 0.9);
 
 /**
- * The 3D selection (drill.ts): the selected concelho or parish as an extruded slab. Each slab layer is
- * filtered to one feature by its code (nothing when `code` is null), so the extrusion bucket only ever
- * holds the selection. Height and opacity are constants, so paint transitions animate them (MapLibre
- * doesn't transition data-driven values). The veil, a background layer above the app layers and below
- * the slabs and basemap labels, fades the rest of the map; the outline, drawn over the slab, marks its
- * footprint on the ground.
+ * The 3D selection (drill.ts): the selected concelho or parish as an extruded slab. Every slab layer
+ * is filtered to the selection (nothing when its code is null), so the extrusion buckets only ever
+ * hold one feature. Heights and opacities are constants, so paint transitions animate them (MapLibre
+ * doesn't transition data-driven values).
+ *
+ * Order, bottom to top, after the ground layers: the veil (a background layer that fades the rest of
+ * the map), the hover outlines (above the veil, so hovering still shows outside the slab), then the
+ * extrusions. Every ground line is below the slabs, and the slabs are opaque, so nothing on the
+ * ground shows through or across them; only the basemap's labels (above the app layers) are drawn
+ * over them. The outline is a rim extruded on the slab top (edges.ts: EDGE_SOURCE), not a ground line.
+ *
+ * Colour follows eligibility: PNCT parishes and whole-PNCT concelhos in the PNCT colour, the rest in
+ * a neutral slab; a partly-PNCT concelho is neutral with its PNCT parishes raised on top in the PNCT
+ * colour (CONCELHO_PNCT_TOP). Hovering a parish inside a concelho slab pops it up (HOVER_POP).
  */
+export const EDGE_SOURCE = "slab-edges";
+export const HOVER_EDGE_SOURCE = "hover-edge";
+export const CONCELHO_PNCT_TOP = "concelho-pnct-top";
+export const CONCELHO_RIM = "concelho-rim";
+export const CONCELHO_INNER_RIM = "concelho-inner-rim";
+export const PARISH_RIM = "parish-rim";
+export const HOVER_POP = "hover-pop";
+export const HOVER_RIM = "hover-rim";
+export const PARISH_HOVER_LINE = "parish-hover-line";
+export const CONCELHO_HOVER_LINE = "concelho-hover-line";
+
+export interface Extrusion {
+  code: string | null;
+  /** Base and top of the slab, metres. */
+  base: number;
+  height: number;
+  opacity: number;
+}
 export interface SlabState {
-  concelho: { code: string | null; height: number; opacity: number };
-  parish: { code: string | null; height: number; opacity: number };
+  concelho: Extrusion & { partial: boolean };
+  parish: Extrusion;
+  /** The hovered parish popping up from a concelho slab. */
+  hover: Extrusion;
   /** Opacity of the veil (0: no selection or 3D off). */
   veil: number;
 }
-export const NO_SLAB: SlabState = { concelho: { code: null, height: 0, opacity: 0 }, parish: { code: null, height: 0, opacity: 0 }, veil: 0 };
+const NONE: Extrusion = { code: null, base: 0, height: 0, opacity: 0 };
+export const NO_SLAB: SlabState = { concelho: { ...NONE, partial: false }, parish: { ...NONE }, hover: { ...NONE }, veil: 0 };
+
+/** Height of the rim above the slab top it sits on, metres. */
+export const rimLift = (height: number): number => Math.max(4, height * 0.06);
+/** Height of the hover pop-up above the concelho slab, metres. */
+export const popLift = (height: number): number => Math.max(25, height * 0.35);
 
 /** Filter that keeps the feature whose `key` is `code`; with no code, nothing (an empty bucket). */
 export const slabFilter = (key: "code" | "dicofre", code: string | null): ExpressionSpecification => ["==", ["get", key], code ?? ""];
+/** The PNCT parishes of concelho `code` (none for null). */
+export const pnctTopFilter = (code: string | null): ExpressionSpecification => ["all", ["==", ["slice", ["get", "dicofre"], 0, 4], code ?? "-"], isPnct];
+/** Edge quads of one role ("concelho", "inner", "parish"). */
+const edgeFilter = (role: string): ExpressionSpecification => ["==", ["get", "role"], role];
 
-export function slabLayers(slab: SlabState, colors: MapPalette): LayerSpecification[] {
-  const extrusion = (id: string, source: string, key: "code" | "dicofre", s: SlabState["parish"]): LayerSpecification => ({
+export function slabLayers(slab: SlabState, colors: MapPalette, filter: FilterState, level: number): LayerSpecification[] {
+  const rims = rimHeights(slab);
+  const extrusion = (id: string, source: string, filter: ExpressionSpecification, color: ExpressionSpecification | string, e: { base: number; height: number; opacity: number }): LayerSpecification => ({
     id,
     type: "fill-extrusion",
     source,
-    filter: slabFilter(key, s.code),
+    filter,
     paint: {
-      "fill-extrusion-color": colors.slab,
-      "fill-extrusion-height": s.height,
-      "fill-extrusion-base": 0,
-      "fill-extrusion-opacity": s.opacity,
+      "fill-extrusion-color": color,
+      "fill-extrusion-base": e.base,
+      "fill-extrusion-height": e.height,
+      "fill-extrusion-opacity": e.opacity,
       "fill-extrusion-vertical-gradient": true,
     },
   });
-  const outline = (id: string, source: string, key: "code" | "dicofre", s: SlabState["parish"]): LayerSpecification => ({
-    id,
-    type: "line",
-    source,
-    filter: slabFilter(key, s.code),
-    layout: { "line-join": "round" },
-    paint: { "line-color": colors.slabLine, "line-width": 3, "line-opacity": s.opacity ? 1 : 0 },
-  });
+  const pnctColor = (yes: string, no: string): ExpressionSpecification => ["case", isPnct, yes, no];
+  const c = slab.concelho;
+  const p = slab.parish;
+  const hv = slab.hover;
   return [
     { id: SLAB_VEIL, type: "background", paint: { "background-color": colors.veil, "background-opacity": slab.veil } },
-    extrusion(CONCELHO_SLAB, CONCELHO_SOURCE, "code", slab.concelho),
-    extrusion(PARISH_SLAB, PARISH_SOURCE, "dicofre", slab.parish),
-    outline(CONCELHO_SLAB_LINE, CONCELHO_SOURCE, "code", slab.concelho),
-    outline(PARISH_SLAB_LINE, PARISH_SOURCE, "dicofre", slab.parish),
+    {
+      id: PARISH_HOVER_LINE,
+      type: "line",
+      source: PARISH_SOURCE,
+      ...withFilter(parishFilter(filter.focus)),
+      paint: { "line-color": colors.highlight, "line-width": 1.8, "line-opacity": ["case", hovered, 1, 0] },
+    },
+    {
+      id: CONCELHO_HOVER_LINE,
+      type: "line",
+      source: CONCELHO_SOURCE,
+      ...withFilter(concelhoFilter(filter.focus)),
+      paint: { "line-color": colors.highlight, "line-width": 1.8, "line-opacity": concelhoLevel(level, ["case", hovered, 1, 0]) },
+    },
+    extrusion(CONCELHO_SLAB, CONCELHO_SOURCE, slabFilter("code", c.code), ["case", allPnct, colors.slab, colors.slabNeutral], c),
+    extrusion(CONCELHO_PNCT_TOP, PARISH_SOURCE, pnctTopFilter(c.partial ? c.code : null), colors.slab, rims[CONCELHO_PNCT_TOP]),
+    extrusion(CONCELHO_INNER_RIM, EDGE_SOURCE, edgeFilter("inner"), pnctColor(colors.innerRim, colors.innerRimNeutral), rims[CONCELHO_INNER_RIM]),
+    extrusion(CONCELHO_RIM, EDGE_SOURCE, edgeFilter("concelho"), pnctColor(colors.rim, colors.rimNeutral), rims[CONCELHO_RIM]),
+    extrusion(PARISH_SLAB, PARISH_SOURCE, slabFilter("dicofre", p.code), pnctColor(colors.slab, colors.slabNeutral), p),
+    extrusion(PARISH_RIM, EDGE_SOURCE, edgeFilter("parish"), pnctColor(colors.rim, colors.rimNeutral), rims[PARISH_RIM]),
+    extrusion(HOVER_POP, PARISH_SOURCE, slabFilter("dicofre", hv.code), pnctColor(colors.pop, colors.popNeutral), hv),
+    extrusion(HOVER_RIM, HOVER_EDGE_SOURCE, ["literal", true], pnctColor(colors.rim, colors.rimNeutral), rims[HOVER_RIM]),
   ];
 }
+
+/** Base/top paint of each rim and top layer for a state (drill.ts transitions them with the slabs). */
+export function rimHeights(slab: SlabState): Record<string, { base: number; height: number; opacity: number }> {
+  const c = slab.concelho;
+  const p = slab.parish;
+  const hv = slab.hover;
+  // The rims stay opaque while their slab is up, also when it is translucent (overlays on, drill.ts).
+  const solid = (o: number) => (o > 0 ? 1 : 0);
+  return {
+    [CONCELHO_PNCT_TOP]: { base: c.height, height: c.height + 2 * rimLift(c.height), opacity: c.opacity },
+    [CONCELHO_INNER_RIM]: { base: c.height, height: c.height + rimLift(c.height), opacity: solid(c.opacity) },
+    [CONCELHO_RIM]: { base: c.height, height: c.height + rimLift(c.height), opacity: solid(c.opacity) },
+    [PARISH_RIM]: { base: p.height, height: p.height + rimLift(p.height), opacity: solid(p.opacity) },
+    [HOVER_RIM]: { base: hv.height, height: hv.height + rimLift(c.height), opacity: solid(hv.opacity) },
+  };
+}
+
+const EMPTY_FC: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
 
 /** The app's map layers, bottom to top, for the current filter, level zoom, theme palette, overlays and 3D selection. */
 export function appLayers(filter: FilterState, level: number, colors: MapPalette, overlays?: OverlayState, slab: SlabState = NO_SLAB): LayerSpecification[] {
@@ -314,7 +383,7 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
         "line-opacity": concelhoLevel(level, ["case", ["any", selected, hovered], 1, 0]),
       },
     },
-    ...slabLayers(slab, colors),
+    ...slabLayers(slab, colors, filter, level),
   ];
 }
 
@@ -336,6 +405,9 @@ export function appLayerIndex(layers: readonly LayerSpecification[]): number {
 export function addLayers(map: MapLibreMap, data: MapData, filter: FilterState, level: number, colors: MapPalette, slab: SlabState = NO_SLAB): void {
   map.addSource(PARISH_SOURCE, { type: "geojson", data: data.parishGeoJSON, maxzoom: 12 });
   map.addSource(CONCELHO_SOURCE, { type: "geojson", data: data.concelhoGeoJSON, maxzoom: 12 });
+  // The slab edges (drill.ts fills them per selection); maxzoom 16, so the thin quads stay sharp.
+  map.addSource(EDGE_SOURCE, { type: "geojson", data: EMPTY_FC, maxzoom: 16 });
+  map.addSource(HOVER_EDGE_SOURCE, { type: "geojson", data: EMPTY_FC, maxzoom: 16 });
   setPatternImages(map, colors);
   const basemap = map.getStyle().layers;
   const before = basemap[appLayerIndex(basemap)]?.id;
@@ -401,8 +473,9 @@ export function applyFilter(map: MapLibreMap, filter: FilterState, level: number
     map.setPaintProperty(overlayFill(cat), "fill-opacity", overlayFillOpacity(cat, level, colors));
     map.setPaintProperty(overlayLine(cat), "line-opacity", overlayLineOpacity(level));
   }
-  for (const id of [PARISH_FILL, PARISH_LINE, PARISH_HIGHLIGHT]) map.setFilter(id, parishFilter(filter.focus));
-  for (const id of [CONCELHO_FILL, CONCELHO_LINE, CONCELHO_HIGHLIGHT]) map.setFilter(id, concelhoFilter(filter.focus));
+  for (const id of [PARISH_FILL, PARISH_LINE, PARISH_HIGHLIGHT, PARISH_HOVER_LINE]) map.setFilter(id, parishFilter(filter.focus));
+  for (const id of [CONCELHO_FILL, CONCELHO_LINE, CONCELHO_HIGHLIGHT, CONCELHO_HOVER_LINE]) map.setFilter(id, concelhoFilter(filter.focus));
+  map.setPaintProperty(CONCELHO_HOVER_LINE, "line-opacity", concelhoLevel(level, ["case", hovered, 1, 0]));
   map.setPaintProperty(PARISH_FILL, "fill-opacity", parishFillOpacity(filter, level));
   map.setPaintProperty(CONCELHO_FILL, "fill-opacity", concelhoFillOpacity(filter, level));
   map.setPaintProperty(CONCELHO_HATCH, "fill-opacity", hatchOpacity(filter, level));

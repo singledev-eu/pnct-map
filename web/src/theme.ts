@@ -68,9 +68,20 @@ export interface MapPalette {
   /** Fill opacity of the RNAP tint (the outline carries it; in light mode a stronger tint muddies the PNCT teal). */
   rnapTint: number;
   natura: string;
-  /** 3D selection (layers.ts slabLayers): slab colour (the walls darken towards the base), its outline, and the veil over the rest of the map. */
+  /**
+   * 3D selection (layers.ts slabLayers): the slab of a PNCT feature (the walls darken towards the
+   * base) and of any other (neutral), the rim on the slab's top edge and on the parish boundaries
+   * inside a concelho slab (each for PNCT / other), the hovered parish popping up (a lighter top),
+   * and the veil over the rest of the map.
+   */
   slab: string;
-  slabLine: string;
+  slabNeutral: string;
+  rim: string;
+  rimNeutral: string;
+  innerRim: string;
+  innerRimNeutral: string;
+  pop: string;
+  popNeutral: string;
   veil: string;
 }
 
@@ -88,7 +99,13 @@ export const PALETTES: Record<Theme, MapPalette> = {
     rnapTint: 0.08,
     natura: "#7c3aed",
     slab: "#0f8a7e",
-    slabLine: "#0b3d39",
+    slabNeutral: "#a3adb7",
+    rim: "#0b3d39",
+    rimNeutral: "#4b5563",
+    innerRim: "#0c6a61",
+    innerRimNeutral: "#7d8894",
+    pop: "#5fc5b9",
+    popNeutral: "#d5dbe1",
     veil: "#f6f6f4",
   },
   // On Dark Matter (background #0c0c0c): a brighter teal so PNCT stands out from the near-black
@@ -105,7 +122,13 @@ export const PALETTES: Record<Theme, MapPalette> = {
     rnapTint: 0.16,
     natura: "#b79cff",
     slab: "#22b8a7",
-    slabLine: "#c9f5ee",
+    slabNeutral: "#5a6571",
+    rim: "#d9faf4",
+    rimNeutral: "#d3dae1",
+    innerRim: "#a6ece1",
+    innerRimNeutral: "#9aa5b0",
+    pop: "#86ece0",
+    popNeutral: "#8f9ba7",
     veil: "#0c0c0c",
   },
 };

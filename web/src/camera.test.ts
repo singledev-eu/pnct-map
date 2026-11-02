@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, groundOffset, clipRing, insideRing, LEVEL_OFFSET, MAINLAND, nearestOnRing, OUTLINE, OUTLINE_MERC, paddingOffset, type Padding, type Size } from "./camera";
+import { BOUNDS_MARGIN, cameraLimits, constrainView, fitCenter, fitZoom, fitProjected, groundOffset, groundUnder, projectGround, clipRing, insideRing, LEVEL_OFFSET, MAINLAND, nearestOnRing, OUTLINE, OUTLINE_MERC, paddingOffset, type Padding, type Size } from "./camera";
 
 const DESKTOP = { width: 1440, height: 900 };
 const PHONE = { width: 390, height: 844 };
@@ -301,5 +301,52 @@ describe("groundOffset", () => {
   it("matches the flat result for tiny offsets at a small pitch", () => {
     const o = groundOffset({ x: 10, y: 0 }, { ...flat, pitch: 1e-6 });
     expect(o.x).toBeCloseTo(10, 6);
+  });
+});
+
+describe("projectGround / groundUnder", () => {
+  const view = { pitch: 50, bearing: 12, height: 844, fov: 36.87 };
+  it("inverts groundOffset", () => {
+    for (const o of [{ x: 120, y: -200 }, { x: -80, y: 150 }, { x: 0, y: 0 }]) {
+      const g = groundOffset(o, view);
+      const s = projectGround(g.x, g.y, view)!;
+      expect(s.x).toBeCloseTo(o.x, 6);
+      expect(s.y).toBeCloseTo(o.y, 6);
+    }
+  });
+  it("draws a raised point higher on the screen, and finds the ground under it", () => {
+    const ground = projectGround(40, -30, view)!;
+    const top = projectGround(40, -30, view, 25)!;
+    expect(top.y).toBeLessThan(ground.y);
+    const under = groundUnder(top, 25, view);
+    expect(under.x).toBeCloseTo(ground.x, 6);
+    expect(under.y).toBeCloseTo(ground.y, 6);
+  });
+  it("is the identity on a flat map", () => {
+    expect(projectGround(10, 20, { ...view, pitch: 0, bearing: 0 })).toEqual({ x: 10, y: 20 });
+    expect(groundUnder({ x: 5, y: 6 }, 30, { ...view, pitch: 0 })).toEqual({ x: 5, y: 6 });
+  });
+});
+
+describe("fitProjected", () => {
+  // A ~4 × 3 km parish near Vila Real, as its bounding ring.
+  const ring: [number, number][] = [[-7.74, 41.27], [-7.69, 41.27], [-7.69, 41.3], [-7.74, 41.3]];
+  const phonePad: Padding = { top: 120, left: 24, right: 24, bottom: 422 };
+  const view = { pitch: 40, bearing: -11, fov: 36.87 };
+  it("fills the visible area to the target share, inside it, under pitch and bearing", () => {
+    const fit = fitProjected(ring, PHONE, phonePad, view, { zoom: 8, fill: 0.7, maxZoom: 16 });
+    expect(fit.share).toBeGreaterThan(0.65);
+    expect(fit.share).toBeLessThan(0.75);
+    expect(fit.inside).toBe(true);
+  });
+  it("at a fixed zoom only centres, and reports a tiny share", () => {
+    const fit = fitProjected(ring, PHONE, phonePad, view, { zoom: 9, fixedZoom: true });
+    expect(fit.zoom).toBe(9);
+    expect(fit.share).toBeLessThan(0.2);
+    expect(fit.inside).toBe(true);
+  });
+  it("matches the flat fit on a flat, north-up map", () => {
+    const fit = fitProjected(ring, DESKTOP, { top: 80, left: 40, bottom: 40, right: 400 }, { pitch: 0, bearing: 0, fov: 36.87 }, { zoom: 8, fill: 1 });
+    expect(fit.zoom).toBeCloseTo(fitZoom([-7.74, 41.27, -7.69, 41.3], DESKTOP, { top: 80, left: 40, bottom: 40, right: 400 }), 3);
   });
 });
