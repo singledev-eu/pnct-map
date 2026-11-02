@@ -22,6 +22,9 @@ data/raw/*.pdf
 data/interim/parishes_full_4326.geojson
 data/interim/protected/
 data/interim/contacts/
+# Hand-annotated working files (contact candidates under review). Kept out of git (unreviewed
+# scraped mailboxes) and out of every clean target (tests/test_clean.py).
+data/manual/
 data/processed/*.geojson
 
 # Local screenshots and other throwaway outputs
