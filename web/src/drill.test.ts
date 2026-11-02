@@ -80,7 +80,10 @@ describe("slab stack", () => {
 
   it("puts the rims and the PNCT tops on the slab top, opaque even on a translucent slab", () => {
     const rims = rimHeights(state);
-    expect(rims[CONCELHO_RIM]).toEqual({ base: 400, height: 400 + rimLift(400), opacity: 1 });
+    // Partly PNCT: the rim rises above the PNCT tops (2 lifts), which would otherwise cover it.
+    expect(rims[CONCELHO_RIM]).toEqual({ base: 400, height: 400 + 3 * rimLift(400), opacity: 1 });
+    expect(rims[CONCELHO_PNCT_TOP].height).toBeLessThan(rims[CONCELHO_RIM].height);
+    expect(rimHeights({ ...state, concelho: { ...state.concelho, partial: false } })[CONCELHO_RIM].height).toBe(400 + rimLift(400));
     expect(rims[CONCELHO_PNCT_TOP].base).toBe(400);
     expect(rims[CONCELHO_PNCT_TOP].opacity).toBe(0.55);
     const rim = layers.find((l) => l.id === CONCELHO_RIM)!;

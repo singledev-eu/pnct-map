@@ -225,7 +225,7 @@ export interface SlabState {
   parish: Extrusion;
   /** The hovered parish popping up from a concelho slab. */
   hover: Extrusion;
-  /** Opacity of the veil (0: no selection or 3D off). */
+  /** 1 while the veil is up (a selection in 3D), else 0; its opacity is the palette's veilOpacity. */
   veil: number;
 }
 const NONE: Extrusion = { code: null, base: 0, height: 0, opacity: 0 };
@@ -263,7 +263,7 @@ export function slabLayers(slab: SlabState, colors: MapPalette, filter: FilterSt
   const p = slab.parish;
   const hv = slab.hover;
   return [
-    { id: SLAB_VEIL, type: "background", paint: { "background-color": colors.veil, "background-opacity": slab.veil } },
+    { id: SLAB_VEIL, type: "background", paint: { "background-color": colors.veil, "background-opacity": slab.veil * colors.veilOpacity } },
     {
       id: PARISH_HOVER_LINE,
       type: "line",
@@ -296,10 +296,12 @@ export function rimHeights(slab: SlabState): Record<string, { base: number; heig
   const hv = slab.hover;
   // The rims stay opaque while their slab is up, also when it is translucent (overlays on, drill.ts).
   const solid = (o: number) => (o > 0 ? 1 : 0);
+  // A partly-PNCT concelho's rims rise above its PNCT tops, which would otherwise cover them.
+  const tops = c.partial ? 2 * rimLift(c.height) : 0;
   return {
     [CONCELHO_PNCT_TOP]: { base: c.height, height: c.height + 2 * rimLift(c.height), opacity: c.opacity },
-    [CONCELHO_INNER_RIM]: { base: c.height, height: c.height + rimLift(c.height), opacity: solid(c.opacity) },
-    [CONCELHO_RIM]: { base: c.height, height: c.height + rimLift(c.height), opacity: solid(c.opacity) },
+    [CONCELHO_INNER_RIM]: { base: c.height, height: c.height + tops + rimLift(c.height), opacity: solid(c.opacity) },
+    [CONCELHO_RIM]: { base: c.height, height: c.height + tops + rimLift(c.height), opacity: solid(c.opacity) },
     [PARISH_RIM]: { base: p.height, height: p.height + rimLift(p.height), opacity: solid(p.opacity) },
     [HOVER_RIM]: { base: hv.height, height: hv.height + rimLift(c.height), opacity: solid(hv.opacity) },
   };

@@ -12,6 +12,7 @@ import type { GeoJSONSource, Map as MapLibreMap } from "maplibre-gl";
 
 type PaintProp = Parameters<MapLibreMap["setPaintProperty"]>[1];
 import type { Bounds, MapData } from "./data";
+import type { MapPalette } from "./theme";
 import { edgeQuads, metresPerPixel, sharedEdgeQuads } from "./edges";
 import {
   CONCELHO_INNER_RIM,
@@ -72,7 +73,6 @@ export const FILL_3D = 0.7;
 /** Duration of the tilt-and-fit move and of the slab rising, ms. */
 export const DURATION_3D = 1400;
 const LOWER_MS = 700;
-const VEIL = 0.38;
 
 /**
  * Pitch and bearing for a selection. The bearing is a fixed ±8–15° per feature (from its code), so
@@ -126,6 +126,8 @@ export class Slabs {
   constructor(
     private readonly map: MapLibreMap,
     private readonly data: MapData,
+    /** The current theme's palette (the veil's opacity is per theme). */
+    private readonly palette: () => MapPalette,
   ) {}
 
   state(): SlabState {
@@ -147,8 +149,8 @@ export class Slabs {
       if (target?.kind === kind) this.raise(kind, target.code, slabHeight(target.bounds), duration);
       else this.lower(kind, animate ? LOWER_MS : 0);
     }
-    this.s.veil = target ? VEIL : 0;
-    this.paint(SLAB_VEIL, { "background-opacity": this.s.veil }, animate ? DURATION_3D / 2 : 0);
+    this.s.veil = target ? 1 : 0;
+    this.paint(SLAB_VEIL, { "background-opacity": this.s.veil * this.palette().veilOpacity }, animate ? DURATION_3D / 2 : 0);
     this.buildEdges();
   }
 

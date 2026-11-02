@@ -83,6 +83,8 @@ export interface MapPalette {
   pop: string;
   popNeutral: string;
   veil: string;
+  /** Opacity of the veil while a selection is raised. */
+  veilOpacity: number;
 }
 
 export const PALETTES: Record<Theme, MapPalette> = {
@@ -98,7 +100,9 @@ export const PALETTES: Record<Theme, MapPalette> = {
     rnap: "#c2410c",
     rnapTint: 0.08,
     natura: "#7c3aed",
-    slab: "#0f8a7e",
+    // Slab tops are checked against the basemap labels drawn over them (contrast.test.ts, WCAG AA):
+    // a touch lighter than the PNCT teal, so positron's #333 locality names reach 4.5:1.
+    slab: "#13a99a",
     slabNeutral: "#a3adb7",
     rim: "#0b3d39",
     rimNeutral: "#4b5563",
@@ -107,10 +111,14 @@ export const PALETTES: Record<Theme, MapPalette> = {
     pop: "#5fc5b9",
     popNeutral: "#d5dbe1",
     veil: "#f6f6f4",
+    veilOpacity: 0.38,
   },
   // On Dark Matter (background #0c0c0c): a brighter teal so PNCT stands out from the near-black
   // land, the selection lighter than PNCT (the light theme makes it darker), and grey lines kept
   // well below white so the boundaries don't glare.
+  // The slab tops are deep (contrast.test.ts): the place names drawn over them are light grey
+  // (#a3a3a3), so a top must render at luminance ≤ 0.042 for 4.5:1. The bright rims carry the
+  // outline, and a stronger veil darkens the map around the selection so the slab still stands out.
   dark: {
     pnct: "#22b8a7",
     other: "#94a3b8",
@@ -121,15 +129,16 @@ export const PALETTES: Record<Theme, MapPalette> = {
     rnap: "#fb923c",
     rnapTint: 0.16,
     natura: "#b79cff",
-    slab: "#22b8a7",
-    slabNeutral: "#5a6571",
+    slab: "#051d1b",
+    slabNeutral: "#171a1d",
     rim: "#d9faf4",
     rimNeutral: "#d3dae1",
     innerRim: "#a6ece1",
     innerRimNeutral: "#9aa5b0",
-    pop: "#86ece0",
-    popNeutral: "#8f9ba7",
+    pop: "#092521",
+    popNeutral: "#1d2125",
     veil: "#0c0c0c",
+    veilOpacity: 0.75,
   },
 };
 

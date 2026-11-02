@@ -247,7 +247,7 @@ function start(data: MapData): void {
   }
 
   addLayers(map, data, filter, limits.levelZoom, PALETTES[theme]);
-  const slabs = new Slabs(map, data);
+  const slabs = new Slabs(map, data, () => PALETTES[theme]);
   // Protected-areas overlays: off unless the hash names them; the data loads on the first switch-on.
   const overlays: OverlayState & { visible: Set<string> } = {
     categories: CATEGORY_IDS,
