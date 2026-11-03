@@ -52,6 +52,9 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | average monthly earnings of employees | ganho médio mensal dos trabalhadores por conta de outrem |
 | Towns (concelho seats) (legend) | Sedes de concelho |
 | Coruche · 10 km (edge pointer; aria: "…, 10 km away, off the map") | Coruche · 10 km (aria: "…, a 10 km, fora do mapa") |
+| Shortlist (★, star a place) | Favoritos (★); "Adicionar aos favoritos" |
+| Shared shortlist | Favoritos partilhados |
+| Copy link | Copiar ligação |
 | Concelho coverage / PNCT coverage | Cobertura do concelho / Cobertura PNCT |
 | Property search | Pesquisa de imóveis |
 | Property type / Land type / Operation | Tipo de imóvel / Tipo de terreno / Operação |

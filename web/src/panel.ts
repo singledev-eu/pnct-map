@@ -24,6 +24,9 @@ export interface PanelCallbacks {
   onSelectParish: (dicofre: string) => void;
   onSelectConcelho: (code: string) => void;
   onOptionsChange: (opts: SearchOptions) => void;
+  /** The shortlist (shortlist.ts): whether `code` is starred, and toggling it. */
+  isStarred?: (code: string) => boolean;
+  onToggleStar?: (code: string) => void;
 }
 
 const OPERATIONS: Operation[] = ["comprar", "arrendar"];
@@ -148,7 +151,28 @@ export class Panel {
     this.options = options;
   }
 
-  private open(title: string, kicker: string, ...body: Child[]): void {
+  private starButton: HTMLButtonElement | null = null;
+  private starred: string | null = null;
+
+  /** Re-reads the starred state of the open feature (after a shortlist change). */
+  refreshStar(): void {
+    const b = this.starButton;
+    if (!b || !this.starred) return;
+    const on = this.cb.isStarred?.(this.starred) ?? false;
+    b.textContent = on ? "★" : "☆";
+    b.setAttribute("aria-pressed", String(on));
+    b.setAttribute("aria-label", on ? ui.shortlist.unstar : ui.shortlist.star);
+    b.title = on ? ui.shortlist.unstar : ui.shortlist.star;
+  }
+
+  private open(title: string, kicker: string, code: string, ...body: Child[]): void {
+    const star = h("button", { type: "button", class: "panel-star", "data-testid": "panel-star" });
+    star.addEventListener("click", () => {
+      this.cb.onToggleStar?.(code);
+      this.refreshStar();
+    });
+    this.starButton = star;
+    this.starred = code;
     const close = h("button", { class: "panel-close", type: "button", "aria-label": ui.closePanel }, "×");
     close.addEventListener("click", () => this.cb.onClose());
     // Phone sheet only (hidden on wide screens): the drag handle (sheet.ts) and the credits toggle.
@@ -159,7 +183,7 @@ export class Panel {
       credits.setAttribute("aria-expanded", String(open));
       this.root.classList.toggle("sheet-credit-open", open);
     });
-    const header = h("header", { class: "panel-header" }, h("div", {}, h("p", { class: "kicker" }, kicker), h("h2", { "data-testid": "panel-title" }, title)), h("div", { class: "panel-actions" }, credits, close));
+    const header = h("header", { class: "panel-header" }, h("div", {}, h("p", { class: "kicker" }, kicker), h("h2", { "data-testid": "panel-title" }, title)), h("div", { class: "panel-actions" }, ...(this.cb.onToggleStar ? [star] : []), credits, close));
     this.root.replaceChildren(handle, header, sheetCredit(), h("div", { class: "panel-body" }, ...body));
     this.root.classList.remove("sheet-credit-open");
     // A new selection in an open sheet keeps its height; a sheet that was closed opens at half.
@@ -167,6 +191,7 @@ export class Panel {
     attachSheet(this.root, handle, [handle, header], () => this.cb.onClose());
     this.root.hidden = false;
     document.body.classList.add("panel-open");
+    this.refreshStar();
   }
 
   close(): void {
@@ -271,6 +296,7 @@ export class Panel {
     this.open(
       p.freguesia,
       ui.kickerParish,
+      p.dicofre,
       badge(p.pnct),
       facts([
         [ui.factConcelho, p.concelho],
@@ -306,6 +332,7 @@ export class Panel {
     this.open(
       c.name,
       ui.kickerConcelho,
+      c.code,
       badge(c.pnctCount > 0),
       facts([
         [ui.factDistrito, c.distrito],
