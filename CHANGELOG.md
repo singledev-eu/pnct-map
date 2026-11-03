@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.8.0 (2026-11-03)
+
+### For users
+
+- **Whole-country button:** "All" / "Tudo" under the zoom buttons clears the selection (like ✕), empties the search box and returns to the level country view. It's disabled while you're already there. On phones the zoom buttons now stay visible above the half-open bottom sheet.
+- **Towns on the map:** the 278 concelho seats and 18 district capitals (from OpenStreetMap), with a dot and a label above the basemap's own labels. Capitals show from the country view, seats from about the concelho level. A legend toggle, "Towns (concelho seats)", is on by default and remembered.
+  - **Edge pointers:** while something is selected, its concelho seat and the nearest district capital get a small pill at the edge of the visible map when they're off-screen ("↙ Coruche · 10 km").
+- **Concelho card, "Housing and income":** median price per m² of homes sold (INE, 2025), gross income declared per taxpayer (IRS, 2024) and average monthly earnings of employees (Quadros de Pessoal, 2024), each with Portugal's value. All 278 concelhos have a value for all three.
+- **Shortlist:** star (☆) a parish or concelho in its panel. The "★ n" toolbar button lists them; pick one to fly there, × removes it, and **Copy link** shares the list (`#list=…`). A shared list opens apart from your own and doesn't change it until you choose "Add to my shortlist". Stored in this browser only.
+
+### Infrastructure
+
+- `scripts/fetch_cities.py` (one Overpass query, cached with its OSM timestamp) and `scripts/build_cities.py` (seat per CAOP concelho; the build fails unless all 278 match) → `web/data/cities.json` (ODbL, lazy). `make cities` / `make cities-fetch`; `make all` includes it.
+- `web/src/cities.ts`: the city layers (`metadata {"pnct:top": true}` puts a layer above the basemap labels) and the edge pointers.
+- INE: `period="latest"` queries (`fetch_ine.py` resolves each indicator's latest period); `build_concelhos.py` fails if any concelho lacks one of the new values. `web/data/concelhos.json` 123 KB raw, 19.8 KB gzipped.
+- `web/src/shortlist.ts`; `hash.ts` gains `list`.
+- Tests: pytest 131, Vitest 207, e2e 153.
+
 ## 0.7.2 (2026-11-03)
 
 ### For users

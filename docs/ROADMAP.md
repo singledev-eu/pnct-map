@@ -28,9 +28,10 @@ Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-m
 | 2026-11-02 | 3D drill-down selection: tilt, slabs coloured by eligibility with rims on top, hover pop-up, "3D" setting (off under reduced motion); every selection framed by its projected footprint; the search box follows the selection. Released as 0.7.0 | [3d-drilldown](reports/3d-drilldown.md), [fixes](reports/3d-drilldown-fixes.md), [flat fit](reports/3d-drilldown-flat-fit.md), [release](reports/0.7.0-release.md) |
 | 2026-11-02 | Dependency updates (Dependabot alerts: vite, @vitest/mocker, Pillow, certifi), Dependabot version updates. Released as 0.7.1 | [deps](reports/0.7.1-deps.md) |
 | 2026-11-03 | Dark-mode slab labels at AA contrast (deep slab tops, stronger dark veil), partly-PNCT concelho rims above the PNCT tops; protected areas drawn on the opaque slab top; water names and river lines readable in both themes; screenshot waits cover paint transitions; `make clean` spares hand-made contact data. Released as 0.7.2 | [01](reports/night/01-dark-slab-labels.md), [water](reports/0.7.2-water-labels.md), [01c](reports/night/01c-protected-on-slabs.md), [03](reports/night/03-tooling-fixes.md), [release](reports/0.7.2-release.md) |
+| 2026-11-03 | "All" button back to the whole country; concelho seats and district capitals from OpenStreetMap, with edge pointers to off-screen towns; concelho card "Housing and income" (INE sale price per m², IRS income per taxpayer, monthly earnings) for all 278 concelhos; shortlist with a shareable link. Released as 0.8.0 | [01b](reports/night/01b-whole-country.md), [04](reports/night/04-main-cities.md), [07](reports/night/07-concelho-card-v2.md), [08](reports/night/08-shortlist.md), [release](reports/0.8.0-release.md) |
 | 2026-10-12 | E2E flakiness: one retry; flaky tests warn with a trace but don't block deploys; tests wait for the parish layer, not the basemap | [e2e-flakiness](reports/e2e-flakiness.md) |
 
-Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; `0.3.0` (2026-10-15) the dark theme; `0.3.1` (2026-10-15) quiet road-shield filters; `0.4.0` (2026-10-17) protected areas; `0.4.1` (2026-10-18) the protection explainer and zoom fade; `0.5.0` (2026-10-18) the concelho card; `0.6.0` (2026-10-19) the PT/EN toggle and theme selection; `0.7.0` (2026-11-02) the 3D selection; `0.7.1` (2026-11-02) dependency updates; `0.7.2` (2026-11-03) dark-mode slab labels and protected areas on the slab; see [CHANGELOG.md](../CHANGELOG.md).
+Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; `0.3.0` (2026-10-15) the dark theme; `0.3.1` (2026-10-15) quiet road-shield filters; `0.4.0` (2026-10-17) protected areas; `0.4.1` (2026-10-18) the protection explainer and zoom fade; `0.5.0` (2026-10-18) the concelho card; `0.6.0` (2026-10-19) the PT/EN toggle and theme selection; `0.7.0` (2026-11-02) the 3D selection; `0.7.1` (2026-11-02) dependency updates; `0.7.2` (2026-11-03) dark-mode slab labels and protected areas on the slab; `0.8.0` (2026-11-03) towns, the whole-country button, housing and income in the card, and the shortlist; see [CHANGELOG.md](../CHANGELOG.md).
 
 ## Next
 
@@ -39,7 +40,10 @@ Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (20
 ## Backlog
 
 - Protected areas v2: other restriction layers (REN, RAN, PDM zoning), per-site tooltips.
-- Concelho card v2: câmara contacts for the 93 concelhos without PNCT parishes; a yearly refresh of the INE estimates (mid-June) and an `--online` re-check of the contacts.
+- Concelho card v2: câmara contacts for the 93 concelhos without PNCT parishes; a yearly refresh of the INE estimates (mid-June) and an `--online` re-check of the contacts. Rents (INE: 45–78 concelhos confidential), IMI (no openly licensed source; left out) and Junta contacts (a curation project): [07](reports/night/07-concelho-card-v2.md).
+- Relief (hillshade and terrain, `task/05-terrain`, off by default) and a LiDAR slope layer (`docs/06-lidar-slope`): waiting for Mapterhorn's terms and a DGT data-centre login.
+- Slow bearing swing after a selection (`task/09-bearing-swing`, behind `?swing=1`): not released.
+- Other ideas: `docs/10-ideas` (report only).
 - Cloudflare Web Analytics (cookieless). Undecided.
 - Eventual migration from Cloudflare Pages to Workers static assets. Wrangler 4.149 already steers new projects there; `pnct-map` was created on classic Pages with `--force`.
 
