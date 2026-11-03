@@ -131,6 +131,10 @@ export interface UiStrings {
   legendPnctParish: string;
   legendOtherParish: string;
   legendBoundary: string;
+  /** Legend toggle for the concelho seats and district capitals (cities.ts). */
+  legendCities: string;
+  /** An edge pointer to an off-screen town (cities.ts): accessible name; the visible text is the name and the distance. */
+  cityPointer: (name: string, km: string) => string;
   overlaysLabel: string;
   aboutButton: string;
   /** The button under the zoom buttons that returns to the whole country: visible label, and accessible name/tooltip. */

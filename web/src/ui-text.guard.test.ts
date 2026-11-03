@@ -11,7 +11,7 @@ import html from "../index.html?raw";
  *   - is a single capitalised word given as UI text: an h(tag, {…}, "Word") child, or assigned to
  *     textContent / title / placeholder / aria-label.
  * Literals on lines that log or throw (console.*, new Error, throw) are skipped: they're for
- * developers. Limits: a lowercase single word ("close"), text built by concatenation, or text in
+ * developers. So are font names on a "text-font" line. Limits: a lowercase single word ("close"), text built by concatenation, or text in
  * a variable assigned elsewhere isn't caught; proper names given as link text ("OpenFreeMap",
  * "CAOP 2025") pass on purpose. index.html is checked separately: no text nodes or text attributes
  * in <body> except through data-i18n / data-i18n-attr.
@@ -93,7 +93,7 @@ function literals(src: string): Literal[] {
 }
 
 const PROSE = [/\p{Lu}\p{Ll}+[  ]+\p{L}{2,}/u, /(?:^|[  ])\p{Ll}{2,}[  ]+\p{Ll}{2,}[  ]+\p{Ll}{2,}(?:[  ]|$)/u, /…/];
-const DEV_LINE = /console\.|new Error\(|throw /;
+const DEV_LINE = /console\.|new Error\(|throw |"text-font"/; // and MapLibre font names (cities.ts)
 const SINGLE_WORD_UI = [
   /\bh\(\s*"\w+",\s*\{[^}]*\},\s*"(\p{Lu}\p{Ll}+)"/gu,
   /\.(?:textContent|title|placeholder)\s*=\s*"(\p{Lu}\p{Ll}+)"/gu,

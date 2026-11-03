@@ -1,6 +1,7 @@
 import type { ExpressionSpecification, LayerSpecification, Map as MapLibreMap, StyleSpecification } from "maplibre-gl";
 import { FADE, protectedFade } from "./camera";
 import { extrusionTop, luminance, over, parseHex, toHex } from "./contrast";
+import { CITY_SOURCE, cityDots, cityLayers, SEAT_LAYER, SEAT_LEAD, CAPITAL_LAYER } from "./cities";
 import type { MapData } from "./data";
 import type { OverlayData } from "./protected";
 import type { MapPalette } from "./theme";
@@ -45,6 +46,8 @@ export interface FilterState {
   focus: boolean;
   /** Relief on (terrain.ts): the selection is drawn lighter, so the hillshade shows through it. */
   relief?: boolean;
+  /** The concelho seats and district capitals (cities.ts; legend toggle). Shown unless false. */
+  cities?: boolean;
 }
 
 const isPnct: ExpressionSpecification = ["==", ["get", "pnct"], true];
@@ -139,7 +142,7 @@ const naturaHatch = (color: string) => hatchImage(color, { stripe: 2, alpha: 0.7
 
 /** The app's pattern images in the palette's colours, by image id. */
 export function patternImages(colors: MapPalette): Record<string, ReturnType<typeof hatchImage>> {
-  return { [HATCH_IMAGE]: hatchImage(colors.pnct), [NATURA_HATCH_IMAGE]: naturaHatch(colors.natura) };
+  return { [HATCH_IMAGE]: hatchImage(colors.pnct), [NATURA_HATCH_IMAGE]: naturaHatch(colors.natura), ...cityDots(colors) };
 }
 
 /**
@@ -436,6 +439,7 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
       },
     },
     ...slabLayers(slab, colors, filter, level),
+    ...cityLayers(colors, level, filter.cities !== false),
   ];
 }
 
@@ -453,6 +457,9 @@ export function appLayerIndex(layers: readonly LayerSpecification[]): number {
   return last + 1;
 }
 
+/** Layers above the basemap's labels (cities.ts TOP): the rest go between the basemap and its labels. */
+const isTop = (layer: LayerSpecification) => !!(layer.metadata as Record<string, unknown> | undefined)?.["pnct:top"];
+
 /** Adds the sources and the map layers between the basemap and its labels (appLayerIndex). `level`: see concelhoLevel. */
 export function addLayers(map: MapLibreMap, data: MapData, filter: FilterState, level: number, colors: MapPalette, slab: SlabState = NO_SLAB): void {
   map.addSource(PARISH_SOURCE, { type: "geojson", data: data.parishGeoJSON, maxzoom: 12 });
@@ -462,10 +469,11 @@ export function addLayers(map: MapLibreMap, data: MapData, filter: FilterState, 
   map.addSource(HOVER_EDGE_SOURCE, { type: "geojson", data: EMPTY_FC, maxzoom: 16 });
   map.addSource(PROTECTED_SLAB_SOURCE, { type: "geojson", data: EMPTY_FC, maxzoom: 14 });
   map.addSource(PROTECTED_EDGE_SOURCE, { type: "geojson", data: EMPTY_FC, maxzoom: 16 });
+  map.addSource(CITY_SOURCE, { type: "geojson", data: EMPTY_FC });
   setPatternImages(map, colors);
   const basemap = map.getStyle().layers;
   const before = basemap[appLayerIndex(basemap)]?.id;
-  for (const layer of appLayers(filter, level, colors, undefined, slab)) map.addLayer(layer, before);
+  for (const layer of appLayers(filter, level, colors, undefined, slab)) map.addLayer(layer, isTop(layer) ? undefined : before);
 }
 
 /**
@@ -505,7 +513,9 @@ export function withAppLayers(previous: StyleSpecification | undefined, next: St
   if (!sources[PARISH_SOURCE] || !sources[CONCELHO_SOURCE]) return next; // the app has not added them yet
   layers = layers.filter((l) => !("source" in l) || sources[l.source as string]); // an overlay the previous style lacked
   const split = appLayerIndex(next.layers);
-  return { ...next, sources, layers: [...next.layers.slice(0, split), ...layers, ...next.layers.slice(split)] };
+  const top = layers.filter(isTop);
+  const middle = layers.filter((l) => !isTop(l));
+  return { ...next, sources, layers: [...next.layers.slice(0, split), ...middle, ...next.layers.slice(split), ...top] };
 }
 
 /** Recolours the pattern images (kept across a diffed style switch) or adds them (after a full style rebuild). */
@@ -533,6 +543,8 @@ export function applyFilter(map: MapLibreMap, filter: FilterState, level: number
   map.setPaintProperty(PARISH_FILL, "fill-opacity", parishFillOpacity(filter, level));
   map.setPaintProperty(CONCELHO_FILL, "fill-opacity", concelhoFillOpacity(filter, level));
   map.setPaintProperty(CONCELHO_HATCH, "fill-opacity", hatchOpacity(filter, level));
+  for (const id of [SEAT_LAYER, CAPITAL_LAYER]) if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", filter.cities === false ? "none" : "visible");
+  if (map.getLayer(SEAT_LAYER)) map.setLayerZoomRange(SEAT_LAYER, Math.max(0, level - SEAT_LEAD), 24);
   map.setPaintProperty(PARISH_LINE, "line-opacity", parishLevel(level, lineOpacity(filter.district, 0.45, 0.15)));
   map.setPaintProperty(CONCELHO_LINE, "line-opacity", lineOpacity(filter.district, 0.6, 0.2));
   map.setPaintProperty(CONCELHO_HIGHLIGHT, "line-opacity", concelhoLevel(level, ["case", ["any", selected, hovered], 1, 0]));
