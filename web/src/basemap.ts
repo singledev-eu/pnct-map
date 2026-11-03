@@ -82,6 +82,51 @@ function brightPlaceLabels(style: StyleSpecification): StyleSpecification {
 }
 
 /**
+ * Water names, both themes. Positron draws river and stream names (its waterway layer, from z10)
+ * in light grey hsl(0,0%,66%) with a translucent halo: 2.4:1 on its own land and lost on the PNCT
+ * fill. Dark Matter has no waterway names at all, and its one water_name layer (black text) sits
+ * among the line layers, below the app's fills. Both get the same three label layers here, from the
+ * tiles' `waterway` and `water_name` layers (names in the UI language like every basemap label),
+ * styled per theme with an opaque halo, and placed as the lowest labels, above every app layer
+ * (appLayerIndex). Colours: contrast.test.ts.
+ */
+export const WATER_LABEL: Record<Theme, { text: string; halo: string }> = {
+  light: { text: "#0b2c55", halo: "#ffffff" },
+  dark: { text: "#d3e7fb", halo: "#0c0c0c" },
+};
+
+/** The basemaps' water label layers (replaced by waterLabels). */
+const isWaterLabel = (layer: StyleSpecification["layers"][number]) =>
+  layer.type === "symbol" && "source-layer" in layer && (layer["source-layer"] === "waterway" || layer["source-layer"] === "water_name");
+
+// The name expression of the basemap labels, so latinLabels and localLabels apply to these too.
+const WATER_NAME: ExpressionSpecification = ["case", ["has", "name:nonlatin"], ["concat", ["get", "name:latin"], " ", ["get", "name:nonlatin"]], ["coalesce", ["get", "name_en"], ["get", "name"]]];
+const isLine: ExpressionSpecification = ["match", ["geometry-type"], ["LineString", "MultiLineString"], true, false];
+const isPoint: ExpressionSpecification = ["match", ["geometry-type"], ["MultiPoint", "Point"], true, false];
+
+export function waterLabelLayers(theme: Theme): StyleSpecification["layers"] {
+  const { text, halo } = WATER_LABEL[theme];
+  const paint = { "text-color": text, "text-halo-color": halo, "text-halo-width": 1.5 };
+  const font = { "text-font": ["Noto Sans Italic"] }; // positron's water font, also served for Dark Matter
+  const line = { "symbol-placement": "line", "symbol-spacing": 350, "text-field": WATER_NAME, ...font, "text-letter-spacing": 0.1, "text-size": 13 } as const;
+  return [
+    { id: "pnct-waterway-label", type: "symbol", source: "openmaptiles", "source-layer": "waterway", minzoom: 10, filter: isLine, layout: line, paint },
+    { id: "pnct-water-name-line", type: "symbol", source: "openmaptiles", "source-layer": "water_name", filter: isLine, layout: line, paint },
+    { id: "pnct-water-name-point", type: "symbol", source: "openmaptiles", "source-layer": "water_name", filter: isPoint, layout: { "text-field": WATER_NAME, ...font, "text-letter-spacing": 0.1, "text-max-width": 5, "text-size": 13 }, paint },
+  ] as StyleSpecification["layers"];
+}
+
+/** Replaces the basemap's water labels with waterLabelLayers, as the lowest labels above every non-label layer. */
+export function waterLabels(style: StyleSpecification, theme: Theme): StyleSpecification {
+  const layers = style.layers.filter((l) => !isWaterLabel(l));
+  let at = 0;
+  layers.forEach((l, i) => {
+    if (l.type !== "symbol") at = i + 1;
+  });
+  return { ...style, layers: [...layers.slice(0, at), ...waterLabelLayers(theme), ...layers.slice(at)] };
+}
+
+/**
  * Positron's road-shield layers (highway-shield-non-us, highway-shield-us-interstate, road_shield_us)
  * filter on ["<=", ["get", "ref_length"], 6]. Roads without a ref have no ref_length, and MapLibre
  * logs "Expected value to be of type number, but found null instead. Falling back to false" for each
@@ -110,10 +155,10 @@ function shieldFilters(style: StyleSpecification): StyleSpecification {
   };
 }
 
-/** transformStyle for the basemap of `theme`: labels in `lang` (Latin-only fallback), quiet shield filters, plus brighter place names in dark. */
+/** transformStyle for the basemap of `theme`: readable water names, labels in `lang` (Latin-only fallback), quiet shield filters, plus brighter place names in dark. */
 export function basemapStyle(theme: Theme, lang: Lang) {
   return (previous: StyleSpecification | undefined, next: StyleSpecification): StyleSpecification => {
-    const style = shieldFilters(localLabels(latinLabels(previous, next), lang));
+    const style = shieldFilters(localLabels(latinLabels(previous, waterLabels(next, theme)), lang));
     return theme === "dark" ? brightPlaceLabels(style) : style;
   };
 }

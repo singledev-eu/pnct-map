@@ -301,6 +301,7 @@ export function slabLayers(slab: SlabState, colors: MapPalette, filter: FilterSt
   const hv = slab.hover;
   return [
     { id: SLAB_VEIL, type: "background", paint: { "background-color": colors.veil, "background-opacity": slab.veil * colors.veilOpacity } },
+    waterLine(colors),
     {
       id: PARISH_HOVER_LINE,
       type: "line",
@@ -328,6 +329,27 @@ export function slabLayers(slab: SlabState, colors: MapPalette, filter: FilterSt
     ),
     extrusion(PROTECTED_RIM, PROTECTED_EDGE_SOURCE, ["literal", true], ["match", ["get", "cat"], "rnap", colors.rnap, colors.natura], rims[PROTECTED_RIM]),
   ];
+}
+
+/**
+ * Rivers and streams, from the basemap's own vector tiles (OpenMapTiles `waterway`). The basemap
+ * draws them below the app's fills, where the PNCT fill and the veil hide them, and Dark Matter's are
+ * near-black on near-black. This copy sits above the fills and the veil, and below the slabs, so
+ * no ground line crosses a slab (it is hidden under one like the land).
+ */
+export const WATER_LINE = "water-line";
+function waterLine(colors: MapPalette): LayerSpecification {
+  const width = (river: number, other: number): ExpressionSpecification => ["match", ["get", "class"], "river", river, other];
+  return {
+    id: WATER_LINE,
+    type: "line",
+    source: "openmaptiles",
+    "source-layer": "waterway",
+    minzoom: 8,
+    filter: ["all", ["match", ["geometry-type"], ["LineString", "MultiLineString"], true, false], ["!=", ["get", "brunnel"], "tunnel"]],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: { "line-color": colors.water, "line-width": ["interpolate", ["linear"], ["zoom"], 8, width(0.8, 0.3), 12, width(1.8, 0.9), 15, width(3, 1.6)] },
+  };
 }
 
 /** Base/top paint of each rim and top layer for a state (drill.ts transitions them with the slabs). */

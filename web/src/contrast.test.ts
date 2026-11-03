@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DARK_PLACE_LABEL } from "./basemap";
+import { DARK_PLACE_LABEL, WATER_LABEL } from "./basemap";
 import { AA, contrast, extrusionTop, over, parseHex, toHex } from "./contrast";
 import { SLAB_CATEGORIES, slabTint } from "./layers";
 import { PALETTES, type Theme } from "./theme";
@@ -7,9 +7,9 @@ import { PALETTES, type Theme } from "./theme";
 /**
  * Place-name colours of the basemap styles, drawn over the slabs (only basemap labels are above the
  * extrusions). Positron (light): label_village/town/city/country #000, label_other/label_state
- * #333. Dark Matter: rgb(101,101,101), lifted to DARK_PLACE_LABEL by basemap.ts. Road and water
- * names are left out: they are dim on purpose in both styles and miss 4.5:1 on the basemap itself
- * (docs/reports/night/01-dark-slab-labels.md).
+ * #333. Dark Matter: rgb(101,101,101), lifted to DARK_PLACE_LABEL by basemap.ts. Road names are
+ * left out: they are dim on purpose in both styles and miss 4.5:1 on the basemap itself
+ * (docs/reports/night/01-dark-slab-labels.md). Water names are basemap.ts WATER_LABEL (below).
  */
 const PLACE_LABELS: Record<Theme, string[]> = { light: ["#000000", "#333333"], dark: [DARK_PLACE_LABEL] };
 /** Basemap land (background) per theme. */
@@ -73,6 +73,41 @@ describe.each(["light", "dark"] as const)("slab tops, %s theme", (theme) => {
   });
 });
 
+/** Basemap woods (landcover_wood), the darkest (light) / lightest (dark) common land cover. */
+const WOOD: Record<Theme, string> = { light: "#dce0dc", dark: "#202020" };
+/** A PNCT parish at rest (layers.ts parishFillOpacity). */
+const PNCT_FILL = 0.5;
+
+/** Every flat background a water name can sit on without a selection effect: land, woods, a PNCT parish, the veiled map, every slab and pop-up top. */
+function waterBackgrounds(theme: Theme): Record<string, string> {
+  const p = PALETTES[theme];
+  const land = parseHex(LAND[theme]);
+  const out: Record<string, string> = {
+    land: LAND[theme],
+    wood: WOOD[theme],
+    pnctParish: toHex(over(parseHex(p.pnct), PNCT_FILL, land)),
+    veiledLand: toHex(veiled(theme, false)),
+    veiledPnct: toHex(veiled(theme, true)),
+  };
+  for (const [name, paint] of Object.entries(tops(theme))) out[name] = toHex(extrusionTop(paint));
+  for (const cat of SLAB_CATEGORIES) for (const slab of ["slab", "slabNeutral"] as const) out[`${slab}-${cat}`] = toHex(extrusionTop(slabTint(p[slab], cat, p)));
+  return out;
+}
+
+describe.each(["light", "dark"] as const)("water names and lines, %s theme", (theme) => {
+  const { text, halo } = WATER_LABEL[theme];
+  it("the name is well clear of its own (opaque) halo", () => {
+    expect(contrast(text, halo)).toBeGreaterThanOrEqual(7);
+  });
+  it.each(Object.entries(waterBackgrounds(theme)))("the name reaches AA on %s (%s)", (_, bg) => {
+    expect(contrast(text, bg)).toBeGreaterThanOrEqual(AA);
+  });
+  it("the river line reaches 3:1 (non-text contrast) on land, woods and a PNCT parish", () => {
+    const bgs = waterBackgrounds(theme);
+    for (const bg of [bgs.land, bgs.wood, bgs.pnctParish]) expect(contrast(PALETTES[theme].water, bg)).toBeGreaterThanOrEqual(3);
+  });
+});
+
 it("prints the contrast table (for the report)", () => {
   const rows: string[] = [];
   for (const theme of ["light", "dark"] as const) {
@@ -83,6 +118,14 @@ it("prints the contrast table (for the report)", () => {
       rows.push(`${theme} ${name} paint ${paint} → top ${toHex(top)}: ${labels}; vs veiled map ${toHex(around)} ${contrast(top, around).toFixed(2)}`);
     }
   }
+  for (const theme of ["light", "dark"] as const) {
+    const p = PALETTES[theme];
+    const land = parseHex(LAND[theme]);
+    const bgs = { ...waterBackgrounds(theme), neighbour: toHex(over(parseHex(p.pnct), NEIGHBOUR_FILL, land)), hovered: toHex(over(parseHex(p.pnct), 0.72, land)), selectedFlat: toHex(over(parseHex(p.selected), 0.85, land)) };
+    const t = WATER_LABEL[theme].text;
+    rows.push(`${theme} water name ${t} (halo ${WATER_LABEL[theme].halo} ${contrast(t, WATER_LABEL[theme].halo).toFixed(2)}): ` + Object.entries(bgs).map(([k, v]) => `${k} ${v} ${contrast(t, v).toFixed(2)}`).join(", "));
+    rows.push(`${theme} water line ${p.water}: ` + Object.entries(bgs).map(([k, v]) => `${k} ${contrast(p.water, v).toFixed(2)}`).join(", "));
+  }
   if ((globalThis as { process?: { env: Record<string, string | undefined> } }).process?.env.CONTRAST_TABLE) console.log(rows.join("\n"));
-  expect(rows).toHaveLength(8);
+  expect(rows).toHaveLength(12);
 });

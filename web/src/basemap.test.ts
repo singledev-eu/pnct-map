@@ -1,6 +1,6 @@
 import type { StyleSpecification } from "maplibre-gl";
 import { describe, expect, it } from "vitest";
-import { basemapStyle, DARK_PLACE_LABEL, labelField, latinLabels, NO_REF_LENGTH, setLabelLanguage } from "./basemap";
+import { basemapStyle, DARK_PLACE_LABEL, labelField, latinLabels, NO_REF_LENGTH, setLabelLanguage, WATER_LABEL, waterLabelLayers } from "./basemap";
 
 // The positron label expression (OpenFreeMap, 2026-10).
 const POSITRON_LABEL = [
@@ -11,6 +11,9 @@ const POSITRON_LABEL = [
 ];
 
 const style = (layers: unknown[]) => ({ version: 8, sources: {}, layers }) as unknown as StyleSpecification;
+/** The style without the water labels basemapStyle adds (tested on their own below). */
+const OWN_WATER = new Set(waterLabelLayers("light").map((l) => l.id));
+const withoutWater = (s: StyleSpecification): StyleSpecification => ({ ...s, layers: s.layers.filter((l) => !OWN_WATER.has(l.id)) });
 
 describe("latinLabels", () => {
   it("drops name:nonlatin from label text and keeps the fallback", () => {
@@ -35,7 +38,7 @@ describe("latinLabels", () => {
 describe("basemapStyle", () => {
   const place = { id: "place_town", type: "symbol", source: "omt", "source-layer": "place", layout: { "text-field": POSITRON_LABEL }, paint: { "text-color": "rgb(101,101,101)" } };
   const style = { version: 8, sources: {}, layers: [place] } as unknown as StyleSpecification;
-  const paint = (s: StyleSpecification) => (s.layers[0] as { paint: Record<string, unknown> }).paint["text-color"];
+  const paint = (s: StyleSpecification) => (withoutWater(s).layers[0] as { paint: Record<string, unknown> }).paint["text-color"];
 
   it("brightens place names in dark only, on top of the Latin-only labels", () => {
     expect(paint(basemapStyle("light", "en")(undefined, style))).toBe("rgb(101,101,101)");
@@ -49,7 +52,7 @@ describe("label language", () => {
   const label = (id: string) => ({ id, type: "symbol", source: "omt", "source-layer": "place", layout: { "text-field": POSITRON_LABEL } });
   const shield = { id: "shield", type: "symbol", source: "omt", layout: { "text-field": ["to-string", ["get", "ref"]] } };
   const input = { version: 8, sources: {}, layers: [label("place_city"), shield] } as unknown as StyleSpecification;
-  const field = (s: StyleSpecification, i = 0) => (s.layers[i] as { layout: Record<string, unknown> }).layout["text-field"];
+  const field = (s: StyleSpecification, i = 0) => (withoutWater(s).layers[i] as { layout: Record<string, unknown> }).layout["text-field"];
 
   it("prefers name:<lang>, then the Latin name, then name_en (EN) or the local name (PT)", () => {
     expect(labelField("pt")).toEqual(["coalesce", ["get", "name:pt"], ["case", ["has", "name:nonlatin"], ["get", "name:latin"], ["get", "name"]]]);
@@ -71,7 +74,8 @@ describe("label language", () => {
     const style = basemapStyle("light", "en")(undefined, input);
     const set: [string, unknown][] = [];
     setLabelLanguage({ getStyle: () => style, setLayoutProperty: (id, name, value) => name === "text-field" && set.push([id, value]) }, "pt");
-    expect(set).toEqual([["place_city", labelField("pt")]]);
+    set.sort();
+    expect(set).toEqual([["place_city", labelField("pt")], ...[...OWN_WATER].map((id) => [id, labelField("pt")])].sort());
   });
 });
 
@@ -100,5 +104,31 @@ describe("shield filters", () => {
     expect(patched.filter.slice(2)).toEqual(shield.filter.slice(2));
     expect(patched.layout).toEqual(shield.layout);
     expect(water).toBe(other);
+  });
+});
+
+describe("water labels", () => {
+  // Positron: a grey waterway label and two water_name labels; Dark Matter: one water_name label among the line layers.
+  const waterway = { id: "waterway", type: "line", source: "openmaptiles", "source-layer": "waterway" };
+  const road = { id: "road", type: "line", source: "openmaptiles", "source-layer": "transportation" };
+  const label = (id: string, sourceLayer: string) => ({ id, type: "symbol", source: "openmaptiles", "source-layer": sourceLayer, layout: { "text-field": POSITRON_LABEL }, paint: { "text-color": "hsl(0,0%,66%)" } });
+  const place = label("place_city", "place");
+  const positron = style([waterway, road, label("waterway_line_label", "waterway"), label("water_name_line_label", "water_name"), place]);
+  const dark = style([waterway, label("water_name", "water_name"), road, place]);
+  const ids = (s: StyleSpecification) => s.layers.map((l) => l.id);
+
+  it.each([
+    ["light", positron],
+    ["dark", dark],
+  ] as const)("%s: replaced by our layers, the lowest labels above every line and fill layer", (theme, input) => {
+    const out = basemapStyle(theme, "pt")(undefined, input);
+    expect(ids(out)).toEqual(["waterway", "road", "pnct-waterway-label", "pnct-water-name-line", "pnct-water-name-point", "place_city"]);
+    const water = out.layers.filter((l) => OWN_WATER.has(l.id)) as unknown as { paint: Record<string, unknown>; layout: Record<string, unknown>; minzoom?: number }[];
+    for (const l of water) {
+      expect(l.paint["text-color"]).toBe(WATER_LABEL[theme].text);
+      expect(l.paint["text-halo-color"]).toBe(WATER_LABEL[theme].halo);
+      expect(l.layout["text-field"]).toEqual(labelField("pt")); // names in the UI language, Latin only
+    }
+    expect(water[0].minzoom).toBe(10); // the waterway names from positron's zoom
   });
 });

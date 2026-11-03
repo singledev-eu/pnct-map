@@ -6,6 +6,7 @@
 
 - **Dark mode, 3D selection:** place names on a raised slab are readable again. The dark slab tops were bright teal under the grey labels (1.1:1 contrast); they are now deep (≥ 4.5:1 for every place-label colour on every slab and pop-up top, both themes), and the map around the selection is veiled more strongly in dark mode (0.75) so the selection still stands out. The light PNCT slab is a little brighter, which lifts positron's dark-grey names to AA too.
 - **Partly-PNCT concelhos:** the concelho edge and its parish boundaries now rise above the raised PNCT parishes instead of disappearing under them.
+- **Water names and rivers, both themes:** river and stream names show from zoom 10 in both themes (dark mode had none) in dark blue (light) or pale blue (dark) with an opaque halo, at ≥ 4.5:1 on the land, the PNCT fill, the veil and every slab top. River lines are drawn above the PNCT fill and the veil (below the slabs), so they no longer vanish inside PNCT territory.
 - **Protected areas on a 3D selection:** the slab stays opaque with an overlay on. The protected parts of the selected concelho or parish are drawn on its top, tinted in the slab's own brightness (so labels keep their contrast) and outlined in the overlay colours. The parts load only when an overlay is turned on (`protected-slab.topo.json`, 282 KB gzipped).
 
 ### Infrastructure
@@ -14,7 +15,8 @@
 - `scripts/build_protected.py` `write_slab` (`--slab-only`): the display overlay clipped per parish and category; a concelho's part is merged at runtime.
 - Screenshot scripts (`web/scripts/settled.mjs`) also wait for paint transitions to finish.
 - `make clean` refuses while `data/interim/contacts/` holds files, and `scripts/contacts_candidates.py` now writes to the gitignored `data/manual/contacts/`.
-- Tests: pytest 118, Vitest 164, e2e 140.
+- `web/src/basemap.ts` `waterLabels`: our own water label layers from the basemap tiles (`waterway`, `water_name`), names in the UI language; `layers.ts` `water-line`. `web/scripts/water_shots.mjs`: review shots.
+- Tests: pytest 122, Vitest 196, e2e 140.
 
 ## 0.7.1 (2026-11-02)
 

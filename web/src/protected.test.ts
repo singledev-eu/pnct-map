@@ -100,7 +100,8 @@ describe("overlay layers", () => {
     const sources: StyleSpecification["sources"] = Object.fromEntries(
       ["parishes", "concelhos", "slab-edges", "hover-edge", "slab-protected", "slab-protected-edges", "cities", ...CATEGORY_IDS.map(overlaySource)].map((id) => [id, { type: "geojson", data }]),
     );
-    const next: StyleSpecification = { version: 8, sources: {}, layers: [{ id: "bg", type: "background" }] };
+    // The basemap's vector source (the app's river lines draw from it) comes with the next style.
+    const next: StyleSpecification = { version: 8, sources: { openmaptiles: { type: "vector", url: "x" } }, layers: [{ id: "bg", type: "background" }] };
     const layers = appLayers(FILTER, 7, PALETTES.dark, overlays(CATEGORY_IDS));
     const out = withAppLayers({ version: 8, sources, layers: [] }, next, layers);
     for (const cat of CATEGORY_IDS) expect(out.sources[overlaySource(cat)]).toBe(sources[overlaySource(cat)]);

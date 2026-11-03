@@ -88,6 +88,8 @@ export interface MapPalette {
   /** Concelho seats and district capitals (cities.ts): dot and label, and their halo. */
   city: string;
   cityHalo: string;
+  /** Rivers and streams (layers.ts waterLine), drawn above the fills. */
+  water: string;
 }
 
 export const PALETTES: Record<Theme, MapPalette> = {
@@ -117,6 +119,7 @@ export const PALETTES: Record<Theme, MapPalette> = {
     veilOpacity: 0.38,
     city: "#111827",
     cityHalo: "#ffffff",
+    water: "#24578f",
   },
   // On Dark Matter (background #0c0c0c): a brighter teal so PNCT stands out from the near-black
   // land, the selection lighter than PNCT (the light theme makes it darker), and grey lines kept
@@ -146,6 +149,7 @@ export const PALETTES: Record<Theme, MapPalette> = {
     veilOpacity: 0.75,
     city: "#f3f4f6",
     cityHalo: "#000000",
+    water: "#8cbbeb",
   },
 };
 
