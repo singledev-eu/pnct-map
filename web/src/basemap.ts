@@ -92,7 +92,7 @@ function brightPlaceLabels(style: StyleSpecification): StyleSpecification {
  */
 export const WATER_LABEL: Record<Theme, { text: string; halo: string }> = {
   light: { text: "#0b2c55", halo: "#ffffff" },
-  dark: { text: "#b5d6f7", halo: "#0c0c0c" },
+  dark: { text: "#d3e7fb", halo: "#0c0c0c" },
 };
 
 /** The basemaps' water label layers (replaced by waterLabels). */
