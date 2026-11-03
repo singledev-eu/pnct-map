@@ -9,7 +9,7 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
 
 - **Data pipeline:** Python 3.12 (uv), geopandas/pyogrio/shapely, and mapshaper via `npx` (pinned 0.7.68).
 - **Web app:** Vite + TypeScript + MapLibre GL JS. It's a static site with no backend. The basemap is OpenFreeMap "positron" (light) or "dark" (Dark Matter), with labels in the UI language. The UI is in English and European Portuguese.
-- `data/`: pipeline inputs and outputs. The downloads (`data/external/`, `data/raw/*.pdf`) and large intermediates (`data/processed/*.geojson`) are gitignored. `data/contacts/camaras.csv`: the hand-curated câmara contacts.
+- `data/`: pipeline inputs and outputs. The downloads (`data/external/`, `data/raw/*.pdf`) and large intermediates (`data/processed/*.geojson`) are gitignored. `data/contacts/camaras.csv`: the hand-curated câmara contacts. `data/manual/` (gitignored, never cleaned): local hand-annotated working files, e.g. the contact candidates (`scripts/contacts_candidates.py`).
 - `scripts/`: pipeline steps and `polyline.py`:
   - parishes: `parse_pdf` → `build_parishes` → `build_geo` → `build_topo`, plus `build_shapes` and `build_outline`;
   - protected areas: `protected_config` → `fetch_protected` → `build_protected`;

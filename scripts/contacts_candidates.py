@@ -10,7 +10,8 @@ For each DICO (default: the PNCT concelhos not yet in data/contacts/camaras.csv,
 Nothing is chosen here: the reviewer (kiro-cli first pass, then a human) opens the pages, picks the
 generic mailbox and the page of the PDM in force, and writes data/contacts/camaras.csv.
 
-Output: data/interim/contacts/<name>.csv (gitignored).
+Output: data/manual/contacts/<name>.csv (gitignored: unreviewed scraped mailboxes). Not under
+data/interim, which `make clean` empties: reviewers annotate these files by hand.
 Usage: uv run python scripts/contacts_candidates.py --batch 1 --size 25
        uv run python scripts/contacts_candidates.py --dico 0104 0105 --name batch-02
 """
@@ -36,7 +37,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CAOP_GPKG = ROOT / "data/external/CAOP_Continente_2025-gpkg/Continente_CAOP2025.gpkg"
 TOPO = ROOT / "web/data/pnct.topo.json"
 CONTACTS = ROOT / "data/contacts/camaras.csv"
-OUT = ROOT / "data/interim/contacts"
+OUT = ROOT / "data/manual/contacts"
 UA = {"User-Agent": "Mozilla/5.0 (pnct-map contacts curation; +https://pnct.singledev.eu)"}
 PARTICLES = {"a", "o", "da", "de", "do", "das", "dos", "e"}
 CONTACT_PATHS = ["contactos", "contactos/", "municipio/contactos", "contactos.aspx", "pages/contactos"]
