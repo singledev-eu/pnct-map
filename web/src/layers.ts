@@ -43,6 +43,8 @@ export interface FilterState {
   district: string | null;
   /** Focus mode ("Only PNCT"): hide everything outside PNCT territory. */
   focus: boolean;
+  /** Relief on (terrain.ts): the selection is drawn lighter, so the hillshade shows through it. */
+  relief?: boolean;
 }
 
 const isPnct: ExpressionSpecification = ["==", ["get", "pnct"], true];
@@ -71,10 +73,10 @@ function parishLevel(level: number, value: ExpressionSpecification | number): Ex
   return ["interpolate", ["linear"], ["zoom"], level - FADE, 0, level + FADE, value];
 }
 
-function parishFillOpacity({ district }: FilterState, level: number): ExpressionSpecification {
+function parishFillOpacity({ district, relief }: FilterState, level: number): ExpressionSpecification {
   return parishLevel(level, [
     "case",
-    selected, 0.85,
+    selected, relief ? 0.3 : 0.85,
     ["!", inDistrict(district)], ["case", isPnct, 0.12, 0],
     hovered, ["case", isPnct, 0.72, 0.22],
     grouped, ["case", isPnct, 0.68, 0.12],
@@ -84,10 +86,10 @@ function parishFillOpacity({ district }: FilterState, level: number): Expression
 }
 
 /** Whole-PNCT concelhos look like PNCT parishes; partly-PNCT ones get a light fill plus the hatch layer. */
-function concelhoFillOpacity({ district }: FilterState, level: number): ExpressionSpecification {
+function concelhoFillOpacity({ district, relief }: FilterState, level: number): ExpressionSpecification {
   return concelhoLevel(level, [
     "case",
-    selected, 0.7,
+    selected, relief ? 0.25 : 0.7,
     ["!", inDistrict(district)], ["case", hasPnct, 0.12, 0],
     hovered, ["case", allPnct, 0.72, hasPnct, 0.4, 0.22],
     allPnct, 0.5,

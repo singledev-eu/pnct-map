@@ -18,6 +18,7 @@ import { loadOptions, saveOptions } from "./prefs";
 import { attributionHtml, CATEGORY_IDS, loadOverlay, loadSlabProtected, type OverlayData } from "./protected";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
 import { lang, setLang, t, ui, type Lang } from "./strings";
+import { applyRelief, loadRelief, saveRelief, type ReliefSettings } from "./terrain";
 import { applyPageTheme, DARK_QUERY, loadThemePref, nextThemePref, PALETTES, resolveTheme, saveThemePref, STYLE_URLS, themeOf, type Theme, type ThemePref } from "./theme";
 // ?url makes Vite emit the file content-hashed under assets/; index.html preloads the same file.
 import DATA_URL from "../data/pnct.topo.json?url";
@@ -40,6 +41,7 @@ applyPageTheme(theme, themePref);
 const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY);
 const phoneQuery = window.matchMedia(PHONE_QUERY);
 let view3dPref = load3dPref();
+const relief: ReliefSettings = loadRelief();
 const is3d = () => view3dPref && !reducedMotion.matches;
 /** Camera move duration: none under reduced motion, so selections land at once. */
 const motion = (ms: number) => (reducedMotion.matches ? 0 : ms);
@@ -194,7 +196,7 @@ $("about-open").addEventListener("click", () => aboutDialog.showModal());
 let onLangChange = () => {};
 const settings = mountSettings(
   $("settings"),
-  { lang: () => lang, theme: () => themePref, view3d: () => ({ on: view3dPref, reduced: reducedMotion.matches }) },
+  { lang: () => lang, theme: () => themePref, view3d: () => ({ on: view3dPref, reduced: reducedMotion.matches }), relief: () => relief.on },
   {
     lang: (next: Lang) => {
       setLang(next);
@@ -219,8 +221,15 @@ const settings = mountSettings(
       settings.render();
       onView3dChange();
     },
+    toggleRelief: () => {
+      relief.on = !relief.on;
+      saveRelief(relief.on);
+      settings.render();
+      onReliefChange();
+    },
   },
 );
+let onReliefChange = () => {};
 let onView3dChange = () => {};
 reducedMotion.addEventListener("change", () => {
   settings.render();
@@ -230,7 +239,7 @@ reducedMotion.addEventListener("change", () => {
 type Selection = { kind: "parish"; dicofre: string } | { kind: "concelho"; code: string } | null;
 
 function start(data: MapData): void {
-  const filter: FilterState = { district: null, focus: initial.focus };
+  const filter: FilterState = { district: null, focus: initial.focus, relief: relief.on };
   if (initial.district && data.districtBounds.has(initial.district)) filter.district = initial.district;
 
   // Focus mode hides everything outside PNCT territory. A link to something it would hide
@@ -345,7 +354,7 @@ function start(data: MapData): void {
   const boundsOf = (s: Selection): Bounds | undefined => (s?.kind === "parish" ? data.parishBounds.get(s.dicofre) : s?.kind === "concelho" ? data.concelhoBounds.get(s.code) : undefined);
   const slabTarget = (s: Selection): SlabTarget => {
     const bounds = boundsOf(s);
-    return s && bounds && is3d() ? { kind: s.kind, code: s.kind === "parish" ? s.dicofre : s.code, bounds } : null;
+    return s && bounds && is3d() && !relief.on ? { kind: s.kind, code: s.kind === "parish" ? s.dicofre : s.code, bounds } : null;
   };
 
   // Property-search selector: hash > localStorage > defaults; written back so shared links carry it.
@@ -692,6 +701,7 @@ function start(data: MapData): void {
     if (overlayData && overlays.loaded && !map.getSource(overlaySource(CATEGORY_IDS[0]))) addOverlays(map, overlayData, overlays, filter, limits.levelZoom, PALETTES[theme]);
     setPatternImages(map, PALETTES[theme]);
     slabs.restore();
+    syncRelief(); // a style switch drops the terrain (and, after a full rebuild, the DEM sources)
     clearHover();
     setSelectedIds(selectedIds, groupIds, selectedConcelhoId);
     document.body.dataset.mapIdle = "false";
@@ -715,6 +725,17 @@ function start(data: MapData): void {
   // ---- 3D setting ------------------------------------------------------------------
   // Switched on: tilt onto the selection in place and raise its slab. Off (or reduced motion turned
   // on): lower the slab and level the camera.
+  // Relief (terrain.ts): hillshade and terrain under the app's fills; the selection is draped on
+  // the ground instead of raised (slabTarget), so switching swaps the slab for the drape in place.
+  const syncRelief = () => applyRelief(map, relief, CONCELHO_FILL, theme === "dark");
+  onReliefChange = () => {
+    syncRelief();
+    filter.relief = relief.on;
+    applyFilter(map, filter, limits.levelZoom, PALETTES[theme], CATEGORY_IDS);
+    slabs.set(slabTarget(selection), !reducedMotion.matches, map.getZoom());
+  };
+  if (relief.on) syncRelief();
+
   onView3dChange = () => {
     const zoom = is3d() && selection ? frame(selection, true) : map.getZoom();
     slabs.set(slabTarget(selection), !reducedMotion.matches, zoom);

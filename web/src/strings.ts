@@ -143,6 +143,8 @@ export interface UiStrings {
   theme: Record<ThemePref, string>;
   /** 3D button ("3D", drill.ts): accessible name and tooltip stating the current state; contains "3D". */
   view3d: { on: string; off: string; reduced: string };
+  /** The relief button (terrain.ts, prototype): accessible name and tooltip per state. */
+  relief: { on: string; off: string };
   // tooltip and search
   concelhoSub: (distrito: string) => string;
   pnctYes: string;
@@ -194,6 +196,8 @@ export interface UiStrings {
   // credits: map attribution and the phone sheet
   attributionBoundaries: string;
   sheetBoundaries: string;
+  /** Lead of the terrain credit in the sheet credit ("Relief"). */
+  sheetRelief: string;
   // About dialog. **bold**; {placeholders} are links.
   about: {
     title: string;
@@ -205,6 +209,9 @@ export interface UiStrings {
     pnct: string;
     listLink: string;
     boundariesLabel: string;
+    /** The relief prototype's terrain source (terrain.ts): label and text with {mapterhorn} and {licence}. */
+    reliefLabel: string;
+    relief: string;
     /** {caop}, {licence}. */
     boundaries: string;
     basemapLabel: string;

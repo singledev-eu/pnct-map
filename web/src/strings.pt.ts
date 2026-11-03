@@ -39,6 +39,7 @@ export const pt: Strings = {
     langNames: en.ui.langNames, // each language named in itself
     theme: { auto: "Tema: automático (sistema)", light: "Tema: claro", dark: "Tema: escuro" },
     view3d: { on: "Vista 3D: ligada", off: "Vista 3D: desligada", reduced: "Vista 3D: desligada (movimento reduzido ativo)" },
+    relief: { on: "Relevo: ligado", off: "Relevo: desligado" },
     concelhoSub: (distrito) => `Concelho · ${distrito}`,
     pnctYes: "PNCT: sim",
     pnctNo: "PNCT: não",
@@ -85,6 +86,7 @@ export const pt: Strings = {
     linkMunicipalityDescription: "O concelho inteiro é PNCT, por isso a página do município no Idealista corresponde-lhe.",
     attributionBoundaries: "Limites: CAOP 2025 © DGT (CC BY 4.0)",
     sheetBoundaries: "Limites",
+    sheetRelief: "Relevo",
     about: {
       title: "Sobre este mapa",
       intro: "As freguesias sombreadas são territórios abrangidos pelo **Programa Nacional para a Coesão Territorial (PNCT)**.",
@@ -94,6 +96,8 @@ export const pt: Strings = {
       pnct: "{list} de 4 de fevereiro de 2026, publicada pelo IEFP.",
       listLink: "lista oficial",
       boundariesLabel: "Limites:",
+      reliefLabel: "Relevo (quando ligado):",
+      relief: "mosaicos de terreno {mapterhorn}, criados a partir do modelo de elevação LiDAR da Direção-Geral do Território ({licence}) e do Copernicus GLO-30.",
       boundaries: "{caop} © Direção-Geral do Território, {licence}. “Informação geográfica cedida pela Direção-Geral do Território.” Simplificados para a web.",
       basemapLabel: "Mapa de base:",
       basemap: "{openfreemap}, © {openmaptiles}, © contribuidores do {osm}.",

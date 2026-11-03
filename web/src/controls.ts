@@ -24,10 +24,13 @@ const ICONS: Record<ThemePref, [string, Record<string, string>][]> = {
   dark: [["path", { d: "M16 12.2A6.5 6.5 0 0 1 7.8 4a6.5 6.5 0 1 0 8.2 8.2z", fill: "none" }]],
 };
 
-function icon(pref: ThemePref): SVGSVGElement {
+/** Relief (terrain.ts): two peaks. */
+const RELIEF_ICON: [string, Record<string, string>][] = [["path", { d: "M1.75 16.25 7.5 6.5l3.6 6.1M8.9 16.25l4.6-7.5 4.75 7.5z", fill: "none", "stroke-linejoin": "round" }]];
+
+function icon(pref: ThemePref | "relief"): SVGSVGElement {
   const svg = document.createElementNS(SVG, "svg");
   for (const [k, v] of Object.entries({ viewBox: "0 0 20 20", width: "18", height: "18", stroke: "currentColor", "stroke-width": "1.6", "stroke-linecap": "round", "aria-hidden": "true" })) svg.setAttribute(k, v);
-  for (const [tag, attrs] of ICONS[pref]) {
+  for (const [tag, attrs] of pref === "relief" ? RELIEF_ICON : ICONS[pref]) {
     const el = document.createElementNS(SVG, tag);
     for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
     svg.append(el);
@@ -42,8 +45,8 @@ export interface SettingsControls {
 
 export function mountSettings(
   root: HTMLElement,
-  state: { lang: () => Lang; theme: () => ThemePref; view3d: () => { on: boolean; reduced: boolean } },
-  on: { lang: (next: Lang) => void; cycleTheme: () => void; toggle3d: () => void },
+  state: { lang: () => Lang; theme: () => ThemePref; view3d: () => { on: boolean; reduced: boolean }; relief: () => boolean },
+  on: { lang: (next: Lang) => void; cycleTheme: () => void; toggle3d: () => void; toggleRelief: () => void },
 ): SettingsControls {
   const langButtons = LANGS.map((l) => {
     const b = h("button", { type: "button", class: "lang-option", lang: l, "data-lang": l, "data-testid": `lang-${l}` }, l.toUpperCase());
@@ -57,7 +60,9 @@ export function mountSettings(
   themeButton.addEventListener("click", () => on.cycleTheme());
   const view3dButton = h("button", { type: "button", class: "view3d-button", "data-testid": "view3d-button" }, "3D");
   view3dButton.addEventListener("click", () => on.toggle3d());
-  root.replaceChildren(langGroup, themeButton, view3dButton);
+  const reliefButton = h("button", { type: "button", class: "theme-button relief-button", "data-testid": "relief-button" }, icon("relief"));
+  reliefButton.addEventListener("click", () => on.toggleRelief());
+  root.replaceChildren(langGroup, themeButton, view3dButton, reliefButton);
 
   const render = () => {
     langGroup.setAttribute("aria-label", ui.langLabel);
@@ -78,6 +83,10 @@ export function mountSettings(
     view3dButton.disabled = reduced;
     view3dButton.setAttribute("aria-label", label);
     view3dButton.title = label;
+    const relief = state.relief() ? ui.relief.on : ui.relief.off;
+    reliefButton.setAttribute("aria-pressed", String(state.relief()));
+    reliefButton.setAttribute("aria-label", relief);
+    reliefButton.title = relief;
   };
   render();
   return { render };
