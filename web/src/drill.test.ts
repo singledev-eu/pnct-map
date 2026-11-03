@@ -99,3 +99,13 @@ describe("slab stack", () => {
     expect("filter" in none && none.filter).toEqual(pnctTopFilter(null));
   });
 });
+
+describe("bearing swing easing", () => {
+  it("goes out and comes back to the start, gently at both ends", async () => {
+    const { swingEasing } = await import("./drill");
+    expect(swingEasing(0)).toBe(0);
+    expect(swingEasing(0.5)).toBeCloseTo(1);
+    expect(swingEasing(1)).toBeCloseTo(0, 12);
+    expect(swingEasing(0.05)).toBeLessThan(0.05); // slow start
+  });
+});

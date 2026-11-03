@@ -81,6 +81,25 @@ export const DURATION_3D = 1400;
 const LOWER_MS = 700;
 
 /**
+ * Bearing swing (night task 09): once a 3D selection has landed, the camera turns slowly by
+ * SWING_DEG and back over SWING_MS, once, then stops (the map goes idle again). Any user move or a
+ * new selection cancels it; never under reduced motion (no tilt there). Off by default: it keeps the
+ * camera moving for 9 s after every selection, which costs frames and tiles on phones and makes
+ * every "camera at rest" wait 9 s longer (docs/reports/night/09-bearing-swing.md). `?swing=1` turns
+ * it on for review.
+ */
+export const SWING = typeof location !== "undefined" && new URLSearchParams(location.search).get("swing") === "1";
+export const SWING_MS = 9000;
+export const SWING_DEG = 6;
+/** Out and back: 0 → 1 → 0, gentle at both ends; easing(1) = 0, so the swing ends where it started. */
+export const swingEasing = (t: number): number => Math.sin(Math.PI * t) ** 2;
+
+/** Starts the swing from the current bearing, turning towards `sign` (the side the selection's own turn went). */
+export function startSwing(map: MapLibreMap, sign: number): void {
+  map.easeTo({ bearing: map.getBearing() + Math.sign(sign || 1) * SWING_DEG, duration: SWING_MS, easing: swingEasing });
+}
+
+/**
  * Pitch and bearing for a selection. The bearing is a fixed ±8–15° per feature (from its code), so
  * the same selection always lands on the same view and neighbours turn different ways.
  */
