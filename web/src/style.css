@@ -1152,6 +1152,158 @@ dialog a {
   cursor: pointer;
 }
 
+/* ---- shortlist (shortlist.ts) ------------------------------------------------- */
+
+.shortlist-button {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.shortlist-button[hidden],
+.shortlist-pop[hidden] {
+  display: none;
+}
+
+.panel-star {
+  border: 0;
+  background: none;
+  color: var(--accent, var(--map-pnct));
+  font-size: 22px;
+  line-height: 1;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.panel-star:hover {
+  background: var(--hover);
+}
+
+.shortlist-pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: min(340px, calc(100vw - 24px));
+  max-height: min(60vh, 520px);
+  max-height: min(60dvh, 520px);
+  overflow: auto;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--panel-bg);
+  color: var(--text);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.18), 0 0 0 1px var(--border);
+  z-index: 20;
+}
+
+.shortlist-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.shortlist-header h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.shortlist-note {
+  margin: 8px 0;
+  font-size: 13px;
+  color: color-mix(in srgb, var(--text) 75%, transparent);
+}
+
+.shortlist-items {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+}
+
+.shortlist-items li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-top: 1px solid var(--border);
+}
+
+.shortlist-pick {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 4px;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.shortlist-pick:hover {
+  background: var(--hover);
+}
+
+.shortlist-name {
+  font-weight: 600;
+}
+
+.shortlist-sub {
+  font-size: 12px;
+  color: color-mix(in srgb, var(--text) 70%, transparent);
+}
+
+.shortlist-remove {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.shortlist-remove:hover {
+  background: var(--hover);
+}
+
+.shortlist-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.shortlist-link {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel-bg);
+  color: inherit;
+}
+
+.shortlist-action {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--hover);
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.shortlist-status {
+  margin: 6px 0 0;
+  min-height: 1em;
+  font-size: 12px;
+}
+
 /* ---- MapLibre controls -------------------------------------------------------- */
 
 /* The zoom buttons and the attribution follow the theme. In light mode the values equal MapLibre's
