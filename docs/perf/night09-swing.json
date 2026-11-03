@@ -1,0 +1,147 @@
+{
+  "profile": {
+    "device": "Pixel 7",
+    "network": "Fast 3G",
+    "cpuThrottlingRate": 4
+  },
+  "runs": [
+    {
+      "run": 0,
+      "view3d": "off",
+      "steps": {
+        "concelho": {
+          "fps": 34,
+          "worst": 7716,
+          "idle": 18200,
+          "tiles": 13
+        },
+        "parish": {
+          "fps": 33,
+          "worst": 5133,
+          "idle": 11265,
+          "tiles": 19
+        },
+        "close": {
+          "fps": 60,
+          "worst": 17,
+          "idle": 1834,
+          "tiles": 0
+        }
+      }
+    },
+    {
+      "run": 0,
+      "view3d": "on",
+      "steps": {
+        "concelho": {
+          "fps": 59,
+          "worst": 100,
+          "idle": 10552,
+          "tiles": 13
+        },
+        "parish": {
+          "fps": 60,
+          "worst": 17,
+          "idle": 10494,
+          "tiles": 19
+        },
+        "close": {
+          "fps": 60,
+          "worst": 17,
+          "idle": 1838,
+          "tiles": 0
+        }
+      }
+    },
+    {
+      "run": 1,
+      "view3d": "off",
+      "steps": {
+        "concelho": {
+          "fps": 33,
+          "worst": 8100,
+          "idle": 18530,
+          "tiles": 13
+        },
+        "parish": {
+          "fps": 32,
+          "worst": 5200,
+          "idle": 11276,
+          "tiles": 17
+        },
+        "close": {
+          "fps": 60,
+          "worst": 17,
+          "idle": 1850,
+          "tiles": 0
+        }
+      }
+    },
+    {
+      "run": 1,
+      "view3d": "on",
+      "steps": {
+        "concelho": {
+          "fps": 59,
+          "worst": 100,
+          "idle": 10543,
+          "tiles": 13
+        },
+        "parish": {
+          "fps": 60,
+          "worst": 17,
+          "idle": 10483,
+          "tiles": 19
+        },
+        "close": {
+          "fps": 60,
+          "worst": 17,
+          "idle": 1836,
+          "tiles": 0
+        }
+      }
+    }
+  ],
+  "median": {
+    "off": {
+      "concelho": {
+        "fps": 34,
+        "worst": 8100,
+        "idle": 18530,
+        "tiles": 13
+      },
+      "parish": {
+        "fps": 33,
+        "worst": 5200,
+        "idle": 11276,
+        "tiles": 19
+      },
+      "close": {
+        "fps": 60,
+        "worst": 17,
+        "idle": 1850,
+        "tiles": 0
+      }
+    },
+    "on": {
+      "concelho": {
+        "fps": 59,
+        "worst": 100,
+        "idle": 10552,
+        "tiles": 13
+      },
+      "parish": {
+        "fps": 60,
+        "worst": 17,
+        "idle": 10494,
+        "tiles": 19
+      },
+      "close": {
+        "fps": 60,
+        "worst": 17,
+        "idle": 1838,
+        "tiles": 0
+      }
+    }
+  }
+}

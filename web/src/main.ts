@@ -7,7 +7,7 @@ import { basemapStyle, setLabelLanguage } from "./basemap";
 import { BOUNDS_MARGIN, cameraLimits, protectedFade, constrainView, fitCenter, fitProjected, fitZoom, groundOffset, groundUnder, MAINLAND, measureFootprint, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
 import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
 import { metresPerPixel } from "./edges";
-import { DURATION_3D, FILL_3D, load3dPref, PHONE_QUERY, REDUCED_MOTION_QUERY, save3dPref, Slabs, view3dFor, type SlabTarget } from "./drill";
+import { DURATION_3D, FILL_3D, load3dPref, PHONE_QUERY, REDUCED_MOTION_QUERY, save3dPref, Slabs, startSwing, SWING, view3dFor, type SlabTarget } from "./drill";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
 import { addLayers, addOverlays, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SLAB, CONCELHO_SOURCE, HOVER_POP, overlaySource, PARISH_FILL, PARISH_SLAB, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, withAppLayers, type FilterState, type OverlayState } from "./layers";
 import { mountSettings } from "./controls";
@@ -381,13 +381,30 @@ function start(data: MapData): void {
     searchBox.setValue(label ?? "");
   };
 
+  // Bearing swing (drill.ts, off by default): armed by a 3D fit, cancelled by any user move or a newer selection.
+  let swingToken = 0;
+  map.on("movestart", (e) => {
+    if ("originalEvent" in e && e.originalEvent) swingToken++;
+  });
+  const armSwing = (s: NonNullable<Selection>) => {
+    const token = ++swingToken;
+    map.once("moveend", () => {
+      if (token !== swingToken || selection !== s || !is3d() || reducedMotion.matches) return;
+      swingToken++; // the swing's own moveend doesn't start another
+      startSwing(map, map.getBearing());
+    });
+  };
+
   function select(next: Selection, opts: { fly?: boolean; tilt?: boolean; animate?: boolean } = {}): void {
     const moves = opts.fly || opts.tilt;
     const animate = opts.animate !== false && !reducedMotion.matches;
     selection = next;
     setPanelOpen(next !== null);
     let zoom = map.getZoom();
-    if (moves && next) zoom = frame(next, animate);
+    if (moves && next) {
+      zoom = frame(next, animate);
+      if (SWING && animate && is3d() && map.isMoving()) armSwing(next);
+    }
     if (moves || !next) slabs.set(slabTarget(next), animate, zoom);
     if (next?.kind === "parish") {
       const p = data.parishes.get(next.dicofre);
