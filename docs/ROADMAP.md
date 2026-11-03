@@ -1,6 +1,6 @@
 # Roadmap
 
-Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-11-02.
+Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-11-03.
 
 ## Done
 
@@ -27,9 +27,10 @@ Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-m
 | 2026-10-19 | PT/EN language toggle (every UI string in European Portuguese, `?lang=`, basemap labels in the language) and Auto/Light/Dark theme selection with no flash on load, both in the legend header; iPhone Safari fix (no focus zoom, UI clear of the safe-area insets; also affected 0.5.0). Released as 0.6.0 | [i18n-theme](reports/0.6.0-i18n-theme.md), [review](reports/0.6.0-i18n-theme-review.md), [iOS Safari](reports/0.6.0-ios-safari.md), [release](reports/0.6.0-release.md) |
 | 2026-11-02 | 3D drill-down selection: tilt, slabs coloured by eligibility with rims on top, hover pop-up, "3D" setting (off under reduced motion); every selection framed by its projected footprint; the search box follows the selection. Released as 0.7.0 | [3d-drilldown](reports/3d-drilldown.md), [fixes](reports/3d-drilldown-fixes.md), [flat fit](reports/3d-drilldown-flat-fit.md), [release](reports/0.7.0-release.md) |
 | 2026-11-02 | Dependency updates (Dependabot alerts: vite, @vitest/mocker, Pillow, certifi), Dependabot version updates. Released as 0.7.1 | [deps](reports/0.7.1-deps.md) |
+| 2026-11-03 | Dark-mode slab labels at AA contrast (deep slab tops, stronger dark veil), partly-PNCT concelho rims above the PNCT tops; protected areas drawn on the opaque slab top; screenshot waits cover paint transitions; `make clean` spares hand-made contact data. Released as 0.7.2 | [01](reports/night/01-dark-slab-labels.md), [01c](reports/night/01c-protected-on-slabs.md), [03](reports/night/03-tooling-fixes.md), [release](reports/0.7.2-release.md) |
 | 2026-10-12 | E2E flakiness: one retry; flaky tests warn with a trace but don't block deploys; tests wait for the parish layer, not the basemap | [e2e-flakiness](reports/e2e-flakiness.md) |
 
-Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; `0.3.0` (2026-10-15) the dark theme; `0.3.1` (2026-10-15) quiet road-shield filters; `0.4.0` (2026-10-17) protected areas; `0.4.1` (2026-10-18) the protection explainer and zoom fade; `0.5.0` (2026-10-18) the concelho card; `0.6.0` (2026-10-19) the PT/EN toggle and theme selection; `0.7.0` (2026-11-02) the 3D selection; `0.7.1` (2026-11-02) dependency updates; see [CHANGELOG.md](../CHANGELOG.md).
+Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; `0.3.0` (2026-10-15) the dark theme; `0.3.1` (2026-10-15) quiet road-shield filters; `0.4.0` (2026-10-17) protected areas; `0.4.1` (2026-10-18) the protection explainer and zoom fade; `0.5.0` (2026-10-18) the concelho card; `0.6.0` (2026-10-19) the PT/EN toggle and theme selection; `0.7.0` (2026-11-02) the 3D selection; `0.7.1` (2026-11-02) dependency updates; `0.7.2` (2026-11-03) dark-mode slab labels and protected areas on the slab; see [CHANGELOG.md](../CHANGELOG.md).
 
 ## Next
 
