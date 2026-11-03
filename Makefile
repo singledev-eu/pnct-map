@@ -92,5 +92,10 @@ web: web-data shapes outline protected concelhos
 e2e: web-data shapes outline protected concelhos
 	cd web && npm ci && npm run test:e2e
 
+# Hand-maintained data is never under a clean target: data/contacts/ (tracked) and data/manual/
+# (local working files) stay; tests/test_clean.py checks the recipe. The legacy location of the
+# contact candidates, data/interim/contacts/, makes clean refuse until they are moved.
 clean:
+	@if [ -d data/interim/contacts ] && [ -n "$$(ls -A data/interim/contacts)" ]; then \
+	  echo "make clean: data/interim/contacts/ holds hand-made files; move them to data/manual/contacts/ first" >&2; exit 1; fi
 	rm -rf data/interim data/processed web/data
