@@ -45,6 +45,7 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | Whole concelho PNCT / Partly PNCT | Concelho inteiro no PNCT / Parcialmente no PNCT |
 | Concelho boundary | Limite de concelho |
 | Legend | Legenda |
+| All / Show the whole country (button under the zoom buttons) | Tudo / Ver o país inteiro |
 | Concelho coverage / PNCT coverage | Cobertura do concelho / Cobertura PNCT |
 | Property search | Pesquisa de imóveis |
 | Property type / Land type / Operation | Tipo de imóvel / Tipo de terreno / Operação |

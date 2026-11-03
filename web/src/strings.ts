@@ -127,6 +127,9 @@ export interface UiStrings {
   legendBoundary: string;
   overlaysLabel: string;
   aboutButton: string;
+  /** The button under the zoom buttons that returns to the whole country: visible label, and accessible name/tooltip. */
+  countryButton: string;
+  countryLabel: string;
   loadingMap: string;
   // error states (status line)
   basemapError: string;

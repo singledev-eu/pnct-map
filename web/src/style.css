@@ -1138,6 +1138,18 @@ dialog a {
   color: color-mix(in srgb, var(--text) 75%, transparent);
 }
 
+/* "All" / "Tudo" under the zoom buttons (main.ts): same 29 px square, a short text label. */
+.maplibregl-ctrl-group .country-button {
+  font: 600 11px/1 system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.maplibregl-ctrl-group .country-button:disabled {
+  color: color-mix(in srgb, var(--text) 35%, transparent);
+  cursor: default;
+}
+
 /* Dark theme (data-theme, see :root). */
 :root[data-theme="dark"] .maplibregl-ctrl.maplibregl-ctrl-attrib:not(.maplibregl-compact) {
   background-color: color-mix(in srgb, var(--panel-bg) 75%, transparent);
@@ -1419,8 +1431,18 @@ dialog a {
     height: 32px;
   }
 
-  .panel-open .legend,
+  .panel-open .legend {
+    display: none;
+  }
+
+  /* With the sheet at half height the zoom buttons and "All" sit just above it (main.ts sets
+     --sheet-h); the attribution is in the sheet's credit. Hidden while the sheet is full or dragged. */
   .panel-open .maplibregl-ctrl-bottom-right {
+    bottom: calc(var(--sheet-h, 50dvh) + 8px);
+  }
+
+  .panel-open .maplibregl-ctrl-bottom-right .maplibregl-ctrl-attrib,
+  .panel-open:has(.panel[data-sheet="full"], .panel.sheet-dragging) .maplibregl-ctrl-bottom-right {
     display: none;
   }
 

@@ -24,6 +24,8 @@ export const en: Strings = {
     legendBoundary: "Concelho boundary",
     overlaysLabel: "Nature protection overlays",
     aboutButton: "About",
+    countryButton: "All",
+    countryLabel: "Show the whole country",
     loadingMap: "Loading map…",
     basemapError: "Could not load the basemap. Please check your connection and reload.",
     dataError: "Could not load the map data. Please reload the page.",
