@@ -27,6 +27,8 @@ export const pt: Strings = {
     legendPnctParish: "Freguesia PNCT",
     legendOtherParish: "Outra freguesia",
     legendBoundary: "Limite de concelho",
+    legendCities: "Sedes de concelho",
+    cityPointer: (name, km) => `${name}, a ${km} km, fora do mapa`,
     overlaysLabel: "Camadas de proteção da natureza",
     aboutButton: "Sobre",
     countryButton: "Tudo",
