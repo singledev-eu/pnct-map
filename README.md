@@ -6,24 +6,25 @@ Live site: https://pnct.singledev.eu. This is an unofficial tool. What's done an
 
 Features:
 
-- **Parish map:** all 3,049 mainland parishes, with the 1,861 PNCT parishes shaded, and concelho boundaries.
+- **Parish map:** all 3,049 mainland parishes, with the 1,861 PNCT parishes shaded, and concelho boundaries. The 278 concelho seats and 18 district capitals are marked (from OpenStreetMap; a legend toggle), and river names are readable in both themes.
 - **Zoom levels:** concelhos (whole / partly / not PNCT) at country zoom, where a click zooms into one; parishes once zoomed in. Zoom-out and panning stop around mainland Portugal.
-- **Interaction:** hover tooltip, and a click opens a panel (side panel on desktop, bottom sheet on phones). Every selection is framed inside the visible part of the map.
+- **Interaction:** hover tooltip, and a click opens a panel (side panel on desktop, bottom sheet on phones). Every selection is framed inside the visible part of the map; when its concelho seat or the nearest district capital is off-screen, a pointer at the edge shows the way and the distance ("↙ Coruche · 10 km"). An "All" button under the zoom buttons returns to the whole country.
 - **3D selection:** the map tilts onto the selected concelho or parish, which rises as a slab: in the PNCT colour if it is PNCT, neutral if not, and a partly-PNCT concelho neutral with its PNCT parishes raised on top. Selecting a parish inside the selected concelho drills into it, and hovering one (desktop) pops it up. A "3D" button in the legend header turns it off; the system's reduced-motion setting does too.
 - **Search and filters:**
   - Search across parishes and concelhos.
   - A district filter.
   - **Only PNCT** (focus mode): it hides everything outside PNCT territory, and those parishes don't respond to hover, clicks or search.
 - **Idealista links:** for each PNCT parish, a polygon search link, with a selector for buying or renting, property type and land filters. When the whole concelho is PNCT, the municipality page is linked too.
-- **Concelho card:** every concelho panel shows its population (INE 2025 estimate, the Census 2011→2021 change, density, the ageing ratio) and, for the 185 PNCT concelhos, the câmara's website, mailbox, phone, urbanism page and PDM link. Parish panels have the same card in a collapsed section. A missing value shows "—" with a note, never an estimate.
+- **Concelho card:** every concelho panel shows its population (INE 2025 estimate, the Census 2011→2021 change, density, the ageing ratio), housing and income (median price per m² of homes sold, gross income declared per taxpayer, average monthly earnings, each next to Portugal's value) and, for the 185 PNCT concelhos, the câmara's website, mailbox, phone, urbanism page and PDM link. Parish panels have the same card in a collapsed section. A missing value shows "—" with a note, never an estimate.
 - **Nature protection:** RNAP (ICNF) and Natura 2000 (EEA) overlays, faded in once zoomed past the country view, and the share of each parish or concelho under protection in its panel. A "?" next to the legend heading explains what protection means for buying land.
 - **Português / English:** a PT | EN toggle in the legend header switches every UI string in place, and the basemap labels where OpenStreetMap has a name in that language. Parish and concelho names stay as they are. On first visit the language follows `?lang=`, then the saved choice, then the browser languages (any `pt*` → PT), then English.
 - **Light, dark or automatic theme:** a theme button next to the language toggle cycles Auto (follows the system, live) → Light → Dark. The page and the basemap start in the chosen theme, with no flash.
+- **Shortlist:** star (☆) a parish or concelho to keep it in a list in this browser; the list's link shares it, and opening a shared list never changes the receiver's own.
 - **Shareable views:** the map view, the selection, the filters and the selector all live in the URL (see [URL parameters](#url-parameters)).
 
 ![Peneda-Gerês with the protected-areas overlays on: PNCT parishes shaded, the RNAP outline and the Natura 2000 hatch, the Soajo parish panel with its share under protection, and the PT | EN and theme controls in the legend header](docs/screenshots/desktop-protected.jpg)
 
-![The 3D selection on the live site: from the country view, the Vila Real concelho rises as a slab and the map tilts onto it; selecting the Mateus parish lowers the concelho and raises the parish; closing the panel levels the map](docs/screenshots/3d-drilldown.gif)
+![The 3D selection on the live site: from the country view, the Vila Real concelho rises as a slab and the map tilts onto it; selecting the Mateus parish lowers the concelho and raises the parish; starring Mateus adds it to the shortlist; the "All" button returns to the level country view](docs/screenshots/3d-drilldown.gif)
 
 The screenshot is generated with `npm run shots:readme` (in `web/`, with `npm run preview` running), the GIF with `node scripts/readme_gif.mjs` (in `web/`; it records https://pnct.singledev.eu, or `SHOT_BASE`).
 
