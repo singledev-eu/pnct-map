@@ -47,8 +47,8 @@ const themesSeen = (page: Page) => page.evaluate(() => (window as unknown as { _
 
 for (const lang of ["pt", "en"] as const) {
   const T = {
-    pt: { htmlLang: "pt-PT", legend: "Legenda", title: /^Mapa PNCT/, people: /habitantes \(2025\)/, contacts: "Câmara Municipal", pdm: "PDM em vigor", badge: "Território PNCT", search: "Pesquisa de imóveis", protection: "Proteção da natureza", placeholder: "Pesquisar freguesia ou concelho…", decimal: /\d,\d/ },
-    en: { htmlLang: "en-GB", legend: "Legend", title: /^PNCT map/, people: /people \(2025\)/, contacts: "Câmara Municipal", pdm: "PDM in force", badge: "PNCT territory", search: "Property search", protection: "Nature protection", placeholder: "Search parish or concelho…", decimal: /\d\.\d/ },
+    pt: { htmlLang: "pt-PT", legend: "Legenda", title: /^Mapa PNCT/, people: /habitantes \(2025\)/, contacts: "Câmara Municipal", money: "Habitação e rendimentos", pdm: "PDM em vigor", badge: "Território PNCT", search: "Pesquisa de imóveis", protection: "Proteção da natureza", placeholder: "Pesquisar freguesia ou concelho…", decimal: /\d,\d/ },
+    en: { htmlLang: "en-GB", legend: "Legend", title: /^PNCT map/, people: /people \(2025\)/, contacts: "Câmara Municipal", money: "Housing and income", pdm: "PDM in force", badge: "PNCT territory", search: "Property search", protection: "Nature protection", placeholder: "Search parish or concelho…", decimal: /\d\.\d/ },
   }[lang];
 
   test.describe(`language ${lang.toUpperCase()}`, () => {
@@ -67,7 +67,8 @@ for (const lang of ["pt", "en"] as const) {
       await expect(card).not.toHaveAttribute("aria-busy", "true");
       await expect(page.getByTestId("concelho-people")).toHaveText(T.people);
       await expect(page.getByTestId("concelho-density")).toHaveText(T.decimal);
-      await expect(card.locator("h3").nth(1)).toHaveText(T.contacts);
+      await expect(card.getByTestId("concelho-contacts").locator("h3")).toHaveText(T.contacts);
+      await expect(card.getByTestId("concelho-money").locator("h3")).toHaveText(T.money);
       await expect(page.getByTestId("concelho-pdm")).toContainText(T.pdm);
 
       await page.goto(`/?lang=${lang}#f=${VILARINHO}`);

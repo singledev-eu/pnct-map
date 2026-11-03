@@ -30,12 +30,18 @@ export interface ConcelhoFacts {
   census_change: number | null;
   density: number | null;
   ageing_index: number | null;
+  /** Housing and income (INE; card v2). Optional: data files from before v2 lack them. */
+  sale_price_m2?: number | null;
+  income_per_taxpayer?: number | null;
+  monthly_earnings?: number | null;
   contacts: Contacts | null;
 }
 
 export interface ConcelhoData {
   estimate_year: number;
-  national: { ageing_index: number; population: number };
+  national: { ageing_index: number; population: number; sale_price_m2?: number | null; income_per_taxpayer?: number | null; monthly_earnings?: number | null };
+  /** The period of each housing/income field ("2025"). */
+  periods?: Record<"sale_price_m2" | "income_per_taxpayer" | "monthly_earnings", string>;
   snit_url: string;
   issues_url: string;
   concelhos: Record<string, ConcelhoFacts>;
@@ -107,6 +113,33 @@ function populationBlock(data: ConcelhoData, f: ConcelhoFacts | undefined, partl
   );
 }
 
+/** "1 042 €" / "€1,042": whole euros in the active locale. */
+const euros = (v: number) => formatNumber(Math.round(v), 0, { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+
+/** Housing and income (card v2): median sale price per m², declared income per taxpayer, average earnings; each with Portugal's value. */
+function moneyBlock(data: ConcelhoData, f: ConcelhoFacts | undefined): HTMLElement | null {
+  const p = data.periods;
+  if (!p) return null;
+  const national = (key: "sale_price_m2" | "income_per_taxpayer" | "monthly_earnings") => data.national[key] ?? null;
+  const line = (key: "sale_price_m2" | "income_per_taxpayer" | "monthly_earnings", text: (v: string, year: string, pt: string | null) => string) => {
+    const pt = national(key);
+    return h("li", { "data-testid": `concelho-${key.replace(/_/g, "-")}` }, ...value(f?.[key] ?? null, (v) => text(euros(v), p[key], pt === null ? null : euros(pt))));
+  };
+  return h(
+    "section",
+    { class: "concelho-money", "data-testid": "concelho-money" },
+    h("h3", {}, tc.moneyHeading),
+    h(
+      "ul",
+      { class: "concelho-facts" },
+      line("sale_price_m2", tc.salePrice),
+      line("income_per_taxpayer", tc.income),
+      line("monthly_earnings", tc.earnings),
+    ),
+    h("p", { class: "disclaimer" }, tc.moneySource(p.sale_price_m2, p.income_per_taxpayer, p.monthly_earnings)),
+  );
+}
+
 function contactsBlock(data: ConcelhoData, c: Concelho, f: ConcelhoFacts | undefined): HTMLElement {
   const k = f?.contacts ?? null;
   const report = external(issueUrl(data.issues_url, c, f, data.estimate_year), tc.report, { "data-testid": "concelho-report" });
@@ -156,7 +189,8 @@ export function concelhoCard(c: Concelho): HTMLElement {
     .then((data) => {
       if (!card.isConnected) return; // the panel moved on
       const f = data.concelhos[c.code];
-      card.replaceChildren(populationBlock(data, f, c.pnctCount > 0 && c.pnctCount < c.parishCount), contactsBlock(data, c, f));
+      const money = moneyBlock(data, f);
+      card.replaceChildren(populationBlock(data, f, c.pnctCount > 0 && c.pnctCount < c.parishCount), ...(money ? [money] : []), contactsBlock(data, c, f));
       card.removeAttribute("aria-busy");
     })
     .catch((err: unknown) => {

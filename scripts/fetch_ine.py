@@ -78,7 +78,7 @@ def fetch(refresh: bool) -> None:
     year = estimate_year(metas)
     record = {"estimate_year": year, "queries": {}}
     for q in cfg.QUERIES:
-        period = str(year) if q.period == "estimate" else q.period
+        period = str(year) if q.period == "estimate" else str(metas[q.code]["UltimoPeriodo"]) if q.period == "latest" else q.period
         url = f"{cfg.API}&varcd={q.code}&Dim1=S7A{period}{q.dims}"
         data = get_json(url)
         head = check_ok(data, url)
