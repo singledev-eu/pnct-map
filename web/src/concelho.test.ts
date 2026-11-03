@@ -43,6 +43,19 @@ describe("pdm_status", () => {
   });
 });
 
+describe("housing and income (card v2)", () => {
+  it("has the three fields for every concelho, with Portugal's values and the periods", () => {
+    for (const [dico, c] of Object.entries(data.concelhos)) for (const key of ["sale_price_m2", "income_per_taxpayer", "monthly_earnings"] as const) expect(c[key], `${dico} ${key}`).toBeGreaterThan(0);
+    expect(data.national.sale_price_m2).toBeGreaterThan(0);
+    expect(Object.keys(data.periods!).sort()).toEqual(["income_per_taxpayer", "monthly_earnings", "sale_price_m2"]);
+  });
+
+  it("reads in both languages", () => {
+    expect(tc.salePrice("€1,042", "2025", "€2,076")).toBe("€1,042/m² median price of homes sold (2025; Portugal: €2,076/m²)");
+    expect(tc.income("€14,388", "2024", null)).toBe("€14,388 gross income declared per taxpayer (IRS, 2024)");
+  });
+});
+
 describe("signedPct", () => {
   it("uses a real minus sign and one decimal", () => {
     expect(signedPct(-14)).toBe("−14.0%");

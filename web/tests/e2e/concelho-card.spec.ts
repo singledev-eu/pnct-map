@@ -44,6 +44,11 @@ test("the concelho panel shows the population block and the curated contacts", a
   await expect(page.getByTestId("concelho-ageing")).toContainText(`${ratio(c.ageing_index)} older people (65+) per child (Portugal: ${ratio(DATA.national.ageing_index)})`);
   await expect(page.getByTestId("concelho-whole")).toHaveCount(0); // whole-PNCT: no note
   await expect(card(page)).toContainText(`Source: INE, population estimates ${DATA.estimate_year}, Censuses 2011/2021 · CC BY 4.0`);
+  // Housing and income (card v2): whole euros, the period, Portugal's value.
+  const eur = (n: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Math.round(n));
+  await expect(page.getByTestId("concelho-sale-price-m2")).toHaveText(`${eur(c.sale_price_m2)}/m² median price of homes sold (${DATA.periods.sale_price_m2}; Portugal: ${eur(DATA.national.sale_price_m2)}/m²)`);
+  await expect(page.getByTestId("concelho-monthly-earnings")).toContainText(`${eur(c.monthly_earnings)} average monthly earnings`);
+  await expect(page.getByTestId("concelho-money")).toContainText("Quadros de Pessoal");
 
   const contacts = page.getByTestId("concelho-contacts");
   await expect(contacts).toHaveAttribute("data-state", "curated");
@@ -123,14 +128,14 @@ test("a partly-PNCT concelho notes that the figures are for the whole concelho",
 test("a missing value shows a dash and a note, never a number", async ({ page }) => {
   await page.route(/\/assets\/concelhos-[\w-]+\.json$/, async (route) => {
     const json = await (await route.fetch()).json();
-    Object.assign(json.concelhos[IDANHA], { population: null, density: null, ageing_index: null, census_change: null });
+    Object.assign(json.concelhos[IDANHA], { population: null, density: null, ageing_index: null, census_change: null, sale_price_m2: null, income_per_taxpayer: null, monthly_earnings: null });
     json.concelhos[IDANHA].contacts.urbanism_url = null;
     json.concelhos[IDANHA].contacts.pdm_url = null;
     await route.fulfill({ json });
   });
   await page.goto(`/#c=${IDANHA}`);
   await waitForParishes(page);
-  for (const id of ["concelho-people", "concelho-change", "concelho-density", "concelho-ageing"]) await expect(page.getByTestId(id)).toHaveText("— (not available)");
+  for (const id of ["concelho-people", "concelho-change", "concelho-density", "concelho-ageing", "concelho-sale-price-m2", "concelho-income-per-taxpayer", "concelho-monthly-earnings"]) await expect(page.getByTestId(id)).toHaveText("— (not available)");
   await expect(page.getByTestId("concelho-contacts")).toContainText("— No urbanism page found on the câmara's site");
   await expect(page.getByTestId("concelho-no-pdm")).toHaveText("— No PDM page found on the câmara's site");
   await expect(page.getByTestId("concelho-snit")).toBeVisible(); // the fallback for the PDM maps

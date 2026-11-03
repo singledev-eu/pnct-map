@@ -128,6 +128,7 @@ def test_estimates_come_from_the_current_series(data):
             "ageing_index": str(year),
             "population_2011": "2011",
             "population_2021": "2021",
+            **data["periods"],  # the housing/income fields: each indicator's own latest year
         }
 
 
@@ -249,4 +250,26 @@ def test_web_file_drops_the_notes_and_keeps_the_rest(data, web):
 
 def test_web_file_size_budget():
     raw = WEB.read_bytes()
-    assert len(raw) < 120_000 and len(gzip.compress(raw)) < 30_000
+    # Lazy (fetched by the first card). Card v2 added three numbers per concelho: 100 → 123 KB raw.
+    assert len(raw) < 140_000 and len(gzip.compress(raw)) < 30_000
+
+
+# ---- housing and income (card v2, night task 07) ------------------------------------------------
+
+MONEY = {"sale_price_m2": (150, 8000), "income_per_taxpayer": (5000, 40000), "monthly_earnings": (700, 4000)}
+
+
+@pytest.mark.parametrize("field", MONEY)
+def test_money_fields_cover_every_concelho_within_a_sane_range(data, field):
+    lo, hi = MONEY[field]
+    values = [c[field] for c in data["concelhos"].values()]
+    assert len(values) == 278 and all(v is not None for v in values), field
+    assert all(lo <= v <= hi for v in values), (field, min(values), max(values))
+    assert lo <= data["national"][field] <= hi
+
+
+def test_money_fields_have_meta_and_their_own_period(data):
+    for field in MONEY:
+        meta = data["fields"][field]
+        assert meta["licence"] == "CC BY 4.0" and meta["source"].startswith("INE, ") and meta["url"].startswith("https://www.ine.pt/")
+        assert data["periods"][field] == meta["as_of"] and int(meta["as_of"]) >= 2023

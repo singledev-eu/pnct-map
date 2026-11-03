@@ -10,6 +10,17 @@ Population (INE, CC BY 4.0), all through INE's JSON API (https://www.ine.pt/ine/
                            per municipality in the same year (docs/reports/concelho-card-phase1.md).
 Density is computed from the population and the CAOP 2025 municipal area (area_ha).
 
+Housing and income (INE, CC BY 4.0; card v2, night task 07). Each at its own latest annual period
+("latest": the indicator's UltimoPeriodo), all with a value for every mainland municipality:
+  sale_price_m2        0012255  median value of dwelling sales, €/m² (Metodologia 2022), all
+                                dwellings (Dim3=H1 "Total": new and existing)
+  income_per_taxpayer  0012748  gross income declared per taxpayer (IRS), €
+  monthly_earnings     0012656  average monthly earnings of employees (MTSSS/GEP Quadros de
+                                Pessoal: full-time employees with full pay), €
+Left out on purpose (no value for every municipality, see docs/reports/night/07-concelho-card-v2.md):
+rents of new leases (0012600: 200 of 278; 0014698, the 2026 series: 233 of 278) and the
+quarterly 12-month sale value (0012234: 277 of 278).
+
 ESTIMATE_YEAR is the single switch for a yearly refresh: None takes the latest period INE
 publishes (recorded in the fetch metadata), or pin a year. Estimates before 2021 belong to the
 previous series and are refused.
@@ -50,7 +61,7 @@ class Query:
 
     name: str
     code: str
-    period: str  # "estimate" (ESTIMATE_YEAR, resolved) or a census year
+    period: str  # "estimate" (ESTIMATE_YEAR, resolved), "latest" (the indicator's own) or a census year
     dims: str = ""  # extra Dim params, e.g. "&Dim3=T&Dim4=T"
 
 
@@ -59,6 +70,9 @@ QUERIES = [
     Query("ageing_index", "0012909", "estimate"),
     Query("population_2011", "0011609", "2011", "&Dim3=T&Dim4=T"),
     Query("population_2021", "0011609", "2021", "&Dim3=T&Dim4=T"),
+    Query("sale_price_m2", "0012255", "latest", "&Dim3=H1"),
+    Query("income_per_taxpayer", "0012748", "latest"),
+    Query("monthly_earnings", "0012656", "latest"),
 ]
 # The estimate indicators must keep this note in their metadata (INE's flag for the 2021 series
 # break); if it changes, the series may have been revised and the build stops for a human look.
