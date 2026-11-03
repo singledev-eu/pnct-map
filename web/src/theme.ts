@@ -85,6 +85,8 @@ export interface MapPalette {
   veil: string;
   /** Opacity of the veil while a selection is raised. */
   veilOpacity: number;
+  /** Rivers and streams (layers.ts waterLine), drawn above the fills. */
+  water: string;
 }
 
 export const PALETTES: Record<Theme, MapPalette> = {
@@ -112,6 +114,7 @@ export const PALETTES: Record<Theme, MapPalette> = {
     popNeutral: "#d5dbe1",
     veil: "#f6f6f4",
     veilOpacity: 0.38,
+    water: "#24578f",
   },
   // On Dark Matter (background #0c0c0c): a brighter teal so PNCT stands out from the near-black
   // land, the selection lighter than PNCT (the light theme makes it darker), and grey lines kept
@@ -139,6 +142,7 @@ export const PALETTES: Record<Theme, MapPalette> = {
     popNeutral: "#1d2125",
     veil: "#0c0c0c",
     veilOpacity: 0.75,
+    water: "#8cbbeb",
   },
 };
 
