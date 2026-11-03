@@ -381,6 +381,9 @@ function start(data: MapData): void {
     searchBox.setValue(label ?? "");
   };
 
+  /** Refreshes the whole-country button (set once it is mounted, below). */
+  let updateCountryButton = () => {};
+
   function select(next: Selection, opts: { fly?: boolean; tilt?: boolean; animate?: boolean } = {}): void {
     const moves = opts.fly || opts.tilt;
     const animate = opts.animate !== false && !reducedMotion.matches;
@@ -409,6 +412,7 @@ function start(data: MapData): void {
       level0(opts.animate !== false);
     }
     syncSearchBox();
+    updateCountryButton();
   }
 
   // ---- zoom level -------------------------------------------------------------
@@ -554,6 +558,36 @@ function start(data: MapData): void {
   });
   searchBox = search;
 
+  // ---- whole country (a button under the zoom buttons) ------------------------------
+  // Clears the selection like ✕ (panel closed, slab lowered, search box emptied) and eases to the
+  // country view the zoom-out ends at, level. Disabled while already there with nothing selected.
+  const countryButton = h("button", { type: "button", class: "country-button", "data-testid": "country-button" });
+  map.getContainer().querySelector(".maplibregl-ctrl-zoom-out")!.after(countryButton);
+  const labelCountryButton = () => {
+    countryButton.textContent = ui.countryButton;
+    countryButton.title = ui.countryLabel;
+    countryButton.setAttribute("aria-label", ui.countryLabel);
+  };
+  labelCountryButton();
+  const atCountryView = () => !selection && map.getZoom() <= limits.minZoom + 0.01 && !map.getPitch() && !map.getBearing();
+  updateCountryButton = () => {
+    countryButton.disabled = atCountryView();
+  };
+  countryButton.addEventListener("click", () => {
+    if (selection) select(null);
+    search.setValue("");
+    search.close();
+    // After select(null): this move replaces its levelling ease.
+    map.easeTo({ center: fitCenter(MAINLAND, limits.minZoom, fitPadding(false)), zoom: limits.minZoom, pitch: 0, bearing: 0, duration: motion(1200) });
+  });
+  map.on("moveend", updateCountryButton);
+  updateCountryButton();
+  // Phones: the zoom group sits just above the bottom sheet (style.css, --sheet-h).
+  const panelEl = $("panel");
+  const trackSheet = () => document.documentElement.style.setProperty("--sheet-h", `${Math.ceil(Math.max(0, window.innerHeight - panelEl.getBoundingClientRect().top))}px`);
+  new ResizeObserver(trackSheet).observe(panelEl);
+  window.addEventListener("resize", trackSheet);
+
   // ---- filters ----------------------------------------------------------------
   const districtOptions = data.districts.map((d) => h("option", { value: d }, d));
   districtSelect.append(...districtOptions);
@@ -671,6 +705,7 @@ function start(data: MapData): void {
   // the tooltip, and the panel (re-rendered for the same selection, without moving the camera).
   onLangChange = () => {
     toggles.relabel();
+    labelCountryButton();
     ({ allIndex, pnctIndex } = buildIndexes());
     search.close();
     clearHover();
