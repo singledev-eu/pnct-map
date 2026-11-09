@@ -69,10 +69,12 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | Zoom in to see protected areas | Aumente o zoom para ver as áreas protegidas |
 | Birds / Habitats Directive | Diretiva Aves / Diretiva Habitats |
 | Population | População |
-| N people (2025) | N habitantes (2025) |
+| N people (stat tile: number, label, year) | N habitantes |
 | people/km² | hab./km² |
 | ageing index | índice de envelhecimento |
 | X older people (65+) per child | X idosos (65+) por jovem (0–14) |
+| change between Censuses (stat tile) | variação entre Censos |
+| −80% vs. Portugal (stat tile) | −80% vs. Portugal |
 | Censuses | Censos |
 | PDM in force / PDM documents | PDM em vigor / Documentos do PDM |
 | Urbanism | Urbanismo |

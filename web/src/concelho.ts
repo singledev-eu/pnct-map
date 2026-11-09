@@ -1,5 +1,5 @@
 /**
- * The concelho card: population block (INE) and câmara contacts, from web/data/concelhos.json
+ * The concelho card: population and housing/income stat tiles (INE) and câmara contacts, from web/data/concelhos.json
  * (scripts/build_concelhos.py). One component in two places: the concelho panel shows it directly,
  * the parish panel in a collapsed <details> that renders it on first open. The data file is fetched
  * on the first card that renders, never on the initial load.
@@ -52,10 +52,12 @@ export const loadConcelhos = cachedJson<ConcelhoData>(DATA_URL);
 const number = (value: number, digits = 0) => formatNumber(value, digits);
 /** "−14.0%", "+3.1%", "0.0%" ("−14,0%" in PT): one decimal, a real minus sign. */
 export const signedPct = (value: number) => `${formatNumber(value, 1, { signDisplay: "exceptZero" }).replace("-", "−")}%`;
-/** The ageing-index line: the index as a ratio, one decimal ("4.2 older people (65+) per child (Portugal: 1.9)"). */
-export const ageingText = (index: number, national: number) => tc.ageing(number(index / 100, 1), number(national / 100, 1));
+/** The ageing index as a ratio, one decimal: 417.9 → "4.2" (older people per child). */
+export const ageingRatio = (index: number) => number(index / 100, 1);
 /** The ⓘ text with the index itself, rounded ("Ageing index 418 (Portugal: 189): …"). */
 export const ageingHelpText = (index: number, national: number) => tc.ageingHelp(number(index), number(national));
+/** How far `value` is from Portugal's, as a whole signed percentage of the national figure: "−80%", "+121%", "0%". */
+export const deltaPct = (value: number, national: number) => `${formatNumber((value / national - 1) * 100, 0, { signDisplay: "exceptZero" }).replace("-", "−")}%`;
 /** One decimal below 100 people/km², none above. */
 const densityText = (value: number) => number(value, value < 100 ? 1 : 0);
 /** "October 2026" ("outubro de 2026") from "2026-10-18". */
@@ -67,9 +69,29 @@ const external = (href: string, text: string, attrs: Record<string, string> = {}
 /** "cm-idanhanova.pt" from "https://www.cm-idanhanova.pt/". */
 export const domainOf = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 
-/** A value, or "—" with a muted note: never a made-up number. */
-function value(v: number | null, render: (v: number) => string): Node[] {
-  return v === null ? [document.createTextNode(tc.missing), h("span", { class: "muted" }, ` (${tc.missingNote})`)] : [document.createTextNode(render(v))];
+/**
+ * One figure as a stat tile: the number large, what it counts, its year, and, where Portugal has
+ * the same figure, the difference from it (deltaPct) with Portugal's value. A missing value is "—"
+ * with a note, never a made-up number, and has no difference. `extra` goes after the label (the ⓘ).
+ */
+function tile(
+  id: string,
+  v: number | null,
+  render: (v: number) => string,
+  label: string,
+  year: string,
+  national: number | null = null,
+  extra: Node | null = null,
+): HTMLElement {
+  const parts: (Node | string)[] =
+    v === null
+      ? [h("span", { class: "stat-value" }, tc.missing), " ", h("span", { class: "stat-label" }, label), " ", h("span", { class: "stat-meta" }, `(${tc.missingNote})`)]
+      : [h("span", { class: "stat-value" }, render(v)), " ", h("span", { class: "stat-label" }, label, extra ? " " : null, extra), " ", h("span", { class: "stat-meta" }, year)];
+  if (v !== null && national !== null && national !== 0) {
+    const [pct, ...rest] = tc.vsPortugal(deltaPct(v, national), render(national)).split(" ");
+    parts.push(" ", h("span", { class: "stat-delta", "data-testid": `${id}-delta` }, h("strong", {}, pct), ` ${rest.join(" ")}`));
+  }
+  return h("li", { class: "stat-tile", "data-testid": id }, ...parts);
 }
 
 /** A missing value in the issue body (tc.missing is the same in the UI). */
@@ -95,18 +117,19 @@ function populationBlock(data: ConcelhoData, f: ConcelhoFacts | undefined, partl
   const n = (key: keyof ConcelhoFacts) => (f?.[key] ?? null) as number | null;
   const ageing = n("ageing_index");
   const nationalAgeing = data.national.ageing_index;
-  const help = (index: number) => h("details", { class: "concelho-help" }, h("summary", { "aria-label": tc.ageingHelpLabel }, "ⓘ"), h("p", {}, ageingHelpText(index, nationalAgeing)));
+  const year = String(data.estimate_year);
+  const help = ageing === null ? null : h("details", { class: "concelho-help" }, h("summary", { "aria-label": tc.ageingHelpLabel, title: tc.ageingHelpLabel }, "ⓘ"), h("p", {}, ageingHelpText(ageing, nationalAgeing)));
   return h(
     "section",
     { class: "concelho-population", "data-testid": "concelho-population" },
     h("h3", {}, tc.populationHeading),
     h(
       "ul",
-      { class: "concelho-facts" },
-      h("li", { "data-testid": "concelho-people" }, ...value(n("population"), (v) => tc.population(number(v), data.estimate_year))),
-      h("li", { "data-testid": "concelho-change" }, ...value(n("census_change"), (v) => tc.censusChange(signedPct(v)))),
-      h("li", { "data-testid": "concelho-density" }, ...value(n("density"), (v) => tc.density(densityText(v)))),
-      h("li", { "data-testid": "concelho-ageing" }, ...(ageing === null ? value(null, String) : [ageingText(ageing, nationalAgeing), " ", help(ageing)])),
+      { class: "stat-tiles" },
+      tile("concelho-people", n("population"), (v) => number(v), tc.peopleLabel, year),
+      tile("concelho-change", n("census_change"), signedPct, tc.censusChangeLabel, tc.censusPeriod),
+      tile("concelho-density", n("density"), densityText, tc.densityLabel, year),
+      tile("concelho-ageing", ageing, ageingRatio, tc.ageingLabel, year, nationalAgeing, help),
     ),
     partly ? h("p", { class: "muted concelho-note", "data-testid": "concelho-whole" }, tc.wholeConcelho) : null,
     h("p", { class: "disclaimer" }, tc.populationSource(data.estimate_year)),
@@ -116,25 +139,22 @@ function populationBlock(data: ConcelhoData, f: ConcelhoFacts | undefined, partl
 /** "1 042 €" / "€1,042": whole euros in the active locale. */
 const euros = (v: number) => formatNumber(Math.round(v), 0, { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 
-/** Housing and income (card v2): median sale price per m², declared income per taxpayer, average earnings; each with Portugal's value. */
+/** Housing and income (card v2): median sale price per m², declared income per taxpayer, average earnings; each against Portugal's value. */
 function moneyBlock(data: ConcelhoData, f: ConcelhoFacts | undefined): HTMLElement | null {
   const p = data.periods;
   if (!p) return null;
-  const national = (key: "sale_price_m2" | "income_per_taxpayer" | "monthly_earnings") => data.national[key] ?? null;
-  const line = (key: "sale_price_m2" | "income_per_taxpayer" | "monthly_earnings", text: (v: string, year: string, pt: string | null) => string) => {
-    const pt = national(key);
-    return h("li", { "data-testid": `concelho-${key.replace(/_/g, "-")}` }, ...value(f?.[key] ?? null, (v) => text(euros(v), p[key], pt === null ? null : euros(pt))));
-  };
+  type Key = "sale_price_m2" | "income_per_taxpayer" | "monthly_earnings";
+  const money = (key: Key, label: string, render: (v: number) => string = euros) => tile(`concelho-${key.replace(/_/g, "-")}`, f?.[key] ?? null, render, label, p[key], data.national[key] ?? null);
   return h(
     "section",
     { class: "concelho-money", "data-testid": "concelho-money" },
     h("h3", {}, tc.moneyHeading),
     h(
       "ul",
-      { class: "concelho-facts" },
-      line("sale_price_m2", tc.salePrice),
-      line("income_per_taxpayer", tc.income),
-      line("monthly_earnings", tc.earnings),
+      { class: "stat-tiles" },
+      money("sale_price_m2", tc.salePriceLabel, (v) => `${euros(v)}/m²`),
+      money("income_per_taxpayer", tc.incomeLabel),
+      money("monthly_earnings", tc.earningsLabel),
     ),
     h("p", { class: "disclaimer" }, tc.moneySource(p.sale_price_m2, p.income_per_taxpayer, p.monthly_earnings)),
   );

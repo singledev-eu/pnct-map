@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import DATA from "../data/concelhos.json";
-import { ageingHelpText, ageingText, domainOf, issueUrl, signedPct, type ConcelhoData } from "./concelho";
+import { ageingHelpText, ageingRatio, deltaPct, domainOf, issueUrl, signedPct, type ConcelhoData } from "./concelho";
 import { tc } from "./strings";
 
 const data = DATA as unknown as ConcelhoData;
@@ -50,9 +50,24 @@ describe("housing and income (card v2)", () => {
     expect(Object.keys(data.periods!).sort()).toEqual(["income_per_taxpayer", "monthly_earnings", "sale_price_m2"]);
   });
 
-  it("reads in both languages", () => {
-    expect(tc.salePrice("€1,042", "2025", "€2,076")).toBe("€1,042/m² median price of homes sold (2025; Portugal: €2,076/m²)");
-    expect(tc.income("€14,388", "2024", null)).toBe("€14,388 gross income declared per taxpayer (IRS, 2024)");
+  it("states the difference from Portugal, starting with the percentage", () => {
+    expect(tc.vsPortugal("−80%", "€2,076/m²")).toBe("−80% vs. Portugal (€2,076/m²)");
+  });
+});
+
+describe("deltaPct", () => {
+  it("is the whole signed percentage of the national figure, with a real minus sign", () => {
+    expect(deltaPct(412, 2076)).toBe("−80%");
+    expect(deltaPct(417.9, 188.8)).toBe("+121%");
+    expect(deltaPct(2076, 2076)).toBe("0%");
+    expect(deltaPct(2070, 2076)).toBe("0%"); // −0.3% rounds to zero, without a sign
+  });
+
+  it("matches the two figures it compares, for every concelho", () => {
+    for (const c of Object.values(data.concelhos)) {
+      const pct = Number(deltaPct(c.sale_price_m2!, data.national.sale_price_m2!).replace("−", "-").replace(/[%,+]/g, ""));
+      expect(pct).toBeCloseTo((c.sale_price_m2! / data.national.sale_price_m2! - 1) * 100, -0.31); // within half a point
+    }
   });
 });
 
@@ -73,14 +88,15 @@ describe("domainOf", () => {
 });
 
 describe("ageing index as a ratio", () => {
-  it("shows index / 100 with one decimal, against Portugal", () => {
-    expect(ageingText(417.9, 188.8)).toBe("4.2 older people (65+) per child (Portugal: 1.9)");
+  it("shows index / 100 with one decimal, and the index itself in the help", () => {
+    expect(ageingRatio(417.9)).toBe("4.2");
+    expect(tc.ageingLabel).toBe("older people (65+) per child");
     expect(ageingHelpText(417.9, 188.8)).toBe("Ageing index 418 (Portugal: 189): people aged 65 and over per 100 children under 15. Source: INE.");
   });
 
   it("reads naturally below 1 (fewer older people than children) and at exactly 1", () => {
-    expect(ageingText(80, 188.8)).toBe("0.8 older people (65+) per child (Portugal: 1.9)");
-    expect(ageingText(100, 188.8)).toBe("1.0 older people (65+) per child (Portugal: 1.9)");
+    expect(ageingRatio(80)).toBe("0.8");
+    expect(ageingRatio(100)).toBe("1.0");
   });
 
   it("covers the real range in the data", () => {
@@ -88,7 +104,7 @@ describe("ageing index as a ratio", () => {
     const ratios = Object.values(data.concelhos).map((c) => c.ageing_index! / 100);
     expect(Math.min(...ratios)).toBeGreaterThan(0.5);
     expect(Math.max(...ratios)).toBeLessThan(10);
-    expect(ageingText(data.national.ageing_index, data.national.ageing_index)).toMatch(/^1\.9 older people/);
+    expect(ageingRatio(data.national.ageing_index)).toBe("1.9");
   });
 });
 

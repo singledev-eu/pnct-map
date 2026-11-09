@@ -1063,7 +1063,6 @@ body:not([data-level="parish"]) .legend-parish {
 
 /* ---- concelho card (concelho.ts) ------------------------------------------------ */
 
-.concelho-facts,
 .concelho-links {
   margin: 0;
   padding: 0;
@@ -1071,9 +1070,60 @@ body:not([data-level="parish"]) .legend-parish {
   font-variant-numeric: tabular-nums;
 }
 
-.concelho-facts li,
 .concelho-links li {
   padding: 2px 0;
+}
+
+/* Stat tiles (concelho.ts tile): the figure large, then what it counts, its year and the difference
+   from Portugal. Two columns in the panel and the phone sheet; more where there is room.
+   --muted on --hover is 5.1:1 (light) and 5.9:1 (dark). */
+.stat-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stat-tile {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--hover);
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.stat-label {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.stat-meta,
+.stat-delta {
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-delta {
+  margin-top: auto; /* the differences line up along the bottom of a row of tiles */
+  padding-top: 6px;
+}
+
+.stat-delta strong {
+  color: var(--text);
+  font-size: 12px;
 }
 
 /* Phones: comfortable tap targets for the contact links. */
@@ -1118,7 +1168,9 @@ body:not([data-level="parish"]) .legend-parish {
 }
 
 .concelho-help summary {
-  display: inline;
+  display: inline-block;
+  min-width: 18px; /* a larger target than the glyph */
+  text-align: center;
   color: var(--accent);
   cursor: pointer;
   list-style: none;

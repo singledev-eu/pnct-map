@@ -59,12 +59,19 @@ export interface ConcelhoStrings {
   loading: string;
   loadError: string;
   populationHeading: string;
-  population: (people: string, year: number) => string;
-  /** The Census-to-Census change, e.g. "−14.0% from 2011 to 2021 (Censuses)". */
-  censusChange: (pct: string) => string;
-  density: (value: string) => string;
-  /** The ageing index as a ratio (index / 100): "4.2 older people (65+) per child (Portugal: 1.9)". */
-  ageing: (ratio: string, national: string) => string;
+  /**
+   * Stat tile labels (concelho.ts tile): what the large number counts. The number, its year and the
+   * difference from Portugal are separate lines of the tile.
+   */
+  peopleLabel: string;
+  /** The Census-to-Census change ("−14.0%"), with censusPeriod as its year line. */
+  censusChangeLabel: string;
+  censusPeriod: string;
+  densityLabel: string;
+  /** The ageing index as a ratio (index / 100): "4.2" older people (65+) per child. */
+  ageingLabel: string;
+  /** A tile's difference from the national figure: "−80% vs. Portugal (€2,076/m²)". Starts with the percentage. */
+  vsPortugal: (pct: string, national: string) => string;
   /** The ⓘ text: the index itself, its definition and the source. */
   ageingHelp: (index: string, national: string) => string;
   ageingHelpLabel: string;
@@ -74,11 +81,11 @@ export interface ConcelhoStrings {
   missing: string;
   missingNote: string;
   populationSource: (year: number) => string;
-  /** Housing and income (concelho.ts moneyBlock): values in euros, the period, Portugal's value (null: not shown). */
+  /** Housing and income (concelho.ts moneyBlock): tile labels for the values in euros. */
   moneyHeading: string;
-  salePrice: (euros: string, year: string, national: string | null) => string;
-  income: (euros: string, year: string, national: string | null) => string;
-  earnings: (euros: string, year: string, national: string | null) => string;
+  salePriceLabel: string;
+  incomeLabel: string;
+  earningsLabel: string;
   moneySource: (sales: string, income: string, earnings: string) => string;
   contactsHeading: string;
   website: string;

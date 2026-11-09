@@ -37,17 +37,29 @@ test("the concelho panel shows the population block and the curated contacts", a
   expect(requests).toHaveLength(1);
   const c = DATA.concelhos[IDANHA];
   const fmt = (n: number) => new Intl.NumberFormat("en-GB").format(n);
-  await expect(page.getByTestId("concelho-people")).toHaveText(`${fmt(c.population)} people (${DATA.estimate_year})`);
-  await expect(page.getByTestId("concelho-change")).toHaveText("−14.0% from 2011 to 2021 (Censuses)");
-  await expect(page.getByTestId("concelho-density")).toHaveText(`${c.density} people/km²`);
+  // Stat tiles: the figure, what it counts, its year, and the difference from Portugal where there is one.
+  const delta = (v: number, national: number) => `${new Intl.NumberFormat("en-GB", { maximumFractionDigits: 0, signDisplay: "exceptZero" }).format((v / national - 1) * 100).replace("-", "−")}%`;
+  await expect(page.getByTestId("concelho-people")).toHaveText(`${fmt(c.population)} people ${DATA.estimate_year}`);
+  await expect(page.getByTestId("concelho-people").locator(".stat-value")).toHaveText(fmt(c.population));
+  await expect(page.getByTestId("concelho-change")).toHaveText("−14.0% change between Censuses 2011–2021");
+  await expect(page.getByTestId("concelho-density")).toHaveText(`${c.density} people/km² ${DATA.estimate_year}`);
+  await expect(page.getByTestId("concelho-people-delta")).toHaveCount(0); // no national figure to compare with
   const ratio = (index: number) => (index / 100).toFixed(1);
-  await expect(page.getByTestId("concelho-ageing")).toContainText(`${ratio(c.ageing_index)} older people (65+) per child (Portugal: ${ratio(DATA.national.ageing_index)})`);
+  await expect(page.getByTestId("concelho-ageing")).toContainText(`${ratio(c.ageing_index)} older people (65+) per child`);
+  await expect(page.getByTestId("concelho-ageing-delta")).toHaveText(`${delta(c.ageing_index, DATA.national.ageing_index)} vs. Portugal (${ratio(DATA.national.ageing_index)})`);
   await expect(page.getByTestId("concelho-whole")).toHaveCount(0); // whole-PNCT: no note
   await expect(card(page)).toContainText(`Source: INE, population estimates ${DATA.estimate_year}, Censuses 2011/2021 · CC BY 4.0`);
   // Housing and income (card v2): whole euros, the period, Portugal's value.
   const eur = (n: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Math.round(n));
-  await expect(page.getByTestId("concelho-sale-price-m2")).toHaveText(`${eur(c.sale_price_m2)}/m² median price of homes sold (${DATA.periods.sale_price_m2}; Portugal: ${eur(DATA.national.sale_price_m2)}/m²)`);
+  await expect(page.getByTestId("concelho-sale-price-m2")).toHaveText(
+    `${eur(c.sale_price_m2)}/m² median price of homes sold ${DATA.periods.sale_price_m2} ${delta(c.sale_price_m2, DATA.national.sale_price_m2)} vs. Portugal (${eur(DATA.national.sale_price_m2)}/m²)`,
+  );
   await expect(page.getByTestId("concelho-monthly-earnings")).toContainText(`${eur(c.monthly_earnings)} average monthly earnings`);
+  await expect(page.getByTestId("concelho-monthly-earnings-delta")).toHaveText(`${delta(c.monthly_earnings, DATA.national.monthly_earnings)} vs. Portugal (${eur(DATA.national.monthly_earnings)})`);
+  // Two columns in the panel.
+  const boxes = await page.getByTestId("concelho-population").locator(".stat-tile").evaluateAll((els) => els.map((el) => el.getBoundingClientRect()).map((r) => [Math.round(r.left), Math.round(r.top)]));
+  expect(new Set(boxes.map(([left]) => left)).size).toBe(2);
+  expect(boxes[0][1]).toBe(boxes[1][1]);
   await expect(page.getByTestId("concelho-money")).toContainText("Quadros de Pessoal");
 
   const contacts = page.getByTestId("concelho-contacts");
@@ -135,7 +147,8 @@ test("a missing value shows a dash and a note, never a number", async ({ page })
   });
   await page.goto(`/#c=${IDANHA}`);
   await waitForParishes(page);
-  for (const id of ["concelho-people", "concelho-change", "concelho-density", "concelho-ageing", "concelho-sale-price-m2", "concelho-income-per-taxpayer", "concelho-monthly-earnings"]) await expect(page.getByTestId(id)).toHaveText("— (not available)");
+  for (const id of ["concelho-people", "concelho-change", "concelho-density", "concelho-ageing", "concelho-sale-price-m2", "concelho-income-per-taxpayer", "concelho-monthly-earnings"]) await expect(page.getByTestId(id)).toHaveText(/^— .+ \(not available\)$/); // the dash, what it would count, the note; no difference line
+  await expect(page.locator(".stat-delta")).toHaveCount(0);
   await expect(page.getByTestId("concelho-contacts")).toContainText("— No urbanism page found on the câmara's site");
   await expect(page.getByTestId("concelho-no-pdm")).toHaveText("— No PDM page found on the câmara's site");
   await expect(page.getByTestId("concelho-snit")).toBeVisible(); // the fallback for the PDM maps
