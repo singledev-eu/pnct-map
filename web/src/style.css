@@ -5,7 +5,7 @@
      for the legend swatches and must match PALETTES in theme.ts (checked by theme.test.ts). */
   --bg: #f6f6f4;
   --panel-bg: #ffffff;
-  --legend-bg: rgba(255, 255, 255, 0.94);
+  --legend-bg: #ffffff; /* opaque: map labels under it must not show through the text */
   --text: #1f2328;
   --muted: #626976; /* 4.8:1 on the grey badge and the highlighted search row, too */
   --accent: #0f766e;
@@ -38,7 +38,7 @@
 :root[data-theme="dark"] {
   --bg: #0c0c0c;
   --panel-bg: #1c2024;
-  --legend-bg: rgba(28, 32, 36, 0.94);
+  --legend-bg: #1c2024;
   --text: #e6e8ea;
   --muted: #a0a9b2;
   --accent: #3cc7b4;
@@ -790,7 +790,7 @@ body:not([data-level="parish"]) .legend-parish {
   gap: 4px;
   padding: 2px 8px 2px 6px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--panel-bg) 88%, transparent);
+  background: var(--panel-bg);
   box-shadow: 0 0 0 1px var(--border);
   color: var(--text);
   font-size: 12px;
