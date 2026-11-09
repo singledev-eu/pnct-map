@@ -1176,7 +1176,7 @@ body:not([data-level="parish"]) .legend-parish {
 
 /* Stat tiles (concelho.ts tile): the figure large, then what it counts, its year and the difference
    from Portugal. Two columns in the panel and the phone sheet; more where there is room.
-   --muted on --hover is 5.1:1 (light) and 5.9:1 (dark). */
+   --muted on --hover is 5.0:1 (light) and 5.8:1 (dark). */
 .stat-tiles {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
