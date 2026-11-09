@@ -12,7 +12,7 @@ test("district capitals show at the country view, above the basemap's labels", a
   await page.goto("/");
   await waitForParishView(page);
   const ids = await page.evaluate(() => window.pnctMap.getStyle().layers.map((l) => l.id));
-  expect(ids.slice(-2)).toEqual(["city-seats", "city-capitals"]);
+  expect(ids.slice(-3)).toEqual(["city-seats", "city-selected", "city-capitals"]);
   // Placement needs the glyphs; most of the 18 fit at once (a few may collide near the coast).
   await expect.poll(async () => new Set(await rendered(page, "city-capitals")).size, { timeout: 20_000 }).toBeGreaterThanOrEqual(14);
   expect(await rendered(page, "city-capitals")).toContain("Lisboa");

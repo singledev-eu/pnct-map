@@ -107,7 +107,7 @@ describe("overlay layers", () => {
     for (const cat of CATEGORY_IDS) expect(out.sources[overlaySource(cat)]).toBe(sources[overlaySource(cat)]);
     // The city labels (cities.ts TOP) go above the basemap's own layers; the rest below its labels.
     const top = layers.filter((l) => (l.metadata as Record<string, unknown> | undefined)?.["pnct:top"]);
-    expect(top.map((l) => l.id)).toEqual(["city-seats", "city-capitals"]);
+    expect(top.map((l) => l.id)).toEqual(["city-seats", "city-selected", "city-capitals"]);
     expect(ids(out.layers)).toEqual(["bg", ...ids(layers.filter((l) => !top.includes(l))), ...ids(top)]);
   });
 });

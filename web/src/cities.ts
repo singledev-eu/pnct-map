@@ -14,6 +14,8 @@ import type { MapPalette } from "./theme";
 export const CITY_SOURCE = "cities";
 export const CAPITAL_LAYER = "city-capitals";
 export const SEAT_LAYER = "city-seats";
+/** The seat of the selected concelho: always drawn (cityLayers). */
+export const SELECTED_SEAT_LAYER = "city-selected";
 export const CAPITAL_DOT = "city-dot-capital";
 export const SEAT_DOT = "city-dot-seat";
 /** Seats appear this many zoom levels before the parish level (CameraLimits.levelZoom). */
@@ -47,10 +49,23 @@ export function cityDots(colors: MapPalette): Record<string, { width: number; he
 
 const capital: ExpressionSpecification = ["==", ["get", "capital"], true];
 
-/** The two symbol layers; `level` is the parish level zoom, `visible` the legend toggle. */
-export function cityLayers(colors: MapPalette, level: number, visible: boolean): LayerSpecification[] {
+/** The seat of concelho `dico` (none for null). */
+const seatOf = (dico: string | null): ExpressionSpecification => ["==", ["get", "dico"], dico ?? ""];
+
+/**
+ * The symbol layers; `level` is the parish level zoom, `visible` the legend toggle, `selected` the
+ * concelho of the current selection.
+ *
+ * Labels never overlap. A seat is drawn whole (dot and name) or not at all, with clearance around
+ * its name (SEAT_PADDING), so where seats crowd at mid zoom only some show and the rest appear
+ * as the zoom makes room. MapLibre places the top layer first, so the order is the priority:
+ * district capitals (always drawn), then the selected concelho's seat (always drawn, so the town
+ * that places the selection never drops out), then the other seats. cities.json has no size or
+ * population, so among those the placement order decides, not the town's size.
+ */
+export function cityLayers(colors: MapPalette, level: number, visible: boolean, selected: string | null = null): LayerSpecification[] {
   const [text, halo] = [colors.city, colors.cityHalo];
-  const layer = (id: string, filter: ExpressionSpecification, dot: string, size: number, bold: boolean, minzoom: number): LayerSpecification => ({
+  const layer = (id: string, filter: ExpressionSpecification, dot: string, size: number, bold: boolean, minzoom: number, always: boolean, padding: number | ExpressionSpecification): LayerSpecification => ({
     id,
     type: "symbol",
     source: CITY_SOURCE,
@@ -60,24 +75,39 @@ export function cityLayers(colors: MapPalette, level: number, visible: boolean):
     layout: {
       visibility: visible ? "visible" : "none",
       "icon-image": dot,
-      "icon-allow-overlap": true,
+      "icon-allow-overlap": always,
+      "icon-padding": padding,
       "text-field": ["get", "name"],
       "text-font": [bold ? "Noto Sans Bold" : "Noto Sans Regular"], // the basemap's glyphs (OpenFreeMap)
       "text-size": size,
       "text-variable-anchor": ["left", "right", "top", "bottom"],
       "text-radial-offset": 0.6,
       "text-justify": "auto",
-      "text-optional": true,
+      "text-optional": always,
+      "text-padding": 3,
       "text-max-width": 9,
     },
     paint: { "text-color": text, "text-halo-color": halo, "text-halo-width": 1.6, "text-halo-blur": 0.2 },
   });
   return [
-    layer(SEAT_LAYER, ["!", capital], SEAT_DOT, 12, false, Math.max(0, level - SEAT_LEAD)),
+    layer(SEAT_LAYER, seatFilter(selected), SEAT_DOT, 12, false, Math.max(0, level - SEAT_LEAD), false, SEAT_PADDING),
+    layer(SELECTED_SEAT_LAYER, selectedSeatFilter(selected), SEAT_DOT, 12, false, 0, true, SEAT_PADDING),
     // Last, so on top: capitals are placed first and win label collisions.
-    layer(CAPITAL_LAYER, capital, CAPITAL_DOT, 14, true, 0),
+    layer(CAPITAL_LAYER, capital, CAPITAL_DOT, 14, true, 0, true, 2),
   ];
 }
+
+/**
+ * Clearance around a seat's dot, px: no other seat's dot or name is placed within it. Wide at mid
+ * zoom (7–9), where the seats crowd, and tighter closer in, so more of them appear as you zoom.
+ * On the dot rather than the name: MapLibre moves a variable-anchor name away from its dot by the
+ * name's padding, which would detach the two.
+ */
+export const SEAT_PADDING: ExpressionSpecification = ["interpolate", ["linear"], ["zoom"], 7, 20, 10, 2];
+/** The seats that thin out by collision: every non-capital seat but the selection's. */
+export const seatFilter = (selected: string | null): ExpressionSpecification => ["all", ["!", capital], ["!", seatOf(selected)]];
+/** The selection's seat, unless it is a capital (the capitals layer draws those). */
+export const selectedSeatFilter = (selected: string | null): ExpressionSpecification => ["all", ["!", capital], seatOf(selected)];
 
 export const CITIES_STORAGE_KEY = "pnct-map:cities";
 

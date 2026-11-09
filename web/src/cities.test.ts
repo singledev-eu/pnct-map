@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import CITIES from "../data/cities.json";
-import { cityLayers, contextTowns, distanceKm, edgeSpot, type CitiesData } from "./cities";
+import type { SymbolLayerSpecification } from "maplibre-gl";
+import { cityLayers, contextTowns, distanceKm, edgeSpot, seatFilter, SEAT_PADDING, type CitiesData } from "./cities";
 import { PALETTES } from "./theme";
 
 const data = CITIES as unknown as CitiesData;
@@ -32,9 +33,25 @@ describe("cities", () => {
   });
 
   it("shows capitals from the country view and seats from before the parish level", () => {
-    const [seats, capitals] = cityLayers(PALETTES.light, 9, true);
+    const [seats, selected, capitals] = cityLayers(PALETTES.light, 9, true);
     expect(capitals.minzoom).toBe(0);
+    expect(selected.minzoom).toBe(0);
     expect(seats.minzoom).toBe(7.5);
     expect(cityLayers(PALETTES.dark, 9, false)[0].layout?.visibility).toBe("none");
+  });
+
+  it("hides colliding seat labels, and always draws the capitals and the selection's seat", () => {
+    for (const theme of ["light", "dark"] as const) {
+      const [seats, selected, capitals] = cityLayers(PALETTES[theme], 9, true, "1409") as SymbolLayerSpecification[];
+      // A seat is drawn whole or not at all, with clearance around its name.
+      expect(seats.layout).toMatchObject({ "icon-allow-overlap": false, "text-optional": false, "icon-padding": SEAT_PADDING });
+      expect(seats.layout?.["text-allow-overlap"]).toBeUndefined();
+      // Later layers are placed first: capitals, then the selection's seat, then the rest.
+      expect([seats.id, selected.id, capitals.id]).toEqual(["city-seats", "city-selected", "city-capitals"]);
+      for (const l of [selected, capitals]) expect(l.layout).toMatchObject({ "icon-allow-overlap": true, "text-optional": true });
+      // Coruche (1409) is in the selected layer only.
+      expect(JSON.stringify(selected.filter)).toContain("1409");
+      expect(seats.filter).toEqual(seatFilter("1409"));
+    }
   });
 });

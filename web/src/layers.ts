@@ -1,7 +1,7 @@
 import type { ExpressionSpecification, LayerSpecification, Map as MapLibreMap, StyleSpecification } from "maplibre-gl";
 import { FADE, protectedFade } from "./camera";
 import { extrusionTop, luminance, over, parseHex, toHex } from "./contrast";
-import { CITY_SOURCE, cityDots, cityLayers, SEAT_LAYER, SEAT_LEAD, CAPITAL_LAYER } from "./cities";
+import { CITY_SOURCE, cityDots, cityLayers, SEAT_LAYER, SEAT_LEAD, CAPITAL_LAYER, SELECTED_SEAT_LAYER, seatFilter, selectedSeatFilter } from "./cities";
 import type { MapData } from "./data";
 import type { OverlayData } from "./protected";
 import type { MapPalette } from "./theme";
@@ -46,6 +46,8 @@ export interface FilterState {
   focus: boolean;
   /** The concelho seats and district capitals (cities.ts; legend toggle). Shown unless false. */
   cities?: boolean;
+  /** The concelho (DICO) of the current selection: its seat is always labelled (cities.ts). */
+  seat?: string | null;
 }
 
 const isPnct: ExpressionSpecification = ["==", ["get", "pnct"], true];
@@ -463,7 +465,7 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
       },
     },
     ...slabLayers(slab, colors, filter, level),
-    ...cityLayers(colors, level, filter.cities !== false),
+    ...cityLayers(colors, level, filter.cities !== false, filter.seat ?? null),
   ];
 }
 
@@ -550,6 +552,13 @@ export function setPatternImages(map: MapLibreMap, colors: MapPalette): void {
   }
 }
 
+/** Labels the seat of concelho `dico` whatever it collides with (cities.ts); null: no selection. */
+export function setSelectedSeat(map: MapLibreMap, dico: string | null): void {
+  if (!map.getLayer(SEAT_LAYER) || !map.getLayer(SELECTED_SEAT_LAYER)) return;
+  map.setFilter(SEAT_LAYER, seatFilter(dico));
+  map.setFilter(SELECTED_SEAT_LAYER, selectedSeatFilter(dico));
+}
+
 /**
  * Re-applies filters and paint after a filter change or a new level zoom (viewport resize). The
  * overlays' zoom fade follows the level zoom, so it needs the palette for the RNAP tint.
@@ -567,7 +576,8 @@ export function applyFilter(map: MapLibreMap, filter: FilterState, level: number
   map.setPaintProperty(PARISH_FILL, "fill-opacity", parishFillOpacity(filter, level, colors));
   map.setPaintProperty(CONCELHO_FILL, "fill-opacity", concelhoFillOpacity(filter, level, colors));
   map.setPaintProperty(CONCELHO_HATCH, "fill-opacity", hatchOpacity(filter, level));
-  for (const id of [SEAT_LAYER, CAPITAL_LAYER]) if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", filter.cities === false ? "none" : "visible");
+  for (const id of [SEAT_LAYER, SELECTED_SEAT_LAYER, CAPITAL_LAYER]) if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", filter.cities === false ? "none" : "visible");
+  setSelectedSeat(map, filter.seat ?? null);
   if (map.getLayer(SEAT_LAYER)) map.setLayerZoomRange(SEAT_LAYER, Math.max(0, level - SEAT_LEAD), 24);
   map.setPaintProperty(PARISH_LINE, "line-opacity", parishLevel(level, lineOpacity(filter.district, 0.45, 0.15)));
   map.setPaintProperty(CONCELHO_LINE, "line-opacity", lineOpacity(filter.district, 0.6, 0.2));

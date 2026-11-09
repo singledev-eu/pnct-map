@@ -9,7 +9,7 @@ import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./
 import { metresPerPixel } from "./edges";
 import { DURATION_3D, FILL_3D, load3dPref, PHONE_QUERY, REDUCED_MOTION_QUERY, save3dPref, Slabs, view3dFor, type SlabTarget } from "./drill";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
-import { addLayers, addOverlays, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SLAB, CONCELHO_SOURCE, HOVER_POP, overlaySource, PARISH_FILL, PARISH_SLAB, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, withAppLayers, type FilterState, type OverlayState } from "./layers";
+import { addLayers, addOverlays, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SLAB, CONCELHO_SOURCE, HOVER_POP, overlaySource, PARISH_FILL, PARISH_SLAB, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, setSelectedSeat, withAppLayers, type FilterState, type OverlayState } from "./layers";
 import { mountSettings } from "./controls";
 import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountIntro } from "./intro";
@@ -398,6 +398,8 @@ function start(data: MapData): void {
     const moves = opts.fly || opts.tilt;
     const animate = opts.animate !== false && !reducedMotion.matches;
     selection = next;
+    filter.seat = next ? (next.kind === "parish" ? concelhoCode(next.dicofre) : next.code) : null;
+    setSelectedSeat(map, filter.seat);
     setPanelOpen(next !== null);
     let zoom = map.getZoom();
     if (moves && next) zoom = frame(next, animate);
