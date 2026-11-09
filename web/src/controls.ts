@@ -55,9 +55,12 @@ export function mountSettings(
   const langGroup = h("div", { class: "lang-toggle", role: "group", "data-testid": "lang-toggle" }, ...langButtons);
   const themeButton = h("button", { type: "button", class: "theme-button", "data-testid": "theme-button" });
   themeButton.addEventListener("click", () => on.cycleTheme());
-  const view3dButton = h("button", { type: "button", class: "view3d-button", "data-testid": "view3d-button" }, "3D");
+  const view3dButton = h("button", { type: "button", class: "view3d-button", "data-testid": "view3d-button" }, h("span", { class: "view3d-dot", "aria-hidden": "true" }), "3D");
   view3dButton.addEventListener("click", () => on.toggle3d());
-  root.replaceChildren(langGroup, themeButton, view3dButton);
+  // Three concerns, three shapes (style.css): a segmented language choice, a round theme icon and a
+  // pill-shaped 3D switch, with a divider between them.
+  const divider = () => h("span", { class: "settings-divider", "aria-hidden": "true" });
+  root.replaceChildren(langGroup, divider(), themeButton, divider(), view3dButton);
 
   const render = () => {
     langGroup.setAttribute("aria-label", ui.langLabel);

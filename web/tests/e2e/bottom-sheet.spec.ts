@@ -106,7 +106,8 @@ test.describe("phone portrait (375×667)", () => {
     const toggle = page.getByTestId("sheet-credit-toggle");
     await expect(credit).toBeHidden();
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
-    await expect(toggle).toHaveAttribute("aria-label", "Map credits");
+    await expect(toggle).toHaveAttribute("aria-label", "Show map credits and data sources");
+    await expect(toggle).toHaveAttribute("title", "Show map credits and data sources");
     await expect(toggle).toHaveText("©"); // not an ⓘ, which the ageing figure uses
 
     // The panel body reaches the bottom of the sheet; its last line can be scrolled fully into view.

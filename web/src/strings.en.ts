@@ -214,6 +214,6 @@ export const en: Strings = {
   sheet: {
     expand: "Expand panel",
     collapse: "Collapse panel",
-    credits: "Map credits",
+    credits: "Show map credits and data sources",
   },
 };

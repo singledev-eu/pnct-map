@@ -173,11 +173,11 @@ export class Panel {
     });
     this.starButton = star;
     this.starred = code;
-    const close = h("button", { class: "panel-close", type: "button", "aria-label": ui.closePanel }, "×");
+    const close = h("button", { class: "panel-close", type: "button", "aria-label": ui.closePanel, title: ui.closePanel }, "×");
     close.addEventListener("click", () => this.cb.onClose());
     // Phone sheet only (hidden on wide screens): the drag handle (sheet.ts) and the credits toggle.
     const handle = h("button", { type: "button", class: "sheet-handle", "data-testid": "sheet-handle" });
-    const credits = h("button", { type: "button", class: "sheet-credit-toggle", "aria-label": sheet.credits, "aria-controls": "sheet-credit", "aria-expanded": "false", "data-testid": "sheet-credit-toggle" }, "©");
+    const credits = h("button", { type: "button", class: "sheet-credit-toggle", "aria-label": sheet.credits, title: sheet.credits, "aria-controls": "sheet-credit", "aria-expanded": "false", "data-testid": "sheet-credit-toggle" }, "©");
     credits.addEventListener("click", () => {
       const open = credits.getAttribute("aria-expanded") !== "true";
       credits.setAttribute("aria-expanded", String(open));

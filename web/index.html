@@ -64,8 +64,9 @@
           <select id="district-select">
             <option value="" data-i18n="allDistricts"></option>
           </select>
-          <label class="toggle" data-i18n-attr="title:onlyPnctTitle">
-            <input id="only-pnct" type="checkbox" data-i18n-attr="aria-label:onlyPnctLabel" />
+          <label class="toggle switch-chip" data-i18n-attr="title:onlyPnctTitle">
+            <input id="only-pnct" type="checkbox" role="switch" data-i18n-attr="aria-label:onlyPnctLabel" />
+            <span class="switch" aria-hidden="true"></span>
             <span data-i18n="onlyPnct"></span>
           </label>
           <button id="shortlist-button" type="button" class="toggle shortlist-button" hidden aria-expanded="false" aria-controls="shortlist" data-testid="shortlist-button"></button>

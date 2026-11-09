@@ -218,6 +218,6 @@ export const pt: Strings = {
   sheet: {
     expand: "Expandir painel",
     collapse: "Recolher painel",
-    credits: "Créditos do mapa",
+    credits: "Mostrar os créditos do mapa e as fontes dos dados",
   },
 };

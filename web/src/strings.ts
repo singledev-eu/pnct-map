@@ -108,6 +108,7 @@ export interface ConcelhoStrings {
 export interface SheetStrings {
   expand: string;
   collapse: string;
+  /** The © button in the sheet header: what it does (accessible name and tooltip); aria-expanded carries the state. */
   credits: string;
 }
 
