@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.9.0 (2026-11-09)
+
+### For users
+
+- **Title and intro:** a "Mapa PNCT" chip next to the search box, and on a first visit one dismissible line saying what the shaded parishes are, with a link to About.
+- **Dark theme:** areas outside the PNCT are a neutral grey instead of the basemap's near-black, so the mainland keeps its outline along the Lisbon–Porto coast. Parish borders stay visible at close zoom.
+- **Town labels:** concelho seats no longer crowd at mid zoom. Each is drawn with its dot or not at all; district capitals come first, the selected concelho's seat always shows, and more seats appear as you zoom in.
+- **Legend:** an opaque background, so map labels don't show through its text.
+- **Concelho card:** population and housing figures are stat tiles (the number, what it counts, its year). Where Portugal has the same figure the tile shows the difference, e.g. "−80% vs. Portugal (2 076 €/m²)".
+- **Selection (3D off):** a solid 3 px outline at every zoom, and the rest of the map dimmed.
+- **Controls:** the district dropdown matches the search field; "Only PNCT" is a switch; language, theme and 3D look like three different controls; the sheet header's ©, ☆ and × have tooltips and say what they do.
+
+### Infrastructure
+
+- `web/src/intro.ts` (dismissal in localStorage `pnct-map:intro`); the page has an `<h1>`.
+- `MapPalette` gains `otherOpacity` and `parishLineOpacity` (mirrored by `--map-other-fill`); `FilterState` gains `seat` and `dim`; a `city-selected` layer between `city-seats` and `city-capitals`.
+- The concelho card's sentence strings are replaced by tile labels (`peopleLabel`, `vsPortugal`, …) in PT and EN.
+- `web/scripts/polish_shots.mjs`: review shots at 375/768/1440 px, light and dark.
+- Tests: pytest 131, Vitest 216, e2e 164.
+
 ## 0.8.0 (2026-11-03)
 
 ### For users
