@@ -50,23 +50,30 @@
     <div id="map" data-i18n-attr="aria-label:mapLabel"></div>
 
     <div class="toolbar">
-      <div class="search">
-        <label class="visually-hidden" for="search-input" data-i18n="searchLabel"></label>
-        <input id="search-input" type="search" data-i18n-attr="placeholder:searchPlaceholder" autocomplete="off" spellcheck="false" />
-        <ul id="search-list" hidden></ul>
+      <div class="toolbar-row">
+        <div class="toolbar-main">
+          <h1 class="brand" data-i18n="siteName"></h1>
+          <div class="search">
+            <label class="visually-hidden" for="search-input" data-i18n="searchLabel"></label>
+            <input id="search-input" type="search" data-i18n-attr="placeholder:searchPlaceholder" autocomplete="off" spellcheck="false" />
+            <ul id="search-list" hidden></ul>
+          </div>
+        </div>
+        <div class="filters">
+          <label class="visually-hidden" for="district-select" data-i18n="districtLabel"></label>
+          <select id="district-select">
+            <option value="" data-i18n="allDistricts"></option>
+          </select>
+          <label class="toggle" data-i18n-attr="title:onlyPnctTitle">
+            <input id="only-pnct" type="checkbox" data-i18n-attr="aria-label:onlyPnctLabel" />
+            <span data-i18n="onlyPnct"></span>
+          </label>
+          <button id="shortlist-button" type="button" class="toggle shortlist-button" hidden aria-expanded="false" aria-controls="shortlist" data-testid="shortlist-button"></button>
+        </div>
+        <div id="shortlist" class="shortlist-pop" role="dialog" aria-labelledby="shortlist-title" hidden data-testid="shortlist"></div>
       </div>
-      <div class="filters">
-        <label class="visually-hidden" for="district-select" data-i18n="districtLabel"></label>
-        <select id="district-select">
-          <option value="" data-i18n="allDistricts"></option>
-        </select>
-        <label class="toggle" data-i18n-attr="title:onlyPnctTitle">
-          <input id="only-pnct" type="checkbox" data-i18n-attr="aria-label:onlyPnctLabel" />
-          <span data-i18n="onlyPnct"></span>
-        </label>
-        <button id="shortlist-button" type="button" class="toggle shortlist-button" hidden aria-expanded="false" aria-controls="shortlist" data-testid="shortlist-button"></button>
-      </div>
-      <div id="shortlist" class="shortlist-pop" role="dialog" aria-labelledby="shortlist-title" hidden data-testid="shortlist"></div>
+      <!-- Filled by intro.ts on a first visit. -->
+      <div id="intro" class="intro" role="note" hidden data-testid="intro"></div>
     </div>
 
     <aside id="panel" class="panel" hidden aria-live="polite" data-testid="panel"></aside>

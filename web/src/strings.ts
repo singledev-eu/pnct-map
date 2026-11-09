@@ -115,6 +115,10 @@ export interface UiStrings {
   /** Document title and meta description. */
   title: string;
   description: string;
+  /** The title chip on the map: the site's name, the same in both languages. */
+  siteName: string;
+  /** The first-visit intro (intro.ts): its text is about.intro; this names its dismiss button. */
+  introDismiss: string;
   // index.html (data-i18n keys)
   mapLabel: string;
   searchLabel: string;

@@ -7,6 +7,8 @@ export const en: Strings = {
     title: "PNCT map · Portugal's territorial cohesion parishes",
     description:
       "Map of the mainland Portugal parishes covered by the PNCT (Programa Nacional para a Coesão Territorial), with Idealista property-search links. Unofficial tool.",
+    siteName: "Mapa PNCT",
+    introDismiss: "Dismiss this introduction",
     mapLabel: "Map of mainland Portugal with PNCT parishes",
     searchLabel: "Search parishes and concelhos",
     searchPlaceholder: "Search parish or concelho…",

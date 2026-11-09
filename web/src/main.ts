@@ -12,6 +12,7 @@ import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
 import { addLayers, addOverlays, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SLAB, CONCELHO_SOURCE, HOVER_POP, overlaySource, PARISH_FILL, PARISH_SLAB, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, withAppLayers, type FilterState, type OverlayState } from "./layers";
 import { mountSettings } from "./controls";
 import { applyStatic, initialLang, rememberLang } from "./i18n";
+import { mountIntro } from "./intro";
 import { mountLegend, mountOverlayToggles } from "./legend";
 import { h, Panel } from "./panel";
 import { mountShortlist, parseCodes, type Shortlist } from "./shortlist";
@@ -193,6 +194,7 @@ window.addEventListener("resize", trackLegend);
 const aboutDialog = $<HTMLDialogElement>("about");
 renderAbout(aboutDialog);
 $("about-open").addEventListener("click", () => aboutDialog.showModal());
+const intro = mountIntro($("intro"), () => aboutDialog.showModal());
 let onLangChange = () => {};
 const settings = mountSettings(
   $("settings"),
@@ -207,6 +209,7 @@ const settings = mountSettings(
       wasCompact = isCompact();
       if (map.isStyleLoaded()) setLabelLanguage(map, next); // otherwise the pending style gets it from basemapStyle
       renderAbout(aboutDialog);
+      intro.relabel();
       onLangChange();
     },
     cycleTheme: () => {

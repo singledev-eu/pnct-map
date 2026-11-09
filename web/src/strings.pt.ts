@@ -12,6 +12,8 @@ export const pt: Strings = {
     title: "Mapa PNCT · Territórios de Coesão Territorial",
     description:
       "Mapa das freguesias abrangidas pelo Programa Nacional para a Coesão Territorial (PNCT) em Portugal continental, com ligações de pesquisa de imóveis no Idealista. Ferramenta não oficial.",
+    siteName: en.ui.siteName, // the site's name
+    introDismiss: "Fechar esta introdução",
     mapLabel: "Mapa de Portugal continental com as freguesias do PNCT",
     searchLabel: "Pesquisar freguesias e concelhos",
     searchPlaceholder: "Pesquisar freguesia ou concelho…",
