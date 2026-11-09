@@ -48,6 +48,12 @@ export interface FilterState {
   cities?: boolean;
   /** The concelho (DICO) of the current selection: its seat is always labelled (cities.ts). */
   seat?: string | null;
+  /**
+   * A flat selection is active (main.ts: something selected, 3D off): everything but the selection
+   * is dimmed (DIM), and a selected concelho keeps its outline past the concelho level. In 3D the
+   * veil and the slab do both.
+   */
+  dim?: boolean;
 }
 
 const isPnct: ExpressionSpecification = ["==", ["get", "pnct"], true];
@@ -80,33 +86,51 @@ function parishLevel(level: number, value: ExpressionSpecification | number): Ex
 const otherHover = (colors: MapPalette) => colors.otherOpacity + 0.185;
 const otherGroup = (colors: MapPalette) => colors.otherOpacity + 0.085;
 
-function parishFillOpacity({ district }: FilterState, level: number, colors: MapPalette): ExpressionSpecification {
+/** Fill opacity factor of the features outside a flat selection (FilterState.dim). */
+export const DIM = 0.45;
+const dimBy = ({ dim }: FilterState) => (dim ? DIM : 1);
+
+function parishFillOpacity(filter: FilterState, level: number, colors: MapPalette): ExpressionSpecification {
+  const k = dimBy(filter);
   return parishLevel(level, [
     "case",
     selected, 0.85,
-    ["!", inDistrict(district)], ["case", isPnct, 0.12, 0],
+    ["!", inDistrict(filter.district)], ["case", isPnct, 0.12 * k, 0],
     hovered, ["case", isPnct, 0.72, otherHover(colors)],
     grouped, ["case", isPnct, 0.68, otherGroup(colors)],
-    isPnct, 0.5,
-    colors.otherOpacity,
+    isPnct, 0.5 * k,
+    colors.otherOpacity * k,
   ]);
 }
 
 /** Whole-PNCT concelhos look like PNCT parishes; partly-PNCT ones get a light fill plus the hatch layer. */
-function concelhoFillOpacity({ district }: FilterState, level: number, colors: MapPalette): ExpressionSpecification {
+function concelhoFillOpacity(filter: FilterState, level: number, colors: MapPalette): ExpressionSpecification {
+  const k = dimBy(filter);
   return concelhoLevel(level, [
     "case",
     selected, 0.7,
-    ["!", inDistrict(district)], ["case", hasPnct, 0.12, 0],
+    ["!", inDistrict(filter.district)], ["case", hasPnct, 0.12 * k, 0],
     hovered, ["case", allPnct, 0.72, hasPnct, 0.4, otherHover(colors)],
-    allPnct, 0.5,
-    hasPnct, 0.16,
-    colors.otherOpacity,
+    allPnct, 0.5 * k,
+    hasPnct, 0.16 * k,
+    colors.otherOpacity * k,
   ]);
 }
 
-function hatchOpacity({ district }: FilterState, level: number): ExpressionSpecification {
-  return concelhoLevel(level, ["case", ["!", inDistrict(district)], 0.25, 0.9]);
+function hatchOpacity(filter: FilterState, level: number): ExpressionSpecification {
+  return concelhoLevel(level, ["case", selected, 0.9, ["!", inDistrict(filter.district)], 0.25 * dimBy(filter), 0.9 * dimBy(filter)]);
+}
+
+/** Width of the outline around the selection, px: solid, in the palette's highlight (accent) colour. */
+export const SELECTED_WIDTH = 3;
+
+/**
+ * The concelho outline: the selected and the hovered one at the concelho level; past it the hover
+ * outline goes (parishes are hovered there), and the selected concelho keeps its outline while the
+ * selection is flat (in 3D the slab's rim is the outline).
+ */
+function concelhoHighlightOpacity(filter: FilterState, level: number): ExpressionSpecification {
+  return ["interpolate", ["linear"], ["zoom"], level - FADE, ["case", ["any", selected, hovered], 1, 0], level + FADE, ["case", selected, filter.dim ? 1 : 0, 0]];
 }
 
 function lineOpacity(district: string | null, inside: number, outside: number): ExpressionSpecification {
@@ -449,7 +473,7 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
       ...withFilter(parishFilter(filter.focus)),
       paint: {
         "line-color": colors.highlight,
-        "line-width": ["case", selected, 2.2, hovered, 1.6, grouped, 1, 0],
+        "line-width": ["case", selected, SELECTED_WIDTH, hovered, 1.6, grouped, 1, 0],
         "line-opacity": ["case", ["any", selected, hovered], 1, grouped, 0.7, 0],
       },
     },
@@ -460,8 +484,8 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
       ...withFilter(concelhoFilter(filter.focus)),
       paint: {
         "line-color": colors.highlight,
-        "line-width": ["case", selected, 2.4, hovered, 1.8, 0],
-        "line-opacity": concelhoLevel(level, ["case", ["any", selected, hovered], 1, 0]),
+        "line-width": ["case", selected, SELECTED_WIDTH, hovered, 1.8, 0],
+        "line-opacity": concelhoHighlightOpacity(filter, level),
       },
     },
     ...slabLayers(slab, colors, filter, level),
@@ -581,5 +605,5 @@ export function applyFilter(map: MapLibreMap, filter: FilterState, level: number
   if (map.getLayer(SEAT_LAYER)) map.setLayerZoomRange(SEAT_LAYER, Math.max(0, level - SEAT_LEAD), 24);
   map.setPaintProperty(PARISH_LINE, "line-opacity", parishLevel(level, lineOpacity(filter.district, 0.45, 0.15)));
   map.setPaintProperty(CONCELHO_LINE, "line-opacity", lineOpacity(filter.district, 0.6, 0.2));
-  map.setPaintProperty(CONCELHO_HIGHLIGHT, "line-opacity", concelhoLevel(level, ["case", ["any", selected, hovered], 1, 0]));
+  map.setPaintProperty(CONCELHO_HIGHLIGHT, "line-opacity", concelhoHighlightOpacity(filter, level));
 }

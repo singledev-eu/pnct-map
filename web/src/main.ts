@@ -394,12 +394,21 @@ function start(data: MapData): void {
   /** Refreshes the edge pointers to off-screen towns (set once mounted, below). */
   let updateCityPointers = () => {};
 
+  /** A flat selection dims the rest of the map (layers.ts FilterState.dim); in 3D the veil does. */
+  const syncDim = () => {
+    const dim = selection !== null && !is3d();
+    if (dim === !!filter.dim) return;
+    filter.dim = dim;
+    applyFilter(map, filter, limits.levelZoom, PALETTES[theme], CATEGORY_IDS);
+  };
+
   function select(next: Selection, opts: { fly?: boolean; tilt?: boolean; animate?: boolean } = {}): void {
     const moves = opts.fly || opts.tilt;
     const animate = opts.animate !== false && !reducedMotion.matches;
     selection = next;
     filter.seat = next ? (next.kind === "parish" ? concelhoCode(next.dicofre) : next.code) : null;
     setSelectedSeat(map, filter.seat);
+    syncDim();
     setPanelOpen(next !== null);
     let zoom = map.getZoom();
     if (moves && next) zoom = frame(next, animate);
@@ -784,6 +793,7 @@ function start(data: MapData): void {
   // Switched on: tilt onto the selection in place and raise its slab. Off (or reduced motion turned
   // on): lower the slab and level the camera.
   onView3dChange = () => {
+    syncDim();
     const zoom = is3d() && selection ? frame(selection, true) : map.getZoom();
     slabs.set(slabTarget(selection), !reducedMotion.matches, zoom);
     if (!is3d() || !selection) level0();

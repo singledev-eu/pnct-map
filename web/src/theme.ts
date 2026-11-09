@@ -65,7 +65,10 @@ export interface MapPalette {
   otherOpacity: number;
   /** Fill of the selected parish or concelho. */
   selected: string;
-  /** Outline of the selected/hovered feature and of the selected concelho's parishes. */
+  /**
+   * Outline of the selected/hovered feature and of the selected concelho's parishes: the accent
+   * colour at the strength that stands out from the PNCT fill (the UI's --accent-strong tone).
+   */
   highlight: string;
   parishLine: string;
   concelhoLine: string;
@@ -139,7 +142,7 @@ export const PALETTES: Record<Theme, MapPalette> = {
     other: "#94a3b8",
     otherOpacity: 0.3, // #353a40 over #0c0c0c
     selected: "#7ee8d8",
-    highlight: "#c9f5ee",
+    highlight: "#8ae6d8", // --accent-strong
     parishLine: "#7d8b95",
     concelhoLine: "#a9b5be",
     rnap: "#fb923c",
