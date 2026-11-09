@@ -21,6 +21,7 @@
   --shadow: 0 4px 18px rgba(15, 30, 40, 0.12);
   --map-pnct: #0f8a7e;
   --map-other: #64748b;
+  --map-other-fill: 3.5%; /* PALETTES.light.otherOpacity */
   --map-parish-line: #5b6b73;
   --map-concelho-line: #2f3b42;
   --map-rnap: #c2410c;
@@ -53,6 +54,7 @@
   --shadow: 0 4px 18px rgba(0, 0, 0, 0.55);
   --map-pnct: #22b8a7;
   --map-other: #94a3b8;
+  --map-other-fill: 30%; /* PALETTES.dark.otherOpacity */
   --map-parish-line: #7d8b95;
   --map-concelho-line: #a9b5be;
   --map-rnap: #fb923c;
@@ -769,7 +771,7 @@ body:not([data-level="parish"]) .legend-parish {
 }
 
 .swatch-other {
-  background: color-mix(in srgb, var(--map-other) 6%, transparent);
+  background: color-mix(in srgb, var(--map-other) var(--map-other-fill), var(--bg));
   border: 1px solid color-mix(in srgb, var(--map-parish-line) 45%, transparent);
 }
 

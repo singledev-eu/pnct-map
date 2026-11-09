@@ -74,28 +74,32 @@ function parishLevel(level: number, value: ExpressionSpecification | number): Ex
   return ["interpolate", ["linear"], ["zoom"], level - FADE, 0, level + FADE, value];
 }
 
-function parishFillOpacity({ district }: FilterState, level: number): ExpressionSpecification {
+/** Hovered and grouped (in the selected concelho) non-PNCT fills: a step above the palette's resting opacity. */
+const otherHover = (colors: MapPalette) => colors.otherOpacity + 0.185;
+const otherGroup = (colors: MapPalette) => colors.otherOpacity + 0.085;
+
+function parishFillOpacity({ district }: FilterState, level: number, colors: MapPalette): ExpressionSpecification {
   return parishLevel(level, [
     "case",
     selected, 0.85,
     ["!", inDistrict(district)], ["case", isPnct, 0.12, 0],
-    hovered, ["case", isPnct, 0.72, 0.22],
-    grouped, ["case", isPnct, 0.68, 0.12],
+    hovered, ["case", isPnct, 0.72, otherHover(colors)],
+    grouped, ["case", isPnct, 0.68, otherGroup(colors)],
     isPnct, 0.5,
-    0.035,
+    colors.otherOpacity,
   ]);
 }
 
 /** Whole-PNCT concelhos look like PNCT parishes; partly-PNCT ones get a light fill plus the hatch layer. */
-function concelhoFillOpacity({ district }: FilterState, level: number): ExpressionSpecification {
+function concelhoFillOpacity({ district }: FilterState, level: number, colors: MapPalette): ExpressionSpecification {
   return concelhoLevel(level, [
     "case",
     selected, 0.7,
     ["!", inDistrict(district)], ["case", hasPnct, 0.12, 0],
-    hovered, ["case", allPnct, 0.72, hasPnct, 0.4, 0.22],
+    hovered, ["case", allPnct, 0.72, hasPnct, 0.4, otherHover(colors)],
     allPnct, 0.5,
     hasPnct, 0.16,
-    0.035,
+    colors.otherOpacity,
   ]);
 }
 
@@ -392,7 +396,7 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
       ...withFilter(concelhoFilter(filter.focus)),
       paint: {
         "fill-color": ["case", selected, colors.selected, hasPnct, colors.pnct, colors.other],
-        "fill-opacity": concelhoFillOpacity(filter, level),
+        "fill-opacity": concelhoFillOpacity(filter, level, colors),
       },
     },
     {
@@ -409,7 +413,7 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
       ...withFilter(parishFilter(filter.focus)),
       paint: {
         "fill-color": ["case", selected, colors.selected, isPnct, colors.pnct, colors.other],
-        "fill-opacity": parishFillOpacity(filter, level),
+        "fill-opacity": parishFillOpacity(filter, level, colors),
       },
     },
     ...overlayLayers(overlays, filter.focus, level, colors),
@@ -560,8 +564,8 @@ export function applyFilter(map: MapLibreMap, filter: FilterState, level: number
   for (const id of [PARISH_FILL, PARISH_LINE, PARISH_HIGHLIGHT, PARISH_HOVER_LINE]) map.setFilter(id, parishFilter(filter.focus));
   for (const id of [CONCELHO_FILL, CONCELHO_LINE, CONCELHO_HIGHLIGHT, CONCELHO_HOVER_LINE]) map.setFilter(id, concelhoFilter(filter.focus));
   map.setPaintProperty(CONCELHO_HOVER_LINE, "line-opacity", concelhoLevel(level, ["case", hovered, 1, 0]));
-  map.setPaintProperty(PARISH_FILL, "fill-opacity", parishFillOpacity(filter, level));
-  map.setPaintProperty(CONCELHO_FILL, "fill-opacity", concelhoFillOpacity(filter, level));
+  map.setPaintProperty(PARISH_FILL, "fill-opacity", parishFillOpacity(filter, level, colors));
+  map.setPaintProperty(CONCELHO_FILL, "fill-opacity", concelhoFillOpacity(filter, level, colors));
   map.setPaintProperty(CONCELHO_HATCH, "fill-opacity", hatchOpacity(filter, level));
   for (const id of [SEAT_LAYER, CAPITAL_LAYER]) if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", filter.cities === false ? "none" : "visible");
   if (map.getLayer(SEAT_LAYER)) map.setLayerZoomRange(SEAT_LAYER, Math.max(0, level - SEAT_LEAD), 24);

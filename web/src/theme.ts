@@ -57,6 +57,12 @@ export interface MapPalette {
   pnct: string;
   /** Non-PNCT parishes and concelhos (fill, mostly near-transparent). */
   other: string;
+  /**
+   * Fill opacity of the non-PNCT features at rest. Light: a trace, the basemap's land already reads
+   * apart from the sea. Dark: a grey a clear step above Dark Matter's land, sea and Spain (all
+   * near-black), so the mainland keeps its outline along the non-PNCT coast.
+   */
+  otherOpacity: number;
   /** Fill of the selected parish or concelho. */
   selected: string;
   /** Outline of the selected/hovered feature and of the selected concelho's parishes. */
@@ -96,6 +102,7 @@ export const PALETTES: Record<Theme, MapPalette> = {
   light: {
     pnct: "#0f8a7e",
     other: "#64748b",
+    otherOpacity: 0.035,
     selected: "#0b3d39",
     highlight: "#0b3d39",
     parishLine: "#5b6b73",
@@ -130,6 +137,7 @@ export const PALETTES: Record<Theme, MapPalette> = {
   dark: {
     pnct: "#22b8a7",
     other: "#94a3b8",
+    otherOpacity: 0.3, // #353a40 over #0c0c0c
     selected: "#7ee8d8",
     highlight: "#c9f5ee",
     parishLine: "#7d8b95",

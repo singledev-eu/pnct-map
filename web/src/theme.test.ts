@@ -1,5 +1,6 @@
 import type { LayerSpecification, StyleSpecification } from "maplibre-gl";
 import { describe, expect, it } from "vitest";
+import { contrast, over, parseHex } from "./contrast";
 import { hatchImage, withAppLayers } from "./layers";
 import { PALETTES, type MapPalette } from "./theme";
 import css from "./style.css?raw"; // the file as text, not a stylesheet import
@@ -22,6 +23,17 @@ describe("theme palette", () => {
   it("matches the RNAP tint token in style.css", () => {
     const tints = [...css.matchAll(/--map-rnap-tint:\s*(\d+)%/g)].map((m) => Number(m[1]) / 100);
     expect(tints).toEqual([PALETTES.light.rnapTint, PALETTES.dark.rnapTint]);
+  });
+
+  it("matches the non-PNCT fill token in style.css, and is a clear step above the dark basemap", () => {
+    const fills = [...css.matchAll(/--map-other-fill:\s*([\d.]+)%/g)].map((m) => Number(m[1]) / 100);
+    expect(fills).toEqual([PALETTES.light.otherOpacity, PALETTES.dark.otherOpacity]);
+    // Dark Matter's land, sea and Spain are #0c0c0c or darker.
+    const base = parseHex("#0c0c0c");
+    const fill = over(parseHex(PALETTES.dark.other), PALETTES.dark.otherOpacity, base);
+    expect(contrast(fill, base)).toBeGreaterThan(1.5);
+    // ...and apart from the PNCT fill (the teal at its resting 50%).
+    expect(contrast(over(parseHex(PALETTES.dark.pnct), 0.5, base), fill)).toBeGreaterThan(1.5);
   });
 
   it("draws the hatch in the premultiplied PNCT colour", () => {
