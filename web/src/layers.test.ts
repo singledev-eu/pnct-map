@@ -1,6 +1,7 @@
 import type { LayerSpecification } from "maplibre-gl";
 import { describe, expect, it } from "vitest";
-import { appLayers, DIM, SELECTED_WIDTH, type FilterState } from "./layers";
+import { contrast, over, parseHex } from "./contrast";
+import { appLayers, DIM, PARISH_LINE_WIDTH, SELECTED_WIDTH, type FilterState } from "./layers";
 import { PALETTES } from "./theme";
 
 const LEVEL = 9;
@@ -9,6 +10,23 @@ const paint = (filter: FilterState, id: string, theme: "light" | "dark" = "light
   (appLayers(filter, LEVEL, PALETTES[theme]).find((l) => l.id === id) as LayerSpecification & { paint: Record<string, unknown> }).paint;
 /** The value of a ["interpolate", …, zoom, low, zoom, high] expression at its last stop. */
 const atLastStop = (expr: unknown) => (expr as unknown[]).at(-1);
+
+describe("parish boundaries", () => {
+  it("grow with the zoom", () => {
+    const stops = (PARISH_LINE_WIDTH as unknown[]).slice(3) as number[]; // zoom, width, zoom, width…
+    const widths = stops.filter((_, i) => i % 2 === 1);
+    expect(widths).toEqual([...widths].sort((a, b) => a - b));
+    expect(widths.at(-1)! / widths[0]).toBeGreaterThan(4);
+  });
+
+  it("stand out from the dark PNCT fill at close zoom (3:1 at full opacity, 2:1 as drawn)", () => {
+    const dark = PALETTES.dark;
+    const fill = over(parseHex(dark.pnct), 0.5, parseHex("#0c0c0c"));
+    expect(contrast(parseHex(dark.parishLine), fill)).toBeGreaterThan(3);
+    expect(contrast(over(parseHex(dark.parishLine), dark.parishLineOpacity, fill), fill)).toBeGreaterThan(2);
+    expect(atLastStop(paint(base, "parish-line", "dark")["line-opacity"])).toEqual(["case", ["literal", true], dark.parishLineOpacity, dark.parishLineOpacity / 3]);
+  });
+});
 
 describe("selection highlight", () => {
   it("outlines the selection with a solid line of 2–3 px in the highlight colour, in both themes", () => {

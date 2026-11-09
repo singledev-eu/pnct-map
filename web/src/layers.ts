@@ -137,6 +137,13 @@ function lineOpacity(district: string | null, inside: number, outside: number): 
   return ["case", inDistrict(district), inside, outside];
 }
 
+/**
+ * Parish boundaries: hairlines where the parishes first show, growing with the zoom so each parish
+ * stays apart from its neighbours once it fills the screen (they share one flat fill).
+ */
+export const PARISH_LINE_WIDTH: ExpressionSpecification = ["interpolate", ["linear"], ["zoom"], 8, 0.3, 11, 0.9, 13, 1.4, 15, 2];
+const parishLineOpacity = (filter: FilterState, level: number, colors: MapPalette) => parishLevel(level, lineOpacity(filter.district, colors.parishLineOpacity, colors.parishLineOpacity / 3));
+
 /** Layer filters for focus mode: features outside PNCT territory are dropped, so they are neither drawn nor hit-tested. */
 function parishFilter(focus: boolean): ExpressionSpecification | null {
   return focus ? isPnct : null;
@@ -451,8 +458,8 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
       minzoom: 8,
       paint: {
         "line-color": colors.parishLine,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 8, 0.3, 12, 0.8],
-        "line-opacity": parishLevel(level, lineOpacity(filter.district, 0.45, 0.15)),
+        "line-width": PARISH_LINE_WIDTH,
+        "line-opacity": parishLineOpacity(filter, level, colors),
       },
     },
     {
@@ -603,7 +610,7 @@ export function applyFilter(map: MapLibreMap, filter: FilterState, level: number
   for (const id of [SEAT_LAYER, SELECTED_SEAT_LAYER, CAPITAL_LAYER]) if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", filter.cities === false ? "none" : "visible");
   setSelectedSeat(map, filter.seat ?? null);
   if (map.getLayer(SEAT_LAYER)) map.setLayerZoomRange(SEAT_LAYER, Math.max(0, level - SEAT_LEAD), 24);
-  map.setPaintProperty(PARISH_LINE, "line-opacity", parishLevel(level, lineOpacity(filter.district, 0.45, 0.15)));
+  map.setPaintProperty(PARISH_LINE, "line-opacity", parishLineOpacity(filter, level, colors));
   map.setPaintProperty(CONCELHO_LINE, "line-opacity", lineOpacity(filter.district, 0.6, 0.2));
   map.setPaintProperty(CONCELHO_HIGHLIGHT, "line-opacity", concelhoHighlightOpacity(filter, level));
 }

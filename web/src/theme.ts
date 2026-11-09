@@ -71,6 +71,11 @@ export interface MapPalette {
    */
   highlight: string;
   parishLine: string;
+  /**
+   * Opacity of the parish boundaries at rest. Dark: lighter and stronger than in the light theme,
+   * where a mid grey already reads on the pale fill; on the dark teal it vanished at close zoom.
+   */
+  parishLineOpacity: number;
   concelhoLine: string;
   /** Protected-areas overlay (layers.ts overlayLayers): RNAP tint and outline, Natura 2000 hatch and dashed outline. */
   rnap: string;
@@ -109,6 +114,7 @@ export const PALETTES: Record<Theme, MapPalette> = {
     selected: "#0b3d39",
     highlight: "#0b3d39",
     parishLine: "#5b6b73",
+    parishLineOpacity: 0.45,
     concelhoLine: "#2f3b42",
     // Warm orange and violet: apart from the PNCT teal and from each other, and from the basemap's
     // blue water and green parks.
@@ -143,7 +149,8 @@ export const PALETTES: Record<Theme, MapPalette> = {
     otherOpacity: 0.3, // #353a40 over #0c0c0c
     selected: "#7ee8d8",
     highlight: "#8ae6d8", // --accent-strong
-    parishLine: "#7d8b95",
+    parishLine: "#b5d8d2", // 3.3:1 on the PNCT fill (#22b8a7 at 50% over #0c0c0c) at full opacity
+    parishLineOpacity: 0.7,
     concelhoLine: "#a9b5be",
     rnap: "#fb923c",
     rnapTint: 0.16,
