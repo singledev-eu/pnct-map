@@ -164,7 +164,8 @@ select {
 
 .search {
   position: relative;
-  flex: 0 1 320px;
+  flex: 0 1 auto;
+  width: 320px; /* a width, not a flex-basis: the toolbar is sized by its content */
   min-width: 0;
 }
 
