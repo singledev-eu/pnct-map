@@ -10,7 +10,7 @@
 
 ### Infrastructure
 
-- Pipeline `make landcheck`: `fetch_landcheck.py`, `build_hazard.py` (rasterio, pmtiles). Two static files on Pages, read with HTTP Range: no Worker, no R2. `check_landcheck.mjs` gates both deploys on them.
+- Pipeline `make landcheck`: `fetch_landcheck.py`, `build_hazard.py` (rasterio). Plain static files on Pages (overlay tiles and one ~6 KB grid chunk per lookup): no Worker, no R2, no HTTP Range, which Pages doesn't serve. `check_landcheck.mjs` gates both deploys on them.
 
 ## 0.9.0 (2026-11-09)
 

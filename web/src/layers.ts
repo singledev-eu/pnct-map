@@ -621,12 +621,13 @@ export const HAZARD_SOURCE = "landcheck-hazard";
 export const HAZARD_LAYER = "landcheck-hazard";
 
 /**
- * Adds the hazard raster (a PMTiles archive through the pmtiles:// protocol, registered by main.ts)
- * above the parish fills and below the protected-area overlays and every line, like the protected
- * overlays. Not part of appLayers: main.ts re-adds it on style.load after a theme switch.
+ * Adds the hazard raster (static {z}/{x}/{y}.png tiles, scripts/build_hazard.py) above the parish
+ * fills and below the protected-area overlays and every line, like the protected overlays. `bounds`
+ * keeps MapLibre to the tiles that exist. Not part of appLayers: main.ts re-adds it on style.load after
+ * a theme switch.
  */
-export function addHazardLayer(map: MapLibreMap, archiveUrl: string, tileSize: number): void {
-  if (!map.getSource(HAZARD_SOURCE)) map.addSource(HAZARD_SOURCE, { type: "raster", url: `pmtiles://${archiveUrl}`, tileSize });
+export function addHazardLayer(map: MapLibreMap, tiles: { url: string; tileSize: number; minzoom: number; maxzoom: number; bounds: [number, number, number, number] }): void {
+  if (!map.getSource(HAZARD_SOURCE)) map.addSource(HAZARD_SOURCE, { type: "raster", tiles: [tiles.url], tileSize: tiles.tileSize, minzoom: tiles.minzoom, maxzoom: tiles.maxzoom, bounds: tiles.bounds });
   if (map.getLayer(HAZARD_LAYER)) return;
   const before = map.getStyle().layers.find((l) => l.id.startsWith("protected-"))?.id ?? (map.getLayer(PARISH_LINE) ? PARISH_LINE : undefined);
   map.addLayer(

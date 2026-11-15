@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Area } from "./data";
-import { BLOCKED, cellAt, CellReader, formatPoint, HAZARD, hazardAt, httpRanges, inArea, parishAtPoint, parsePoint, toPtTm06 } from "./landcheck";
+import { BLOCKED, cellAt, CellReader, chunkFiles, formatPoint, HAZARD, hazardAt, hasChunk, inArea, parishAtPoint, parsePoint, toPtTm06 } from "./landcheck";
 
 // [lat, lon, x, y] from pyproj (EPSG:4326 -> EPSG:3763).
 const PROJ_FIXTURES: [number, number, number, number][] = [
@@ -48,58 +48,54 @@ describe("cellAt", () => {
   });
 });
 
-describe("httpRanges", () => {
-  const body = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7]);
-  it("asks for an inclusive byte range and returns a 206 body", async () => {
+describe("chunkFiles and hasChunk", () => {
+  it("GETs <dir>/<i>.bin", async () => {
     const seen: string[] = [];
-    const fetcher = (async (_url: string, init?: RequestInit) => {
-      const range = (init?.headers as Record<string, string>).Range;
-      seen.push(range);
-      const [, a, b] = /bytes=(\d+)-(\d+)/.exec(range)!.map(Number);
-      return new Response(body.slice(a, b + 1), { status: 206 });
+    const fetcher = (async (url: string) => {
+      seen.push(url);
+      return new Response(new Uint8Array([1, 2]), { status: 200, headers: { "content-type": "application/octet-stream" } });
     }) as typeof fetch;
-    expect([...(await httpRanges("/x", fetcher)(2, 5))]).toEqual([2, 3, 4]);
-    expect(seen).toEqual(["bytes=2-4"]);
+    expect([...(await chunkFiles("/landcheck/x", fetcher)(42))]).toEqual([1, 2]);
+    expect(seen).toEqual(["/landcheck/x/42.bin"]);
   });
-  it("slices a 200 (Range ignored) and reuses it", async () => {
-    let calls = 0;
-    const fetcher = (async () => {
-      calls++;
-      return new Response(body, { status: 200 });
-    }) as typeof fetch;
-    const get = httpRanges("/x", fetcher);
-    expect([...(await get(1, 3))]).toEqual([1, 2]);
-    expect([...(await get(6, 8))]).toEqual([6, 7]);
-    expect(calls).toBe(1);
+  it("rejects an error status and an HTML fallback page", async () => {
+    const html = (async () => new Response("<!doctype html>", { status: 200, headers: { "content-type": "text/html; charset=utf-8" } })) as typeof fetch;
+    await expect(chunkFiles("/x", html)(1)).rejects.toThrow("text/html");
+    await expect(chunkFiles("/x", (async () => new Response("", { status: 404 })) as typeof fetch)(1)).rejects.toThrow("404");
   });
-  it("throws on other statuses", async () => {
-    await expect(httpRanges("/x", (async () => new Response("", { status: 404 })) as typeof fetch)(0, 1)).rejects.toThrow("404");
+  it("reads the presence bitmap bit by bit", () => {
+    const grid = { present: "0580" }; // byte 0 = 0b00000101, byte 1 = 0b10000000
+    expect([0, 1, 2, 3, 15, 16].map((i) => hasChunk(grid, i))).toEqual([true, false, true, false, true, false]);
   });
 });
 
 // Node's fs, typed here: the project has no @types/node (tests run in Vitest's node environment).
 const NODE_FS = "node:fs";
-const { existsSync, readFileSync } = (await import(/* @vite-ignore */ NODE_FS)) as { existsSync: (p: URL) => boolean; readFileSync: (p: URL) => Uint8Array };
-const CELLS_FILE = new URL(`../public/${HAZARD.cells.file}`, import.meta.url);
-const haveCells = existsSync(CELLS_FILE);
+const { existsSync, readFileSync, readdirSync } = (await import(/* @vite-ignore */ NODE_FS)) as {
+  existsSync: (p: URL) => boolean;
+  readFileSync: (p: URL) => Uint8Array;
+  readdirSync: (p: URL) => string[];
+};
+const CELLS_DIR = new URL(`../public/${HAZARD.cells.dir}/`, import.meta.url);
+const haveCells = existsSync(CELLS_DIR);
 
 describe.skipIf(!haveCells)("CellReader on the built grid (uv run make landcheck)", () => {
-  const file = haveCells ? new Uint8Array(readFileSync(CELLS_FILE)) : new Uint8Array();
   let requests = 0;
-  const reader = new CellReader(HAZARD.cells, async (start, end) => {
+  const reader = new CellReader(HAZARD.cells, async (i) => {
     requests++;
-    return file.slice(start, end);
+    return new Uint8Array(readFileSync(new URL(`${i}.bin`, CELLS_DIR)));
   });
 
-  it("is the file the meta names", () => {
-    expect(file.length).toBe(HAZARD.cells.bytes);
+  it("has the files the meta names", () => {
+    expect(readdirSync(CELLS_DIR).length).toBe(HAZARD.cells.files);
   });
   it.each(POINTS)("%s", async (_name, lat, lon, expected) => {
     expect(await reader.classAt(lon, lat)).toBe(expected);
   });
-  it("reads the index once and caches chunks", async () => {
+  it("caches chunks, and asks for no file where the bitmap has none", async () => {
     const before = requests;
     await reader.classAt(-8.15187, 39.92681);
+    await reader.classAt(-10, 39.5); // at sea: outside the grid or an empty chunk
     expect(requests).toBe(before);
   });
 });

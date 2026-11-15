@@ -14,8 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / "data/external/landcheck"  # gitignored (data/external/)
 CAOP_GPKG = ROOT / "data/external/CAOP_Continente_2025-gpkg/Continente_CAOP2025.gpkg"
 
-# The PMTiles archive is served by Cloudflare Pages from web/public/landcheck/ (gitignored, content-hashed
-# file name, so it can be cached as immutable). The bundled meta names the file.
+# The land check files are served by Cloudflare Pages from web/public/landcheck/ (gitignored,
+# content-hashed directory names, so they can be cached as immutable). The bundled meta names them.
 PUBLIC_DIR = ROOT / "web/public/landcheck"
 META_JSON = ROOT / "web/data/landcheck.meta.json"
 # Cloudflare Pages refuses files over 25 MiB; the build fails before that, with margin.
@@ -89,10 +89,10 @@ BLOCKED: dict[str, str] = {
     "broadband": "ANACOM publishes only a WMS view service (no query, no download, no licence)",
 }
 
-# Overlay (display only): PMTiles, 512 px tiles, z5–z11 (z11 pixels are ~29 m at 40°N; MapLibre
-# overzooms past it). z12 came to 35.1 MiB, over the 25 MiB Pages limit.
+# Overlay (display only): static 512 px tiles, z5–z11 (z11 pixels are ~29 m at 40°N; MapLibre
+# overzooms past it).
 TILE_SIZE = 512
 MIN_ZOOM = 5
 MAX_ZOOM = 11
-# Point lookup: the native 25 m grid in CHUNK × CHUNK-cell zlib chunks (6.4 km; ~6 KB per lookup).
+# Point lookup: the native 25 m grid in CHUNK × CHUNK-cell zlib files (6.4 km; ~6 KB per lookup).
 CHUNK = 256

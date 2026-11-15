@@ -1,6 +1,6 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
-import { addProtocol, AttributionControl, LngLat, Map as MapLibreMap, Marker, NavigationControl, setWorkerUrl, type GeoJSONSource, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent, type StyleSpecification } from "maplibre-gl";
+import { AttributionControl, LngLat, Map as MapLibreMap, Marker, NavigationControl, setWorkerUrl, type GeoJSONSource, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent, type StyleSpecification } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { renderAbout } from "./about";
 import { basemapStyle, setLabelLanguage } from "./basemap";
@@ -13,7 +13,7 @@ import { addHazardLayer, addLayers, addOverlays, appLayers, HAZARD_SOURCE, remov
 import { mountSettings } from "./controls";
 import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountIntro } from "./intro";
-import { CellReader, formatPoint, HAZARD, hazardAt, hazardAttributionHtml, httpRanges, parishAtPoint, parsePoint, publicUrl } from "./landcheck";
+import { CellReader, chunkFiles, formatPoint, HAZARD, hazardAt, hazardAttributionHtml, parishAtPoint, parsePoint, publicUrl } from "./landcheck";
 import { mountLegend, mountOverlayToggles } from "./legend";
 import { h, Panel } from "./panel";
 import { mountShortlist, parseCodes, type Shortlist } from "./shortlist";
@@ -786,7 +786,7 @@ function start(data: MapData): void {
   const checkButton = $<HTMLButtonElement>("check-button");
   const checkHint = $("check-hint");
   const crosshair = $("check-crosshair");
-  const reader = new CellReader(HAZARD.cells, httpRanges(publicUrl(HAZARD.cells.file)));
+  const reader = new CellReader(HAZARD.cells, chunkFiles(publicUrl(HAZARD.cells.dir)));
   const markerEl = h("div", { class: "check-marker", role: "img", "data-testid": "check-marker" });
   const marker = new Marker({ element: markerEl, anchor: "bottom" });
   const coarse = window.matchMedia("(pointer: coarse)");
@@ -848,15 +848,16 @@ function start(data: MapData): void {
     setCheckMode(false);
   });
 
-  // The wildfire hazard overlay: off unless the hash says hz=1. The pmtiles protocol is loaded on first use.
+  // The wildfire hazard overlay: off unless the hash says hz=1.
   const hazardToggle = $<HTMLInputElement>("hazard-toggle");
-  const hazardArchive = new URL(publicUrl(HAZARD.tiles.file), window.location.href).href;
+  const hazardTiles = {
+    url: new URL(`${publicUrl(HAZARD.tiles.dir)}/{z}/{x}/{y}.png`, window.location.href).href.replace(/%7B/g, "{").replace(/%7D/g, "}"),
+    tileSize: HAZARD.tiles.tile_size,
+    minzoom: HAZARD.tiles.min_zoom,
+    maxzoom: HAZARD.tiles.max_zoom,
+    bounds: HAZARD.tiles.bounds as [number, number, number, number],
+  };
   let hazardOn = initial.hazard;
-  let pmtilesReady: Promise<void> | null = null;
-  const ensurePmtiles = () =>
-    (pmtilesReady ??= import("pmtiles").then(({ Protocol }) => {
-      addProtocol("pmtiles", new Protocol().tile);
-    }));
   $("hazard-ramp").replaceChildren(
     ...HAZARD.classes.map((c) => {
       const swatch = h("span", { class: "hazard-swatch" });
@@ -874,7 +875,7 @@ function start(data: MapData): void {
     status.hidden = false;
     setTimeout(() => (status.hidden = true), 4000);
   };
-  async function syncHazard(): Promise<void> {
+  function syncHazard(): void {
     hazardToggle.checked = hazardOn;
     writeHash({ hz: hazardOn ? "1" : null });
     if (!hazardOn) {
@@ -882,27 +883,20 @@ function start(data: MapData): void {
       document.body.dataset.hazard = "";
       return;
     }
-    try {
-      await ensurePmtiles();
-    } catch (err) {
-      console.error(err);
-      return hazardFailed();
-    }
-    if (!hazardOn) return; // switched off while the protocol loaded
     document.body.dataset.mapIdle = "false";
-    addHazardLayer(map, hazardArchive, HAZARD.tiles.tile_size);
+    addHazardLayer(map, hazardTiles);
     document.body.dataset.hazard = "on";
   }
   hazardToggle.addEventListener("change", () => {
     hazardOn = hazardToggle.checked;
-    void syncHazard();
+    syncHazard();
   });
   map.on("error", (e) => {
     if ((e as { sourceId?: string }).sourceId !== HAZARD_SOURCE || !hazardOn) return;
     console.error(e.error);
     hazardFailed();
   });
-  if (hazardOn) void syncHazard();
+  if (hazardOn) syncHazard();
 
   // ---- theme ------------------------------------------------------------------
   // A theme switch diffs the new basemap with the app's layers (rebuilt in the new palette) into the
@@ -914,7 +908,7 @@ function start(data: MapData): void {
     if (!map.getSource(PARISH_SOURCE)) addLayers(map, data, filter, limits.levelZoom, PALETTES[theme], slabs.state());
     if (overlayData && overlays.loaded && !map.getSource(overlaySource(CATEGORY_IDS[0]))) addOverlays(map, overlayData, overlays, filter, limits.levelZoom, PALETTES[theme]);
     setPatternImages(map, PALETTES[theme]);
-    if (hazardOn && pmtilesReady) addHazardLayer(map, hazardArchive, HAZARD.tiles.tile_size); // not in appLayers (layers.ts)
+    if (hazardOn) addHazardLayer(map, hazardTiles); // not in appLayers (layers.ts)
     slabs.restore();
     if (citiesData) (map.getSource(CITY_SOURCE) as GeoJSONSource | undefined)?.setData(citiesData);
     clearHover();
@@ -991,7 +985,7 @@ function start(data: MapData): void {
     }
     if (s.hazard !== hazardOn) {
       hazardOn = s.hazard;
-      void syncHazard();
+      syncHazard();
     }
     const current = selection?.kind === "parish" ? selection.dicofre : selection?.kind === "concelho" ? selection.code : null;
     if ((s.parish ?? s.concelho) !== current) restore(true, s);

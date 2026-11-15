@@ -1,6 +1,6 @@
 // Land check review: screenshots of the report at the verification points (light/dark, desktop/phone,
 // EN and one PT), and a table of what the app reported, with the HTTP status of every land check
-// file request (206 = Range served).
+// file request.
 // Usage (preview server running on :4173, or SHOT_BASE): node scripts/landcheck_shots.mjs <out-dir>
 // Files: <out-dir>/<device>-<scheme>-<view>.png
 process.env.PLAYWRIGHT_BROWSERS_PATH ??= "0";
@@ -19,7 +19,9 @@ const VIEWS = {
   pedrogao: { hash: "#chk=39.92681,-8.15187&hz=1" },
   porto: { hash: "#chk=41.14960,-8.61100" },
   braganca: { hash: "#chk=41.89600,-6.73300" },
+  "braganca-rio-de-onor": { hash: "#chk=41.94000,-6.61300" },
   sea: { hash: "#chk=39.50000,-10.00000" },
+  spain: { hash: "#chk=40.00000,-6.00000" },
   "pedrogao-pt": { hash: "#chk=39.92681,-8.15187", query: "?lang=pt" },
   mode: { hash: "#hz=1", after: (page) => page.click('[data-testid="check-button"]') },
 };

@@ -4,9 +4,10 @@
  * v1 answers two facts, both traceable to a dataset:
  *   - the parish under the point and whether it is PNCT: point-in-polygon on the CAOP 2025 display
  *     geometry the map already holds (data.ts), so no extra download;
- *   - the ICNF structural wildfire hazard class: the 25 m source cell under the point, read from
- *     web/public/landcheck/hazard-cells-<sha8>.bin (scripts/build_hazard.py) with two HTTP Range
- *     requests: the chunk index (16 KB, once per session) and one ~6 KB zlib chunk. No server code.
+ *   - the ICNF structural wildfire hazard class: the 25 m source cell under the point, read from one
+ *     ~6 KB zlib chunk file in web/public/landcheck/hazard-cells-<sha8>/ (scripts/build_hazard.py),
+ *     a plain GET; chunks without a class aren't files, and the meta's `present` bitmap says so
+ *     without a request. No server code, and no HTTP Range (Pages answers Range with the whole file).
  * REN and fixed broadband are blocked in v1 (landcheck.meta.json `blocked`, DATA.md).
  *
  * A point outside every parish is "outside mainland Portugal" and gets no hazard either.
@@ -23,8 +24,9 @@ export interface HazardClass {
 }
 
 export interface CellGrid {
-  file: string;
-  bytes: number;
+  dir: string;
+  /** Bit i (of byte i >> 3) set: chunk i has a file. Hex. */
+  present: string;
   crs: string;
   /** Top-left corner, EPSG:3763 metres. */
   origin: [number, number];
@@ -96,24 +98,25 @@ export function cellAt(grid: CellGrid, x: number, y: number): { chunk: number; c
   };
 }
 
-export type RangeFetcher = (start: number, end: number) => Promise<Uint8Array>;
+export type ChunkFetcher = (chunk: number) => Promise<Uint8Array>;
 
 /**
- * Byte ranges of `url` ([start, end), end exclusive) over HTTP Range. A server that ignores Range
- * (200 with the whole file) still works: the whole body is kept and later ranges are sliced from it.
+ * GETs `<dir>/<chunk>.bin`. A response that isn't the file (an error status, or the HTML page Pages
+ * serves for an unknown path) is an error, never data.
  */
-export function httpRanges(url: string, fetcher: typeof fetch = fetch): RangeFetcher {
-  let whole: Promise<Uint8Array> | null = null;
-  return async (start, end) => {
-    if (whole) return (await whole).slice(start, end);
-    const res = await fetcher(url, { headers: { Range: `bytes=${start}-${end - 1}` } });
-    if (res.status === 206) return new Uint8Array(await res.arrayBuffer());
-    if (res.status === 200) {
-      whole = res.arrayBuffer().then((b) => new Uint8Array(b));
-      return (await whole).slice(start, end);
-    }
-    throw new Error(`${url}: HTTP ${res.status}`);
+export function chunkFiles(dir: string, fetcher: typeof fetch = fetch): ChunkFetcher {
+  return async (chunk) => {
+    const url = `${dir}/${chunk}.bin`;
+    const res = await fetcher(url);
+    if (!res.ok || (res.headers.get("content-type") ?? "").includes("text/html")) throw new Error(`${url}: HTTP ${res.status} ${res.headers.get("content-type") ?? ""}`);
+    return new Uint8Array(await res.arrayBuffer());
   };
+}
+
+/** Whether chunk i has a file, from the meta's bitmap. */
+export function hasChunk(grid: Pick<CellGrid, "present">, i: number): boolean {
+  const byte = Number.parseInt(grid.present.slice(2 * (i >> 3), 2 * (i >> 3) + 2), 16);
+  return Number.isFinite(byte) && ((byte >> (i & 7)) & 1) === 1;
 }
 
 /** zlib (RFC 1950) streams, as Python's zlib.compress writes them, through the browser's DecompressionStream. */
@@ -124,46 +127,30 @@ async function inflate(data: Uint8Array): Promise<Uint8Array> {
 
 /** Reads hazard classes from the cell grid: 0 = no class (outside the classified land), 1–5 = ICNF class. */
 export class CellReader {
-  private index: Promise<Uint32Array> | null = null;
-  private chunks = new Map<number, Promise<Uint8Array | null>>();
+  private chunks = new Map<number, Promise<Uint8Array>>();
 
   constructor(
     private readonly grid: CellGrid,
-    private readonly range: RangeFetcher,
+    private readonly fetchChunk: ChunkFetcher,
   ) {}
 
-  private offsets(): Promise<Uint32Array> {
-    if (!this.index) {
-      const n = this.grid.chunk_rows * this.grid.chunk_cols + 1;
-      this.index = this.range(0, 4 * n).then((b) => {
-        const view = new DataView(b.buffer, b.byteOffset, b.byteLength);
-        const out = new Uint32Array(n);
-        for (let i = 0; i < n; i++) out[i] = view.getUint32(4 * i, true);
-        if (out[0] !== 4 * n) throw new Error("hazard grid: bad index");
-        return out;
-      });
-      this.index.catch(() => (this.index = null)); // retry on the next lookup
-    }
-    return this.index;
-  }
-
-  private chunk(i: number): Promise<Uint8Array | null> {
+  private chunk(i: number): Promise<Uint8Array> {
     let p = this.chunks.get(i);
     if (!p) {
-      p = this.offsets().then(async (o) => (o[i] === o[i + 1] ? null : inflate(await this.range(o[i], o[i + 1]))));
+      p = this.fetchChunk(i).then(inflate);
       if (this.chunks.size > 64) this.chunks.delete(this.chunks.keys().next().value!); // a few MB at most
       this.chunks.set(i, p);
-      p.catch(() => this.chunks.delete(i));
+      p.catch(() => this.chunks.delete(i)); // retry on the next lookup
     }
     return p;
   }
 
   async classAt(lon: number, lat: number): Promise<number> {
     const at = cellAt(this.grid, ...toPtTm06(lon, lat));
-    if (!at) return 0;
+    if (!at || !hasChunk(this.grid, at.chunk)) return 0;
     const cells = await this.chunk(at.chunk);
-    if (cells && cells.length !== this.grid.chunk ** 2) throw new Error("hazard grid: bad chunk");
-    return cells ? cells[at.cell] : 0;
+    if (cells.length !== this.grid.chunk ** 2) throw new Error("hazard grid: bad chunk");
+    return cells[at.cell];
   }
 }
 

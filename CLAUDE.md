@@ -14,13 +14,13 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
   - parishes: `parse_pdf` → `build_parishes` → `build_geo` → `build_topo`, plus `build_shapes` and `build_outline`;
   - protected areas: `protected_config` → `fetch_protected` → `build_protected`;
   - concelho card: `concelhos_config` → `fetch_ine` → `build_concelhos`, plus `contacts_candidates` and `validate_contacts`;
-  - land check: `landcheck_config` → `fetch_landcheck` → `build_hazard` (ICNF wildfire hazard GeoTIFF → overlay PMTiles + 25 m lookup grid).
+  - land check: `landcheck_config` → `fetch_landcheck` → `build_hazard` (ICNF wildfire hazard GeoTIFF → static overlay tiles + 25 m lookup grid chunks).
 - `tests/`: pytest for the pipeline, shapes, outline, protected areas and concelho data.
 - `web/data/`: committed, built by the pipeline.
   - `pnct.topo.json` (display geometry), `shapes.json` (Idealista link shapes), `outline.json` (the camera outline, bundled).
   - Protected areas: `protected.topo.json` (overlay, lazy), `protected-slab.topo.json` (the overlay cut per parish, for the slab top, lazy), `protection.json` (shares per DICOFRE/DICO, lazy) and `protected.meta.json` (categories with EN and PT labels, bundled).
   - `concelhos.json` (population and contacts, lazy).
-  - `landcheck.meta.json` (bundled): names the land check files and carries the grid, source, dates and class labels. The files themselves (`hazard-<sha8>.pmtiles`, `hazard-cells-<sha8>.bin`) are in the gitignored `web/public/landcheck/`, served by Pages ([docs/land-check/HOSTING.md](docs/land-check/HOSTING.md)).
+  - `landcheck.meta.json` (bundled): names the land check files and carries the grid, source, dates and class labels. The files themselves (`hazard-<sha8>/{z}/{x}/{y}.png`, `hazard-cells-<sha8>/<i>.bin`, 3,517 plain files) are in the gitignored `web/public/landcheck/`, served by Pages. Pages ignores HTTP Range (200 with the whole file), so nothing may rely on Range ([docs/land-check/HOSTING.md](docs/land-check/HOSTING.md)).
 - `web/src/`:
   - `main.ts`: app wiring, selection, focus mode, hash.
   - `layers.ts`: MapLibre layers and filters.
@@ -31,13 +31,13 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
   - `strings.ts` (types, live bindings, formatters) with `strings.en.ts` / `strings.pt.ts`: every UI string. `i18n.ts`: language detection, `?lang=`, `data-i18n`. `controls.ts`: PT | EN toggle, theme button and "3D" button. `about.ts`: the About dialog. `intro.ts`: the first-visit intro under the toolbar (dismissal in localStorage `pnct-map:intro`).
   - `concelho.ts`: the concelho card. `panel.ts`, `sheet.ts` (phone bottom sheet), `legend.ts` (legend, overlay toggles, explainer), `search.ts`, `hash.ts`, `prefs.ts`.
   - `drill.ts`: the 3D selection (slab, rim and hover pop-up animation, the "3D" setting, reduced motion); the slab layers are in `layers.ts`, the rim geometry in `edges.ts`.
-  - `landcheck.ts`: the land check lookup (PT-TM06 projection, parish point-in-polygon, the hazard cell read over HTTP Range); its panel is `Panel.showCheck`, its mode and overlay are wired in `main.ts`.
+  - `landcheck.ts`: the land check lookup (PT-TM06 projection, parish point-in-polygon, the hazard cell: one chunk file per lookup); its panel is `Panel.showCheck`, its mode and overlay are wired in `main.ts`.
   - `camera.ts`: camera limits, the mainland outline, and the tilted-camera maths (`groundOffset`, `projectGround`, `groundUnder`, `fitProjected`). `basemap.ts`: the basemap style patches (Latin-only fallback, label language, shield filters, dark labels).
 - `web/tests/e2e/`: Playwright specs. Shared waits are in `helpers.ts`.
 - `web/scripts/`:
   - `perf.mjs`: throttled load timing; `--toggles N` times the focus toggle. `perf_3d.mjs`: the 3D selection on vs off on the same phone profile.
   - `shots.mjs`, `og_image.mjs`: screenshots and the share image. `readme_shot.mjs` (`npm run shots:readme`): the README screenshot.
-  - Review shots: `drill_review.mjs` (3D fit, hover, colour, occlusion, interplay; run before and after a change), `drill_shots.mjs` (3D design options, a/b), `theme_shots.mjs`, `protected_shots.mjs`, `landcheck_shots.mjs` (the land check at the verification points, with the Range status of each file request), `concelho_shots.mjs`, `i18n_shots.mjs` (PT/EN × light/dark), `phone_safe_area_shots.mjs` (iPhone insets, before/after), `polish_shots.mjs` (375/768/1440 × light/dark; run before and after a visual change). `settled.mjs` is their shared wait.
+  - Review shots: `drill_review.mjs` (3D fit, hover, colour, occlusion, interplay; run before and after a change), `drill_shots.mjs` (3D design options, a/b), `theme_shots.mjs`, `protected_shots.mjs`, `landcheck_shots.mjs` (the land check at the verification points, with the HTTP status of each land check file request), `concelho_shots.mjs`, `i18n_shots.mjs` (PT/EN × light/dark), `phone_safe_area_shots.mjs` (iPhone insets, before/after), `polish_shots.mjs` (375/768/1440 × light/dark; run before and after a visual change). `settled.mjs` is their shared wait.
   - `e2e-flaky-report.mjs`: the flaky-test warning.
 - `web/public/`: `_headers` (caching, CSP, security headers), icons, OG image, robots.txt, sitemap.xml.
 - `docs/`: `ROADMAP.md`, `i18n-glossary.md` (EN → PT terms), `reports/<task>.md` (one per task), screenshots and perf data.
@@ -101,7 +101,7 @@ cd web && npm run deploy              # same, to production (main). Only after t
   - Every line layer (app and basemap) is below the extrusions, and slabs are always opaque, so no ground line shows through or across a slab. With a protected-areas overlay on, the selection's protected parts are drawn on the slab top (`protected-slab.topo.json`, built by `build_protected.py`), luminance-matched to the slab so labels keep AA (`contrast.test.ts`). Edges are rims extruded on the slab top (`edges.ts`), never ground lines over it. Only basemap labels are drawn over slabs.
   - Framing uses the projected footprint at the final pitch/bearing (`fitProjected`); hit tests on a slab top look at the ground under it (`groundUnder`).
   - Pitch and bearing belong to a selection: clearing it, turning 3D off or reduced motion levels the camera. Under `prefers-reduced-motion` there is no tilt, no slab, and selections jump. The constrain's padding offset goes through `groundOffset`, so camera limits hold with pitch.
-- **Land check:** every fact shown traces to a dataset, with its source and date in the report; a missing value says so ("Not classified", "could not be loaded", "Outside mainland Portugal"), never a guess. The wildfire map is a *hazard classification*, never a building rule. Hazard values come from the exact 25 m ICNF cell (`hazard-cells-*.bin`), never from the display tiles. Facts without usable open data (REN, broadband) are listed in `landcheck_config.BLOCKED` and shown as not covered.
+- **Land check:** every fact shown traces to a dataset, with its source and date in the report; a missing value says so ("Not classified", "could not be loaded", "Outside mainland Portugal"), never a guess. The wildfire map is a *hazard classification*, never a building rule. Hazard values come from the exact 25 m ICNF cell (`hazard-cells-*/`), never from the display tiles. Facts without usable open data (REN, broadband) are listed in `landcheck_config.BLOCKED` and shown as not covered.
 - **e2e waits:** wait for the parish layer (`waitForParishes` / `waitForParishView`), not the basemap. Use `waitForFullIdle` only before screenshots. No `waitForTimeout`.
 
 ## Working conventions

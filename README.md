@@ -72,7 +72,7 @@ uv sync
 uv run make all      # download (checksum-verified) → parse → match → geo → topo → shapes → outline → protected → concelhos → pytest
 ```
 
-`make landcheck` downloads the ICNF wildfire hazard GeoTIFF (19.5 MB, SHA-256 checked) and builds the land check files into the gitignored `web/public/landcheck/` (an overlay PMTiles and the lookup grid, 15.7 + 13.5 MiB). A deploy refuses to run without them ([docs/land-check/HOSTING.md](docs/land-check/HOSTING.md)).
+`make landcheck` downloads the ICNF wildfire hazard GeoTIFF (19.5 MB, SHA-256 checked) and builds the land check files into the gitignored `web/public/landcheck/` (overlay tiles and the lookup grid chunks, 15.8 + 13.5 MiB in 3,517 files). A deploy refuses to run without them ([docs/land-check/HOSTING.md](docs/land-check/HOSTING.md)).
 
 `make download` fetches two sources. Each download is checked against a SHA-256 before it is kept:
 

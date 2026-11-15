@@ -2,26 +2,28 @@
 
 From the ICNF structural hazard GeoTIFF (25 m, EPSG:3763, classes 1–5, 15 = no data), clipped to
 mainland Portugal (cells outside the CAOP 2025 districts become 0, "no class", so "outside mainland"
-means the same for the hazard and for the parish lookup), two files:
+means the same for the hazard and for the parish lookup), two directories of plain static files:
 
-  hazard-<sha8>.pmtiles        the map overlay (display only). Web-mercator tiles, 512 px, z5–z11,
-                               mode-resampled (nearest at z11), as palette PNGs whose palette index is
-                               the class (0 transparent, 1–5 in ICNF's colours). All-empty tiles are
-                               left out.
-  hazard-cells-<sha8>.bin      the point lookup: the source grid itself, cell for cell, in EPSG:3763.
-                               Layout: a little-endian uint32 index of (chunks + 1) byte offsets, then
-                               one zlib stream per chunk of CHUNK × CHUNK cells (uint8 class per cell,
-                               row-major, chunks row-major from the top-left). An empty chunk has
-                               offset[i] == offset[i + 1]. The app (web/src/landcheck.ts) reads the
-                               index and one chunk with two HTTP Range requests.
+  hazard-<sha8>/{z}/{x}/{y}.png  the map overlay (display only). Web-mercator tiles, 512 px, z5–z11,
+                                 mode-resampled (nearest at z11), as palette PNGs whose palette index is
+                                 the class (0 transparent, 1–5 in ICNF's colours). Every tile inside the
+                                 overlay bounds exists (empty ones share one transparent PNG), so the map
+                                 never asks Pages for a missing file (which would answer with index.html).
+  hazard-cells-<sha8>/<i>.bin    the point lookup: the source grid itself, cell for cell, in EPSG:3763,
+                                 one zlib file per chunk of CHUNK × CHUNK cells (uint8 class per cell,
+                                 row-major; chunks numbered row-major from the top-left). Only chunks with
+                                 a class exist; the meta's `present` bitmap says which. The app
+                                 (web/src/landcheck.ts) fetches one ~6 KB file per lookup.
 
-Each file name carries the first 8 hex digits of its SHA-256, so both are cached as immutable.
+Plain files, not one archive read with HTTP Range: Cloudflare Pages answers Range requests with 200
+and the whole file (checked on the preview deploy, and stated in its docs), so PMTiles or an indexed
+single file would download 15 MiB per lookup there. Each directory name carries the first 8 hex digits
+of a SHA-256 over its files (tree_sha256, below), so both are cached as immutable.
 web/data/landcheck.meta.json (committed, bundled) names them and carries the grid parameters, the
 source, licence and dates, and the class labels in EN and PT.
 
-The pixel grid was chosen by measurement: an exact web-mercator lookup needs z12 (35.1 MiB, over the
-25 MiB Pages limit), and a z11 lookup agreed with the source cell at only 93.3% of random points.
-The native grid is exact and 13.5 MiB. The build fails if either file is over MAX_FILE_BYTES.
+The lookup reads the native grid because a web-mercator lookup is either inexact (z11 agreed with the
+source cell at 93.3% of random points) or large (z12: 35.1 MiB).
 """
 
 from __future__ import annotations
@@ -31,6 +33,7 @@ import io
 import json
 import math
 import sys
+import shutil
 import tempfile
 import time
 import zlib
@@ -41,8 +44,6 @@ import pyogrio
 import rasterio
 import shapely
 from PIL import Image
-from pmtiles.tile import Compression, TileType, zxy_to_tileid
-from pmtiles.writer import Writer
 from rasterio.features import geometry_mask
 from rasterio.warp import Resampling, reproject
 
@@ -97,7 +98,7 @@ def load_classes(source: cfg.RasterSource) -> tuple[np.ndarray, rasterio.Affine,
 
 
 # ---------------------------------------------------------------------------------------------
-# Overlay tiles (PMTiles)
+# Overlay tiles
 # ---------------------------------------------------------------------------------------------
 
 
@@ -129,40 +130,28 @@ def render_tile(classes, transform, crs, z: int, x: int, y: int) -> np.ndarray:
     return dst
 
 
-def write_pmtiles(classes, transform, crs, source: cfg.RasterSource, attribution: str, path: Path) -> int:
-    entries: list[tuple[int, bytes]] = []
+def empty_png() -> bytes:
+    return palette_png(np.zeros((cfg.TILE_SIZE, cfg.TILE_SIZE), dtype=np.uint8), cfg.HAZARD)
+
+
+def write_tiles(classes, transform, crs, source: cfg.RasterSource, out: Path) -> int:
+    """Writes out/{z}/{x}/{y}.png for every tile in the bounds; returns how many hold a class."""
+    blank = empty_png()
+    filled = 0
     started = time.time()
     for z in range(cfg.MIN_ZOOM, cfg.MAX_ZOOM + 1):
-        before = len(entries)
+        before = filled
         x0, y0 = lonlat_to_tile(LON_MIN, LAT_MAX, z)
         x1, y1 = lonlat_to_tile(LON_MAX, LAT_MIN, z)
         for x in range(x0, x1 + 1):
+            (out / str(z) / str(x)).mkdir(parents=True, exist_ok=True)
             for y in range(y0, y1 + 1):
                 tile = render_tile(classes, transform, crs, z, x, y)
-                if tile.any():
-                    entries.append((zxy_to_tileid(z, x, y), palette_png(tile, source)))
-        print(f"  z{z}: {len(entries) - before} tiles ({time.time() - started:.0f} s)")
-    with path.open("wb") as f:
-        writer = Writer(f)
-        for tile_id, data in sorted(entries):  # PMTiles wants tile ids in order
-            writer.write_tile(tile_id, data)
-        writer.finalize(
-            {
-                "tile_type": TileType.PNG,
-                "tile_compression": Compression.NONE,
-                "min_zoom": cfg.MIN_ZOOM,
-                "max_zoom": cfg.MAX_ZOOM,
-                "min_lon_e7": int(LON_MIN * 1e7),
-                "min_lat_e7": int(LAT_MIN * 1e7),
-                "max_lon_e7": int(LON_MAX * 1e7),
-                "max_lat_e7": int(LAT_MAX * 1e7),
-                "center_zoom": 7,
-                "center_lon_e7": int(-8.0 * 1e7),
-                "center_lat_e7": int(39.6 * 1e7),
-            },
-            {"name": "hazard", "attribution": attribution},
-        )
-    return len(entries)
+                data = palette_png(tile, source) if tile.any() else blank
+                filled += data is not blank
+                (out / str(z) / str(x) / f"{y}.png").write_bytes(data)
+        print(f"  z{z}: {filled - before} tiles with a class, {(x1 - x0 + 1) * (y1 - y0 + 1)} in the bounds ({time.time() - started:.0f} s)")
+    return filled
 
 
 # ---------------------------------------------------------------------------------------------
@@ -175,30 +164,25 @@ def chunk_grid(shape: tuple[int, int]) -> tuple[int, int]:
     return math.ceil(shape[0] / cfg.CHUNK), math.ceil(shape[1] / cfg.CHUNK)
 
 
-def write_cells(classes: np.ndarray, path: Path) -> int:
+def write_cells(classes: np.ndarray, out: Path) -> str:
+    """Writes out/<i>.bin for every chunk with a class; returns the presence bitmap as hex (bit i of byte i // 8)."""
     rows, cols = chunk_grid(classes.shape)
-    blobs: list[bytes] = []
+    present = bytearray((rows * cols + 7) // 8)
+    out.mkdir(parents=True, exist_ok=True)
     for r in range(rows):
         for c in range(cols):
             block = classes[r * cfg.CHUNK : (r + 1) * cfg.CHUNK, c * cfg.CHUNK : (c + 1) * cfg.CHUNK]
             if not block.any():
-                blobs.append(b"")
                 continue
+            i = r * cols + c
             full = np.zeros((cfg.CHUNK, cfg.CHUNK), dtype=np.uint8)  # edge chunks padded with 0 (no class)
             full[: block.shape[0], : block.shape[1]] = block
-            blobs.append(zlib.compress(full.tobytes(), 9))
-    index_bytes = 4 * (len(blobs) + 1)
-    offsets = np.cumsum([index_bytes] + [len(b) for b in blobs], dtype=np.uint64)
-    if offsets[-1] >= 2**32:
-        raise SystemExit("lookup grid over 4 GiB")
-    with path.open("wb") as f:
-        f.write(offsets.astype("<u4").tobytes())
-        for b in blobs:
-            f.write(b)
-    return sum(1 for b in blobs if b)
+            (out / f"{i}.bin").write_bytes(zlib.compress(full.tobytes(), 9))
+            present[i >> 3] |= 1 << (i & 7)
+    return present.hex()
 
 
-def read_cell(path: Path, grid: dict, x: float, y: float) -> int:
+def read_cell(directory: Path, grid: dict, x: float, y: float) -> int:
     """The class at EPSG:3763 (x, y), read the way web/src/landcheck.ts reads it (used by the tests)."""
     col = math.floor((x - grid["origin"][0]) / grid["cell"])
     row = math.floor((grid["origin"][1] - y) / grid["cell"])
@@ -206,13 +190,9 @@ def read_cell(path: Path, grid: dict, x: float, y: float) -> int:
         return 0
     chunk = grid["chunk"]
     i = (row // chunk) * grid["chunk_cols"] + col // chunk
-    with path.open("rb") as f:
-        f.seek(4 * i)
-        start, end = np.frombuffer(f.read(8), dtype="<u4")
-        if start == end:
-            return 0
-        f.seek(int(start))
-        cells = zlib.decompress(f.read(int(end - start)))
+    if not (bytes.fromhex(grid["present"])[i >> 3] >> (i & 7)) & 1:
+        return 0
+    cells = zlib.decompress((directory / f"{i}.bin").read_bytes())
     return cells[(row % chunk) * chunk + col % chunk]
 
 
@@ -221,22 +201,35 @@ def read_cell(path: Path, grid: dict, x: float, y: float) -> int:
 # ---------------------------------------------------------------------------------------------
 
 
-def publish(tmp: Path, prefix: str, suffix: str) -> tuple[str, int, str]:
-    """Moves a built file to PUBLIC_DIR under its content-hashed name; drops older versions."""
-    data = tmp.read_bytes()
-    size = len(data)
-    if size > cfg.MAX_FILE_BYTES:
-        tmp.unlink()
-        raise SystemExit(f"{prefix} is {size / 2**20:.1f} MiB, over the {cfg.MAX_FILE_BYTES / 2**20:.0f} MiB limit (Cloudflare Pages: 25 MiB per file); see docs/land-check/HOSTING.md")
-    digest = hashlib.sha256(data).hexdigest()
-    name = f"{prefix}-{digest[:8]}{suffix}"
-    for old in cfg.PUBLIC_DIR.glob(f"{prefix}-????????{suffix}"):
+def tree_sha256(directory: Path) -> tuple[str, int, int]:
+    """SHA-256 over "<relative path>\\0<file sha256>\\n" for every file, sorted by path (web/scripts/check_landcheck.mjs
+    computes the same), with the file count and total bytes."""
+    digest = hashlib.sha256()
+    files = sorted(p for p in directory.rglob("*") if p.is_file())
+    total = 0
+    for p in files:
+        data = p.read_bytes()
+        total += len(data)
+        if len(data) > cfg.MAX_FILE_BYTES:
+            raise SystemExit(f"{p} is over the Pages per-file limit")
+        digest.update(f"{p.relative_to(directory).as_posix()}\0{hashlib.sha256(data).hexdigest()}\n".encode())
+    return digest.hexdigest(), len(files), total
+
+
+def publish(tmp: Path, prefix: str) -> tuple[str, str, int, int]:
+    """Moves a built directory to PUBLIC_DIR/<prefix>-<sha8>; drops older versions."""
+    sha, files, total = tree_sha256(tmp)
+    name = f"{prefix}-{sha[:8]}"
+    for old in cfg.PUBLIC_DIR.glob(f"{prefix}-????????"):
         if old.name != name:
-            old.unlink()
-    tmp.chmod(0o644)  # mkstemp creates it 0600
-    tmp.replace(cfg.PUBLIC_DIR / name)
-    print(f"wrote {cfg.PUBLIC_DIR / name}: {size / 2**20:.1f} MiB")
-    return name, size, digest
+            shutil.rmtree(old) if old.is_dir() else old.unlink()
+    target = cfg.PUBLIC_DIR / name
+    if target.exists():
+        shutil.rmtree(target)
+    tmp.chmod(0o755)  # mkdtemp creates it 0700
+    tmp.replace(target)
+    print(f"wrote {target}: {files} files, {total / 2**20:.1f} MiB")
+    return name, sha, files, total
 
 
 def build(source: cfg.RasterSource = cfg.HAZARD) -> dict:
@@ -245,29 +238,37 @@ def build(source: cfg.RasterSource = cfg.HAZARD) -> dict:
     counts = np.bincount(classes.ravel(), minlength=6)
     print(f"mainland cells per class (0 = none): {dict(enumerate(counts.tolist()))}")
     cfg.PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
-    attribution = f"{source.provider}, {source.title_pt}, {source.download_url}, {fetch_record['fetched'][:10]}"
 
-    def tmp_file() -> Path:
-        with tempfile.NamedTemporaryFile(dir=cfg.PUBLIC_DIR, suffix=".part", delete=False) as t:
-            return Path(t.name)
+    tiles_tmp = Path(tempfile.mkdtemp(dir=cfg.PUBLIC_DIR, prefix=".tiles-"))
+    filled = write_tiles(classes, transform, crs, source, tiles_tmp)
+    tiles_name, tiles_sha, tiles_files, tiles_bytes = publish(tiles_tmp, "hazard")
 
-    tiles_tmp = tmp_file()
-    tiles = write_pmtiles(classes, transform, crs, source, attribution, tiles_tmp)
-    tiles_name, tiles_size, tiles_sha = publish(tiles_tmp, "hazard", ".pmtiles")
-
-    cells_tmp = tmp_file()
-    chunks = write_cells(classes, cells_tmp)
-    cells_name, cells_size, cells_sha = publish(cells_tmp, "hazard-cells", ".bin")
+    cells_tmp = Path(tempfile.mkdtemp(dir=cfg.PUBLIC_DIR, prefix=".cells-"))
+    present = write_cells(classes, cells_tmp)
+    cells_name, cells_sha, cells_files, cells_bytes = publish(cells_tmp, "hazard-cells")
     chunk_rows, chunk_cols = chunk_grid(classes.shape)
-    print(f"  {chunks} of {chunk_rows * chunk_cols} chunks hold a class")
+    print(f"  {cells_files} of {chunk_rows * chunk_cols} chunks hold a class")
+    if -transform.e != transform.a:
+        raise SystemExit("expected square cells")
 
     meta = {
         "hazard": {
-            "tiles": {"file": f"landcheck/{tiles_name}", "bytes": tiles_size, "sha256": tiles_sha, "tiles": tiles, "tile_size": cfg.TILE_SIZE, "min_zoom": cfg.MIN_ZOOM, "max_zoom": cfg.MAX_ZOOM},
+            "tiles": {
+                "dir": f"landcheck/{tiles_name}",
+                "files": tiles_files,
+                "with_class": filled,
+                "bytes": tiles_bytes,
+                "tree_sha256": tiles_sha,
+                "tile_size": cfg.TILE_SIZE,
+                "min_zoom": cfg.MIN_ZOOM,
+                "max_zoom": cfg.MAX_ZOOM,
+                "bounds": [LON_MIN, LAT_MIN, LON_MAX, LAT_MAX],
+            },
             "cells": {
-                "file": f"landcheck/{cells_name}",
-                "bytes": cells_size,
-                "sha256": cells_sha,
+                "dir": f"landcheck/{cells_name}",
+                "files": cells_files,
+                "bytes": cells_bytes,
+                "tree_sha256": cells_sha,
                 "crs": "EPSG:3763",
                 "origin": [transform.c, transform.f],  # top-left corner
                 "cell": transform.a,
@@ -276,6 +277,7 @@ def build(source: cfg.RasterSource = cfg.HAZARD) -> dict:
                 "chunk": cfg.CHUNK,
                 "chunk_cols": chunk_cols,
                 "chunk_rows": chunk_rows,
+                "present": present,
             },
             "provider": source.provider,
             "title": {"en": source.title_en, "pt": source.title_pt},
@@ -290,8 +292,6 @@ def build(source: cfg.RasterSource = cfg.HAZARD) -> dict:
         },
         "blocked": sorted(cfg.BLOCKED),
     }
-    if -transform.e != transform.a:
-        raise SystemExit("expected square cells")
     cfg.META_JSON.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {cfg.META_JSON}")
     return meta

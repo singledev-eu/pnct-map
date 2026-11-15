@@ -1,10 +1,9 @@
 """Land check: the hazard files in web/public/landcheck/ against the ICNF source raster.
 
-Needs the fetched source and the built files (uv run make landcheck); skipped otherwise, like the
+Needs the fetched source and the built directories (uv run make landcheck); skipped otherwise, like the
 other data tests on a fresh clone.
 """
 
-import hashlib
 import io
 import json
 import math
@@ -14,7 +13,6 @@ from pathlib import Path
 import numpy as np
 import pytest
 from PIL import Image
-from pmtiles.reader import MmapSource, Reader
 from pyproj import Transformer
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,8 +21,8 @@ import build_hazard as bh  # noqa: E402
 import landcheck_config as cfg  # noqa: E402
 
 META = json.loads(cfg.META_JSON.read_text(encoding="utf-8"))["hazard"] if cfg.META_JSON.exists() else None
-TILES = ROOT / "web/public" / META["tiles"]["file"] if META else None
-CELLS = ROOT / "web/public" / META["cells"]["file"] if META else None
+TILES = ROOT / "web/public" / META["tiles"]["dir"] if META else None
+CELLS = ROOT / "web/public" / META["cells"]["dir"] if META else None
 pytestmark = pytest.mark.skipif(
     not (META and TILES.exists() and CELLS.exists() and cfg.HAZARD.tif_path().exists()),
     reason="land check data not built (uv run make landcheck)",
@@ -52,13 +50,6 @@ def source():
     return classes, transform
 
 
-@pytest.fixture(scope="module")
-def tiles():
-    f = TILES.open("rb")
-    yield Reader(MmapSource(f))
-    f.close()
-
-
 def source_class(source, x: float, y: float) -> int:
     classes, transform = source
     col, row = ~transform @ (x, y)
@@ -72,14 +63,14 @@ def lookup(lat: float, lon: float) -> int:
     return bh.read_cell(CELLS, META["cells"], *TO_3763.transform(lon, lat))
 
 
-def tile_class(reader: Reader, lat: float, lon: float, z: int) -> int:
+def tile_class(lat: float, lon: float, z: int) -> int:
     n = 2**z
     fx = (lon + 180) / 360 * n
     fy = (1 - math.asinh(math.tan(math.radians(lat))) / math.pi) / 2 * n
-    data = reader.get(z, int(fx), int(fy))
-    if data is None:
+    path = TILES / str(z) / str(int(fx)) / f"{int(fy)}.png"
+    if not path.exists():
         return 0
-    img = Image.open(io.BytesIO(data))
+    img = Image.open(io.BytesIO(path.read_bytes()))
     assert img.mode == "P"
     size = cfg.TILE_SIZE
     return int(np.asarray(img)[min(size - 1, int((fy % 1) * size)), min(size - 1, int((fx % 1) * size))])
@@ -88,10 +79,11 @@ def tile_class(reader: Reader, lat: float, lon: float, z: int) -> int:
 def test_meta_matches_files():
     for part, path in (("tiles", TILES), ("cells", CELLS)):
         m = META[part]
-        data = path.read_bytes()
-        assert len(data) == m["bytes"] < 25 * 1024 * 1024  # Cloudflare Pages per-file limit
-        assert hashlib.sha256(data).hexdigest() == m["sha256"]
-        assert m["sha256"][:8] in path.name
+        sha, files, total = bh.tree_sha256(path)
+        assert (sha, files, total) == (m["tree_sha256"], m["files"], m["bytes"])
+        assert path.name.endswith(sha[:8])
+        assert max(p.stat().st_size for p in path.rglob("*") if p.is_file()) < 25 * 1024 * 1024
+    assert META["tiles"]["files"] + META["cells"]["files"] < 20_000  # Pages free plan, files per deploy
     assert [c["value"] for c in META["classes"]] == [1, 2, 3, 4, 5]
     assert all(c["en"] and c["pt"] and c["color"].startswith("#") for c in META["classes"])
     assert META["reference_date"] and META["fetched"] and META["download_url"].startswith("https://geocatalogo.icnf.pt/")
@@ -106,12 +98,23 @@ def test_only_current_files_are_published():
     assert sorted(p.name for p in cfg.PUBLIC_DIR.iterdir() if not p.name.startswith(".")) == sorted([TILES.name, CELLS.name])
 
 
-def test_cell_index_is_consistent():
+def test_presence_bitmap_matches_the_chunk_files():
     m = META["cells"]
-    n = m["chunk_rows"] * m["chunk_cols"]
-    offsets = np.frombuffer(CELLS.read_bytes()[: 4 * (n + 1)], dtype="<u4")
-    assert offsets[0] == 4 * (n + 1) and offsets[-1] == m["bytes"]
-    assert (np.diff(offsets.astype(np.int64)) >= 0).all()
+    bits = bytes.fromhex(m["present"])
+    present = {i for i in range(m["chunk_rows"] * m["chunk_cols"]) if (bits[i >> 3] >> (i & 7)) & 1}
+    assert present == {int(p.stem) for p in CELLS.glob("*.bin")}
+
+
+def test_every_tile_in_the_bounds_exists():
+    """The map never asks for a missing tile (Pages would answer with index.html)."""
+    t = META["tiles"]
+    lon0, lat0, lon1, lat1 = t["bounds"]
+    for z in range(t["min_zoom"], t["max_zoom"] + 1):
+        x0, y0 = bh.lonlat_to_tile(lon0, lat1, z)
+        x1, y1 = bh.lonlat_to_tile(lon1, lat0, z)
+        for x in range(x0, x1 + 1):
+            for y in range(y0, y1 + 1):
+                assert (TILES / str(z) / str(x) / f"{y}.png").is_file(), (z, x, y)
 
 
 @pytest.mark.parametrize("name", POINTS)
@@ -131,11 +134,9 @@ def test_lookup_is_the_source_cell(source):
         assert bh.read_cell(CELLS, META["cells"], x, y) == source_class(source, x, y)
 
 
-def test_overlay_tiles(tiles):
-    header = tiles.header()
-    assert (header["min_zoom"], header["max_zoom"]) == (cfg.MIN_ZOOM, cfg.MAX_ZOOM)
+def test_overlay_tiles():
     for z in (cfg.MIN_ZOOM, cfg.MAX_ZOOM):
-        assert tile_class(tiles, 39.5, -10.0, z) == 0  # sea: transparent
+        assert tile_class(39.5, -10.0, z) == 0  # sea: transparent
     # Inside the 10 km window around Pedrógão Grande, the overlay is mostly classes 4–5, like the source.
-    seen = [tile_class(tiles, 39.92 + dy, -8.15 + dx, cfg.MAX_ZOOM) for dy in np.linspace(-0.04, 0.04, 9) for dx in np.linspace(-0.05, 0.05, 9)]
+    seen = [tile_class(39.92 + dy, -8.15 + dx, cfg.MAX_ZOOM) for dy in np.linspace(-0.04, 0.04, 9) for dx in np.linspace(-0.05, 0.05, 9)]
     assert np.mean([v in (4, 5) for v in seen]) > 0.5

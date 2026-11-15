@@ -1,18 +1,26 @@
 {
   "hazard": {
     "tiles": {
-      "file": "landcheck/hazard-e5b31721.pmtiles",
-      "bytes": 16464887,
-      "sha256": "e5b317219c31f8c1a109b257fe506f0e435e6ae7781465f0e1f078c477cad888",
-      "tiles": 678,
+      "dir": "landcheck/hazard-5fc08baa",
+      "files": 1154,
+      "with_class": 678,
+      "bytes": 16580789,
+      "tree_sha256": "5fc08baad14829d33b2f31252e2e287d9422ac638a968445396df3c9e0186f61",
       "tile_size": 512,
       "min_zoom": 5,
-      "max_zoom": 11
+      "max_zoom": 11,
+      "bounds": [
+        -9.6,
+        36.9,
+        -6.1,
+        42.2
+      ]
     },
     "cells": {
-      "file": "landcheck/hazard-cells-305d068a.bin",
-      "bytes": 14189825,
-      "sha256": "305d068a3a92b5ab10d8cd2d9e3e3b7f8af12eb312f39a14bf06f04f8d472ccd",
+      "dir": "landcheck/hazard-cells-d2022670",
+      "files": 2363,
+      "bytes": 14173805,
+      "tree_sha256": "d2022670a20f035c57e4e791c93d9e690f4487ff4079cc58eee576a8e8acadc2",
       "crs": "EPSG:3763",
       "origin": [
         -119191.4075,
@@ -23,7 +31,8 @@
       "height": 23060,
       "chunk": 256,
       "chunk_cols": 44,
-      "chunk_rows": 91
+      "chunk_rows": 91,
+      "present": "00000300000000ff00000000f80fc01900c07f02fc0f00fef7efff00f0ffffff0f00ffffffff00f0ffffff3f00feffffff0fe0ffffffff00feffffff0fc0ffffffff00fcffffff07c0ffffff7f00fcffffff03c0ffffff1f00fcffff3f0080ffffff0300f8ffff1f0080ffffff0100f8ffff0f0080ffffff0100f8ffff1f0080ffffff0000fcffff1f00c0ffffff0100fcffff1f00c0ffffff0100feffff1f00e0ffffff0000feffff1f00e0ffffff0100ffffff0f00f0ffff7f0000ffffff0300f0ffff7f0000ffffff0f00f8ffffff0080ffffff0f00f8ffffff00c0ffffff0700fcffff7f00c0ffffff0300feffff3f00e0ffff0f0000ffffff0100f8ffff3f00d0ffffff0300feffff3f00c0ffffff0700fcffff7f00e0ffffff1f00feffffff07e0ffffff7f00feffffff07e0ffffff7f00ffffffff03f0ffffff3f00bfffffff01f0ffffff0f00fcffff7f0080ffffff0700f0ffff7f0000ffffff070078ffff7f0000e0ffff0f0000feffff0000e0ffff1f0000feffff0f00e0ffff7f0000feffff0700f0ffff7f0000ffffff0100f0ffff070000feff7f0000e0ffff030000feff1f0000e0ffff010000feff0f0000e0ffff000000feff0f0000e0ffff000000ffff1f0000f0ffff010000ffff1f0000f8ffff010080ffff1f0000f8ff7f0000c00ffd0100000c00070000000000000000"
     },
     "provider": "ICNF",
     "title": {

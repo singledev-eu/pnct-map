@@ -104,7 +104,7 @@ web/data/cities.json: scripts/build_cities.py $(CITIES_FETCHED) $(CAOP_GPKG)
 	$(PY) scripts/build_cities.py
 
 # Land check (docs/land-check/): the ICNF wildfire hazard GeoTIFF (scripts/landcheck_config.py, SHA-256
-# pinned) -> web/public/landcheck/ (gitignored: the overlay PMTiles and the lookup grid, served by
+# pinned) -> web/public/landcheck/ (gitignored: the overlay tiles and the lookup grid chunks, served by
 # Cloudflare Pages) and web/data/landcheck.meta.json (committed). `make landcheck-fetch` re-downloads.
 LANDCHECK_FETCHED := data/external/landcheck/hazard/fetch.json
 landcheck-fetch:
