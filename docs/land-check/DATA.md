@@ -48,3 +48,7 @@ The parish under a point comes from the CAOP 2025 display geometry the map alrea
 | REN | SNIT (https://snit-sgt.dgterritorio.gov.pt/ren) or the SNIT overlays portal |
 | Fixed broadband | GEO.ANACOM (https://geo.anacom.pt), "Coberturas disponíveis" |
 | Parish and PNCT | CAOP 2025 (DGT) and the IEFP PNCT list (PDF) |
+
+## Watching the sources
+
+A weekly job on the Raspberry Pi (`ops/pi/`, [README](../../ops/pi/README.md)) watches these sources and sends a Telegram message when one changes. It reads the source list from `scripts/landcheck_config.py`: `HAZARD` (URLs and the pinned SHA-256) for the live dataset, and `BLOCKED[...].watch` for the endpoints that would unblock REN and fixed broadband. A new endpoint to watch goes there, not in the watcher.
