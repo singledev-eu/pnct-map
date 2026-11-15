@@ -1,0 +1,80 @@
+{
+  "hazard": {
+    "tiles": {
+      "file": "landcheck/hazard-e5b31721.pmtiles",
+      "bytes": 16464887,
+      "sha256": "e5b317219c31f8c1a109b257fe506f0e435e6ae7781465f0e1f078c477cad888",
+      "tiles": 678,
+      "tile_size": 512,
+      "min_zoom": 5,
+      "max_zoom": 11
+    },
+    "cells": {
+      "file": "landcheck/hazard-cells-305d068a.bin",
+      "bytes": 14189825,
+      "sha256": "305d068a3a92b5ab10d8cd2d9e3e3b7f8af12eb312f39a14bf06f04f8d472ccd",
+      "crs": "EPSG:3763",
+      "origin": [
+        -119191.4075,
+        276095.196
+      ],
+      "cell": 25.0,
+      "width": 11253,
+      "height": 23060,
+      "chunk": 256,
+      "chunk_cols": 44,
+      "chunk_rows": 91
+    },
+    "provider": "ICNF",
+    "title": {
+      "en": "Structural rural fire hazard map 2020–2030",
+      "pt": "Carta de perigosidade de incêndio rural (cariz estrutural) 2020–2030"
+    },
+    "url": "https://geocatalogo.icnf.pt/catalogo_tema5.html",
+    "metadata_url": "https://geocatalogo.icnf.pt/metadados/perigosidade_estrutural_20_30.html",
+    "download_url": "https://geocatalogo.icnf.pt/dados/perigosidade_estrutural_2020_2030.zip",
+    "licence": {
+      "en": "ICNF open data, attribution required",
+      "pt": "Dados abertos ICNF, com citação da fonte"
+    },
+    "licence_url": "https://geocatalogo.icnf.pt/",
+    "reference_date": "2022-03-28",
+    "fetched": "2026-11-15",
+    "classes": [
+      {
+        "value": 1,
+        "color": "#45b345",
+        "en": "Very low",
+        "pt": "Muito baixa"
+      },
+      {
+        "value": 2,
+        "color": "#ebff2f",
+        "en": "Low",
+        "pt": "Baixa"
+      },
+      {
+        "value": 3,
+        "color": "#ee9b00",
+        "en": "Medium",
+        "pt": "Média"
+      },
+      {
+        "value": 4,
+        "color": "#dc0f0f",
+        "en": "High",
+        "pt": "Alta"
+      },
+      {
+        "value": 5,
+        "color": "#902003",
+        "en": "Very high",
+        "pt": "Muito alta"
+      }
+    ]
+  },
+  "blocked": [
+    "broadband",
+    "ren"
+  ]
+}

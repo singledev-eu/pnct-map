@@ -7,9 +7,9 @@ PNCT_SHA256 := c286ef77c16321e8c5124eeb92f8d3f0565dbe302787817a91fe526653e7cffc
 PNCT_PDF := data/raw/territorios-pnct-2026-02-04.pdf
 PY := uv run python
 
-.PHONY: all download parse match geo web-data shapes outline protected-fetch protected concelhos-fetch concelhos cities-fetch cities test web e2e clean
+.PHONY: all download parse match geo web-data shapes outline protected-fetch protected concelhos-fetch concelhos cities-fetch cities landcheck-fetch landcheck test web e2e clean
 
-all: web-data shapes outline protected concelhos cities test
+all: web-data shapes outline protected concelhos cities landcheck test
 
 download: $(CAOP_GPKG) $(PNCT_PDF)
 
@@ -86,10 +86,10 @@ web/data/concelhos.json: scripts/build_concelhos.py scripts/concelhos_config.py 
 test:
 	uv run pytest -q
 
-web: web-data shapes outline protected concelhos cities
+web: web-data shapes outline protected concelhos cities landcheck
 	cd web && npm ci && npm test && npm run build
 
-e2e: web-data shapes outline protected concelhos cities
+e2e: web-data shapes outline protected concelhos cities landcheck
 	cd web && npm ci && npm run test:e2e
 
 CITIES_FETCHED := data/external/osm/fetch.json
@@ -102,6 +102,23 @@ $(CITIES_FETCHED):
 cities: web/data/cities.json
 web/data/cities.json: scripts/build_cities.py $(CITIES_FETCHED) $(CAOP_GPKG)
 	$(PY) scripts/build_cities.py
+
+# Land check (docs/land-check/): the ICNF wildfire hazard GeoTIFF (scripts/landcheck_config.py, SHA-256
+# pinned) -> web/public/landcheck/ (gitignored: the overlay PMTiles and the lookup grid, served by
+# Cloudflare Pages) and web/data/landcheck.meta.json (committed). `make landcheck-fetch` re-downloads.
+LANDCHECK_FETCHED := data/external/landcheck/hazard/fetch.json
+landcheck-fetch:
+	$(PY) scripts/fetch_landcheck.py --refresh
+
+$(LANDCHECK_FETCHED): scripts/landcheck_config.py scripts/fetch_landcheck.py
+	$(PY) scripts/fetch_landcheck.py
+
+# The stamp lives next to the gitignored outputs, so a fresh clone (committed meta, no files) rebuilds.
+LANDCHECK_BUILT := web/public/landcheck/.built
+landcheck: $(LANDCHECK_BUILT)
+$(LANDCHECK_BUILT): scripts/build_hazard.py scripts/landcheck_config.py $(LANDCHECK_FETCHED) $(CAOP_GPKG)
+	$(PY) scripts/build_hazard.py
+	touch $@
 
 # Hand-maintained data is never under a clean target: data/contacts/ (tracked) and data/manual/
 # (local working files) stay; tests/test_clean.py checks the recipe. The legacy location of the

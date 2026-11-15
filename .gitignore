@@ -26,6 +26,9 @@ data/interim/contacts/
 # scraped mailboxes) and out of every clean target (tests/test_clean.py).
 data/manual/
 data/processed/*.geojson
+# Land check files (docs/land-check/HOSTING.md): built by `make landcheck`, served by Cloudflare Pages,
+# too large for git (15.7 + 13.5 MiB). web/data/landcheck.meta.json names them and stays committed.
+web/public/landcheck/
 
 # Local screenshots and other throwaway outputs
 .artifacts/

@@ -12,6 +12,7 @@ Sources behind the committed data in `web/data/` and `data/processed/`. The site
 | Housing and income (concelho card v2) | INE (sales: Estatísticas de preços da habitação ao nível local; income: Estatísticas do Rendimento ao nível local, AT data; earnings: MTSSS/GEP Quadros de Pessoal) | 0012255 (2025), 0012748 (2024), 0012656 (2024) | https://www.ine.pt/ine/json_indicador/ (fetched by `scripts/fetch_ine.py`) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | Confirmed (dados.gov.pt lists each as cc-by) |
 | Câmara contacts and PDM links (concelho card) | Each câmara municipal's website | Checked by hand; date per row (`as_of`) in `data/contacts/camaras.csv` | The câmara websites | Generic institutional contacts published by public bodies, no personal data; links only | Curated |
 | Concelho seats and district capitals (map labels) | OpenStreetMap contributors | `admin_centre` of each municipality (admin_level=7), Overpass API, fetched 2026-11-02 (`data/external/osm/fetch.json`); matched to CAOP 2025 | https://www.openstreetmap.org/copyright | [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/); `web/data/cities.json` is a derived database under ODbL | Confirmed (credited by the existing "© OpenStreetMap contributors" line) |
+| Wildfire hazard (land check) | ICNF, Instituto da Conservação da Natureza e das Florestas | Carta de perigosidade de incêndio rural (cariz estrutural) 2020–2030, GeoTIFF 25 m (SRUP record 2022-03-28), fetched 2026-11-15, SHA-256 `4bb7f921…780a8011` | https://geocatalogo.icnf.pt/dados/perigosidade_estrutural_2020_2030.zip (catalogue: https://geocatalogo.icnf.pt/catalogo_tema5.html) | ICNF geoCATÁLOGO terms: open data, free reuse; the source must be cited as "ICNF, [layer], [download URL], [download date]" | Confirmed (geoCATÁLOGO "Condições de utilização"). Shown as a hazard classification, not a building rule. |
 | Basemap | OpenFreeMap, © OpenMapTiles, © OpenStreetMap contributors | Live tiles | https://openfreemap.org | ODbL (OSM data) | Confirmed |
 
 ## Protected areas: how the sources plug in
@@ -30,3 +31,7 @@ Sources behind the committed data in `web/data/` and `data/processed/`. The site
 - The population change compares two Census counts (2011 and 2021), never an annual estimate with a Census: since 2021 the estimates are administrative-based and differ from the Census by up to ±20% per municipality in the same year.
 - The card's source line reads "INE, population estimates <year>, Censuses 2011/2021 · CC BY 4.0" (PT: "Fonte: INE, estimativas da população <year>, Censos 2011/2021 · CC BY 4.0").
 
+
+## Land check
+
+`scripts/landcheck_config.py` holds the land check's sources (docs/land-check/DATA.md has the Phase 0 findings). v1 builds only the wildfire hazard. REN (DGT SRUP) and fixed broadband (ANACOM) are listed as blocked, with the reasons. The land check panel cites the hazard in ICNF's required form: layer, download URL and download date (`fetched` in `web/data/landcheck.meta.json`).
