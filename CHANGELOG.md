@@ -1,16 +1,36 @@
 # Changelog
 
-## Unreleased (branch feat/land-check)
+## 0.10.0 (2026-11-15)
 
 ### For users
 
-- **Land check (v1):** "Check a spot" in the toolbar. A click on the map (or Enter at the crosshair) reports on that point: the parish and concelho, whether the parish is PNCT, the ICNF structural wildfire hazard class 2020–2030 of the 25 m cell under it, the Idealista links, the sources with their dates, and "Indicative only. Confirm with the câmara (PDM, licensing) before buying." Built-up land and water show "Not classified", because the ICNF map leaves them unclassified. Points at sea or in Spain are "Outside mainland Portugal". Shareable as `#chk=lat,lon` or `/check?lat=..&lon=..`.
+- **Land check (v1):** "Check a spot" in the toolbar (filled while on). A tap or click on the map checks that point at once and puts a marker there. The report shows:
+  - the parish and concelho, and whether the parish is PNCT;
+  - the ICNF structural wildfire hazard class 2020–2030 of the 25 m cell under the point, as a hazard classification, not a building rule. Built-up land and water show "Not classified", because the ICNF map leaves them unclassified;
+  - the Idealista links, the sources with their dates, and "Indicative only. Confirm with the câmara (PDM, licensing) before buying."
+
+  Points at sea or in Spain are "Outside mainland Portugal". Shareable as `#chk=lat,lon` or `/check?lat=..&lon=..`.
+  - On phones the report opens as a one-row peek (PNCT, hazard, place) that a tap or drag expands.
+  - The map moves only if the panel or sheet would hide the point.
+  - A short toast explains the mode the first time.
 - **Wildfire hazard overlay:** a legend toggle (off by default, `hz=1`) with ICNF's five colours.
-- REN and fixed broadband are not covered: DGT's REN service was down and its licence is unclear, and ANACOM publishes only a map view ([docs/land-check/DATA.md](docs/land-check/DATA.md)).
+- **Not checked yet: REN and fixed broadband.** DGT's REN service was down and its licence is unclear, and ANACOM publishes only a map view ([docs/land-check/DATA.md](docs/land-check/DATA.md)).
+- **Accessibility:**
+  - With the keyboard, the map shows a crosshair at the centre of the visible map. Enter checks it, and the first time a toast says "Enter checks the centre · Esc exits".
+  - Screen readers hear each result once ("PNCT: yes. Hazard: Very high. França"), not again when the report re-renders.
 
 ### Infrastructure
 
-- Pipeline `make landcheck`: `fetch_landcheck.py`, `build_hazard.py` (rasterio). Plain static files on Pages (overlay tiles and one ~6 KB grid chunk per lookup): no Worker, no R2, no HTTP Range, which Pages doesn't serve. `check_landcheck.mjs` gates both deploys on them.
+- **Land check pipeline (`make landcheck`):**
+  - `fetch_landcheck.py` and `build_hazard.py` (rasterio) build plain static files on Pages: the overlay tiles, and one ~6 KB grid chunk per lookup.
+  - No Worker, no R2 and no HTTP Range, which Pages doesn't serve.
+  - `check_landcheck.mjs` gates both deploys on the files.
+- **Pi source watcher (`ops/pi/`):** a weekly systemd job on the Raspberry Pi that sends a Telegram message when a land check source changes. It watches:
+  - the ICNF hazard file's metadata, plus a monthly forced SHA-256 check against the pin;
+  - the catalogue link and DGT's REN WFS/WMS;
+  - the dados.gov.pt licences and resources, the SNIG use constraints and the ANACOM capabilities.
+
+  It never builds or deploys.
 
 ## 0.9.0 (2026-11-09)
 
