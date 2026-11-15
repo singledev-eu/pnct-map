@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Area } from "./data";
-import { BLOCKED, cellAt, CellReader, chunkFiles, formatPoint, HAZARD, hazardAt, hasChunk, inArea, parishAtPoint, parsePoint, toPtTm06 } from "./landcheck";
+import { BLOCKED, cellAt, CellReader, chunkFiles, formatPoint, HAZARD, hazardAt, hasChunk, inArea, parishAtPoint, parsePoint, toPtTm06, visibleArea } from "./landcheck";
 
 // [lat, lon, x, y] from pyproj (EPSG:4326 -> EPSG:3763).
 const PROJ_FIXTURES: [number, number, number, number][] = [
@@ -153,4 +153,40 @@ describe("points in the URL", () => {
 it("lists the facts blocked in v1", () => {
   expect([...BLOCKED].sort()).toEqual(["broadband", "ren"]);
   expect(HAZARD.classes.map((c) => c.value)).toEqual([1, 2, 3, 4, 5]);
+});
+
+describe("visibleArea (the check-mode crosshair)", () => {
+  const phone = { width: 390, height: 844 };
+  const toolbar = { top: 12, left: 12, bottom: 212, right: 378 };
+  const legend = { top: 784, left: 12, bottom: 832, right: 160 };
+  const sheet = { top: 422, left: 0, bottom: 844, right: 390 };
+
+  it("phone, no sheet: between the toolbar and the bottom bar", () => {
+    const a = visibleArea(phone, { toolbar, panel: null, bottomBar: legend, narrow: true });
+    expect(a.padding).toEqual({ top: 212, right: 0, bottom: 60, left: 0 });
+    expect(a.centre).toEqual({ x: 195, y: 212 + (784 - 212) / 2 });
+    expect(a.cramped).toBe(false);
+  });
+
+  it("phone, sheet open: above the sheet, which is higher than the bottom bar", () => {
+    const a = visibleArea(phone, { toolbar, panel: sheet, bottomBar: legend, narrow: true });
+    expect(a.padding.bottom).toBe(844 - 422);
+    expect(a.centre).toEqual({ x: 195, y: (212 + 422) / 2 });
+  });
+
+  it("phone, sheet pulled up to full: cramped, never a negative area", () => {
+    const a = visibleArea(phone, { toolbar, panel: { ...sheet, top: 84 }, bottomBar: legend, narrow: true });
+    expect(a.cramped).toBe(true);
+    expect(a.padding.top + a.padding.bottom).toBeLessThanOrEqual(844);
+    expect(a.centre.y).toBe(212);
+  });
+
+  it("desktop: left of the side panel; the corner legend doesn't count", () => {
+    const desk = { width: 1440, height: 900 };
+    const a = visibleArea(desk, { toolbar: { top: 12, left: 12, bottom: 64, right: 900 }, panel: { top: 12, left: 1068, bottom: 888, right: 1428 }, bottomBar: { top: 600, left: 12, bottom: 888, right: 260 }, narrow: false });
+    expect(a.padding).toEqual({ top: 64, right: 372, bottom: 0, left: 0 });
+    expect(a.centre).toEqual({ x: (1440 - 372) / 2, y: 64 + (900 - 64) / 2 });
+    const closed = visibleArea(desk, { toolbar: { top: 12, left: 12, bottom: 64, right: 900 }, panel: null, bottomBar: null, narrow: false });
+    expect(closed.centre.x).toBe(720);
+  });
 });

@@ -220,3 +220,39 @@ export function parsePoint(lat: string | null | undefined, lon?: string | null):
 export function hazardAttributionHtml(): string {
   return `${tk.creditLead}: <a href="${HAZARD.url}" target="_blank" rel="noopener noreferrer">© ICNF</a>`;
 }
+
+// ---- "Check a spot": where the crosshair goes ---------------------------------------------------
+
+/** An element's layout box in map-container px (offsetTop/Left: transforms, like the sheet's slide, ignored). */
+export interface Box {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
+}
+
+/** Below this height (px) the visible map is too cramped for a crosshair (the sheet pulled up to "full"). */
+export const MIN_VISIBLE_H = 96;
+
+/**
+ * The part of the map the user actually sees in check mode, as padding from the map edges (the same
+ * shape as MapLibre's padding), and its centre, where the crosshair sits and where a tap or "Check
+ * here" brings the checked point:
+ *   - top: under the toolbar (the title, search, filters and the mode hint);
+ *   - phones (`narrow`): above the bottom bar (the legend chip) and the open sheet, whichever is higher;
+ *   - wider screens: left of the open side panel.
+ * The app moves the camera with `offset` instead of setting MapLibre's transform padding, which its
+ * camera constrain and fits (camera.ts) assume is zero; the padding here is what that offset is from.
+ */
+export function visibleArea(
+  size: { width: number; height: number },
+  parts: { toolbar: Box | null; panel: Box | null; bottomBar: Box | null; narrow: boolean },
+): { padding: { top: number; right: number; bottom: number; left: number }; centre: { x: number; y: number }; cramped: boolean } {
+  const top = Math.max(0, Math.min(size.height, parts.toolbar?.bottom ?? 0));
+  const floor = Math.min(size.height, ...(parts.narrow ? [parts.bottomBar?.top, parts.panel?.top] : []).filter((v): v is number => v !== undefined));
+  const bottom = Math.max(0, size.height - Math.max(top, floor));
+  const right = !parts.narrow && parts.panel ? Math.max(0, size.width - parts.panel.left) : 0;
+  const padding = { top, right, bottom, left: 0 };
+  const centre = { x: (size.width - right) / 2, y: top + (size.height - top - bottom) / 2 };
+  return { padding, centre, cramped: size.height - top - bottom < MIN_VISIBLE_H };
+}

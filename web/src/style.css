@@ -1947,8 +1947,13 @@ dialog a {
   box-shadow: var(--shadow), 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
-/* The mode hint: the intro's look, under the toolbar. */
+/* The mode hint: the intro's look, under the toolbar. On touch screens it also holds "Check here"
+   (the point under the crosshair); mouse users click the map instead. */
 .check-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
   max-width: min(100%, 640px);
   padding: 8px 12px;
   border: 1px solid var(--accent);
@@ -1958,12 +1963,37 @@ dialog a {
   font-size: 13px;
 }
 
+.check-hint > span {
+  flex: 1 1 180px;
+}
+
+.check-here {
+  display: none;
+  flex: none;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--panel-bg); /* 7.8:1 light, and dark ink on the light teal in dark */
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.check-here:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  outline-offset: 2px;
+}
+
 .check-hint[hidden],
 .check-crosshair[hidden] {
   display: none;
 }
 
-/* The map centre, where Enter checks: a thin cross with a halo, so it reads on both basemaps. */
+/* Where "Check here" and Enter check: the centre of the visible map (main.ts placeCrosshair sets
+   left/top), a thin cross with a halo so it reads on both basemaps. Touch screens always show it in
+   the mode; with a mouse it shows only while the map has keyboard focus. */
 .check-crosshair {
   position: absolute;
   z-index: 5;
@@ -1977,6 +2007,26 @@ dialog a {
     linear-gradient(var(--text), var(--text)) center / 2px 100% no-repeat,
     linear-gradient(var(--text), var(--text)) center / 100% 2px no-repeat;
   filter: drop-shadow(0 0 1.5px var(--panel-bg)) drop-shadow(0 0 1.5px var(--panel-bg));
+  display: none;
+}
+
+.check-mode:has(.maplibregl-canvas:focus-visible) .check-crosshair:not([hidden]) {
+  display: block;
+}
+
+@media (pointer: coarse) {
+  .check-mode .check-crosshair:not([hidden]) {
+    display: block;
+  }
+
+  .check-here {
+    display: inline-flex;
+  }
+}
+
+/* The sheet pulled up to "full" leaves no room for it. */
+.check-mode .check-crosshair.check-crosshair-cramped {
+  display: none;
 }
 
 .check-mode .maplibregl-canvas {

@@ -201,6 +201,8 @@ export interface UiStrings {
   /** The "Check a spot" toggle in the toolbar (landcheck mode): visible label and tooltip. */
   checkButton: string;
   checkTitle: string;
+  /** The button in the check-mode hint on touch screens: checks the point under the crosshair. */
+  checkHere: string;
   /** Legend toggle for the wildfire hazard overlay. */
   legendHazard: string;
   /** The button under the zoom buttons that returns to the whole country: visible label, and accessible name/tooltip. */

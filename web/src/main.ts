@@ -13,7 +13,7 @@ import { addHazardLayer, addLayers, addOverlays, appLayers, HAZARD_SOURCE, remov
 import { mountSettings } from "./controls";
 import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountIntro } from "./intro";
-import { CellReader, chunkFiles, formatPoint, HAZARD, hazardAt, hazardAttributionHtml, parishAtPoint, parsePoint, publicUrl } from "./landcheck";
+import { type Box, CellReader, chunkFiles, formatPoint, HAZARD, hazardAt, hazardAttributionHtml, parishAtPoint, parsePoint, publicUrl, visibleArea } from "./landcheck";
 import { mountLegend, mountOverlayToggles } from "./legend";
 import { h, Panel } from "./panel";
 import { mountShortlist, parseCodes, type Shortlist } from "./shortlist";
@@ -562,7 +562,8 @@ function start(data: MapData): void {
   // At concelho level a click (or tap) selects the concelho and zooms into it; parishes are not
   // hit-tested there, so a tap on a country-wide view never selects a tiny parish by accident.
   map.on("click", (e) => {
-    if (checkMode) return checkAt(e.lngLat.lat, e.lngLat.lng);
+    // Touch: the tapped point goes under the crosshair, as with "Check here". Mouse: checked in place.
+    if (checkMode) return checkAt(e.lngLat.lat, e.lngLat.lng, { centre: coarse.matches || (e.originalEvent as PointerEvent).pointerType === "touch" });
     const target = hit(e.point);
     if (target?.kind === "concelho") select({ kind: "concelho", code: target.c.code }, { fly: true });
     else if (target?.kind === "parish") select({ kind: "parish", dicofre: target.p.dicofre }, { tilt: true });
@@ -785,16 +786,58 @@ function start(data: MapData): void {
   // (search, the panel) leaves it.
   const checkButton = $<HTMLButtonElement>("check-button");
   const checkHint = $("check-hint");
+  const checkHintText = $("check-hint-text");
+  const checkHere = $<HTMLButtonElement>("check-here");
   const crosshair = $("check-crosshair");
+  const toolbarEl = document.querySelector<HTMLElement>(".toolbar")!;
   const reader = new CellReader(HAZARD.cells, chunkFiles(publicUrl(HAZARD.cells.dir)));
   const markerEl = h("div", { class: "check-marker", role: "img", "data-testid": "check-marker" });
   const marker = new Marker({ element: markerEl, anchor: "bottom" });
+  // Touch: a fixed crosshair in the middle of the visible map, "Check here" in the hint, and a tap
+  // brings the tapped point under the crosshair. Mouse: a crosshair cursor and a click checks in
+  // place; the crosshair shows only while the map has keyboard focus (style.css), for Enter.
   const coarse = window.matchMedia("(pointer: coarse)");
   const labelCheck = () => {
-    checkHint.textContent = coarse.matches ? tk.hintTouch : tk.hint;
+    checkHintText.textContent = coarse.matches ? tk.hintTouch : tk.hint;
     markerEl.setAttribute("aria-label", tk.marker);
   };
   labelCheck();
+  coarse.addEventListener("change", labelCheck);
+  const layoutBox = (el: HTMLElement): Box | null =>
+    el.hidden || !el.offsetParent ? null : { top: el.offsetTop, left: el.offsetLeft, bottom: el.offsetTop + el.offsetHeight, right: el.offsetLeft + el.offsetWidth };
+  /** The visible map (landcheck.ts visibleArea): under the toolbar, above the sheet and bottom bar, left of the panel. */
+  const checkArea = () => {
+    const el = map.getContainer();
+    return visibleArea({ width: el.clientWidth, height: el.clientHeight }, { toolbar: layoutBox(toolbarEl), panel: layoutBox(panelEl), bottomBar: layoutBox(legendEl), narrow: isNarrow() });
+  };
+  /** Puts the crosshair at the centre of the visible map; data-centre-x/y are read by the e2e tests. */
+  function placeCrosshair(): void {
+    if (!checkMode) return;
+    const { centre, cramped } = checkArea();
+    crosshair.style.left = `${centre.x}px`;
+    crosshair.style.top = `${centre.y}px`;
+    crosshair.dataset.centreX = String(Math.round(centre.x));
+    crosshair.dataset.centreY = String(Math.round(centre.y));
+    crosshair.classList.toggle("check-crosshair-cramped", cramped);
+  }
+  new ResizeObserver(placeCrosshair).observe(toolbarEl);
+  new ResizeObserver(placeCrosshair).observe(panelEl);
+  window.addEventListener("resize", placeCrosshair);
+  /** The point under the crosshair. */
+  const crosshairPoint = () => {
+    const { centre } = checkArea();
+    return map.unproject([centre.x, centre.y]);
+  };
+  /** Eases (lon, lat) under the crosshair, level, optionally zoomed in; without motion it jumps. */
+  function centreOnCrosshair(lon: number, lat: number, zoom = map.getZoom()): void {
+    const el = map.getContainer();
+    const { centre } = checkArea();
+    map.easeTo({ center: [lon, lat], zoom, offset: [centre.x - el.clientWidth / 2, centre.y - el.clientHeight / 2], pitch: 0, bearing: 0, duration: motion(500) });
+  }
+  const syncMarker = () => {
+    if (check && checkMode) marker.setLngLat([check.lon, check.lat]).addTo(map);
+    else marker.remove();
+  };
   function setCheckMode(on: boolean): void {
     if (on === checkMode) return;
     checkMode = on;
@@ -807,10 +850,20 @@ function start(data: MapData): void {
       clearHover();
       if (selection) select(null);
     }
+    placeCrosshair();
+    syncMarker(); // the marker lives as long as the mode
   }
   checkButton.addEventListener("click", () => setCheckMode(!checkMode));
-  /** Reports on (lat, lon): the panel, the marker and the hash. `fly` (a link): centre the point, zoomed in. */
-  function checkAt(lat: number, lon: number, opts: { fly?: boolean } = {}): void {
+  checkHere.addEventListener("click", () => {
+    const { lat, lng } = crosshairPoint();
+    checkAt(lat, lng, { centre: true });
+  });
+  /**
+   * Reports on (lat, lon): the panel, the marker and the hash. `centre`: then ease the point under
+   * the crosshair (a tap, "Check here", Enter), measured with the panel or sheet already open; `zoom`
+   * (a link): zoomed in to at least that.
+   */
+  function checkAt(lat: number, lon: number, opts: { centre?: boolean; zoom?: number } = {}): void {
     if (selection) select(null);
     check = { lat, lon };
     writeHash({ chk: formatPoint(lat, lon) });
@@ -819,28 +872,31 @@ function start(data: MapData): void {
     const c = p ? (data.concelhos.get(concelhoCode(p.dicofre)) ?? null) : null;
     panel.showCheck({ lat, lon }, p, c, p ? hazardAt(reader, lon, lat) : null, window.location.href);
     setPanelOpen(true);
-    marker.setLngLat([lon, lat]).addTo(map);
-    if (opts.fly) {
-      const zoom = Math.max(map.getZoom(), 12);
-      map.easeTo({ center: fitCenter([lon, lat, lon, lat], zoom, fitPadding(true)), zoom, pitch: 0, bearing: 0, duration: motion(900) });
-    }
+    syncMarker();
+    placeCrosshair();
+    if (opts.centre || opts.zoom) centreOnCrosshair(lon, lat, Math.max(map.getZoom(), opts.zoom ?? 0));
     updateCountryButton();
     updateCityPointers();
   }
+  /** A #chk= link (on load or a hash change): the mode on, the point under the crosshair at zoom 12+. */
+  const openCheckLink = (lat: number, lon: number) => {
+    setCheckMode(true);
+    checkAt(lat, lon, { zoom: 12 });
+  };
   /** Drops the current check (marker and hash); the caller closes or replaces the panel. */
   function clearCheck(): void {
     if (!check) return;
     check = null;
-    marker.remove();
+    syncMarker();
     writeHash({ chk: null });
   }
-  // Keyboard: Enter on the focused map checks the point under the crosshair (the map centre); Esc,
-  // anywhere but a text field or an open dialog, leaves the mode.
+  // Keyboard: Enter on the focused map checks the point under the crosshair (the centre of the
+  // visible map); Esc, anywhere but a text field or an open dialog, leaves the mode.
   map.getCanvas().addEventListener("keydown", (e) => {
     if (!checkMode || e.key !== "Enter") return;
     e.preventDefault();
-    const { lat, lng } = map.getCenter();
-    checkAt(lat, lng);
+    const { lat, lng } = crosshairPoint();
+    checkAt(lat, lng, { centre: true });
   });
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape" || !checkMode || e.defaultPrevented) return;
@@ -964,7 +1020,7 @@ function start(data: MapData): void {
   };
   restore(!initial.hasMapView);
   const initialCheck = initial.parish || initial.concelho ? null : parsePoint(initial.check);
-  if (initialCheck) checkAt(initialCheck.lat, initialCheck.lon, { fly: true });
+  if (initialCheck) openCheckLink(initialCheck.lat, initialCheck.lon);
   else if (initial.check) writeHash({ chk: null });
   // A selection from the link gets its slab at once; a tilted view (map=…/bearing/pitch) without a
   // 3D selection is levelled.
@@ -990,7 +1046,7 @@ function start(data: MapData): void {
     const current = selection?.kind === "parish" ? selection.dicofre : selection?.kind === "concelho" ? selection.code : null;
     if ((s.parish ?? s.concelho) !== current) restore(true, s);
     const point = s.parish || s.concelho ? null : parsePoint(s.check);
-    if (point && (!check || formatPoint(point.lat, point.lon) !== formatPoint(check.lat, check.lon))) checkAt(point.lat, point.lon, { fly: true });
+    if (point && (!check || formatPoint(point.lat, point.lon) !== formatPoint(check.lat, check.lon))) openCheckLink(point.lat, point.lon);
     else if (!point && check && !s.parish && !s.concelho) {
       clearCheck();
       panel.close();

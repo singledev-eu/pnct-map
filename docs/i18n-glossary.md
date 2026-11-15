@@ -93,6 +93,7 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | Expand / Collapse panel | Expandir / Recolher painel |
 | Land check (panel kicker) | Verificação do local |
 | Check a spot (toolbar button) | Verificar local |
+| Check here (check-mode hint, touch) | Verificar aqui |
 | Wildfire hazard (ICNF's structural map) | Perigosidade de incêndio rural (ICNF's term; "Perigosidade de incêndio" in the legend) |
 | hazard classes: Very low … Very high | Muito baixa, Baixa, Média, Alta, Muito alta (ICNF's names, from landcheck.meta.json) |
 | Not classified (no hazard class) | Não classificado |
