@@ -109,11 +109,12 @@ export interface ConcelhoStrings {
  * landcheck.meta.json (ICNF's own names in PT), not from here.
  */
 export interface CheckStrings {
-  /** The mode hint under the toolbar while "Check a spot" is on (pointer devices; touch). */
-  hint: string;
-  hintTouch: string;
-  /** Accessible name of the centre crosshair shown in the mode (Enter checks the point under it). */
-  crosshair: string;
+  /** The toast shown when "Check a spot" turns on (mouse; touch). */
+  toast: string;
+  toastTouch: string;
+  /** The phone sheet's one-row peek (panel.ts showCheck): the hazard badge (the ICNF class name), and the hidden hint that a tap expands it. */
+  peekHazard: (label: string) => string;
+  peekExpand: string;
   /** Accessible name of the marker on the checked point. */
   marker: string;
   kicker: string;
@@ -201,8 +202,6 @@ export interface UiStrings {
   /** The "Check a spot" toggle in the toolbar (landcheck mode): visible label and tooltip. */
   checkButton: string;
   checkTitle: string;
-  /** The button in the check-mode hint on touch screens: checks the point under the crosshair. */
-  checkHere: string;
   /** Legend toggle for the wildfire hazard overlay. */
   legendHazard: string;
   /** The button under the zoom buttons that returns to the whole country: visible label, and accessible name/tooltip. */

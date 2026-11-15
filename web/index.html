@@ -76,11 +76,6 @@
       </div>
       <!-- Filled by intro.ts on a first visit. -->
       <div id="intro" class="intro" role="note" hidden data-testid="intro"></div>
-      <!-- Land check mode (landcheck.ts): the hint, filled by main.ts in the active language, and "Check here" (touch only, style.css). -->
-      <div id="check-hint" class="check-hint" hidden data-testid="check-hint">
-        <span id="check-hint-text" role="status"></span>
-        <button id="check-here" type="button" class="check-here" data-i18n="checkHere" data-testid="check-here"></button>
-      </div>
     </div>
 
     <aside id="panel" class="panel" hidden aria-live="polite" data-testid="panel"></aside>
@@ -107,6 +102,8 @@
       </div>
     </div>
 
+    <!-- Land check mode (main.ts): the toast when it turns on, and the keyboard crosshair. -->
+    <div id="check-toast" class="check-toast" role="status" hidden data-testid="check-toast"></div>
     <div id="check-crosshair" class="check-crosshair" hidden aria-hidden="true" data-testid="check-crosshair"></div>
     <div id="tooltip" class="tooltip" hidden role="tooltip"></div>
     <div id="status" class="status" role="status" data-i18n="loadingMap"></div>

@@ -1,4 +1,4 @@
-import { expect, searchAndPick, test, trackErrors, waitForParishes, waitForParishView } from "./helpers";
+import { expect, searchAndPick, test, touchDrag, trackErrors, waitForParishes, waitForParishView } from "./helpers";
 
 // The land check (src/landcheck.ts, panel.ts showCheck): a report for one point, shared as #chk=lat,lon
 // (or /check?lat=..&lon=..). The expected hazard classes are the ICNF source cells
@@ -51,86 +51,122 @@ test("/check?lat=..&lon=.. lands on #chk= and keeps ?lang", async ({ page }) => 
   await expect(hazard(page)).toHaveText("Muito alta (5 de 5)");
 });
 
-/** The crosshair's centre in page px (main.ts placeCrosshair). */
-const crosshairCentre = async (page: import("@playwright/test").Page) => {
+type Page = import("@playwright/test").Page;
+/** The keyboard crosshair's centre in page px (main.ts placeCrosshair). */
+const crosshairCentre = async (page: Page) => {
   const box = (await page.getByTestId("check-crosshair").boundingBox())!;
   return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
 };
 /** The checked point from the hash. */
-const checked = (page: import("@playwright/test").Page) => {
+const checked = (page: Page) => {
   const [lat, lng] = new URLSearchParams(new URL(page.url()).hash.slice(1)).get("chk")!.split(",").map(Number);
   return { lat, lng };
 };
 /** Where the checked point is on screen, once the camera has stopped. */
-const checkedOnScreen = async (page: import("@playwright/test").Page) => {
+const checkedOnScreen = async (page: Page) => {
   await expect.poll(() => page.evaluate(() => window.pnctMap.isMoving())).toBe(false);
   const p = checked(page);
   return page.evaluate(([lng, lat]) => window.pnctMap.project([lng, lat]), [p.lng, p.lat]);
 };
 /** The marker's tip (anchor "bottom"): the bottom centre of its box. */
-const markerTip = async (page: import("@playwright/test").Page) => {
+const markerTip = async (page: Page) => {
   const box = (await page.getByTestId("check-marker").boundingBox())!;
   return { x: box.x + box.width / 2, y: box.y + box.height };
 };
+const centreOf = (page: Page) => page.evaluate(() => window.pnctMap.getCenter());
+const near = (a: { x: number; y: number }, b: { x: number; y: number }, px = 2) => {
+  expect(Math.abs(a.x - b.x)).toBeLessThan(px);
+  expect(Math.abs(a.y - b.y)).toBeLessThan(px);
+};
+const START = "/#map=11/39.92681/-8.15187";
 
 test.describe("check mode with a mouse", () => {
-  test("a crosshair cursor, a click checks in place, Enter the visible centre, Esc leaves; a selection ends it", async ({ page }) => {
-    await page.goto("/#map=11/39.92681/-8.15187");
+  test("a toast that fades, a filled toggle, a crosshair cursor and no crosshair; a click checks in place", async ({ page }) => {
+    const errors = trackErrors(page);
+    await page.goto(START);
     await waitForParishView(page);
     const button = page.getByTestId("check-button");
     await button.click();
     await expect(button).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByTestId("check-hint")).toBeVisible();
-    await expect(page.getByTestId("check-here")).toBeHidden(); // touch only
+    const toast = page.getByTestId("check-toast");
+    await expect(toast).toBeVisible();
+    await expect(toast).toHaveText("Click anywhere to check a spot");
+    await expect(toast).toBeHidden({ timeout: 6000 }); // fades after ~3 s
     const canvas = page.locator(".maplibregl-canvas");
     await expect(canvas).toHaveCSS("cursor", "crosshair");
-    await expect(page.getByTestId("check-crosshair")).toBeHidden(); // no crosshair for the mouse
-
-    // A click lands where the mouse is: the reported point is that pixel's lngLat; the map stays put.
-    const box = (await canvas.boundingBox())!;
-    const at = { x: box.width * 0.3, y: box.height * 0.6 };
-    const expected = await page.evaluate(({ x, y }) => window.pnctMap.unproject([x, y]), at);
-    const before = await page.evaluate(() => window.pnctMap.getCenter());
-    await canvas.click({ position: at });
-    await expect(page).toHaveURL(/[#&]chk=/);
-    expect(checked(page).lat).toBeCloseTo(expected.lat, 4);
-    expect(checked(page).lng).toBeCloseTo(expected.lng, 4);
-    await expect(page.locator('[data-testid="panel"][data-check="inside"]')).toBeVisible();
-    await expect(button).toHaveAttribute("aria-pressed", "true"); // the mode stays for the next spot
-    const after = await page.evaluate(() => window.pnctMap.getCenter());
-    expect(after.lat).toBeCloseTo(before.lat, 6);
-    expect(after.lng).toBeCloseTo(before.lng, 6);
-    const tip = await markerTip(page);
-    expect(Math.abs(tip.x - at.x)).toBeLessThan(2);
-    expect(Math.abs(tip.y - at.y)).toBeLessThan(2);
     await expect(page.getByTestId("check-crosshair")).toBeHidden();
 
-    // Keyboard: with keyboard focus on the map the crosshair shows, in the middle of the visible
-    // map (left of the panel, under the toolbar), and Enter checks the point under it.
+    // A click checks that pixel's point, the marker stands on it, and the map stays put.
+    const at = { x: 400, y: 600 };
+    const expected = await page.evaluate(({ x, y }) => window.pnctMap.unproject([x, y]), at);
+    const before = await centreOf(page);
+    await canvas.click({ position: at });
+    await expect(page.locator('[data-testid="panel"][data-check="inside"]')).toBeVisible();
+    expect(checked(page).lat).toBeCloseTo(expected.lat, 4);
+    expect(checked(page).lng).toBeCloseTo(expected.lng, 4);
+    await checkedOnScreen(page);
+    const after = await centreOf(page);
+    expect(after.lat).toBeCloseTo(before.lat, 6);
+    expect(after.lng).toBeCloseTo(before.lng, 6);
+    near(await markerTip(page), at);
+    await expect(page.getByTestId("check-crosshair")).toBeHidden();
+    await expect(button).toHaveAttribute("aria-pressed", "true"); // the mode stays for the next spot
+
+    // A second click moves the one marker.
+    await canvas.click({ position: { x: 500, y: 400 } });
+    await expect(page.getByTestId("check-marker")).toHaveCount(1);
+    near(await markerTip(page), { x: 500, y: 400 });
+
+    // After a check the toast doesn't come back in this session.
+    await button.click();
+    await button.click();
+    await expect(button).toHaveAttribute("aria-pressed", "true");
+    await expect(toast).toBeHidden();
+    expect(errors).toEqual([]);
+  });
+
+  test("a click where the panel opens: the map pans just enough to keep the point left of it", async ({ page }) => {
+    await page.goto(START);
+    await waitForParishView(page);
+    await page.getByTestId("check-button").click();
+    const at = { x: 1300, y: 450 };
+    await page.locator(".maplibregl-canvas").click({ position: at });
+    const onScreen = await checkedOnScreen(page);
+    const panelLeft = (await page.getByTestId("panel").boundingBox())!.x;
+    expect(onScreen.x).toBeLessThan(panelLeft);
+    expect(Math.abs(onScreen.x - (panelLeft - 16))).toBeLessThan(2); // just enough: 16 px clear of the panel
+    expect(Math.abs(onScreen.y - at.y)).toBeLessThan(2); // and no vertical move
+    near(await markerTip(page), onScreen);
+  });
+
+  test("keyboard: the crosshair shows only with keyboard focus, in the visible map; Enter checks it; Esc leaves; a selection ends the mode", async ({ page }) => {
+    await page.goto(START);
+    await waitForParishView(page);
+    const button = page.getByTestId("check-button");
+    await button.click();
+    const canvas = page.locator(".maplibregl-canvas");
+    await canvas.click({ position: { x: 400, y: 500 } }); // opens the panel
+    await expect(page.getByTestId("check-crosshair")).toBeHidden();
+
     await page.keyboard.press("Shift");
     await canvas.focus();
     await expect(page.getByTestId("check-crosshair")).toBeVisible();
     const c = await crosshairCentre(page);
+    const box = (await canvas.boundingBox())!;
     const panelLeft = (await page.getByTestId("panel").boundingBox())!.x;
     const toolbarBottom = await page.evaluate(() => document.querySelector(".toolbar")!.getBoundingClientRect().bottom);
-    expect(Math.abs(c.x - panelLeft / 2)).toBeLessThan(2);
-    expect(Math.abs(c.y - (toolbarBottom + box.height) / 2)).toBeLessThan(2);
+    near(c, { x: panelLeft / 2, y: (toolbarBottom + box.height) / 2 });
     const under = await page.evaluate(({ x, y }) => window.pnctMap.unproject([x, y]), c);
     await page.keyboard.press("Enter");
     await expect.poll(() => checked(page).lat).toBeCloseTo(under.lat, 4);
     expect(checked(page).lng).toBeCloseTo(under.lng, 4);
-    const onScreen = await checkedOnScreen(page);
-    expect(Math.abs(onScreen.x - c.x)).toBeLessThan(2);
-    expect(Math.abs(onScreen.y - c.y)).toBeLessThan(2);
+    near(await checkedOnScreen(page), c);
 
-    // Esc leaves the mode; the marker goes with it.
     await page.keyboard.press("Escape");
     await expect(button).toHaveAttribute("aria-pressed", "false");
-    await expect(page.getByTestId("check-hint")).toBeHidden();
     await expect(page.getByTestId("check-crosshair")).toBeHidden();
     await expect(page.getByTestId("check-marker")).toHaveCount(0);
 
-    // Picking a parish replaces the check.
     await button.click();
     await searchAndPick(page, "Erra", /Erra/);
     await expect(page.getByTestId("panel-title")).toHaveText("Erra");
@@ -138,116 +174,125 @@ test.describe("check mode with a mouse", () => {
     await expect(page.getByTestId("check-marker")).toHaveCount(0);
     await expect(button).toHaveAttribute("aria-pressed", "false");
   });
-
-  test("a second check moves the marker; there is only one", async ({ page }) => {
-    await page.goto("/#map=11/39.92681/-8.15187");
-    await waitForParishView(page);
-    await page.getByTestId("check-button").click();
-    const canvas = page.locator(".maplibregl-canvas");
-    await canvas.click({ position: { x: 300, y: 500 } });
-    await expect(page.getByTestId("check-marker")).toHaveCount(1);
-    await canvas.click({ position: { x: 500, y: 400 } });
-    await expect(page.getByTestId("check-marker")).toHaveCount(1);
-    const tip = await markerTip(page);
-    expect(Math.abs(tip.x - 500)).toBeLessThan(2);
-    expect(Math.abs(tip.y - 400)).toBeLessThan(2);
-  });
 });
 
-test.describe("check mode on a touch screen", () => {
+test.describe("check mode on a touch screen (390×844)", () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const panel = (page: Page) => page.getByTestId("panel");
+  const sheetState = (page: Page) => panel(page).getAttribute("data-sheet");
+  /** The visible map's height with the sheet open: from the toolbar's bottom to the sheet's top. */
+  const visibleHeight = (page: Page) =>
+    page.evaluate(() => document.getElementById("panel")!.offsetTop - document.querySelector(".toolbar")!.getBoundingClientRect().bottom);
 
-  /** The visible map in page px, measured here independently of main.ts: under the toolbar, above the open sheet or the legend chip. */
-  const visibleCentre = (page: import("@playwright/test").Page) =>
-    page.evaluate(() => {
-      const toolbar = document.querySelector(".toolbar")!.getBoundingClientRect();
-      const panel = document.getElementById("panel")!;
-      const legend = document.querySelector<HTMLElement>(".legend")!; // hidden under an open sheet
-      const floor = Math.min(legend.offsetParent ? legend.getBoundingClientRect().top : Infinity, panel.hidden ? Infinity : panel.offsetTop, window.innerHeight);
-      return { x: window.innerWidth / 2, y: (toolbar.bottom + floor) / 2 };
-    });
-
-  test("a fixed crosshair in the visible map; a tap brings the tapped point under it; Check here checks it", async ({ page }) => {
+  test("a tap checks in place, with no crosshair; the sheet opens as a one-row peek", async ({ page }, info) => {
     const errors = trackErrors(page);
-    await page.goto("/#map=11/39.92681/-8.15187");
+    await page.goto(START);
     await waitForParishView(page);
     await page.getByTestId("check-button").tap();
-    await expect(page.getByTestId("check-crosshair")).toBeVisible();
-    const here = page.getByTestId("check-here");
-    await expect(here).toBeVisible();
-    await expect(here).toHaveText("Check here");
-    expect((await here.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    await expect(page.getByTestId("check-toast")).toHaveText("Tap anywhere to check a spot");
+    await expect(page.getByTestId("check-crosshair")).toBeHidden();
 
-    // Centred in the visible map, not the screen: under the toolbar and hint, above the legend chip.
-    let c = await crosshairCentre(page);
-    let v = await visibleCentre(page);
-    expect(Math.abs(c.x - v.x)).toBeLessThan(2);
-    expect(Math.abs(c.y - v.y)).toBeLessThan(2);
-    expect(Math.abs(c.y - 844 / 2)).toBeGreaterThan(10);
-
-    // A tap checks the tapped point, then eases it under the crosshair, which sits above the sheet now.
-    const at = { x: 90, y: 560 };
+    const at = { x: 120, y: 420 };
     const tapped = await page.evaluate(({ x, y }) => window.pnctMap.unproject([x, y]), at);
+    const before = await centreOf(page);
     await page.touchscreen.tap(at.x, at.y);
-    await expect(page.locator('[data-testid="panel"][data-check]')).toBeVisible();
+    await expect(page).toHaveURL(/[#&]chk=/);
     expect(checked(page).lat).toBeCloseTo(tapped.lat, 4);
     expect(checked(page).lng).toBeCloseTo(tapped.lng, 4);
-    const onScreen = await checkedOnScreen(page);
-    c = await crosshairCentre(page);
-    v = await visibleCentre(page);
-    expect(Math.abs(c.x - v.x)).toBeLessThan(2);
-    expect(Math.abs(c.y - v.y)).toBeLessThan(2);
-    expect(Math.abs(onScreen.x - c.x)).toBeLessThan(2);
-    expect(Math.abs(onScreen.y - c.y)).toBeLessThan(2);
-    let tip = await markerTip(page);
-    expect(Math.abs(tip.x - c.x)).toBeLessThan(2);
-    expect(Math.abs(tip.y - c.y)).toBeLessThan(2);
-
-    // Move the map, then "Check here": the point under the crosshair, marker on it, one marker.
-    await page.evaluate(() => window.pnctMap.panBy([60, -40], { duration: 0 }));
-    const under = await page.evaluate(({ x, y }) => window.pnctMap.unproject([x, y]), c);
-    await here.tap();
-    await expect.poll(() => checked(page).lat).toBeCloseTo(under.lat, 4);
-    expect(checked(page).lng).toBeCloseTo(under.lng, 4);
+    await expect(page.getByTestId("check-toast")).toBeHidden(); // the first check dismisses it
     await checkedOnScreen(page);
-    await expect(page.getByTestId("check-marker")).toHaveCount(1);
-    tip = await markerTip(page);
-    expect(Math.abs(tip.x - c.x)).toBeLessThan(2);
-    expect(Math.abs(tip.y - c.y)).toBeLessThan(2);
+    const after = await centreOf(page);
+    expect(after.lat).toBeCloseTo(before.lat, 6); // not moved
+    expect(after.lng).toBeCloseTo(before.lng, 6);
+    near(await markerTip(page), at);
+    await expect(page.getByTestId("check-crosshair")).toBeHidden();
+
+    // The peek: the PNCT badge, the hazard badge and the place, in one row; nothing else of the report.
+    expect(await sheetState(page)).toBe("peek");
+    const peek = page.getByTestId("check-peek");
+    await expect(peek).toBeVisible();
+    await expect(page.getByTestId("peek-pnct")).toHaveText(/PNCT: (yes|no)/);
+    await expect(page.getByTestId("peek-hazard")).toHaveAttribute("data-status", "ok");
+    await expect(page.getByTestId("panel-title")).toBeHidden();
+    const peekBox = (await peek.boundingBox())!;
+    expect(peekBox.height).toBeGreaterThanOrEqual(44);
+    const rows = await peek.evaluate((el) => new Set([...el.children].filter((c) => (c as HTMLElement).offsetParent && !c.classList.contains("visually-hidden")).map((c) => Math.round((c as HTMLElement).getBoundingClientRect().top / 10))).size);
+    expect(rows).toBe(1);
+    const height = await visibleHeight(page);
+    info.annotations.push({ type: "visible map height (390×844, peek open)", description: `${Math.round(height)} px` });
+    console.log(`visible map height at 390x844 with the peek open: ${Math.round(height)} px`);
+    expect(height).toBeGreaterThan(450);
     expect(errors).toEqual([]);
   });
 
-  test("a link opens the mode with the point under the crosshair, above the sheet; PT labels", async ({ page }) => {
+  test("the peek expands: a tap on it, the handle, or a drag up", async ({ page }) => {
+    await page.goto(`/#chk=${PEDROGAO}`);
+    await waitForParishes(page);
+    expect(await sheetState(page)).toBe("peek");
+    await expect(page.getByTestId("peek-hazard")).toHaveText("Hazard: Very high");
+    await expect(page.getByTestId("peek-hazard")).toHaveAttribute("data-value", "5");
+    await expect(page.getByTestId("check-peek")).toContainText("Pedrógão Grande");
+
+    await page.getByTestId("check-peek").tap();
+    expect(await sheetState(page)).toBe("half");
+    await expect(page.getByTestId("check-peek")).toBeHidden();
+    await expect(page.getByTestId("panel-title")).toHaveText("Pedrógão Grande");
+    await expect(hazard(page)).toHaveText("Very high (5 of 5)");
+    await page.getByTestId("sheet-handle").tap();
+    expect(await sheetState(page)).toBe("full");
+
+    // From full, the handle steps back to half.
+    await page.getByTestId("sheet-handle").tap();
+    expect(await sheetState(page)).toBe("half");
+
+    // From a fresh peek, a drag up expands it too.
+    await page.locator(".panel-close").tap();
+    await page.touchscreen.tap(150, 400);
+    await expect.poll(() => sheetState(page)).toBe("peek");
+    await touchDrag(page, '[data-testid="check-peek"]', -120);
+    await expect.poll(() => sheetState(page)).toBe("half");
+  });
+
+  test("a tap near the bottom: the map pans just enough to keep the point above the peek", async ({ page }) => {
+    await page.goto(START);
+    await waitForParishView(page);
+    await page.getByTestId("check-button").tap();
+    const at = { x: 200, y: 770 };
+    await page.touchscreen.tap(at.x, at.y);
+    await expect.poll(() => sheetState(page)).toBe("peek");
+    const onScreen = await checkedOnScreen(page);
+    const sheetTop = await page.evaluate(() => document.getElementById("panel")!.offsetTop);
+    expect(Math.abs(onScreen.y - (sheetTop - 16))).toBeLessThan(2); // just above the sheet
+    expect(Math.abs(onScreen.x - at.x)).toBeLessThan(2); // no sideways move
+    near(await markerTip(page), onScreen);
+  });
+
+  test("a link opens the mode with the point in the visible map and a peek in PT", async ({ page }) => {
     await page.goto(`/?lang=pt#chk=${PEDROGAO}`);
     await waitForParishes(page);
-    await expect(hazard(page)).toHaveText("Muito alta (5 de 5)");
     await expect(page.getByTestId("check-button")).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByTestId("check-here")).toHaveText("Verificar aqui");
+    await expect(page.getByTestId("peek-hazard")).toHaveText("Perigosidade: Muito alta");
+    await expect(page.getByTestId("peek-pnct")).toHaveText("PNCT: sim");
     const onScreen = await checkedOnScreen(page);
-    const c = await crosshairCentre(page);
-    const v = await visibleCentre(page);
-    expect(Math.abs(c.y - v.y)).toBeLessThan(2);
-    expect(Math.abs(onScreen.x - c.x)).toBeLessThan(2);
-    expect(Math.abs(onScreen.y - c.y)).toBeLessThan(2);
-    expect(c.y).toBeLessThan((await page.getByTestId("panel").boundingBox())!.y);
+    const sheetTop = await page.evaluate(() => document.getElementById("panel")!.offsetTop);
+    const toolbarBottom = await page.evaluate(() => document.querySelector(".toolbar")!.getBoundingClientRect().bottom);
+    near(onScreen, { x: 195, y: (toolbarBottom + sheetTop) / 2 });
   });
 
   test.describe("with reduced motion", () => {
     test.use({ reducedMotion: "reduce" });
-    test("a tap jumps the point under the crosshair, without easing", async ({ page }) => {
-      await page.goto("/#map=11/39.92681/-8.15187");
+    test("a tap near the bottom jumps the point above the peek, without easing", async ({ page }) => {
+      await page.goto(START);
       await waitForParishView(page);
       await page.getByTestId("check-button").tap();
-      const at = { x: 300, y: 520 };
+      const at = { x: 200, y: 770 };
       const tapped = await page.evaluate(({ x, y }) => window.pnctMap.unproject([x, y]), at);
       await page.touchscreen.tap(at.x, at.y);
       await expect(page).toHaveURL(/[#&]chk=/);
-      // Right away: no camera animation is running, and the point is already there.
       expect(await page.evaluate(() => window.pnctMap.isMoving())).toBe(false);
-      const c = await crosshairCentre(page);
+      const sheetTop = await page.evaluate(() => document.getElementById("panel")!.offsetTop);
       const p = await page.evaluate(([lng, lat]) => window.pnctMap.project([lng, lat]), [tapped.lng, tapped.lat]);
-      expect(Math.abs(p.x - c.x)).toBeLessThan(2);
-      expect(Math.abs(p.y - c.y)).toBeLessThan(2);
+      expect(Math.abs(p.y - (sheetTop - 16))).toBeLessThan(2);
     });
   });
 });

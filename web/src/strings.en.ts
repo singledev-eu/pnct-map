@@ -30,7 +30,6 @@ export const en: Strings = {
     aboutButton: "About",
     checkButton: "Check a spot",
     checkTitle: "Click any point of the map for a land check: PNCT and wildfire hazard",
-    checkHere: "Check here",
     legendHazard: "Wildfire hazard (ICNF)",
     countryButton: "All",
     countryLabel: "Show the whole country",
@@ -216,9 +215,10 @@ export const en: Strings = {
   },
 
   check: {
-    hint: "Click the map to check a spot. With the keyboard, Enter checks the point under the crosshair; Esc stops.",
-    hintTouch: "Tap a spot, or move the map and check under the crosshair.",
-    crosshair: "Map centre: press Enter to check this point",
+    toast: "Click anywhere to check a spot",
+    toastTouch: "Tap anywhere to check a spot",
+    peekHazard: (label) => `Hazard: ${label}`,
+    peekExpand: "Show the full report",
     marker: "Checked spot",
     kicker: "Land check",
     coords: (lat, lon) => `${lat}° N, ${lon}° W`,

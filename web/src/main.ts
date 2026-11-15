@@ -562,8 +562,7 @@ function start(data: MapData): void {
   // At concelho level a click (or tap) selects the concelho and zooms into it; parishes are not
   // hit-tested there, so a tap on a country-wide view never selects a tiny parish by accident.
   map.on("click", (e) => {
-    // Touch: the tapped point goes under the crosshair, as with "Check here". Mouse: checked in place.
-    if (checkMode) return checkAt(e.lngLat.lat, e.lngLat.lng, { centre: coarse.matches || (e.originalEvent as PointerEvent).pointerType === "touch" });
+    if (checkMode) return checkAt(e.lngLat.lat, e.lngLat.lng, { keep: true }); // in place
     const target = hit(e.point);
     if (target?.kind === "concelho") select({ kind: "concelho", code: target.c.code }, { fly: true });
     else if (target?.kind === "parish") select({ kind: "parish", dicofre: target.p.dicofre }, { tilt: true });
@@ -780,29 +779,53 @@ function start(data: MapData): void {
   else markOverlays();
 
   // ---- land check (landcheck.ts) -------------------------------------------------------
-  // "Check a spot" mode: a click (or Enter, at the crosshair in the middle of the map) reports on that
-  // point in the panel; the URL carries it as chk=lat,lon. The mode clears any selection (camera
-  // levelled, slab lowered), so every click lands on the flat ground; selecting a parish or concelho
-  // (search, the panel) leaves it.
+  // "Check a spot" mode: a tap or click reports on that point at once, in the panel (on phones a
+  // sheet that opens as a one-row peek), with a marker on it; the URL carries it as chk=lat,lon. The
+  // camera stays put unless the opened panel or sheet would hide the point. The mode clears any
+  // selection (camera levelled, slab lowered), so every click lands on the flat ground; selecting a
+  // parish or concelho (search, the panel) leaves it. Keyboard: while the map has keyboard focus a
+  // crosshair marks the centre of the visible map (style.css), and Enter checks it.
   const checkButton = $<HTMLButtonElement>("check-button");
-  const checkHint = $("check-hint");
-  const checkHintText = $("check-hint-text");
-  const checkHere = $<HTMLButtonElement>("check-here");
+  const checkToast = $("check-toast");
   const crosshair = $("check-crosshair");
   const toolbarEl = document.querySelector<HTMLElement>(".toolbar")!;
   const reader = new CellReader(HAZARD.cells, chunkFiles(publicUrl(HAZARD.cells.dir)));
   const markerEl = h("div", { class: "check-marker", role: "img", "data-testid": "check-marker" });
   const marker = new Marker({ element: markerEl, anchor: "bottom" });
-  // Touch: a fixed crosshair in the middle of the visible map, "Check here" in the hint, and a tap
-  // brings the tapped point under the crosshair. Mouse: a crosshair cursor and a click checks in
-  // place; the crosshair shows only while the map has keyboard focus (style.css), for Enter.
   const coarse = window.matchMedia("(pointer: coarse)");
   const labelCheck = () => {
-    checkHintText.textContent = coarse.matches ? tk.hintTouch : tk.hint;
+    checkToast.textContent = coarse.matches ? tk.toastTouch : tk.toast;
     markerEl.setAttribute("aria-label", tk.marker);
   };
   labelCheck();
   coarse.addEventListener("change", labelCheck);
+
+  // The toast: shown when the mode turns on, fades after a few seconds, and not again in this
+  // session once a spot has been checked.
+  const TOAST_KEY = "pnct-map:check-toast";
+  const TOAST_MS = 3000;
+  let toastTimer = 0;
+  const toastDone = () => {
+    try {
+      return sessionStorage.getItem(TOAST_KEY) === "done";
+    } catch {
+      return false;
+    }
+  };
+  function hideToast(): void {
+    clearTimeout(toastTimer);
+    checkToast.classList.remove("check-toast-shown");
+    toastTimer = window.setTimeout(() => (checkToast.hidden = true), motion(400)); // after the fade
+  }
+  function showToast(): void {
+    if (toastDone()) return;
+    clearTimeout(toastTimer);
+    checkToast.hidden = false;
+    void checkToast.offsetWidth; // start the fade-in from opacity 0
+    checkToast.classList.add("check-toast-shown");
+    toastTimer = window.setTimeout(hideToast, TOAST_MS);
+  }
+
   const layoutBox = (el: HTMLElement): Box | null =>
     el.hidden || !el.offsetParent ? null : { top: el.offsetTop, left: el.offsetLeft, bottom: el.offsetTop + el.offsetHeight, right: el.offsetLeft + el.offsetWidth };
   /** The visible map (landcheck.ts visibleArea): under the toolbar, above the sheet and bottom bar, left of the panel. */
@@ -810,7 +833,7 @@ function start(data: MapData): void {
     const el = map.getContainer();
     return visibleArea({ width: el.clientWidth, height: el.clientHeight }, { toolbar: layoutBox(toolbarEl), panel: layoutBox(panelEl), bottomBar: layoutBox(legendEl), narrow: isNarrow() });
   };
-  /** Puts the crosshair at the centre of the visible map; data-centre-x/y are read by the e2e tests. */
+  /** Puts the keyboard crosshair at the centre of the visible map; data-centre-x/y are read by the e2e tests. */
   function placeCrosshair(): void {
     if (!checkMode) return;
     const { centre, cramped } = checkArea();
@@ -823,17 +846,35 @@ function start(data: MapData): void {
   new ResizeObserver(placeCrosshair).observe(toolbarEl);
   new ResizeObserver(placeCrosshair).observe(panelEl);
   window.addEventListener("resize", placeCrosshair);
-  /** The point under the crosshair. */
-  const crosshairPoint = () => {
-    const { centre } = checkArea();
-    return map.unproject([centre.x, centre.y]);
-  };
-  /** Eases (lon, lat) under the crosshair, level, optionally zoomed in; without motion it jumps. */
-  function centreOnCrosshair(lon: number, lat: number, zoom = map.getZoom()): void {
+  /** Eases (lon, lat) to the centre of the visible map, level, optionally zoomed in (Enter, a link). */
+  function centreInView(lon: number, lat: number, zoom = map.getZoom()): void {
     const el = map.getContainer();
     const { centre } = checkArea();
     map.easeTo({ center: [lon, lat], zoom, offset: [centre.x - el.clientWidth / 2, centre.y - el.clientHeight / 2], pitch: 0, bearing: 0, duration: motion(500) });
   }
+  /** Room kept around the checked point inside the visible map: the marker pin stands this tall above it. */
+  const KEEP_MARGIN = 16;
+  const MARKER_H = 30;
+  /**
+   * A tap or click leaves the camera alone, unless the panel or sheet it opened now covers the
+   * point (or the toolbar does): then it pans just enough to bring the point and its pin back inside
+   * the visible map. Without motion it jumps.
+   */
+  function keepVisible(lon: number, lat: number): void {
+    const { padding, cramped } = checkArea();
+    if (cramped) return;
+    const el = map.getContainer();
+    const p = map.project([lon, lat]);
+    const clamp = (v: number, lo: number, hi: number) => (lo > hi ? (lo + hi) / 2 : Math.min(hi, Math.max(lo, v)));
+    const x = clamp(p.x, padding.left + KEEP_MARGIN, el.clientWidth - padding.right - KEEP_MARGIN);
+    const y = clamp(p.y, padding.top + KEEP_MARGIN + MARKER_H, el.clientHeight - padding.bottom - KEEP_MARGIN);
+    if (Math.abs(x - p.x) < 0.5 && Math.abs(y - p.y) < 0.5) return;
+    map.panBy([p.x - x, p.y - y], { duration: motion(350) });
+  }
+  // Expanding the phone sheet (peek → half → full) can cover the point too.
+  new MutationObserver(() => {
+    if (check && checkMode && !panelEl.hidden) keepVisible(check.lon, check.lat);
+  }).observe(panelEl, { attributes: true, attributeFilter: ["data-sheet"] });
   const syncMarker = () => {
     if (check && checkMode) marker.setLngLat([check.lon, check.lat]).addTo(map);
     else marker.remove();
@@ -843,27 +884,23 @@ function start(data: MapData): void {
     checkMode = on;
     checkButton.setAttribute("aria-pressed", String(on));
     document.body.classList.toggle("check-mode", on);
-    checkHint.hidden = !on;
     crosshair.hidden = !on;
     map.getCanvas().style.cursor = on ? "crosshair" : "";
     if (on) {
       clearHover();
       if (selection) select(null);
-    }
+      showToast();
+    } else if (!checkToast.hidden) hideToast();
     placeCrosshair();
     syncMarker(); // the marker lives as long as the mode
   }
   checkButton.addEventListener("click", () => setCheckMode(!checkMode));
-  checkHere.addEventListener("click", () => {
-    const { lat, lng } = crosshairPoint();
-    checkAt(lat, lng, { centre: true });
-  });
   /**
-   * Reports on (lat, lon): the panel, the marker and the hash. `centre`: then ease the point under
-   * the crosshair (a tap, "Check here", Enter), measured with the panel or sheet already open; `zoom`
-   * (a link): zoomed in to at least that.
+   * Reports on (lat, lon): the panel, the marker and the hash. Then the camera: `centre` eases the
+   * point to the middle of the visible map (Enter, a link; `zoom`: at least that), otherwise it only
+   * moves if the point is now hidden (keepVisible).
    */
-  function checkAt(lat: number, lon: number, opts: { centre?: boolean; zoom?: number } = {}): void {
+  function checkAt(lat: number, lon: number, opts: { centre?: boolean; zoom?: number; keep?: boolean } = {}): void {
     if (selection) select(null);
     check = { lat, lon };
     writeHash({ chk: formatPoint(lat, lon) });
@@ -874,14 +911,21 @@ function start(data: MapData): void {
     setPanelOpen(true);
     syncMarker();
     placeCrosshair();
-    if (opts.centre || opts.zoom) centreOnCrosshair(lon, lat, Math.max(map.getZoom(), opts.zoom ?? 0));
+    if (opts.centre) centreInView(lon, lat, Math.max(map.getZoom(), opts.zoom ?? 0));
+    else if (opts.keep) keepVisible(lon, lat);
+    try {
+      sessionStorage.setItem(TOAST_KEY, "done");
+    } catch {
+      // storage unavailable: the toast just shows again next time
+    }
+    if (!checkToast.hidden) hideToast();
     updateCountryButton();
     updateCityPointers();
   }
-  /** A #chk= link (on load or a hash change): the mode on, the point under the crosshair at zoom 12+. */
+  /** A #chk= link (on load or a hash change): the mode on, the point in the middle of the visible map at zoom 12+. */
   const openCheckLink = (lat: number, lon: number) => {
     setCheckMode(true);
-    checkAt(lat, lon, { zoom: 12 });
+    checkAt(lat, lon, { centre: true, zoom: 12 });
   };
   /** Drops the current check (marker and hash); the caller closes or replaces the panel. */
   function clearCheck(): void {
@@ -891,11 +935,12 @@ function start(data: MapData): void {
     writeHash({ chk: null });
   }
   // Keyboard: Enter on the focused map checks the point under the crosshair (the centre of the
-  // visible map); Esc, anywhere but a text field or an open dialog, leaves the mode.
+  // visible map) and keeps it there; Esc, anywhere but a text field or an open dialog, leaves the mode.
   map.getCanvas().addEventListener("keydown", (e) => {
     if (!checkMode || e.key !== "Enter") return;
     e.preventDefault();
-    const { lat, lng } = crosshairPoint();
+    const { centre } = checkArea();
+    const { lat, lng } = map.unproject([centre.x, centre.y]);
     checkAt(lat, lng, { centre: true });
   });
   document.addEventListener("keydown", (e) => {

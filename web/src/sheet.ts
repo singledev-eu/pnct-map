@@ -1,9 +1,11 @@
 /**
- * The phone bottom sheet (≤ 640 px): the panel's drag handle and its two snap heights, "half"
- * (max 50vh, the default) and "full" (max 90vh). Dragging the handle or the header up expands the
- * sheet, down collapses it, and down from "half" closes it (× still closes it too). The handle is a
- * real button, the keyboard and screen-reader path: it toggles half/full and says which via
- * aria-expanded. Without motion (prefers-reduced-motion), snaps happen at once.
+ * The phone bottom sheet (≤ 640 px): the panel's drag handle and its snap heights, "half" (max
+ * 50vh, the default) and "full" (max 90vh), plus "peek" for the land check: one row (panel.ts
+ * showCheck) that opens first and expands to "half". Dragging the handle or the header (or the
+ * peek row) up expands the sheet, down collapses it, and down from "half" or "peek" closes it (×
+ * still closes it too). The handle is a real button, the keyboard and screen-reader path: it steps
+ * peek → half → full → half and says which via aria-expanded; a tap on the peek row expands it to
+ * "half". Without motion (prefers-reduced-motion), snaps happen at once.
  */
 import { sheet } from "./strings";
 
@@ -14,7 +16,10 @@ const THRESHOLD = 60;
 const FLING = 0.5;
 /** From "full", a drag down longer than this share of the viewport closes; a shorter one returns to "half". */
 const CLOSE_FROM_FULL = 0.5;
-export type SheetState = "half" | "full";
+export type SheetState = "peek" | "half" | "full";
+
+/** The next state for a tap on the handle (or the peek row) or a drag up. */
+const expanded = (state: string | undefined): SheetState => (state === "half" ? "full" : "half");
 
 export function setSheetState(root: HTMLElement, handle: HTMLButtonElement, state: SheetState): void {
   root.dataset.sheet = state;
@@ -22,16 +27,22 @@ export function setSheetState(root: HTMLElement, handle: HTMLButtonElement, stat
   handle.setAttribute("aria-label", state === "full" ? sheet.collapse : sheet.expand);
 }
 
-/** Wires the handle (click/keyboard toggle) and the touch/mouse drag on `zones` (the handle and the header). */
-export function attachSheet(root: HTMLElement, handle: HTMLButtonElement, zones: HTMLElement[], onClose: () => void): void {
-  handle.addEventListener("click", (e) => {
-    if (handle.dataset.dragged) {
-      delete handle.dataset.dragged; // the click that ends a drag isn't a toggle
-      e.preventDefault();
-      return;
-    }
-    setSheetState(root, handle, root.dataset.sheet === "full" ? "half" : "full");
-  });
+/**
+ * Wires the handle (click/keyboard toggle), the peek row if any (a tap expands it), and the
+ * touch/mouse drag on `zones` (the handle, the header and the peek row).
+ */
+export function attachSheet(root: HTMLElement, handle: HTMLButtonElement, zones: HTMLElement[], onClose: () => void, peek: HTMLButtonElement | null = null): void {
+  const toggles = peek ? [handle, peek] : [handle];
+  for (const toggle of toggles) {
+    toggle.addEventListener("click", (e) => {
+      if (root.dataset.sheetDragged) {
+        delete root.dataset.sheetDragged; // the click that ends a drag isn't a toggle
+        e.preventDefault();
+        return;
+      }
+      setSheetState(root, handle, toggle === peek ? "half" : expanded(root.dataset.sheet));
+    });
+  }
 
   let drag: { id: number; startY: number; startH: number; dy: number; samples: [number, number][] } | null = null;
   const reset = () => {
@@ -56,7 +67,7 @@ export function attachSheet(root: HTMLElement, handle: HTMLButtonElement, zones:
   const down = (e: PointerEvent) => {
     if (!matchMedia(NARROW).matches || drag || (e.pointerType === "mouse" && e.button !== 0)) return;
     const button = (e.target as Element).closest("button");
-    if (button && button !== handle) return; // × and the credits toggle keep their taps
+    if (button && !toggles.includes(button as HTMLButtonElement)) return; // × and the credits toggle keep their taps
     drag = { id: e.pointerId, startY: e.clientY, startH: root.getBoundingClientRect().height, dy: 0, samples: [[e.timeStamp, e.clientY]] };
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
@@ -81,11 +92,11 @@ export function attachSheet(root: HTMLElement, handle: HTMLButtonElement, zones:
     drag = null;
     const [[t0, y0], [t1, y1]] = [samples[0], samples[samples.length - 1]];
     const velocity = t1 > t0 ? (y1 - y0) / (t1 - t0) : 0;
-    if (Math.abs(dy) >= 4) handle.dataset.dragged = "1";
-    setTimeout(() => delete handle.dataset.dragged, 0); // no click follows a drag released off the handle
-    const state = root.dataset.sheet === "full" ? "full" : "half";
+    if (Math.abs(dy) >= 4) root.dataset.sheetDragged = "1";
+    setTimeout(() => delete root.dataset.sheetDragged, 0); // no click follows a drag released off the handle
+    const state = root.dataset.sheet;
     reset();
-    if (dy < -THRESHOLD || velocity < -FLING) setSheetState(root, handle, "full");
+    if (dy < -THRESHOLD || velocity < -FLING) setSheetState(root, handle, state === "peek" ? "half" : "full");
     else if (dy > THRESHOLD || velocity > FLING) {
       if (state === "full" && dy < window.innerHeight * CLOSE_FROM_FULL) setSheetState(root, handle, "half");
       else close();

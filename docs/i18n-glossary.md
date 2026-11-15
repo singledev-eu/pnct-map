@@ -93,13 +93,13 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | Expand / Collapse panel | Expandir / Recolher painel |
 | Land check (panel kicker) | Verificação do local |
 | Check a spot (toolbar button) | Verificar local |
-| Check here (check-mode hint, touch) | Verificar aqui |
+| Tap / Click anywhere to check a spot (check-mode toast) | Toque / Clique em qualquer ponto para verificar |
+| Show the full report (the land check peek) | Mostrar o relatório completo |
 | Wildfire hazard (ICNF's structural map) | Perigosidade de incêndio rural (ICNF's term; "Perigosidade de incêndio" in the legend) |
 | hazard classes: Very low … Very high | Muito baixa, Baixa, Média, Alta, Muito alta (ICNF's names, from landcheck.meta.json) |
 | Not classified (no hazard class) | Não classificado |
 | hazard classification, not a building rule | classificação da perigosidade, não uma regra de construção |
 | Outside mainland Portugal | Fora de Portugal continental |
 | fixed broadband and fibre | banda larga fixa e fibra |
-| crosshair (map centre) | mira |
 | downloaded (a dataset) | transferidos (PT-PT, not "baixados") |
 | licensing (câmara) | licenciamento |

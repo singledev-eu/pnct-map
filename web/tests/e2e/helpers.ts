@@ -85,3 +85,17 @@ export async function searchAndPick(page: Page, query: string, optionText: RegEx
 export function hashZoom(page: Page): number {
   return Number(new URLSearchParams(new URL(page.url()).hash.slice(1)).get("map")?.split("/")[0]);
 }
+
+/** A finger drag from the centre of `selector` by `dy` px, in `steps` moves of ~16 ms. */
+export async function touchDrag(page: Page, selector: string, dy: number, steps = 8): Promise<void> {
+  const box = (await page.locator(selector).first().boundingBox())!;
+  const [x, y] = [box.x + box.width / 2, box.y + Math.min(box.height / 2, 12)];
+  const cdp = await page.context().newCDPSession(page);
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
+  for (let s = 1; s <= steps; s++) {
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x, y: y + (dy * s) / steps }] });
+    await page.evaluate(() => new Promise((r) => setTimeout(r, 16)));
+  }
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await cdp.detach();
+}

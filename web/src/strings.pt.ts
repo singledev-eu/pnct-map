@@ -35,7 +35,6 @@ export const pt: Strings = {
     aboutButton: "Sobre",
     checkButton: "Verificar local",
     checkTitle: "Clique num ponto do mapa para verificar o local: PNCT e perigosidade de incêndio",
-    checkHere: "Verificar aqui",
     legendHazard: "Perigosidade de incêndio (ICNF)",
     countryButton: "Tudo",
     countryLabel: "Ver o país inteiro",
@@ -220,9 +219,10 @@ export const pt: Strings = {
   },
 
   check: {
-    hint: "Clique no mapa para verificar um local. Com o teclado, Enter verifica o ponto sob a mira; Esc termina.",
-    hintTouch: "Toque num local, ou mova o mapa e verifique sob a mira.",
-    crosshair: "Centro do mapa: prima Enter para verificar este ponto",
+    toast: "Clique em qualquer ponto para verificar",
+    toastTouch: "Toque em qualquer ponto para verificar",
+    peekHazard: (label) => `Perigosidade: ${label}`,
+    peekExpand: "Mostrar o relatório completo",
     marker: "Local verificado",
     kicker: "Verificação do local",
     coords: (lat, lon) => `${lat}° N, ${lon}° O`,

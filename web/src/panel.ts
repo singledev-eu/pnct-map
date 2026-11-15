@@ -116,11 +116,51 @@ function hazardBody(result: HazardResult): Child[] {
       h("p", { class: "muted" }, tk.hazardNoneNote),
     ];
   }
-  const ink = contrast(cls.color, "#000000") >= contrast(cls.color, "#ffffff") ? "#000000" : "#ffffff";
   const badge = h("span", { class: "badge hazard-badge", "data-testid": "check-hazard", "data-status": "ok", "data-value": String(cls.value) }, tk.hazardClass(cls[lang], cls.value));
-  badge.style.setProperty("--hazard-bg", cls.color);
-  badge.style.setProperty("--hazard-ink", ink);
+  paintHazard(badge, cls.color);
   return [h("p", {}, badge)];
+}
+
+/** A hazard badge in ICNF's colour, with black or white ink, whichever contrasts more. */
+function paintHazard(badge: HTMLElement, color: string): void {
+  badge.style.setProperty("--hazard-bg", color);
+  badge.style.setProperty("--hazard-ink", contrast(color, "#000000") >= contrast(color, "#ffffff") ? "#000000" : "#ffffff");
+}
+
+/**
+ * The land check's peek row (phone sheet, "peek" state; hidden elsewhere): the PNCT badge, the
+ * hazard badge (its ICNF colour; "Checking…" until the cell arrives) and the place, as one button
+ * that expands the sheet. Outside mainland Portugal: the place line only.
+ */
+function checkPeek(place: string, pnct: boolean | null, hazard: Promise<HazardResult> | null): HTMLButtonElement {
+  const badges: Child[] = [];
+  if (pnct !== null && hazard) {
+    badges.push(h("span", { class: `badge ${pnct ? "badge-pnct" : "badge-other"}`, "data-testid": "peek-pnct" }, pnct ? ui.pnctYes : ui.pnctNo));
+    const slot = h("span", { class: "badge badge-other", "data-testid": "peek-hazard", "data-status": "loading" }, tk.checking);
+    hazard.then((result) => {
+      if (result.status === "error") {
+        slot.textContent = "—";
+        slot.title = tk.hazardError;
+        slot.dataset.status = "error";
+        return;
+      }
+      const cls = hazardClass(result.value);
+      slot.dataset.status = "ok";
+      slot.dataset.value = String(cls?.value ?? 0);
+      slot.textContent = tk.peekHazard(cls ? cls[lang] : tk.hazardNone);
+      if (!cls) return;
+      slot.className = "badge hazard-badge";
+      paintHazard(slot, cls.color);
+    });
+    badges.push(slot);
+  }
+  return h(
+    "button",
+    { type: "button", class: "check-peek", "data-testid": "check-peek" },
+    ...badges,
+    h("span", { class: "check-peek-place" }, place),
+    h("span", { class: "visually-hidden" }, `. ${tk.peekExpand}`),
+  );
 }
 
 /** "Under protection: X% (RNAP Y%, Natura Z%)" and the areas covering at least 0.5% (protection.json). */
@@ -192,8 +232,13 @@ export class Panel {
     b.title = on ? ui.shortlist.unstar : ui.shortlist.star;
   }
 
+  /** The land check's one-row peek for the next open(): the phone sheet opens with only that row. */
+  private pendingPeek: HTMLButtonElement | null = null;
+
   /** `code`: the starrable parish/concelho, or null (the land check has no star). */
   private open(title: string, kicker: string, code: string | null, ...body: Child[]): void {
+    const peek = this.pendingPeek;
+    this.pendingPeek = null;
     const star = h("button", { type: "button", class: "panel-star", "data-testid": "panel-star" });
     star.addEventListener("click", () => {
       if (code) this.cb.onToggleStar?.(code);
@@ -212,12 +257,15 @@ export class Panel {
       this.root.classList.toggle("sheet-credit-open", open);
     });
     const header = h("header", { class: "panel-header" }, h("div", {}, h("p", { class: "kicker" }, kicker), h("h2", { "data-testid": "panel-title" }, title)), h("div", { class: "panel-actions" }, ...(this.cb.onToggleStar && code ? [star] : []), credits, close));
-    this.root.replaceChildren(handle, header, sheetCredit(), h("div", { class: "panel-body" }, ...body));
+    this.root.replaceChildren(handle, ...(peek ? [peek] : []), header, sheetCredit(), h("div", { class: "panel-body" }, ...body));
     delete this.root.dataset.check; // showCheck sets it after opening
     this.root.classList.remove("sheet-credit-open");
-    // A new selection in an open sheet keeps its height; a sheet that was closed opens at half.
-    setSheetState(this.root, handle, !this.root.hidden && this.root.dataset.sheet === "full" ? "full" : "half");
-    attachSheet(this.root, handle, [handle, header], () => this.cb.onClose());
+    // A new selection in an open sheet keeps its height; a sheet that was closed opens at half, or
+    // as a peek for the land check (which then stays a peek until expanded).
+    const current = this.root.hidden ? undefined : this.root.dataset.sheet;
+    const expanded = current === "half" || current === "full" ? current : null;
+    setSheetState(this.root, handle, peek ? (expanded ?? "peek") : current === "full" ? "full" : "half");
+    attachSheet(this.root, handle, [handle, header, ...(peek ? [peek] : [])], () => this.cb.onClose(), peek);
     this.root.hidden = false;
     document.body.classList.add("panel-open");
     this.refreshStar();
@@ -424,6 +472,7 @@ export class Panel {
     );
 
     if (!p || !c || !hazard) {
+      this.pendingPeek = checkPeek(tk.outsideTitle, null, null);
       this.open(tk.outsideTitle, tk.kicker, null, where, h("p", { "data-testid": "check-outside" }, tk.outsideBody), share, sources);
       this.root.dataset.check = "outside";
       return;
@@ -457,6 +506,7 @@ export class Panel {
       ? this.propertySection((opts) => getLinks(p, c, opts))
       : h("section", { "data-testid": "property-search" }, h("h3", {}, ui.propertySearch), h("p", { class: "muted" }, ui.notPnctParish));
 
+    this.pendingPeek = checkPeek(p.freguesia, p.pnct, hazard);
     this.open(p.freguesia, tk.kicker, null, where, share, pnct, hazardSection, notCovered, property, sources);
     this.root.dataset.check = "inside";
   }

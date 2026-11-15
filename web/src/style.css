@@ -1935,10 +1935,12 @@ dialog a {
   box-sizing: border-box;
 }
 
+/* On: filled, so the mode reads at a glance without a hint bar (panel-bg ink: 7.8:1 in light, dark
+   ink on the light teal in dark). */
 .check-button[aria-pressed="true"] {
   border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--accent-strong);
+  background: var(--accent);
+  color: var(--panel-bg);
 }
 
 .check-button:focus-visible {
@@ -1947,58 +1949,49 @@ dialog a {
   box-shadow: var(--shadow), 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
-/* The mode hint: the intro's look, under the toolbar. On touch screens it also holds "Check here"
-   (the point under the crosshair); mouse users click the map instead. */
-.check-hint {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 12px;
-  max-width: min(100%, 640px);
-  padding: 8px 12px;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius);
-  background: var(--panel-bg);
-  box-shadow: var(--shadow);
-  font-size: 13px;
-}
-
-.check-hint > span {
-  flex: 1 1 180px;
-}
-
-.check-here {
-  display: none;
-  flex: none;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 16px;
-  border: 0;
+/* The toast when the mode turns on (main.ts showToast): bottom centre, above the legend chip on
+   phones; fades in, and out after ~3 s. Without motion it just appears and goes. */
+.check-toast {
+  position: absolute;
+  z-index: 20;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  max-width: calc(100% - 32px);
+  padding: 10px 16px;
   border-radius: 999px;
-  background: var(--accent);
-  color: var(--panel-bg); /* 7.8:1 light, and dark ink on the light teal in dark */
+  background: var(--text);
+  color: var(--panel-bg);
+  box-shadow: var(--shadow);
+  font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
-.check-here:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
-  outline-offset: 2px;
+.check-toast.check-toast-shown {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
-.check-hint[hidden],
+.check-toast[hidden],
 .check-crosshair[hidden] {
   display: none;
 }
 
-/* Where "Check here" and Enter check: the centre of the visible map (main.ts placeCrosshair sets
-   left/top), a thin cross with a halo so it reads on both basemaps. Touch screens always show it in
-   the mode; with a mouse it shows only while the map has keyboard focus. */
+/* Keyboard only: while the map has keyboard focus, the centre of the visible map, where Enter
+   checks (main.ts placeCrosshair sets left/top). A thin cross with a halo, so it reads on both
+   basemaps. Taps and clicks check where they land and never show it. */
 .check-crosshair {
   position: absolute;
   z-index: 5;
   top: 50%;
   left: 50%;
+  display: none;
   width: 28px;
   height: 28px;
   margin: -14px 0 0 -14px;
@@ -2007,26 +2000,26 @@ dialog a {
     linear-gradient(var(--text), var(--text)) center / 2px 100% no-repeat,
     linear-gradient(var(--text), var(--text)) center / 100% 2px no-repeat;
   filter: drop-shadow(0 0 1.5px var(--panel-bg)) drop-shadow(0 0 1.5px var(--panel-bg));
-  display: none;
 }
 
-.check-mode:has(.maplibregl-canvas:focus-visible) .check-crosshair:not([hidden]) {
+.check-mode:has(.maplibregl-canvas:focus-visible) .check-crosshair:not([hidden], .check-crosshair-cramped) {
   display: block;
 }
 
-@media (pointer: coarse) {
-  .check-mode .check-crosshair:not([hidden]) {
-    display: block;
-  }
-
-  .check-here {
-    display: inline-flex;
-  }
+/* The land check's peek row (panel.ts checkPeek): only in the phone sheet's "peek" state. */
+.check-peek {
+  display: none;
 }
 
-/* The sheet pulled up to "full" leaves no room for it. */
-.check-mode .check-crosshair.check-crosshair-cramped {
-  display: none;
+.check-peek:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  outline-offset: -3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .check-toast {
+    transition: none;
+  }
 }
 
 .check-mode .maplibregl-canvas {
@@ -2154,8 +2147,44 @@ dialog a {
 }
 
 @media (max-width: 640px) {
-  .check-hint {
-    max-width: none;
+  .check-toast {
+    bottom: calc(76px + env(safe-area-inset-bottom)); /* above the legend chip */
+  }
+
+  /* Peek: the handle and one row (PNCT, hazard, place), a 44 px+ tap target that expands the sheet. */
+  .panel[data-sheet="peek"] > :not(.sheet-handle, .check-peek) {
+    display: none;
+  }
+
+  .panel[data-sheet="peek"] .check-peek {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 52px;
+    padding: 0 16px 8px;
+    border: 0;
+    background: none;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+    touch-action: none; /* it drags the sheet, like the header */
+  }
+
+  .check-peek .badge {
+    flex: none;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .check-peek-place {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .filters {
