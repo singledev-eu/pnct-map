@@ -1,6 +1,6 @@
 # Roadmap
 
-Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-11-03.
+Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-11-15.
 
 ## Done
 
@@ -33,6 +33,32 @@ Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-m
 | 2026-10-12 | E2E flakiness: one retry; flaky tests warn with a trace but don't block deploys; tests wait for the parish layer, not the basemap | [e2e-flakiness](reports/e2e-flakiness.md) |
 
 Release `v0.1.0` (2026-10-12) covers everything up to e2e flakiness; `0.2.0` (2026-10-14) adds zoom levels; `0.2.1` (2026-10-14) the phone polish; `0.2.2` (2026-10-14) the camera limits; `0.2.3` (2026-10-15) the shape-aware camera; `0.3.0` (2026-10-15) the dark theme; `0.3.1` (2026-10-15) quiet road-shield filters; `0.4.0` (2026-10-17) protected areas; `0.4.1` (2026-10-18) the protection explainer and zoom fade; `0.5.0` (2026-10-18) the concelho card; `0.6.0` (2026-10-19) the PT/EN toggle and theme selection; `0.7.0` (2026-11-02) the 3D selection; `0.7.1` (2026-11-02) dependency updates; `0.7.2` (2026-11-03) dark-mode slab labels and protected areas on the slab; `0.8.0` (2026-11-03) towns, the whole-country button, housing and income in the card, and the shortlist; `0.9.0` (2026-11-09) the visual polish pass; see [CHANGELOG.md](../CHANGELOG.md).
+
+## Land check
+
+Click any point of mainland Portugal for a short report for land buyers. Data findings: [land-check/DATA.md](land-check/DATA.md); hosting: [land-check/HOSTING.md](land-check/HOSTING.md); report: [land-check](reports/land-check.md).
+
+**v1: in progress** (branch `feat/land-check`, not released).
+
+| Fact | Status |
+|---|---|
+| PNCT parish, parish and concelho name | Done (CAOP 2025 display geometry, client-side) |
+| Structural wildfire hazard 2020–2030 (ICNF), 5 classes, as a hazard classification | Done (exact 25 m source cell; optional overlay, off by default) |
+| Idealista links for the parish | Done (the existing links) |
+| REN (Reserva Ecológica Nacional) | **Blocked**: DGT's SRUP WFS was down on 2026-11-15 (database error), and the licence conflicts (dados.gov.pt says CC BY, SNIT says consultation only). Next: written terms from DGT, then page the five regional WFS. |
+| Fixed broadband / fibre (ANACOM) | **Blocked**: only a WMS view service, no query, no download, no licence. Next: ask ANACOM for the address-level or BGRI file under Lei 26/2016. |
+
+Later candidates, each needing its own Phase 0 data check (source, licence, size, CRS):
+
+- Burnt-area history (ICNF annual burnt areas, 1975 onwards).
+- Flood zones: APA ARPSI (Áreas de Risco Potencial Significativo de Inundação) and flood hazard/risk maps.
+- RAN (Reserva Agrícola Nacional).
+- Radon (APA / LNEG indoor radon or geogenic potential).
+- Travel time to the nearest SNS emergency service, health centre, school and train station.
+- Mining and lithium concessions and prospecting areas (DGEG).
+- Wind and solar farms, existing and licensed (DGEG, LNEG PAER acceleration areas).
+- High-voltage lines (REN, the grid operator).
+- A dark-sky / light-pollution layer (VIIRS night lights or the World Atlas of artificial sky brightness).
 
 ## Next
 
