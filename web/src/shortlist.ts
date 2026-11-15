@@ -48,7 +48,8 @@ export function saveShortlist(codes: string[], storage: () => Storage = () => wi
 export const mergeCodes = (own: string[], shared: string[]): string[] => parseCodes([...own, ...shared]);
 
 /** A link that opens `codes` as a shared list (nothing else of the sender's state). */
-export const shareUrl = (codes: string[], base = `${location.origin}${location.pathname}`): string => `${base}#list=${codes.join(",")}`;
+// An insight landing path (/i/<id>, public/_redirects) is for arrivals only: a shared list links the map itself.
+export const shareUrl = (codes: string[], base = `${location.origin}${location.pathname.replace(/\/i\/[^/]*\/?$/, "/")}`): string => `${base}#list=${codes.join(",")}`;
 
 export interface ShortlistDeps {
   button: HTMLButtonElement;

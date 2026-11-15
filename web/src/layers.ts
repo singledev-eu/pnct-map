@@ -20,6 +20,10 @@ export const PARISH_SLAB = "parish-slab";
 export const SLAB_VEIL = "slab-veil";
 export const HATCH_IMAGE = "pnct-hatch";
 export const NATURA_HATCH_IMAGE = "natura-hatch";
+export const DISPUTED_HATCH_IMAGE = "disputed-hatch";
+/** Disputed parishes (status.ts): a hatch over their (non-PNCT) fill and a dashed outline, at every zoom. */
+export const DISPUTED_FILL = "parish-disputed-fill";
+export const DISPUTED_LINE = "parish-disputed-line";
 
 /**
  * Protected-areas overlay: one GeoJSON source per category ("protected-rnap", "protected-natura"), each
@@ -57,6 +61,7 @@ export interface FilterState {
 }
 
 const isPnct: ExpressionSpecification = ["==", ["get", "pnct"], true];
+const isDisputed: ExpressionSpecification = ["==", ["get", "disputed"], true];
 // Concelhos with at least one PNCT parish (their whole outline is kept in focus mode).
 const hasPnct: ExpressionSpecification = [">", ["get", "pnct_count"], 0];
 const allPnct: ExpressionSpecification = ["==", ["get", "pnct_count"], ["get", "parish_count"]];
@@ -152,6 +157,11 @@ function concelhoFilter(focus: boolean): ExpressionSpecification | null {
   return focus ? hasPnct : null;
 }
 
+/** Disputed parishes: hidden in focus mode (it shows PNCT territory only, and a disputed parish is never PNCT). */
+const disputedFilter = (focus: boolean): ExpressionSpecification => (focus ? ["boolean", false] : isDisputed);
+const disputedFillOpacity = (filter: FilterState): ExpressionSpecification => ["case", selected, 0.5, 0.85 * dimBy(filter)];
+const disputedLineOpacity = (filter: FilterState) => 0.95 * dimBy(filter);
+
 // addLayer rejects an explicit `filter: undefined`, so only pass the key when there is a filter.
 const withFilter = (filter: ExpressionSpecification | null) => (filter ? { filter } : {});
 
@@ -177,7 +187,12 @@ const naturaHatch = (color: string) => hatchImage(color, { stripe: 2, alpha: 0.7
 
 /** The app's pattern images in the palette's colours, by image id. */
 export function patternImages(colors: MapPalette): Record<string, ReturnType<typeof hatchImage>> {
-  return { [HATCH_IMAGE]: hatchImage(colors.pnct), [NATURA_HATCH_IMAGE]: naturaHatch(colors.natura), ...cityDots(colors) };
+  return {
+    [HATCH_IMAGE]: hatchImage(colors.pnct),
+    [NATURA_HATCH_IMAGE]: naturaHatch(colors.natura),
+    [DISPUTED_HATCH_IMAGE]: hatchImage(colors.disputed, { stripe: 3, alpha: 0.9 }),
+    ...cityDots(colors),
+  };
 }
 
 /**
@@ -449,6 +464,13 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
         "fill-opacity": parishFillOpacity(filter, level, colors),
       },
     },
+    {
+      id: DISPUTED_FILL,
+      type: "fill",
+      source: PARISH_SOURCE,
+      filter: disputedFilter(filter.focus),
+      paint: { "fill-pattern": DISPUTED_HATCH_IMAGE, "fill-opacity": disputedFillOpacity(filter) },
+    },
     ...overlayLayers(overlays, filter.focus, level, colors),
     {
       id: PARISH_LINE,
@@ -460,6 +482,18 @@ export function appLayers(filter: FilterState, level: number, colors: MapPalette
         "line-color": colors.parishLine,
         "line-width": PARISH_LINE_WIDTH,
         "line-opacity": parishLineOpacity(filter, level, colors),
+      },
+    },
+    {
+      id: DISPUTED_LINE,
+      type: "line",
+      source: PARISH_SOURCE,
+      filter: disputedFilter(filter.focus),
+      paint: {
+        "line-color": colors.disputed,
+        "line-width": ["interpolate", ["linear"], ["zoom"], 6, 1, 10, 1.6, 13, 2.4],
+        "line-dasharray": [2, 1.5],
+        "line-opacity": disputedLineOpacity(filter),
       },
     },
     {
@@ -613,6 +647,9 @@ export function applyFilter(map: MapLibreMap, filter: FilterState, level: number
   map.setPaintProperty(PARISH_LINE, "line-opacity", parishLineOpacity(filter, level, colors));
   map.setPaintProperty(CONCELHO_LINE, "line-opacity", lineOpacity(filter.district, 0.6, 0.2));
   map.setPaintProperty(CONCELHO_HIGHLIGHT, "line-opacity", concelhoHighlightOpacity(filter, level));
+  for (const id of [DISPUTED_FILL, DISPUTED_LINE]) map.setFilter(id, disputedFilter(filter.focus));
+  map.setPaintProperty(DISPUTED_FILL, "fill-opacity", disputedFillOpacity(filter));
+  map.setPaintProperty(DISPUTED_LINE, "line-opacity", disputedLineOpacity(filter));
 }
 
 // ---- land check: the wildfire hazard overlay (landcheck.ts, docs/land-check/) -----------------

@@ -124,7 +124,7 @@ describe("pattern images", () => {
   });
 
   it("has one image per hatch, in the palette's colours", () => {
-    expect(Object.keys(patternImages(PALETTES.light)).sort()).toEqual(["city-dot-capital", "city-dot-seat", "natura-hatch", "pnct-hatch"]);
+    expect(Object.keys(patternImages(PALETTES.light)).sort()).toEqual(["city-dot-capital", "city-dot-seat", "disputed-hatch", "natura-hatch", "pnct-hatch"]);
     expect(patternImages(PALETTES.dark)["natura-hatch"].data).not.toEqual(patternImages(PALETTES.light)["natura-hatch"].data);
   });
 });

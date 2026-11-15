@@ -1,6 +1,7 @@
 import { feature } from "topojson-client";
 import type { GeometryCollection, Topology } from "topojson-specification";
 import type { Feature, FeatureCollection, MultiPolygon, Polygon, Position } from "geojson";
+import { DISPUTED } from "./status";
 
 export type Bounds = [number, number, number, number];
 
@@ -9,7 +10,10 @@ export interface Parish {
   freguesia: string;
   concelho: string;
   distrito: string;
+  /** PNCT by the legal definition and not disputed (status.ts): the only parishes shown and counted as PNCT. */
   pnct: boolean;
+  /** The legal text and the IEFP list disagree (status.ts). Never `pnct`. Also a feature property (layers.ts). */
+  disputed: boolean;
 }
 
 export interface Concelho {
@@ -18,6 +22,8 @@ export interface Concelho {
   distrito: string;
   pnctCount: number;
   parishCount: number;
+  /** Parishes whose PNCT status the sources disagree on (status.ts). */
+  disputedCount: number;
   parishes: Parish[];
 }
 
@@ -88,6 +94,8 @@ export async function loadData(url: string): Promise<MapData> {
 
   for (const f of parishGeoJSON.features as ParishFeature[]) {
     const p = f.properties;
+    p.disputed = DISPUTED.has(p.dicofre);
+    if (p.disputed && p.pnct) throw new Error(`Parish ${p.dicofre} is both PNCT and disputed: rebuild the data (make web-data)`);
     const code = concelhoCode(p.dicofre);
     f.id = featureId(p.dicofre);
     parishes.set(p.dicofre, p);
@@ -99,12 +107,13 @@ export async function loadData(url: string): Promise<MapData> {
     codeByName.set(`${p.distrito}|${p.concelho}`, code);
     let c = concelhos.get(code);
     if (!c) {
-      c = { code, name: p.concelho, distrito: p.distrito, pnctCount: 0, parishCount: 0, parishes: [] };
+      c = { code, name: p.concelho, distrito: p.distrito, pnctCount: 0, parishCount: 0, disputedCount: 0, parishes: [] };
       concelhos.set(code, c);
     }
     c.parishes.push(p);
     c.parishCount += 1;
     if (p.pnct) c.pnctCount += 1;
+    if (p.disputed) c.disputedCount += 1;
   }
 
   for (const f of rawConcelhos.features as ConcelhoFeature[]) {

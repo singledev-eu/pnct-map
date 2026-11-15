@@ -64,8 +64,13 @@ def test_no_duplicate_dicofre(pnct, parishes):
     assert pnct.dicofre.str.fullmatch(r"\d{6}").all()
 
 
+# data/pnct_status.csv: Raiva, Pedorido and Paraíso are on the IEFP list but disputed (not in the
+# Portaria), so the map never flags them PNCT; Dem and São Bento are disputed the other way round.
+DISPUTED_FROM_IEFP = {"010613", "010614", "010615"}
+
+
 def test_csv_and_geojson_agree(pnct, parishes):
-    assert set(parishes[parishes.pnct].dicofre) == set(pnct.dicofre)
+    assert set(parishes[parishes.pnct].dicofre) == set(pnct.dicofre) - DISPUTED_FROM_IEFP
 
 
 def test_all_mainland_parishes_present(parishes):
@@ -169,12 +174,13 @@ def test_topojson_objects(topo, pnct):
     props = [g["properties"] for g in parishes]
     assert set(props[0]) == {"dicofre", "freguesia", "concelho", "distrito", "pnct"}
     flagged = {p["dicofre"] for p in props if p["pnct"] is True}
-    assert len(flagged) == 1861
-    assert flagged == set(pnct.dicofre)
+    assert len(flagged) == 1858  # the IEFP list's 1,861 minus the 3 disputed (data/pnct_status.csv)
+    assert flagged == set(pnct.dicofre) - DISPUTED_FROM_IEFP
     cprops = [g["properties"] for g in concelhos]
     assert set(cprops[0]) == {"name", "distrito", "pnct_count", "parish_count"}
     assert sum(c["parish_count"] for c in cprops) == 3049
-    assert sum(c["pnct_count"] for c in cprops) == 1861
+    assert sum(c["pnct_count"] for c in cprops) == 1858
+    assert next(c for c in cprops if c["name"] == "Castelo de Paiva")["pnct_count"] == 1  # Real only
     loule = next(c for c in cprops if c["name"] == "Loulé")
     assert loule["pnct_count"] == 6
 

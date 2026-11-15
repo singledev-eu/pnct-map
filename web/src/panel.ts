@@ -6,6 +6,7 @@ import { BLOCKED, formatPoint, HAZARD, hazardClass, type HazardResult } from "./
 import { getConcelhoLinks, getLinks, type PropertyLink } from "./links";
 import { credits, loadProtection, panelAreas, type Protection, type ProtectionData } from "./protected";
 import { attachSheet, setSheetState } from "./sheet";
+import { disputeOf } from "./status";
 import { formatDate, formatNumber, formatPct, lang, sheet, t, tk, ui } from "./strings";
 
 type Child = Node | string | null | undefined | false;
@@ -50,8 +51,32 @@ function coverage(c: Concelho): HTMLElement {
   return h("p", { class: `coverage coverage-${kind}`, "data-testid": "pnct-count", "data-pnct": String(c.pnctCount) }, text);
 }
 
-function badge(pnct: boolean): HTMLElement {
+function badge(pnct: boolean, disputed = false): HTMLElement {
+  if (disputed) return h("span", { class: "badge badge-disputed", "data-testid": "pnct-status", "data-status": "disputed" }, ui.badgeDisputed);
   return h("span", { class: `badge ${pnct ? "badge-pnct" : "badge-other"}`, "data-testid": "pnct-status" }, pnct ? ui.badgePnct : ui.badgeOther);
+}
+
+/** A disputed parish: which source says what, with links to the sources (status.ts). */
+export function disputedNote(dicofre: string): HTMLElement | null {
+  const d = disputeOf(dicofre);
+  if (!d) return null;
+  return h(
+    "section",
+    { class: "disputed-note", "data-testid": "disputed-note" },
+    h("p", {}, ui.disputedNote(ui.statusWord[d.legal], ui.statusWord[d.iefp])),
+    h(
+      "p",
+      { class: "muted" },
+      `${ui.disputedSources}: `,
+      ...d.sources.flatMap((s, i) => [i ? " · " : "", h("a", { href: s.url, target: "_blank", rel: "noopener noreferrer" }, s[lang])]),
+    ),
+  );
+}
+
+/** Badge text and class of a parish for the tooltip and the land check: PNCT, not PNCT or disputed. */
+export function parishStatus(p: Parish, texts: { pnctYes: string; pnctNo: string; pnctDisputed: string }): { text: string; cls: string } {
+  if (p.disputed) return { text: texts.pnctDisputed, cls: "disputed" };
+  return p.pnct ? { text: texts.pnctYes, cls: "pnct" } : { text: texts.pnctNo, cls: "other" };
 }
 
 function facts(rows: [string, string][]): HTMLElement {
@@ -141,7 +166,7 @@ const peekHazardText = (result: HazardResult): string => {
 export function checkSummary(p: Parish | null, hazard: HazardResult | null): string {
   if (!p || !hazard) return tk.outsideTitle;
   const hz = hazard.status === "error" ? tk.hazardError : peekHazardText(hazard);
-  return `${p.pnct ? ui.pnctYes : ui.pnctNo}. ${hz.replace(/\.$/, "")}. ${p.freguesia}`;
+  return `${parishStatus(p, ui).text}. ${hz.replace(/\.$/, "")}. ${p.freguesia}`;
 }
 
 /**
@@ -149,10 +174,11 @@ export function checkSummary(p: Parish | null, hazard: HazardResult | null): str
  * hazard badge (its ICNF colour; "Checking…" until the cell arrives) and the place, as one button
  * that expands the sheet. Outside mainland Portugal: the place line only.
  */
-function checkPeek(place: string, pnct: boolean | null, hazard: Promise<HazardResult> | null): HTMLButtonElement {
+function checkPeek(place: string, p: Parish | null, hazard: Promise<HazardResult> | null): HTMLButtonElement {
   const badges: Child[] = [];
-  if (pnct !== null && hazard) {
-    badges.push(h("span", { class: `badge ${pnct ? "badge-pnct" : "badge-other"}`, "data-testid": "peek-pnct" }, pnct ? ui.pnctYes : ui.pnctNo));
+  if (p !== null && hazard) {
+    const s = parishStatus(p, ui);
+    badges.push(h("span", { class: `badge badge-${s.cls}`, "data-testid": "peek-pnct" }, s.text));
     const slot = h("span", { class: "badge badge-other", "data-testid": "peek-hazard", "data-status": "loading" }, tk.checking);
     hazard.then((result) => {
       if (result.status === "error") {
@@ -381,7 +407,7 @@ export class Panel {
     const showConcelho = h("button", { type: "button", class: "link-button" }, ui.showConcelho(c.name));
     showConcelho.addEventListener("click", () => this.cb.onSelectConcelho(c.code));
 
-    const property = p.pnct
+    const property = p.pnct || p.disputed
       ? this.propertySection((opts) => getLinks(p, c, opts))
       : h(
           "section",
@@ -394,7 +420,8 @@ export class Panel {
       p.freguesia,
       ui.kickerParish,
       p.dicofre,
-      badge(p.pnct),
+      badge(p.pnct, p.disputed),
+      disputedNote(p.dicofre),
       facts([
         [ui.factConcelho, p.concelho],
         [ui.factDistrito, p.distrito],
@@ -435,7 +462,16 @@ export class Panel {
         [ui.factDistrito, c.distrito],
         [ui.factParishes, String(c.parishCount)],
       ]),
-      h("section", {}, h("h3", {}, ui.pnctCoverage), coverage(c), whole ? parishes : null),
+      h(
+        "section",
+        {},
+        h("h3", {}, ui.pnctCoverage),
+        coverage(c),
+        c.disputedCount
+          ? h("p", { class: "disputed-line", "data-testid": "concelho-disputed" }, ui.concelhoDisputed(c.parishes.filter((p) => p.disputed).map((p) => p.freguesia).join(", ")))
+          : null,
+        whole ? parishes : null,
+      ),
       concelhoCard(c),
       protectionSection("concelhos", c.code),
       whole ? null : parishes,
@@ -499,11 +535,13 @@ export class Panel {
 
     const openParish = h("button", { type: "button", class: "link-button" }, tk.openParish);
     openParish.addEventListener("click", () => this.cb.onSelectParish(p.dicofre));
+    const status = parishStatus(p, tk);
     const pnct = h(
       "section",
       { "data-testid": "check-pnct", "data-pnct": String(p.pnct) },
       h("h3", {}, tk.pnctHeading),
-      h("p", {}, h("span", { class: `badge ${p.pnct ? "badge-pnct" : "badge-other"}` }, p.pnct ? tk.pnctYes : tk.pnctNo)),
+      h("p", {}, h("span", { class: `badge badge-${status.cls}` }, status.text)),
+      disputedNote(p.dicofre),
       facts([
         [tk.factParish, p.freguesia],
         [ui.factConcelho, p.concelho],
@@ -521,11 +559,11 @@ export class Panel {
     const blocked = BLOCKED.map((id) => tk.blocked[id] ?? id);
     const notCovered = blocked.length ? h("p", { class: "muted check-not-covered", "data-testid": "check-not-covered" }, tk.notCovered(blocked.join("; "))) : null;
 
-    const property = p.pnct
+    const property = p.pnct || p.disputed
       ? this.propertySection((opts) => getLinks(p, c, opts))
       : h("section", { "data-testid": "property-search" }, h("h3", {}, ui.propertySearch), h("p", { class: "muted" }, ui.notPnctParish));
 
-    this.pendingPeek = checkPeek(p.freguesia, p.pnct, hazard);
+    this.pendingPeek = checkPeek(p.freguesia, p, hazard);
     this.open(p.freguesia, tk.kicker, null, where, share, pnct, hazardSection, notCovered, property, sources);
     this.root.dataset.check = "inside";
   }

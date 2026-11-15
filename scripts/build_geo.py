@@ -1,7 +1,9 @@
 """Build the simplified map layers from CAOP 2025 and the PNCT parish list.
 
 Outputs:
-  data/processed/parishes_all.geojson  all mainland parishes, with a pnct flag
+  data/processed/parishes_all.geojson  all mainland parishes, with a pnct flag: true only for
+                                        parishes whose status (pnct_status.py) is `pnct`, so a
+                                        disputed parish is never shown or counted as PNCT
   data/processed/concelhos.geojson     municipality outlines, dissolved from
                                         the simplified parishes so that the
                                         borders line up exactly
@@ -15,6 +17,8 @@ from pathlib import Path
 
 import pandas as pd
 import pyogrio
+
+from pnct_status import classify
 
 ROOT = Path(__file__).resolve().parents[1]
 CAOP_GPKG = ROOT / "data/external/CAOP_Continente_2025-gpkg/Continente_CAOP2025.gpkg"
@@ -47,7 +51,8 @@ def write_full_resolution() -> None:
         }
     )
     gdf["dtmn"] = gdf.dicofre.str[:4]
-    gdf["pnct"] = gdf.dicofre.isin(pnct.dicofre)
+    status = classify(set(gdf.dicofre), set(pnct.dicofre))
+    gdf["pnct"] = gdf.dicofre.map(lambda c: status[c]["status"] == "pnct")
     gdf = gdf[["dicofre", "freguesia", "concelho", "distrito", "dtmn", "pnct", "geometry"]]
     gdf = gdf.sort_values("dicofre").to_crs(4326)
 

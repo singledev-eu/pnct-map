@@ -58,8 +58,10 @@ describe("Idealista link output", () => {
       hashes[`concelho:${c.code}`] = await sha256(lines.join("\n"));
     }
 
-    expect(pnctParishes).toBe(1861);
-    expect(links).toBeGreaterThan(1861 * ALL_OPTIONS.length);
+    // 1,858 shown as PNCT: the IEFP list's 1,861 minus the 3 disputed ones (status.ts), which keep
+    // their links unchanged, so the baseline below is the same as before the three-state change.
+    expect(pnctParishes).toBe(1858);
+    expect(links).toBeGreaterThan(1858 * ALL_OPTIONS.length);
     await expect(JSON.stringify(hashes, null, 1) + "\n").toMatchFileSnapshot("./__snapshots__/links.sha256.json");
   }, 120_000);
 });

@@ -15,13 +15,14 @@ import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountIntro } from "./intro";
 import { type Box, CellReader, chunkFiles, formatPoint, HAZARD, hazardAt, type HazardResult, hazardAttributionHtml, parishAtPoint, parsePoint, publicUrl, visibleArea } from "./landcheck";
 import { mountLegend, mountOverlayToggles } from "./legend";
-import { checkSummary, h, Panel } from "./panel";
+import { checkSummary, h, Panel, parishStatus } from "./panel";
+import { disputeOf, STATUS_CHECKED } from "./status";
 import { mountShortlist, parseCodes, type Shortlist } from "./shortlist";
 import { loadOptions, saveOptions } from "./prefs";
 import { CITY_SOURCE, loadCities, loadCitiesPref, mountCityPointers, saveCitiesPref, type CitiesData } from "./cities";
 import { attributionHtml, CATEGORY_IDS, loadOverlay, loadSlabProtected, type OverlayData } from "./protected";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
-import { lang, setLang, t, tk, ui, type Lang } from "./strings";
+import { formatDate, lang, setLang, t, tk, ui, type Lang } from "./strings";
 import { applyPageTheme, DARK_QUERY, loadThemePref, nextThemePref, PALETTES, resolveTheme, saveThemePref, STYLE_URLS, themeOf, type Theme, type ThemePref } from "./theme";
 // ?url makes Vite emit the file content-hashed under assets/; index.html preloads the same file.
 import DATA_URL from "../data/pnct.topo.json?url";
@@ -205,6 +206,9 @@ window.addEventListener("resize", trackLegend);
 // onLangChange (set in start).
 const aboutDialog = $<HTMLDialogElement>("about");
 renderAbout(aboutDialog);
+// The legal source of the PNCT definition (status.ts), under the legend.
+const renderLegendSource = () => ($("legend-source").textContent = ui.legalSource(formatDate(STATUS_CHECKED)));
+renderLegendSource();
 $("about-open").addEventListener("click", () => aboutDialog.showModal());
 const intro = mountIntro($("intro"), () => aboutDialog.showModal());
 let onLangChange = () => {};
@@ -221,6 +225,7 @@ const settings = mountSettings(
       wasCompact = isCompact();
       if (map.isStyleLoaded()) setLabelLanguage(map, next); // otherwise the pending style gets it from basemapStyle
       renderAbout(aboutDialog);
+      renderLegendSource();
       intro.relabel();
       onLangChange();
     },
@@ -542,10 +547,13 @@ function start(data: MapData): void {
     } else {
       const { p } = target;
       setHover({ source: PARISH_SOURCE, id: featureId(p.dicofre) }, p.dicofre);
+      const status = parishStatus(p, ui);
+      const dispute = disputeOf(p.dicofre);
       tooltip.replaceChildren(
         h("strong", {}, p.freguesia),
         h("span", {}, p.concelho),
-        h("span", { class: p.pnct ? "tt-pnct" : "tt-other" }, p.pnct ? ui.pnctYes : ui.pnctNo),
+        h("span", { class: `tt-${status.cls}`, "data-testid": "tooltip-status" }, status.text),
+        ...(dispute ? [h("span", { class: "tt-note", "data-testid": "tooltip-disputed" }, ui.disputedNote(ui.statusWord[dispute.legal], ui.statusWord[dispute.iefp]))] : []),
       );
     }
     tooltip.style.transform = `translate(${e.point.x + 14}px, ${e.point.y + 14}px)`;

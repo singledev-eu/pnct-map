@@ -1,0 +1,115 @@
+{
+ "checked": "2026-11-15",
+ "legal": {
+  "url": "https://files.diariodarepublica.pt/1s/2017/07/13400/0373103734.pdf",
+  "en": "Portaria 208/2017 (Diário da República)",
+  "pt": "Portaria 208/2017 (Diário da República)"
+ },
+ "disputed": {
+  "160209": {
+   "legal": "pnct",
+   "iefp": "not_pnct",
+   "sources": [
+    {
+     "url": "https://files.diariodarepublica.pt/1s/2017/07/13400/0373103734.pdf",
+     "en": "Portaria 208/2017 (Diário da República)",
+     "pt": "Portaria 208/2017 (Diário da República)"
+    },
+    {
+     "url": "https://www.compete2020.gov.pt/admin/images/Deliberacoes_cic_territ%C3%B3rios_baixa_densidade.pdf",
+     "en": "CIC Deliberação 20/2018",
+     "pt": "Deliberação CIC 20/2018"
+    },
+    {
+     "url": "https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf",
+     "en": "IEFP list of 2026-02-04",
+     "pt": "Lista IEFP de 04-02-2026"
+    }
+   ]
+  },
+  "101610": {
+   "legal": "pnct",
+   "iefp": "not_pnct",
+   "sources": [
+    {
+     "url": "https://files.diariodarepublica.pt/1s/2017/07/13400/0373103734.pdf",
+     "en": "Portaria 208/2017 (Diário da República)",
+     "pt": "Portaria 208/2017 (Diário da República)"
+    },
+    {
+     "url": "https://www.compete2020.gov.pt/admin/images/Deliberacoes_cic_territ%C3%B3rios_baixa_densidade.pdf",
+     "en": "CIC Deliberação 20/2018",
+     "pt": "Deliberação CIC 20/2018"
+    },
+    {
+     "url": "https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf",
+     "en": "IEFP list of 2026-02-04",
+     "pt": "Lista IEFP de 04-02-2026"
+    }
+   ]
+  },
+  "010613": {
+   "legal": "not_pnct",
+   "iefp": "pnct",
+   "sources": [
+    {
+     "url": "https://files.diariodarepublica.pt/1s/2017/07/13400/0373103734.pdf",
+     "en": "Portaria 208/2017 (Diário da República)",
+     "pt": "Portaria 208/2017 (Diário da República)"
+    },
+    {
+     "url": "https://www.compete2020.gov.pt/admin/images/Deliberacoes_cic_territ%C3%B3rios_baixa_densidade.pdf",
+     "en": "CIC Deliberação 20/2018",
+     "pt": "Deliberação CIC 20/2018"
+    },
+    {
+     "url": "https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf",
+     "en": "IEFP list of 2026-02-04",
+     "pt": "Lista IEFP de 04-02-2026"
+    }
+   ]
+  },
+  "010614": {
+   "legal": "not_pnct",
+   "iefp": "pnct",
+   "sources": [
+    {
+     "url": "https://files.diariodarepublica.pt/1s/2017/07/13400/0373103734.pdf",
+     "en": "Portaria 208/2017 (Diário da República)",
+     "pt": "Portaria 208/2017 (Diário da República)"
+    },
+    {
+     "url": "https://www.compete2020.gov.pt/admin/images/Deliberacoes_cic_territ%C3%B3rios_baixa_densidade.pdf",
+     "en": "CIC Deliberação 20/2018",
+     "pt": "Deliberação CIC 20/2018"
+    },
+    {
+     "url": "https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf",
+     "en": "IEFP list of 2026-02-04",
+     "pt": "Lista IEFP de 04-02-2026"
+    }
+   ]
+  },
+  "010615": {
+   "legal": "not_pnct",
+   "iefp": "pnct",
+   "sources": [
+    {
+     "url": "https://files.diariodarepublica.pt/1s/2017/07/13400/0373103734.pdf",
+     "en": "Portaria 208/2017 (Diário da República)",
+     "pt": "Portaria 208/2017 (Diário da República)"
+    },
+    {
+     "url": "https://www.compete2020.gov.pt/admin/images/Deliberacoes_cic_territ%C3%B3rios_baixa_densidade.pdf",
+     "en": "CIC Deliberação 20/2018",
+     "pt": "Deliberação CIC 20/2018"
+    },
+    {
+     "url": "https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf",
+     "en": "IEFP list of 2026-02-04",
+     "pt": "Lista IEFP de 04-02-2026"
+    }
+   ]
+  }
+ }
+}

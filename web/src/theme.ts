@@ -82,6 +82,8 @@ export interface MapPalette {
   /** Fill opacity of the RNAP tint (the outline carries it; in light mode a stronger tint muddies the PNCT teal). */
   rnapTint: number;
   natura: string;
+  /** Disputed parishes (status.ts): a "/" hatch and a dashed outline, apart from PNCT teal, RNAP orange and Natura violet. */
+  disputed: string;
   /**
    * 3D selection (layers.ts slabLayers): the slab of a PNCT feature (the walls darken towards the
    * base) and of any other (neutral), the rim on the slab's top edge and on the parish boundaries
@@ -121,6 +123,7 @@ export const PALETTES: Record<Theme, MapPalette> = {
     rnap: "#c2410c",
     rnapTint: 0.08,
     natura: "#7c3aed",
+    disputed: "#a16207",
     // Slab tops are checked against the basemap labels drawn over them (contrast.test.ts, WCAG AA):
     // a touch lighter than the PNCT teal, so positron's #333 locality names reach 4.5:1.
     slab: "#13a99a",
@@ -155,6 +158,7 @@ export const PALETTES: Record<Theme, MapPalette> = {
     rnap: "#fb923c",
     rnapTint: 0.16,
     natura: "#b79cff",
+    disputed: "#facc15",
     slab: "#051d1b",
     slabNeutral: "#171a1d",
     rim: "#d9faf4",

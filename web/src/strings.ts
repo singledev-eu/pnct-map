@@ -10,6 +10,7 @@
  */
 import type { LandFilter, Operation, PropertyType } from "./idealista";
 import type { ThemePref } from "./theme";
+import type { LegalStatus } from "./status";
 import { en } from "./strings.en";
 import { pt } from "./strings.pt";
 
@@ -128,6 +129,7 @@ export interface CheckStrings {
   pnctHeading: string;
   pnctYes: string;
   pnctNo: string;
+  pnctDisputed: string;
   factParish: string;
   openParish: string;
   hazardHeading: string;
@@ -194,6 +196,10 @@ export interface UiStrings {
   legendNotPnct: string;
   legendPnctParish: string;
   legendOtherParish: string;
+  /** Legend row for the disputed parishes (status.ts). */
+  legendDisputed: string;
+  /** Under the legend: the legal source of the PNCT definition and the date it was checked (already formatted). */
+  legalSource: (date: string) => string;
   legendBoundary: string;
   /** Legend toggle for the concelho seats and district capitals (cities.ts). */
   legendCities: string;
@@ -244,6 +250,8 @@ export interface UiStrings {
   concelhoSub: (distrito: string) => string;
   pnctYes: string;
   pnctNo: string;
+  /** Tooltip line of a disputed parish. */
+  pnctDisputed: string;
   pnctAll: string;
   pnctSome: (pnct: number, total: number) => string;
   kind: { concelho: string; parish: string };
@@ -257,6 +265,14 @@ export interface UiStrings {
   coveragePartial: (name: string, pnct: number, n: number) => string;
   badgePnct: string;
   badgeOther: string;
+  badgeDisputed: string;
+  /** "Sources disagree: Portaria 208/2017 says PNCT, the IEFP list says not PNCT. Check …". */
+  disputedNote: (legal: string, iefp: string) => string;
+  /** How a source classifies the parish, inside disputedNote. */
+  statusWord: Record<LegalStatus, string>;
+  disputedSources: string;
+  /** Concelho panel: its parishes the sources disagree on (names joined). */
+  concelhoDisputed: (names: string) => string;
   factConcelho: string;
   factDistrito: string;
   factDicofre: string;
@@ -298,7 +314,7 @@ export interface UiStrings {
     unofficial: string;
     sourcesHeading: string;
     pnctLabel: string;
-    /** {list}: the IEFP list link (listLink). */
+    /** {portaria}: the Portaria link; {list}: the IEFP list link (listLink); {date}: when the sources were checked. */
     pnct: string;
     listLink: string;
     boundariesLabel: string;

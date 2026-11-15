@@ -49,9 +49,11 @@ function municipalityLink(c: Concelho, opts: SearchOptions): PropertyLink {
 /**
  * Property-search links for a parish. Non-PNCT parishes get none. PNCT parishes
  * get a polygon search; if the whole concelho is PNCT, also its municipality page.
+ * A disputed parish keeps its polygon search when it has a shape (the IEFP list's parishes do; the
+ * panel shows the dispute next to it), so the links stay exactly as before the three-state change.
  */
 export async function getLinks(parish: Parish, concelho: Concelho, opts: SearchOptions): Promise<PropertyLink[]> {
-  if (!parish.pnct) return [];
+  if (!parish.pnct && !parish.disputed) return [];
   const shape = (await loadShapes())[parish.dicofre];
   const links: PropertyLink[] = [];
   if (shape) {

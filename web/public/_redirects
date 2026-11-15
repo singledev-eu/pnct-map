@@ -1,0 +1,4 @@
+# Cloudflare Pages. Insight landing paths (insights/README.md): /i/<insight_id> serves the map app as a
+# rewrite (200, not a redirect), so the path stays in the address bar and Cloudflare Web Analytics
+# records it per insight (it ignores query strings). Any id, known or not, opens the normal map.
+/i/* /index.html 200

@@ -17,6 +17,7 @@ Outputs (committed, so the Pi can render without the geospatial stack):
 from __future__ import annotations
 
 import json
+import sys
 
 import geopandas as gpd
 import pandas as pd
@@ -25,6 +26,9 @@ from shapely.geometry import Point
 from shapely.ops import unary_union
 
 from insights import config as cfg
+
+sys.path.insert(0, str(cfg.ROOT / "scripts"))
+import pnct_status  # noqa: E402  (the map's three-state classification, standard library only)
 
 COAST = "Limite e Linha de Costa"
 EPSG = 3763
@@ -144,9 +148,18 @@ def prepare() -> None:
 
     pnct = pd.read_csv(cfg.PNCT_CSV, dtype=str)
     unknown = sorted(set(pnct.dicofre) - set(fr.dicofre))
-    check(not unknown, f"all {len(pnct)} PNCT codes match a CAOP 2025 parish (unmatched: {unknown})")
+    check(not unknown, f"all {len(pnct)} IEFP PNCT codes match a CAOP 2025 parish (unmatched: {unknown})")
     check(pnct.dicofre.is_unique, "PNCT codes are unique")
-    fr["pnct"] = fr.dicofre.isin(set(pnct.dicofre))
+    # The legal definition (data/sources/pnct-legal-status.md): totals use legal_status; per-parish
+    # facts skip the disputed parishes (status), so no public claim rests on one.
+    status = pnct_status.classify(set(fr.dicofre), set(pnct.dicofre))
+    fr["status"] = fr.dicofre.map(lambda c: status[c]["status"])
+    fr["pnct"] = fr.dicofre.map(lambda c: status[c]["legal_status"] == "pnct")
+    fr["iefp_pnct"] = fr.dicofre.isin(set(pnct.dicofre))
+    disputed = fr[fr.status == "disputed"]
+    check(len(fr) == len(status) and fr.status.isin(pnct_status.STATUSES).all(), "every parish has exactly one status")
+    print(f"  note: legal PNCT {int(fr.pnct.sum())} parishes (IEFP list {len(pnct)}); disputed: "
+          f"{', '.join(f'{r.name} ({r.concelho}, legal {status[r.dicofre]["legal_status"]})' for r in disputed.itertuples())}")
 
     # --- Census 2021 parishes (CAOP 2024 geometry) and the crosswalk ---
     census_par, census_mun, totals, census_rec = census_tables()
@@ -240,7 +253,7 @@ def prepare() -> None:
     check(len(di) == 18, "18 districts")
 
     # --- Write ---
-    par_cols = ["dicofre", "name", "dtmn", "concelho", "dt", "distrito", "pnct", "area_km2", "cx", "cy", "lon", "lat",
+    par_cols = ["dicofre", "name", "dtmn", "concelho", "dt", "distrito", "pnct", "status", "iefp_pnct", "area_km2", "cx", "cy", "lon", "lat",
                 "centroid_inside", "touches_coast", "coast_km", *[f"{k}_km" for k in refs], "census_code", "census_same",
                 "pop2011", "pop2021"]
     out = fr[par_cols].copy()
@@ -265,6 +278,12 @@ def prepare() -> None:
         "sale_m2": {"period": sale_rec["period"], "portugal": sale_other.get("PT"), "mainland": sale_other.get("1"),
                     "lowest_municipality": sale_lowest},
         "reference_points": refs,
+        "status": {
+            "definition": "legal: Portaria 208/2017 annex (no amendment found); IEFP list for cross-check",
+            "legal_pnct": int(fr.pnct.sum()), "iefp_pnct": len(pnct), "undisputed_pnct": int((fr.status == "pnct").sum()),
+            "disputed": [{"code": r.dicofre, "name": r.name, "concelho": r.concelho, "legal": status[r.dicofre]["legal_status"],
+                          "iefp": status[r.dicofre]["iefp_status"]} for r in disputed.itertuples()],
+        },
         "coast": {"definition": f"CAOP 2025 boundary segments '{COAST}'", "length_km": round(coast.length / 1000, 1)},
         "crosswalk": {
             "caop_2025_parishes": len(fr), "census_2021_parishes": len(units), "split_census_parishes": int(split),
@@ -276,6 +295,9 @@ def prepare() -> None:
         },
         "sources": {
             "pnct": {"title": "IEFP, Territórios PNCT (2026-02-04)", "url": cfg.PNCT_URL},
+            "legal": {"title": "Portaria n.º 208/2017 (as amended; no amendment found)", "checked": pnct_status.checked_date(),
+                      "url": "https://files.diariodarepublica.pt/1s/2017/07/13400/0373103734.pdf",
+                      "record": "data/sources/pnct-legal-status.md"},
             "caop_2025": {"title": "DGT, CAOP 2025 (Continente)", "url": cfg.CAOP_2025_URL, "licence": "CC BY 4.0"},
             "caop_2024": {"title": "DGT, CAOP 2024 (Continente), Censos 2021 parishes", "url": cfg.CAOP_2024_URL, "sha256": cfg.CAOP_2024_SHA256},
             **{k: v for k, v in fetched.items()},
@@ -286,6 +308,17 @@ def prepare() -> None:
     shapes = {d: simplify_rings(g, 400) for d, g in zip(fr.dicofre, fr.geometry)}
     (cfg.PREPARED / "map.json").write_text(json.dumps(shapes, separators=(",", ":")), encoding="utf-8")
     print(f"wrote {cfg.PREPARED}: {len(out)} parishes, {len(units)} Census parishes, {len(mu)} concelhos")
+
+    # No insight may name a disputed parish (data/pnct_status.csv): computed on what was just written.
+    from insights.catalog import Data, check_no_disputed, compute_all
+
+    data = Data(cfg.PREPARED)
+    ready, _ = compute_all(data)
+    try:
+        check_no_disputed(ready, data)
+    except ValueError as e:
+        raise SanityError(f"SANITY CHECK FAILED: {e}") from None
+    print(f"  ok: none of the {len(ready)} ready insights names a disputed parish ({len(data.disputed)} disputed)")
 
 
 if __name__ == "__main__":

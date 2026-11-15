@@ -71,7 +71,7 @@ SOURCES = {
     "census": ("INE, Censos 2011 e 2021", "INE, Census 2011 and 2021"),
     "census21": ("INE, Censos 2021", "INE, Census 2021"),
     "caop": ("DGT, CAOP 2025", "DGT, CAOP 2025"),
-    "pnct": ("IEFP, lista PNCT 2026", "IEFP, PNCT list 2026"),
+    "pnct": ("Portaria 208/2017", "Portaria 208/2017"),  # the legal definition (data/sources/pnct-legal-status.md)
     "osm": ("© OpenStreetMap", "© OpenStreetMap"),
     "sale": ("INE, valor mediano das vendas €/m² ({period})", "INE, median dwelling sale value €/m² ({period})"),
 }
@@ -152,6 +152,33 @@ def a_area(d: "Data") -> dict:
     }
 
 
+def a_legal(d: "Data") -> dict:
+    n = len(d.disputed)
+    k = int(d.parishes.pnct.sum())
+    return {
+        "en": f"PNCT is the legal definition: the annex of Portaria 208/2017 (no amendment found, checked {d.national['sources']['legal']['checked']}), "
+              f"{num(k, 'en')} parishes. The IEFP list of 2026-02-04 classifies {n} parishes differently; the map marks them as disputed, "
+              "and no figure here names one (data/sources/pnct-legal-status.md).",
+        "pt": f"PNCT segue a definição legal: o anexo da Portaria 208/2017 (sem alterações encontradas, verificado em {d.national['sources']['legal']['checked']}), "
+              f"{num(k, 'pt')} freguesias. A lista do IEFP de 04-02-2026 classifica {n} freguesias de outra forma; o mapa assinala-as como de fontes "
+              "divergentes, e nenhum valor aqui nomeia uma delas (data/sources/pnct-legal-status.md).",
+    }
+
+
+def f_disputed(d: "Data") -> dict | None:
+    """The card footnote for totals and shares, when the IEFP list differs anywhere."""
+    n = len(d.disputed)
+    if not n:
+        return None
+    return {"en": f"{n} parishes are classified differently by IEFP; see map.",
+            "pt": f"{n} freguesias têm outra classificação na lista do IEFP; ver mapa."}
+
+
+def join_notes(*notes: dict | None) -> dict | None:
+    notes = [n for n in notes if n]
+    return {l: " ".join(n[l] for n in notes) for l in ("en", "pt")} if notes else None
+
+
 def a_census(d: "Data") -> dict:
     cw = d.national["crosswalk"]
     n, split = cw["census_2021_parishes"], cw["split_census_parishes"]
@@ -174,8 +201,8 @@ def a_census(d: "Data") -> dict:
 def a_same(d: "Data") -> dict:
     k, n = len(d.same), len(d.parishes)
     return {
-        "en": f"Only parishes whose 2025 boundaries equal a Censos 2021 parish are ranked ({num(k, 'en')} of {num(n, 'en')}); parishes created or redrawn in 2025 have no Census figure of their own.",
-        "pt": f"Só entram freguesias cujos limites de 2025 coincidem com uma freguesia dos Censos 2021 ({num(k, 'pt')} de {num(n, 'pt')}); as criadas ou redesenhadas em 2025 não têm valor próprio nos Censos.",
+        "en": f"Only parishes whose 2025 boundaries equal a Censos 2021 parish are ranked ({num(k, 'en')} of {num(n, 'en')}, disputed ones left out); parishes created or redrawn in 2025 have no Census figure of their own.",
+        "pt": f"Só entram freguesias cujos limites de 2025 coincidem com uma freguesia dos Censos 2021 ({num(k, 'pt')} de {num(n, 'pt')}, sem as de fontes divergentes); as criadas ou redesenhadas em 2025 não têm valor próprio nos Censos.",
     }
 
 
@@ -263,16 +290,40 @@ class Data:
         same = self.parishes[self.parishes.census_same.astype(bool)]
         assert same.pop2021.notna().all(), "a 1:1 parish lacks its Census population"
         assert self.parishes.loc[~self.parishes.census_same.astype(bool), "pop2021"].isna().all(), "population on a non-1:1 parish"
+        status = n.get("status", {})
+        assert set(self.parishes.status) <= {"pnct", "not_pnct", "disputed"}, "unknown parish status"
+        assert not (self.parishes.status == "disputed").any() or status, "disputed parishes without national.json status"
+        assert {d["code"] for d in status.get("disputed", [])} == set(self.parishes.loc[self.parishes.status == "disputed", "dicofre"])
+        assert int(self.parishes.pnct.sum()) == status.get("legal_pnct", int(self.parishes.pnct.sum())), "legal PNCT count mismatch"
 
-    # Convenience views
+    # Convenience views. `pnct` is the legal definition (Portaria 208/2017, data/pnct_status.csv): use
+    # it for totals and shares. Anything that names a parish (rankings, examples, top-5 lists) uses the
+    # `rank_*` views, which leave out the disputed parishes: no public claim rests on one.
     @property
     def pnct(self) -> pd.DataFrame:
         return self.parishes[self.parishes.pnct]
 
     @property
+    def ranked(self) -> pd.DataFrame:
+        """Parishes that may be named: every parish except the disputed ones."""
+        return self.parishes[self.parishes.status != "disputed"]
+
+    @property
+    def rank_pnct(self) -> pd.DataFrame:
+        return self.ranked[self.ranked.pnct]
+
+    @property
+    def rank_other(self) -> pd.DataFrame:
+        return self.ranked[~self.ranked.pnct]
+
+    @property
+    def disputed(self) -> pd.DataFrame:
+        return self.parishes[self.parishes.status == "disputed"]
+
+    @property
     def same(self) -> pd.DataFrame:
-        """Parishes whose 2025 boundaries are a Censos 2021 parish (the only ones with a population)."""
-        return self.parishes[self.parishes.census_same.astype(bool)]
+        """Parishes whose 2025 boundaries are a Censos 2021 parish (the only ones with a population), disputed ones left out."""
+        return self.ranked[self.ranked.census_same.astype(bool)]
 
     @property
     def full(self) -> pd.DataFrame:

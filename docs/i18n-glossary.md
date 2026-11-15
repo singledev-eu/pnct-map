@@ -104,3 +104,6 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | fixed broadband and fibre | banda larga fixa e fibra |
 | downloaded (a dataset) | transferidos (PT-PT, not "baixados") |
 | licensing (câmara) | licenciamento |
+| sources disagree (a disputed parish) | fontes divergentes |
+| as amended (of a portaria) | na redação em vigor |
+| check with Finanças/IEFP | confirme junto das Finanças/IEFP |

@@ -14,6 +14,9 @@
   Cache-Control: public, max-age=0, must-revalidate
 /index.html
   Cache-Control: public, max-age=0, must-revalidate
+# Insight landing paths (_redirects rewrites them to index.html): the same page, the same revalidation.
+/i/*
+  Cache-Control: public, max-age=0, must-revalidate
 
 # script-src: the hash of index.html's inline theme boot script (i18n.test.ts checks it matches), and the
 # Cloudflare Web Analytics beacon (static.cloudflareinsights.com; it reports to cloudflareinsights.com),

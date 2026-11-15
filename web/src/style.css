@@ -27,6 +27,7 @@
   --map-rnap: #c2410c;
   --map-rnap-tint: 8%; /* PALETTES.light.rnapTint */
   --map-natura: #7c3aed;
+  --map-disputed: #a16207;
   --radius: 10px;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color-scheme: light;
@@ -60,6 +61,7 @@
   --map-rnap: #fb923c;
   --map-rnap-tint: 16%; /* PALETTES.dark.rnapTint */
   --map-natura: #b79cff;
+  --map-disputed: #facc15;
   color-scheme: dark;
 }
 
@@ -462,6 +464,28 @@ body:not([data-level="parish"]) .legend-parish {
 .badge-other {
   background: var(--badge-other-bg);
   color: var(--muted);
+}
+
+/* Text stays in the body colour (AA in both themes); the amber is the tint and the dashed border. */
+.badge-disputed {
+  background: color-mix(in srgb, var(--map-disputed) 16%, transparent);
+  border: 1px dashed var(--map-disputed);
+  color: inherit;
+}
+
+.disputed-note {
+  margin: 8px 0;
+  padding: 8px 10px;
+  border-left: 3px solid var(--map-disputed);
+  background: color-mix(in srgb, var(--map-disputed) 8%, transparent);
+}
+
+.disputed-note p {
+  margin: 0 0 4px;
+}
+
+.disputed-line {
+  font-size: 13px;
 }
 
 .facts {
@@ -932,6 +956,19 @@ body:not([data-level="parish"]) .legend-parish {
   border: 1.5px dashed var(--map-natura);
 }
 
+/* Disputed parishes (status.ts): the map's "/" hatch and dashed outline (layers.ts DISPUTED_*). */
+.swatch-disputed {
+  background: repeating-linear-gradient(-45deg, color-mix(in srgb, var(--map-disputed) 85%, transparent) 0 1.5px, transparent 1.5px 5px);
+  border: 1.5px dashed var(--map-disputed);
+}
+
+.legend-source {
+  max-width: 230px;
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
 .legend-protected {
   margin-top: 8px;
   padding-top: 6px;
@@ -1334,6 +1371,16 @@ body:not([data-level="parish"]) .legend-parish {
 .tooltip .tt-pnct {
   color: var(--accent-strong);
   font-weight: 600;
+}
+
+.tooltip .tt-disputed {
+  font-weight: 600;
+}
+
+.tooltip .tt-note {
+  max-width: 260px;
+  white-space: normal;
+  font-size: 12px;
 }
 
 .status {

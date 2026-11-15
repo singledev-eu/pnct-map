@@ -53,10 +53,10 @@ census_code,census_name,dtmn,unit_km2,pnct_share,pnct,pop2011,pop2021
 010516,"Requeixo, Nossa Senhora de Fátima e Nariz",0105,32.319,0.0,False,4564,4383
 010517,União das freguesias de Glória e Vera Cruz,0105,45.321,0.0,False,18756,21227
 010602,Fornos,0106,4.11,0.0,False,1439,1277
-010606,Real,0106,33.106,0.9942,True,1300,1194
-010607,Santa Maria de Sardoura,0106,10.063,0.0402,False,2538,2274
+010606,Real,0106,33.106,0.957,True,1300,1194
+010607,Santa Maria de Sardoura,0106,10.063,0.0059,False,2538,2274
 010608,São Martinho de Sardoura,0106,4.312,0.0079,False,1931,1849
-010610,"União das freguesias de Raiva, Pedorido e Paraíso",0106,49.373,0.995,True,4694,4208
+010610,"União das freguesias de Raiva, Pedorido e Paraíso",0106,49.373,0.0069,False,4694,4208
 010611,União das freguesias de Sobrado e Bairros,0106,14.04,0.0094,False,4831,4784
 010702,Espinho,0107,1.766,0.0,False,9832,10432
 010704,Paramos,0107,5.872,0.0,False,3515,3127
@@ -1552,7 +1552,7 @@ census_code,census_name,dtmn,unit_km2,pnct_share,pnct,pop2011,pop2021
 101606,Juncal,1016,26.636,0.0,False,3316,3197
 101608,Mira de Aire,1016,15.623,0.0,False,3775,3482
 101609,Pedreiras,1016,13.223,0.0,False,2705,2548
-101610,São Bento,1016,41.3,0.0,False,835,751
+101610,São Bento,1016,41.3,1.0,True,835,751
 101613,Serro Ventoso,1016,32.098,0.0,False,1026,892
 101614,Porto de Mós - São João Baptista e São Pedro,1016,28.19,0.0,False,6023,6001
 101615,União das freguesias de Alvados e Alcaria,1016,33.306,0.0,False,741,731
@@ -2237,7 +2237,7 @@ census_code,census_name,dtmn,unit_km2,pnct_share,pnct,pop2011,pop2021
 160164,"União das freguesias de Vilela, São Cosme e São Damião e Sá",1601,8.954,1.0,True,524,476
 160201,Âncora,1602,5.417,0.0,False,1182,1186
 160205,Argela,1602,10.796,0.0,False,393,375
-160209,Dem,1602,6.432,0.0,False,363,309
+160209,Dem,1602,6.432,1.0,True,363,309
 160211,Lanhelas,1602,5.037,0.0,False,991,897
 160214,Riba de Âncora,1602,8.542,0.0,False,723,680
 160215,Seixas,1602,8.333,0.0,False,1502,1413

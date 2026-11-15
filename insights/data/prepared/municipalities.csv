@@ -4,7 +4,7 @@ dtmn,concelho,distrito,n_parishes,n_pnct,area_km2,pnct_km2,pop2011,pop2021,statu
 0103,Anadia,Aveiro,10,0,216.635,0.0,29150,27532,none,856.0,Anadia,30.676
 0104,Arouca,Aveiro,16,16,329.105,329.105,22359,21146,full,1057.0,Arouca,34.542
 0105,Aveiro,Aveiro,10,0,197.576,0.0,78450,80954,none,2343.0,Aveiro,7.806
-0106,Castelo de Paiva,Aveiro,9,4,115.005,82.612,16733,15586,partial,962.0,Castelo de Paiva,31.402
+0106,Castelo de Paiva,Aveiro,9,1,115.005,32.248,16733,15586,partial,962.0,Castelo de Paiva,31.402
 0107,Espinho,Aveiro,5,0,21.057,0.0,31786,31043,none,2703.0,Espinho,0.588
 0108,Estarreja,Aveiro,6,0,108.173,0.0,26997,26213,none,1296.0,Estarreja,12.009
 0109,Santa Maria da Feira,Aveiro,28,0,215.877,0.0,139309,136674,none,1636.0,Santa Maria da Feira,9.934
@@ -145,7 +145,7 @@ dtmn,concelho,distrito,n_parishes,n_pnct,area_km2,pnct_km2,pop2011,pop2021,statu
 1013,Pedrógão Grande,Leiria,3,3,128.747,128.747,3915,3390,full,616.0,Pedrógão Grande,65.309
 1014,Peniche,Leiria,4,0,77.55,0.0,27753,26429,none,2082.0,Peniche,0.443
 1015,Pombal,Leiria,17,1,626.003,54.144,55245,51170,partial,1136.0,Pombal,26.284
-1016,Porto de Mós,Leiria,10,0,261.834,0.0,24342,23202,none,1156.0,Porto de Mós,21.932
+1016,Porto de Mós,Leiria,10,1,261.834,41.3,24342,23202,partial,1156.0,Porto de Mós,21.932
 1101,Alenquer,Lisboa,11,0,304.219,0.0,43267,44442,none,1798.0,Alenquer,21.854
 1102,Arruda dos Vinhos,Lisboa,4,0,77.959,0.0,13391,13992,none,2070.0,Arruda dos Vinhos,14.362
 1103,Azambuja,Lisboa,7,0,262.656,0.0,21814,21421,none,1650.0,Azambuja,26.867
@@ -230,7 +230,7 @@ dtmn,concelho,distrito,n_parishes,n_pnct,area_km2,pnct_km2,pop2011,pop2021,statu
 1512,Setúbal,Setúbal,5,0,230.325,0.0,121185,123496,none,2468.0,Setúbal,2.636
 1513,Sines,Setúbal,2,0,203.302,0.0,14238,14198,none,2340.0,Sines,0.635
 1601,Arcos de Valdevez,Viana do Castelo,36,36,447.596,447.596,22847,20718,full,943.0,Arcos de Valdevez,37.294
-1602,Caminha,Viana do Castelo,14,2,136.521,41.943,16684,15797,partial,1606.0,Caminha,3.21
+1602,Caminha,Viana do Castelo,14,3,136.521,48.375,16684,15797,partial,1606.0,Caminha,3.21
 1603,Melgaço,Viana do Castelo,13,13,238.246,238.246,9213,7773,full,710.0,Melgaço,57.933
 1604,Monção,Viana do Castelo,24,24,211.309,211.309,19230,17816,full,1200.0,Monção,40.435
 1605,Paredes de Coura,Viana do Castelo,16,16,138.186,138.186,9198,8632,full,842.0,Paredes de Coura,26.307

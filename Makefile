@@ -38,11 +38,11 @@ data/processed/pnct_parishes.csv: scripts/build_parishes.py data/interim/pnct_ra
 	$(PY) scripts/build_parishes.py
 
 geo: data/processed/parishes_all.geojson
-data/processed/parishes_all.geojson: scripts/build_geo.py data/processed/pnct_parishes.csv $(CAOP_GPKG)
+data/processed/parishes_all.geojson: scripts/build_geo.py scripts/pnct_status.py data/pnct_status.csv data/processed/pnct_parishes.csv $(CAOP_GPKG)
 	$(PY) scripts/build_geo.py
 
 web-data: web/data/pnct.topo.json
-web/data/pnct.topo.json: scripts/build_topo.py data/processed/parishes_all.geojson
+web/data/pnct.topo.json: scripts/build_topo.py scripts/pnct_status.py data/pnct_status.csv data/processed/parishes_all.geojson
 	$(PY) scripts/build_topo.py
 
 shapes: web/data/shapes.json

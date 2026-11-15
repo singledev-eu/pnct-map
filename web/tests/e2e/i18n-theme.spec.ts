@@ -164,7 +164,7 @@ test("About lists every credit in PT", async ({ page }) => {
   await page.locator("#about-open").click();
   const about = page.locator("#about");
   await expect(about.locator("h2")).toHaveText("Sobre este mapa");
-  for (const name of ["lista oficial", "CAOP 2025", "CC BY 4.0", "OpenFreeMap", "OpenMapTiles", "OpenStreetMap"]) await expect(about.getByRole("link", { name, exact: true }).first()).toBeVisible();
+  for (const name of ["Portaria 208/2017 (Diário da República)", "lista PNCT", "CAOP 2025", "CC BY 4.0", "OpenFreeMap", "OpenMapTiles", "OpenStreetMap"]) await expect(about.getByRole("link", { name, exact: true }).first()).toBeVisible();
   await expect(about).toContainText("contribuidores do OpenStreetMap");
   await expect(page.getByTestId("about-protected")).toContainText("condições de reutilização não confirmadas");
   await expect(page.getByTestId("about-protected").getByRole("link")).toHaveCount(3); // RNAP, Natura, Natura's licence

@@ -20,11 +20,16 @@ ENV_FILE = ROOT / ".env"
 
 SITE = "https://pnct.singledev.eu/"
 SITE_LABEL = "pnct.singledev.eu"
-UTM = "utm_source=facebook&utm_medium=social&utm_campaign=insights&utm_content={id}"
+# Each insight has its own landing path, /i/<id> (web/public/_redirects: a rewrite to the map, so the path
+# stays in the address bar). Cloudflare Web Analytics records paths but not query strings, so the path
+# is what tells the insights apart there; the UTM parameters are for any tool that does read them.
+UTM = "utm_source=facebook&utm_medium=social&utm_campaign=insights"
 
 
 def link(insight_id: str) -> str:
-    return f"{SITE}?{UTM.format(id=insight_id)}"
+    if not insight_id.replace("_", "").isalnum():
+        raise ValueError(f"insight id {insight_id!r} is not URL-safe")
+    return f"{SITE}i/{insight_id}?{UTM}"
 
 
 # --- Sources -------------------------------------------------------------------------------------

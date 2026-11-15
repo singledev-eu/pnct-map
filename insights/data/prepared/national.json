@@ -5,7 +5,7 @@
   "2011": 10047621,
   "2021": 9855909
  },
- "pnct_census_pop2021": 1968418,
+ "pnct_census_pop2021": 1965270,
  "sale_m2": {
   "period": "2025",
   "portugal": 2076.0,
@@ -72,6 +72,49 @@
    "y": -98027.09585787731
   }
  },
+ "status": {
+  "definition": "legal: Portaria 208/2017 annex (no amendment found); IEFP list for cross-check",
+  "legal_pnct": 1860,
+  "iefp_pnct": 1861,
+  "undisputed_pnct": 1858,
+  "disputed": [
+   {
+    "code": "010613",
+    "name": "Paraíso",
+    "concelho": "Castelo de Paiva",
+    "legal": "not_pnct",
+    "iefp": "pnct"
+   },
+   {
+    "code": "010614",
+    "name": "Pedorido",
+    "concelho": "Castelo de Paiva",
+    "legal": "not_pnct",
+    "iefp": "pnct"
+   },
+   {
+    "code": "010615",
+    "name": "Raiva",
+    "concelho": "Castelo de Paiva",
+    "legal": "not_pnct",
+    "iefp": "pnct"
+   },
+   {
+    "code": "101610",
+    "name": "São Bento",
+    "concelho": "Porto de Mós",
+    "legal": "pnct",
+    "iefp": "not_pnct"
+   },
+   {
+    "code": "160209",
+    "name": "Dem",
+    "concelho": "Caminha",
+    "legal": "pnct",
+    "iefp": "not_pnct"
+   }
+  ]
+ },
  "coast": {
   "definition": "CAOP 2025 boundary segments 'Limite e Linha de Costa'",
   "length_km": 1216.8
@@ -84,10 +127,10 @@
   "clean_share": 0.9,
   "not_clean": [
    {
-    "code": "010607",
-    "name": "Santa Maria de Sardoura",
-    "pnct_share": 0.0402,
-    "pop2021": 2274
+    "code": "010606",
+    "name": "Real",
+    "pnct_share": 0.957,
+    "pop2021": 1194
    }
   ]
  },
@@ -95,6 +138,12 @@
   "pnct": {
    "title": "IEFP, Territórios PNCT (2026-02-04)",
    "url": "https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf"
+  },
+  "legal": {
+   "title": "Portaria n.º 208/2017 (as amended; no amendment found)",
+   "checked": "2026-11-15",
+   "url": "https://files.diariodarepublica.pt/1s/2017/07/13400/0373103734.pdf",
+   "record": "data/sources/pnct-legal-status.md"
   },
   "caop_2025": {
    "title": "DGT, CAOP 2025 (Continente)",

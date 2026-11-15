@@ -74,7 +74,7 @@ describe("fill", () => {
   });
 
   it("fills every About template in both languages", () => {
-    const parts = { list: "L", caop: "C", licence: "B", openfreemap: "F", openmaptiles: "T", osm: "O" };
+    const parts = { portaria: "P", list: "L", date: "D", caop: "C", licence: "B", openfreemap: "F", openmaptiles: "T", osm: "O" };
     for (const l of ["pt", "en"] as const) {
       const a = STRINGS[l].ui.about;
       for (const template of [a.pnct, a.boundaries, a.basemap]) expect(fill(template, parts).join("")).not.toMatch(/[{}]/);

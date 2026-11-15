@@ -99,6 +99,7 @@ cd web && npm run deploy              # same, to production (main). Only after t
   - Verify every PDM link against the live site (or the Diário da República notice) before marking it.
   - Generic institutional contacts only (geral@, the switchboard), no personal data.
   - Check the CSV with `scripts/validate_contacts.py` (`--online` re-checks the URLs).
+- **PNCT definition:** legal = the Portaria 208/2017 annex plus verified amendments (none found; `data/sources/pnct-legal-status.md`). `data/pnct_status.csv` lists the parishes where the IEFP list differs (`disputed`, with `legal_status`, a reason and ≥2 sources); `scripts/pnct_status.py` validates it and `build_geo`/`build_topo`/insights read it. The map shows a disputed parish in its own style and never as PNCT (`pnct` false, `disputed` true). Insights totals use `legal_status`; nothing names a disputed parish. Never edit the IEFP-derived lists to fix a dispute.
 - **No invented values:** data shown in the UI is never estimated or filled in. A missing value shows "—" with a note ("not available" / "não disponível").
 - **3D selection:**
   - Each slab layer holds only the selected feature (a filter by code). Slab colour follows eligibility (PNCT colour, neutral, or neutral with the PNCT parishes raised); never PNCT colour for a non-PNCT feature.

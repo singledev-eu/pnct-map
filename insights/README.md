@@ -27,6 +27,14 @@ uv run pytest -q insights/tests            # the catalog on a hand-computed fixt
 | `cli.py`, `state.py`, `telegram.py` | the commands, `posted.json`, and Telegram delivery |
 | `deploy/` | systemd service + timer (Tue/Fri 09:00 Europe/Lisbon) and the [Pi install steps](deploy/README.md) |
 
+## Links and the PNCT definition
+
+- **Each caption links to its own landing path:** `https://pnct.singledev.eu/i/<insight_id>?utm_source=facebook&utm_medium=social&utm_campaign=insights`. `/i/*` serves the map (a rewrite in `web/public/_redirects`, not a redirect), so Cloudflare Web Analytics, which records paths but not query strings, counts visits per insight.
+- **PNCT is the legal definition:** the annex of Portaria 208/2017, with no amendment found ([data/sources/pnct-legal-status.md](../data/sources/pnct-legal-status.md)). Five parishes are classified differently by the IEFP list; they are `disputed` in `data/pnct_status.csv`.
+  - Totals and shares use the legal status, and their cards carry the footnote "5 parishes are classified differently by IEFP; see map".
+  - Rankings, examples and top-5 lists skip disputed parishes entirely (`Data.rank_*`).
+  - `prepare` fails if any insight output names one (`check_no_disputed`).
+
 ## Rules
 
 - **Correctness over coverage.** Every number traces to a dataset in `prepared/national.json`. Every assumption is in the insight's `assumptions`, and on the card (`footnote`) when it changes how the number reads. Distances always say "in a straight line".

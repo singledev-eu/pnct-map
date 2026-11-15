@@ -5,7 +5,7 @@ from __future__ import annotations
 import unicodedata
 
 from insights.catalog.base import (
-    Data, Insight, a_area, a_census, bar, both, caption, de_pt, insight, num, pct, sources,
+    Data, Insight, a_area, a_census, a_legal, bar, both, caption, de_pt, f_disputed, insight, num, pct, sources,
 )
 
 
@@ -44,7 +44,8 @@ def area_vs_population(d: Data) -> Insight:
             ],
         },
         evergreen=True,
-        assumptions=[a_area(d), a_census(d)],
+        assumptions=[a_legal(d), a_area(d), a_census(d)],
+        footnote=f_disputed(d),
     )
 
 
@@ -74,8 +75,9 @@ def parish_count(d: Data) -> Insight:
             "legend": [{"en": "PNCT parish", "pt": "Freguesia PNCT"}, {"en": "Not PNCT", "pt": "Não PNCT"}],
         },
         evergreen=True,
-        assumptions=[{"en": "Parishes as in CAOP 2025 (3,049 on the mainland), matched to the IEFP list of 2026-02-04.",
-                      "pt": "Freguesias da CAOP 2025 (3049 no continente), associadas à lista do IEFP de 04-02-2026."}],
+        assumptions=[a_legal(d), {"en": "Parishes as in CAOP 2025 (3,049 on the mainland). On the map card, disputed parishes are drawn apart (amber), neither PNCT nor not.",
+                                  "pt": "Freguesias da CAOP 2025 (3049 no continente). No mapa do cartão, as freguesias de fontes divergentes têm cor própria (âmbar)."}],
+        footnote=f_disputed(d),
     )
 
 
@@ -84,7 +86,7 @@ def concelhos_split(d: Data) -> Insight:
     m = d.municipalities
     counts = m.status.value_counts()
     full, part, none = int(counts.get("full", 0)), int(counts.get("partial", 0)), int(counts.get("none", 0))
-    p = m[m.status == "partial"].copy()
+    p = m[(m.status == "partial") & ~m.dtmn.isin(set(d.disputed.dtmn))].copy()
     p["balance"] = (p.n_pnct / p.n_parishes - 0.5).abs()
     ex = p.sort_values(["balance", "n_parishes"], ascending=[True, False]).head(2)
     ex_en = " and ".join(f"{r.concelho} ({r.n_pnct} of {r.n_parishes} parishes)" for r in ex.itertuples())
@@ -122,28 +124,23 @@ def concelhos_split(d: Data) -> Insight:
         evergreen=True,
         assumptions=[{"en": "A concelho is counted by its CAOP 2025 parishes; 'split' means at least one PNCT and one non-PNCT parish. Examples are the split concelhos closest to half-and-half.",
                       "pt": "Cada concelho é contado pelas freguesias da CAOP 2025; 'dividido' quer dizer pelo menos uma freguesia PNCT e uma não PNCT. Os exemplos são os divididos mais próximos de metade-metade."},
-                     SPLIT_20_VS_21],
+                     LEGAL_SPLIT, a_legal(d)],
+        footnote=f_disputed(d),
     )
 
 
-# Why 20 split concelhos and not the 21 of the official annexes (checked 2026-11-15; report
-# docs/reports/insights-fixes.md). Portaria n.º 208/2017 (annex) and CIC Deliberação n.º 20/2018 list
-# 74 parishes in 21 municipalities that are not low-density as a whole (2013 parish geography; 73 in
-# the Portaria, plus the União das Freguesias da Raiva, Pedorido e Paraíso added by the Deliberação).
-# The IEFP list of 2026-02-04 that the map uses has no line for two of them: Dem (Caminha, CAOP
-# 160209) and São Bento (Porto de Mós, 101610). Caminha keeps two listed parishes, so only Porto de
-# Mós drops out: 21 − 1 = 20. The other 72 entries are 72 Census 2021 parishes, 83 parishes today
-# after the 2025 de-aggregation (+11). The two missing parishes are reported, never added: the map
-# follows the IEFP list.
-SPLIT_20_VS_21 = {
-    "en": "The official annexes (Portaria 208/2017 and CIC Deliberação 20/2018) list 74 parishes in 21 municipalities that are not "
-          "low-density as a whole. The IEFP list of 2026-02-04 used here has no line for two of them, Dem (Caminha) and São Bento "
-          "(Porto de Mós). Caminha keeps two listed parishes, so only Porto de Mós drops out: 20 split concelhos, not 21. The other "
-          "72 entries are 83 parishes today, after the 2025 de-aggregation. The two missing parishes are not added; the map follows the IEFP list.",
-    "pt": "Os anexos oficiais (Portaria 208/2017 e Deliberação CIC 20/2018) listam 74 freguesias em 21 municípios que não são de baixa "
-          "densidade no seu todo. A lista do IEFP de 04-02-2026, usada aqui, não inclui duas delas: Dem (Caminha) e São Bento (Porto de Mós). "
-          "Caminha mantém duas freguesias da lista, por isso só Porto de Mós sai: 20 concelhos divididos, não 21. As outras 72 entradas "
-          "correspondem hoje a 83 freguesias, após a desagregação de 2025. As duas freguesias em falta não são acrescentadas; o mapa segue a lista do IEFP.",
+# Split concelhos on the legal definition (data/sources/pnct-legal-status.md, checked 2026-11-15): the
+# Portaria 208/2017 annex lists 73 parishes (2013 boundaries) in 21 municipalities that are not PNCT as a
+# whole, so 21 split concelhos. The IEFP list of 2026-02-04 differs on 5 parishes; on it the count is 20
+# (one municipality's only listed parish is missing there). Examples never use a concelho with a
+# disputed parish, and no disputed parish is named.
+LEGAL_SPLIT = {
+    "en": "Counted on the legal definition: the Portaria 208/2017 annex lists 73 parishes (2013 boundaries) in 21 municipalities "
+          "that are not PNCT as a whole, so 21 split concelhos. The IEFP list of 2026-02-04 classifies 5 parishes differently "
+          "(the map marks them as disputed); on that list the count would be 20. Concelhos with a disputed parish are never used as examples.",
+    "pt": "Contagem segundo a definição legal: o anexo da Portaria 208/2017 lista 73 freguesias (limites de 2013) em 21 municípios "
+          "que não são PNCT no seu todo, por isso 21 concelhos divididos. A lista do IEFP de 04-02-2026 classifica 5 freguesias de outra "
+          "forma (o mapa assinala-as como de fontes divergentes); com essa lista seriam 20. Concelhos com uma freguesia de fontes divergentes nunca servem de exemplo.",
 }
 
 
@@ -208,7 +205,8 @@ def _district_insight(d: Data, iid: str, shares, what: str) -> Insight:
             "max": 1.0,
         },
         evergreen=True,
-        assumptions=assumptions,
+        assumptions=[a_legal(d), *assumptions],
+        footnote=f_disputed(d),
     )
 
 
@@ -255,7 +253,8 @@ def density_contrast(d: Data) -> Insight:
             ],
         },
         evergreen=True,
-        assumptions=[a_census(d), a_area(d),
+        assumptions=[a_legal(d), a_census(d), a_area(d),
                      {"en": "Density = Census 2021 residents ÷ CAOP 2025 area of the same group of parishes.",
                       "pt": "Densidade = residentes nos Censos 2021 ÷ área CAOP 2025 do mesmo grupo de freguesias."}],
+        footnote=f_disputed(d),
     )

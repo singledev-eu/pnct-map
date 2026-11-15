@@ -48,13 +48,13 @@ def test_density_contrast(data):
 
 
 def test_closest_to_cities(data):
-    assert compute("closest_to_porto", data).numbers["closest"] == "Bouça"  # 25 km; Eira (10) is not PNCT
+    assert compute("closest_to_porto", data).numbers["closest"] == "Anta"  # Eira (10 km) isn't PNCT, Bouça (25) is disputed
     assert compute("closest_to_lisbon", data).numbers["closest"] == "Gralha"
 
 
 def test_closest_to_airports(data):
     n = compute("closest_to_airports", data).numbers
-    assert n["opo"]["parish"] == "Bouça" and n["lis"]["parish"] == "Gralha" and n["fao"]["parish"] == "Gralha"
+    assert n["opo"]["parish"] == "Anta" and n["lis"]["parish"] == "Gralha" and n["fao"]["parish"] == "Gralha"  # Bouça is disputed
     assert n["fao"]["km"] == 30.0
 
 
@@ -125,7 +125,7 @@ def test_every_insight_is_complete(data):
         assert ins.chart_spec["type"] in {"bars", "contrast", "map"}
         for lang, cap in (("en", ins.caption_en), ("pt", ins.caption_pt)):
             assert cap.endswith(cfg.link(ins.id)), ins.id
-            assert f"utm_content={ins.id}" in cap
+            assert f"https://pnct.singledev.eu/i/{ins.id}?utm_source=facebook&utm_medium=social&utm_campaign=insights" in cap
             body = cap.rsplit("\n\n", 1)[0]
             sentences = re.split(r"(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ0-9])", body)
             assert len(sentences) <= 2, f"{ins.id} {lang}: hook + context only, then the link line"
@@ -162,7 +162,7 @@ def test_formatting():
 def test_real_prepared_data_loads_and_checks():
     """The committed prepared data passes the same checks (INE totals, CAOP area)."""
     d = Data()
-    assert len(d.parishes) == 3049 and len(d.pnct) == 1861
+    assert len(d.parishes) == 3049 and len(d.pnct) == 1860  # legal: IEFP's 1,861 − 3 + 2 (data/pnct_status.csv)
     ready, _ = compute_all(d)
     assert len(ready) >= 20
 
@@ -195,34 +195,44 @@ def test_population_share_says_what_it_measures(data):
     assert "(Censos 2021, todas as freguesias PNCT)" in ins.caption_pt
 
 
-def test_split_concelhos_explains_20_vs_21(data):
-    text = " ".join(a["en"] for a in compute("concelhos_split", data).assumptions)
-    assert "Dem (Caminha)" in text and "São Bento (Porto de Mós)" in text and "21" in text
 
 
-def test_low_density_note():
-    from insights.catalog.distance import _low_density
-
-    foot, extra = _low_density([{"name": "Pedorido", "census_code": "010610"}, {"name": "Fermedo", "census_code": "010409"}])
-    assert "Pedorido: classified as low-density by CIC Deliberação 20/2018" in foot["en"] and "straight line" in foot["en"]
-    assert len(extra) == 1
-    foot, extra = _low_density([{"name": "Fermedo", "census_code": "010409"}])
-    assert "Deliberação" not in foot["en"] and extra == []
+def test_split_concelhos_use_the_legal_count(data):
+    ins = compute("concelhos_split", data)
+    text = " ".join(a["en"] for a in ins.assumptions)
+    assert "Portaria 208/2017" in text and "21 split concelhos" in text
+    assert ins.footnote["en"] == "1 parishes are classified differently by IEFP; see map." or "classified differently by IEFP" in ins.footnote["en"]
+    assert all(e["concelho"] != "Aa" for e in ins.numbers["examples"])  # Aa has the disputed Bouça
 
 
-def test_pedorido_is_the_low_density_union():
-    """The note is right for the real data: Pedorido, Raiva and Paraíso map to Census parish 010610."""
+def test_totals_use_the_legal_status_and_say_so(data):
+    ins = compute("area_vs_population", data)
+    assert ins.numbers["area_share"] == pytest.approx(205 / 255)  # Bouça (disputed, legally PNCT) still counts
+    assert "classified differently by IEFP; see map" in ins.footnote["en"] and "lista do IEFP" in ins.footnote["pt"]
+    assert any("Portaria 208/2017" in a["en"] for a in ins.assumptions)
+
+
+def test_no_insight_names_a_disputed_parish(data):
+    from insights.catalog import check_no_disputed
+
+    ready, _ = compute_all(data)
+    check_no_disputed(ready, data)  # Bouça never appears
+    bad = compute("parish_count", data)
+    bad.caption_en += " Bouça (Aa) is close."
+    with pytest.raises(ValueError, match="Bouça"):
+        check_no_disputed({"parish_count": bad}, data)
+
+
+def test_real_data_legal_definition():
+    """The legal definition on the real data: 21 split concelhos, nothing names a disputed parish, the
+    CIC low-density note is gone, and the Porto headline is the first undisputed parish."""
+    from insights.catalog import check_no_disputed
+
     d = Data()
-    rows = d.parishes[d.parishes.name.isin(["Pedorido", "Raiva", "Paraíso"]) & (d.parishes.concelho == "Castelo de Paiva")]
-    assert set(rows.census_code) == {"010610"} and rows.pnct.all()
-    assert d.units.set_index("census_code").loc["010610", "census_name"] == "União das freguesias de Raiva, Pedorido e Paraíso"
-    assert "Pedorido" in compute("closest_to_porto", d).footnote["en"]
-
-
-def test_iefp_list_lacks_two_official_parishes():
-    """The documented 20-vs-21 cause still holds: Dem and São Bento are not PNCT in the data we use."""
-    d = Data()
-    p = d.parishes.set_index("dicofre")
-    assert p.loc["160209", "name"] == "Dem" and not p.loc["160209", "pnct"]
-    assert p.loc["101610", "name"] == "São Bento" and not p.loc["101610", "pnct"]
-    assert (d.municipalities.status == "partial").sum() == 20
+    assert (d.municipalities.status == "partial").sum() == 21
+    assert set(d.disputed.dicofre) == {"160209", "101610", "010613", "010614", "010615"}
+    ready, _ = compute_all(d)
+    check_no_disputed(ready, d)
+    porto = ready["closest_to_porto"]
+    assert porto.numbers["closest"] not in set(d.disputed.name)
+    assert all("Deliberação 20/2018" not in (i.footnote or {}).get("en", "") for i in ready.values())

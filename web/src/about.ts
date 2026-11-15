@@ -7,6 +7,7 @@ import { fill, rich } from "./i18n";
 import { h } from "./panel";
 import { HAZARD } from "./landcheck";
 import { credits } from "./protected";
+import { LEGAL_SOURCE, STATUS_CHECKED } from "./status";
 import { formatDate, lang, t, tk, ui } from "./strings";
 
 const IEFP_LIST = "https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf";
@@ -36,7 +37,7 @@ export function renderAbout(dialog: HTMLDialogElement): void {
       h(
         "ul",
         {},
-        h("li", {}, h("strong", {}, a.pnctLabel), " ", ...fill(a.pnct, { list: link(IEFP_LIST, a.listLink) })),
+        h("li", {}, h("strong", {}, a.pnctLabel), " ", ...fill(a.pnct, { portaria: link(LEGAL_SOURCE.url, LEGAL_SOURCE[lang]), list: link(IEFP_LIST, a.listLink), date: formatDate(STATUS_CHECKED) })),
         h("li", {}, h("strong", {}, a.boundariesLabel), " ", ...fill(a.boundaries, { caop: link(CAOP, "CAOP 2025"), licence: link(CC_BY, "CC BY 4.0") })),
         h(
           "li",

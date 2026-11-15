@@ -6,7 +6,7 @@ Live site: https://pnct.singledev.eu. This is an unofficial tool. What's done an
 
 Features:
 
-- **Parish map:** all 3,049 mainland parishes, with the 1,861 PNCT parishes shaded, and concelho boundaries. The 278 concelho seats and 18 district capitals are marked (from OpenStreetMap; a legend toggle), and river names are readable in both themes.
+- **Parish map:** all 3,049 mainland parishes, with the PNCT parishes shaded, and concelho boundaries. PNCT follows the legal definition, the annex of Portaria 208/2017 ([data/sources/pnct-legal-status.md](data/sources/pnct-legal-status.md)). The 5 parishes where it and the IEFP list of 2026-02-04 disagree are marked "Sources disagree" (amber hatch) and aren't counted as PNCT, so 1,858 are shaded. The 278 concelho seats and 18 district capitals are marked (from OpenStreetMap; a legend toggle), and river names are readable in both themes.
 - **Zoom levels:** concelhos (whole / partly / not PNCT) at country zoom, where a click zooms into one; parishes once zoomed in. Zoom-out and panning stop around mainland Portugal.
 - **Interaction:** hover tooltip, and a click opens a panel (side panel on desktop, bottom sheet on phones). Every selection is framed inside the visible part of the map; when its concelho seat or the nearest district capital is off-screen, a pointer at the edge shows the way and the distance ("↙ Coruche · 10 km"). An "All" button under the zoom buttons returns to the whole country.
 - **3D selection:** the map tilts onto the selected concelho or parish, which rises as a slab: in the PNCT colour if it is PNCT, neutral if not, and a partly-PNCT concelho neutral with its PNCT parishes raised on top. Selecting a parish inside the selected concelho drills into it, and hovering one (desktop) pops it up. A "3D" button in the legend header turns it off; the system's reduced-motion setting does too.
@@ -161,7 +161,9 @@ The site can load [Cloudflare Web Analytics](https://developers.cloudflare.com/w
 
 Builds without the token (dev, tests, CI) have no analytics. `web/analytics.ts` injects the tag, and `src/analytics.test.ts` covers it.
 
-**What it measures:** page loads, referrers (e.g. `facebook.com`, `l.facebook.com`), countries, devices, Core Web Vitals. **What it doesn't:** Cloudflare doesn't record query strings ([FAQ](https://developers.cloudflare.com/web-analytics/faq/): UTM parameters are "not yet" supported), so the `utm_*` values on the Insights links don't show up by campaign or `utm_content`. Its SPA mode doesn't follow hash routes, so the parish in `#…` isn't recorded either. Facebook traffic as a whole is visible through the referrer.
+**What it measures:** page loads, referrers (e.g. `facebook.com`, `l.facebook.com`), countries, devices, Core Web Vitals. **What it doesn't:** Cloudflare doesn't record query strings ([FAQ](https://developers.cloudflare.com/web-analytics/faq/): UTM parameters are "not yet" supported), so the `utm_*` values aren't reported. That is why each Insights post links to its own path, `/i/<insight_id>` (`web/public/_redirects` rewrites it to the map, so the address bar keeps it): the dashboard's paths show visits per insight. Its SPA mode doesn't follow hash routes, so the parish in `#…` isn't recorded. Facebook traffic as a whole is visible through the referrer.
+
+**Builds without analytics:** the environment wins over the `.env` files, so `CF_WEB_ANALYTICS_TOKEN= npm run build` builds without the beacon. `npm run test:e2e` does that, because from `localhost` the beacon's reports fail CORS and would count as console errors. The deploy then builds again with the token.
 
 ## Data and attribution
 

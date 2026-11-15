@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from insights.catalog.base import (
-    Blocked, Data, Insight, a_census, bar, both, caption, insight, num, pct, signed_pct, sources,
+    Blocked, Data, Insight, a_census, a_legal, f_disputed, join_notes, bar, both, caption, insight, num, pct, signed_pct, sources,
 )
 
 A_MUN = {
@@ -52,7 +52,8 @@ def population_change(d: Data) -> Insight:
             ],
         },
         evergreen=True,
-        assumptions=[a_census(d)],
+        assumptions=[a_legal(d), a_census(d)],
+        footnote=f_disputed(d),
     )
 
 
@@ -87,9 +88,9 @@ def shrinking_parishes(d: Data) -> Insight:
             ],
         },
         evergreen=True,
-        assumptions=[a_census(d), {"en": "Counted on Census 2021 parishes, the unit both Censuses are published on.",
+        assumptions=[a_legal(d), a_census(d), {"en": "Counted on Census 2021 parishes, the unit both Censuses are published on.",
                                    "pt": "Contagem nas freguesias dos Censos 2021, a unidade em que ambos os Censos são publicados."}],
-        footnote={"en": "Parishes as delimited in the 2021 Census.", "pt": "Freguesias com os limites dos Censos 2021."},
+        footnote=join_notes({"en": "Parishes as delimited in the 2021 Census.", "pt": "Freguesias com os limites dos Censos 2021."}, f_disputed(d)),
     )
 
 

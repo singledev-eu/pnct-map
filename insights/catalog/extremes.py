@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from insights.catalog.base import (
     place,
-    Data, Insight, a_area, a_same, bar, both, caption, f_same, insight, num, sources,
+    Data, Insight, a_area, a_legal, a_same, bar, both, caption, f_same, insight, num, sources,
 )
 
 
@@ -54,7 +54,7 @@ def least_populated_pnct(d: Data) -> Insight:
             "rows": _rows(d, top, "pop2021", _people),
         },
         evergreen=True,
-        assumptions=[a_same(d)],
+        assumptions=[a_same(d), a_legal(d)],
         footnote=f_same(d),
     )
 
@@ -85,14 +85,14 @@ def most_populous_pnct(d: Data) -> Insight:
             "rows": _rows(d, top, "pop2021", _people),
         },
         evergreen=True,
-        assumptions=[a_same(d)],
+        assumptions=[a_same(d), a_legal(d)],
         footnote=f_same(d),
     )
 
 
 @insight("largest_pnct_area")
 def largest_pnct_area(d: Data) -> Insight:
-    top = d.pnct.nlargest(5, "area_km2")
+    top = d.rank_pnct.nlargest(5, "area_km2")
     f = top.iloc[0]
     ratio = f.area_km2 / d.parishes.area_km2.median()
     cap = caption(
@@ -116,15 +116,15 @@ def largest_pnct_area(d: Data) -> Insight:
             "rows": _rows(d, top, "area_km2", _km2),
         },
         evergreen=True,
-        assumptions=[a_area(d)],
+        assumptions=[a_area(d), a_legal(d)],
     )
 
 
 @insight("smallest_pnct_area")
 def smallest_pnct_area(d: Data) -> Insight:
-    top = d.pnct.nsmallest(5, "area_km2")
+    top = d.rank_pnct.nsmallest(5, "area_km2")
     f = top.iloc[0]
-    big = d.pnct.area_km2.max()
+    big = d.rank_pnct.area_km2.max()
     cap = caption(
         "smallest_pnct_area",
         (f"The smallest PNCT parish, {place(f)}, covers just {_km2(f.area_km2, 'en')}.",
@@ -146,7 +146,7 @@ def smallest_pnct_area(d: Data) -> Insight:
             "rows": _rows(d, top, "area_km2", _km2),
         },
         evergreen=True,
-        assumptions=[a_area(d)],
+        assumptions=[a_area(d), a_legal(d)],
     )
 
 
@@ -183,7 +183,7 @@ def emptiest_pnct_density(d: Data) -> Insight:
             "rows": _rows(d, top, "density", _dens),
         },
         evergreen=True,
-        assumptions=[a_same(d), a_area(d)],
+        assumptions=[a_same(d), a_area(d), a_legal(d)],
         footnote=f_same(d),
     )
 
@@ -220,6 +220,6 @@ def densest_pnct_vs_emptiest_other(d: Data) -> Insight:
             ],
         },
         evergreen=True,
-        assumptions=[a_same(d), a_area(d)],
+        assumptions=[a_same(d), a_area(d), a_legal(d)],
         footnote=f_same(d),
     )

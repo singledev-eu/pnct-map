@@ -47,6 +47,10 @@ def write_fixture(path):
             "porto_km", "lisbon_km", "opo_km", "lis_km", "fao_km", "census_code", "census_same", "pop2011", "pop2021"]
     p = pd.DataFrame(PARISHES, columns=cols)
     p["centroid_inside"] = True
+    # Bouça is disputed: legally PNCT (pnct True, counted in totals) but missing from the IEFP list,
+    # so nothing may name it (closest-to-Porto falls to Anta, the OPO airport too).
+    p["status"] = ["disputed" if c == "010102" else ("pnct" if v else "not_pnct") for c, v in zip(p.dicofre, p.pnct)]
+    p["iefp_pnct"] = p.pnct & (p.dicofre != "010102")
     p["pop2011"] = p.pop2011.astype("Int64")
     p["pop2021"] = p.pop2021.astype("Int64")
     p.to_csv(path / "parishes.csv", index=False)
@@ -68,6 +72,9 @@ def write_fixture(path):
                              "lis": ref("Lisbon airport (LIS)", "aeroporto de Lisboa (LIS)"),
                              "fao": ref("Faro airport (FAO)", "aeroporto de Faro (FAO)")},
         "crosswalk": {"census_2021_parishes": 6, "split_census_parishes": 1, "one_to_one": 5, "not_clean": []},
+        "status": {"legal_pnct": 5, "iefp_pnct": 4, "undisputed_pnct": 4,
+                   "disputed": [{"code": "010102", "name": "Bouça", "concelho": "Aa", "legal": "pnct", "iefp": "not_pnct"}]},
+        "sources": {"legal": {"title": "Portaria 208/2017", "checked": "2026-11-15", "url": "https://example.test/portaria"}},
     }
     (path / "national.json").write_text(json.dumps(national), encoding="utf-8")
     sq = lambda x, y: [[[x, y], [x + 10000, y], [x + 10000, y + 10000], [x, y + 10000], [x, y]]]  # noqa: E731

@@ -26,6 +26,7 @@ TEAL = "#0f8a7e"
 TEAL_DARK = "#0b3d39"
 TEAL_LIGHT = "#9fd8d0"
 NEUTRAL = "#a3adb7"
+DISPUTED = "#d9a441"  # the map's disputed amber (theme.ts), lightened for a fill
 NEUTRAL_LIGHT = "#d9dee3"
 TRACK = "#eef1f3"
 INK = "#111827"
@@ -138,12 +139,15 @@ def draw_map(fig, spec: dict, lang: str, box, data: Data) -> None:
     x0, y0, x1, y1 = box
     shapes = data.map
     pnct = set(data.pnct.dicofre)
+    disputed = set(data.disputed.dicofre)  # drawn apart: neither PNCT nor not (data/pnct_status.csv)
     hi = set(spec.get("highlight") or [])
     polys, colors = [], []
     for code, rings in shapes.items():
         c = (TEAL_DARK if code in hi else TEAL_LIGHT) if hi else TEAL
         if code not in pnct:
             c = NEUTRAL_LIGHT
+        if code in disputed:
+            c = DISPUTED
         for ring in rings:
             polys.append(ring)
             colors.append(c)
@@ -156,9 +160,13 @@ def draw_map(fig, spec: dict, lang: str, box, data: Data) -> None:
     ax.set_axis_off()
     # Legend, to the right of the map.
     swatches = ([TEAL_DARK, TEAL_LIGHT, NEUTRAL_LIGHT] if hi else [TEAL, NEUTRAL_LIGHT])
+    legend = list(spec["legend"])
+    if disputed:
+        swatches.append(DISPUTED)
+        legend.append({"en": "Sources disagree", "pt": "Fontes divergentes"})
     lx = x0 + w + 0.06
     ly = y0 + h * 0.62
-    for sw, text in zip(swatches, spec["legend"]):
+    for sw, text in zip(swatches, legend):
         fig.patches.append(Rectangle((lx, ly), 0.034, 0.034, transform=fig.transFigure, color=sw, lw=0))
         fig.text(lx + 0.05, ly + 0.017, text[lang], fontsize=px(28), color=INK, va="center")
         ly -= 0.065
