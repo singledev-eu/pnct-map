@@ -1956,6 +1956,7 @@ dialog a {
   z-index: 20;
   left: 50%;
   bottom: calc(24px + env(safe-area-inset-bottom));
+  width: max-content; /* one line where it fits: left: 50% would halve its shrink-to-fit width */
   max-width: calc(100% - 32px);
   padding: 10px 16px;
   border-radius: 999px;
