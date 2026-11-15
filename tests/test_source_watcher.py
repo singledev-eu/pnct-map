@@ -172,6 +172,45 @@ def test_a_new_hazard_version_is_reported_once(w, monkeypatch):
     assert w.http.downloads == 0
 
 
+def test_the_hazard_file_is_hashed_monthly_even_when_its_head_is_unchanged(w):
+    # The recorded HEAD (hazard_head.json) never changes here: weeks 1-3 are one HEAD each, week 4
+    # (FORCE_SHA_DAYS after the baseline download) downloads and hashes the file anyway.
+    assert sw.FORCE_SHA_DAYS == 28
+    for _ in range(3):
+        assert w.run() == [] and w.http.downloads == 0
+    messages = w.run()
+    assert w.http.downloads == 1
+    assert [m for m in messages if not m.startswith("💤")] == []  # same file: nothing about the hazard (the 28-day heartbeat falls here too)
+    assert w.state["checks"]["hazard"]["forced"] is True
+    assert w.state["checks"]["hazard"]["verified_at"] == w.now.isoformat(timespec="seconds")
+    assert w.run() == [] and w.http.downloads == 0  # the clock restarts
+
+
+def test_a_silent_same_size_replacement_is_caught_by_the_monthly_check(w):
+    # ICNF swaps the file in place: same size, ETag and Last-Modified (the recorded HEAD), new bytes.
+    w.world.served_sha = "ef" * 32
+    for _ in range(3):
+        assert w.run() == []  # invisible to the HEAD
+    messages = w.run()
+    assert len(messages) == 1 and w.http.downloads == 1
+    assert messages[0].startswith("⚠️ pnct: ICNF hazard changed (SHA mismatch: served efefefefefef…, pinned 4bb7f921ba0d…).")
+    assert "Found by the monthly full check: size, ETag and Last-Modified were unchanged." in messages[0]
+    assert w.run() == []  # reported once
+
+
+def test_a_forced_check_that_fails_to_download_is_an_outage_not_a_change(w):
+    for _ in range(3):
+        w.run()
+    w.world.hazard_status = 200
+    real = w.http.download_sha256
+    w.http.download_sha256 = lambda url: sw.Response(503)
+    messages = w.run()
+    assert messages == [f"❌ pnct: ICNF hazard URL HTTP 503 {cfg.HAZARD.download_url}"]
+    assert w.state["checks"]["hazard"]["served_sha"] == cfg.HAZARD.sha256  # last known values kept
+    w.http.download_sha256 = real
+    assert w.run() == ["✅ pnct: ICNF hazard URL reachable again"]
+
+
 def test_hazard_url_failure_and_recovery(w):
     w.world.hazard_status = 404
     assert w.run() == [f"❌ pnct: ICNF hazard URL HTTP 404 {cfg.HAZARD.download_url}"]

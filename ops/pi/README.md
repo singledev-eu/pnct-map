@@ -16,7 +16,7 @@ Everything it runs is in this directory and in `scripts/landcheck_config.py`, wh
 
 | Check | Detects | Message |
 |---|---|---|
-| **ICNF hazard zip** (`HAZARD.download_url`) | A HEAD each week (status, size, ETag, Last-Modified). Only if one of these changed, or on the first run, it downloads the ~20 MB file, hashed as it streams (nothing written to disk), and compares it with `HAZARD.sha256`. | `⚠️ pnct: ICNF hazard changed (SHA mismatch …). Update HAZARD.sha256 in scripts/landcheck_config.py, run `uv run make landcheck-fetch landcheck`, check, then deploy.` (once per new version) · `❌ pnct: ICNF hazard URL HTTP 404 <url>` · `✅ … reachable again` · `✅ … matches the pin again` (after you update the pin and `git pull` on the Pi) |
+| **ICNF hazard zip** (`HAZARD.download_url`) | A HEAD each week (status, size, ETag, Last-Modified). Only if one of these changed, on the first run, or when the last full check is 28 days old (`FORCE_SHA_DAYS`, so a silent same-size replacement is caught within a month), it downloads the ~20 MB file, hashed as it streams (nothing written to disk), and compares it with `HAZARD.sha256`. | `⚠️ pnct: ICNF hazard changed (SHA mismatch …). Update HAZARD.sha256 in scripts/landcheck_config.py, run `uv run make landcheck-fetch landcheck`, check, then deploy.` (once per new version) · `❌ pnct: ICNF hazard URL HTTP 404 <url>` · `✅ … reachable again` · `✅ … matches the pin again` (after you update the pin and `git pull` on the Pi) |
 | **ICNF catalogue** (`HAZARD.url`, `HAZARD.metadata_url`) | The catalogue page still links exactly that zip, and the metadata page answers. | `❌ pnct: the ICNF catalogue no longer lists the hazard zip <url>` |
 | **REN: DGT SRUP WFS** (6 regions) and **WMS** | WFS: GetCapabilities parses, then a one-feature GetFeature returns a FeatureCollection. WMS: GetCapabilities parses. | `🔓 pnct: DGT SRUP WFS is answering again (ALGARVE), so REN may be unblockable. …` · `🔒 … down again` |
 | **dados.gov.pt** datasets (REN, ANACOM ×2) | A licence change; a downloadable file resource appearing (CSV, ZIP, GPKG, …, not only WMS); any other resource change. | `🔓 pnct: dados.gov.pt ANACOM fixed coverage now lists a file resource (csv), so fixed broadband (ANACOM) may be unblockable <url>` · `🔓 … licence notspecified → cc-by …` · `ℹ️ … resources changed (+1 −0)` |
@@ -33,7 +33,7 @@ Everything it runs is in this directory and in `scripts/landcheck_config.py`, wh
 
 State is one JSON file of about 3 KB in `STATE_DIR` (default `/var/lib/pnct-watcher`). Nothing else is written.
 
-**Load on the Pi:** the run is mostly waiting on DGT's dead services (90–120 s each, run 8 at a time). Measured on the laptop against the real sources (2026-11-15): 4.5–6 minutes wall time, under 1 s of CPU, 38 MB peak memory (with the 20 MB download), and a 3 KB state file. It downloads the 20 MB only when ICNF's file metadata changes; a quiet week is one HEAD.
+**Load on the Pi:** the run is mostly waiting on DGT's dead services (90–120 s each, run 8 at a time). Measured on the laptop against the real sources (2026-11-15): 4.5–6 minutes wall time, under 1 s of CPU, 38 MB peak memory (with the 20 MB download), and a 3 KB state file. It downloads the 20 MB when ICNF's file metadata changes and once every 4 weeks regardless; any other quiet week is one HEAD.
 
 ## Setup (once)
 

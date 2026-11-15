@@ -5,8 +5,10 @@ Runs weekly on the Raspberry Pi (ops/pi/README.md). It never rebuilds or deploys
 source list is scripts/landcheck_config.py (docs/land-check/DATA.md):
 
   hazard        the live ICNF wildfire hazard zip. A HEAD gives status, size, ETag and Last-Modified;
-                only when one of them differs from last time (or on the first run) is the ~20 MB file
-                downloaded, streamed through SHA-256 (never written to disk), and compared with the pin.
+                only when one of them differs from last time (or on the first run), or when the last
+                full check is FORCE_SHA_DAYS old, is the ~20 MB file downloaded, streamed through
+                SHA-256 (never written to disk), and compared with the pin. The monthly forced check
+                catches a silent replacement that keeps the size and the server's metadata.
   hazard-pages  the ICNF catalogue page still links that zip, and the metadata page answers.
   BLOCKED[...]  the endpoints whose change would unblock a fact: DGT SRUP WFS (GetCapabilities plus a
                 one-feature GetFeature) and WMS for REN, the dados.gov.pt datasets (licence, and whether a
@@ -62,6 +64,7 @@ TIMEOUT_S = 120  # per request: the DGT services take ~90 s to fail
 MAX_BODY = 4 * 1024 * 1024  # pages and API answers; the hazard zip is hashed in a stream instead
 CHUNK = 1024 * 1024
 HEARTBEAT_DAYS = 28
+FORCE_SHA_DAYS = 28  # the hazard file is hashed at least this often, whatever its HEAD says (every 4th weekly run)
 ERROR_RUNS = 3  # a page or API that doesn't answer for this many runs in a row is reported (once)
 STATE_VERSION = 1
 TELEGRAM_LIMIT = 4000  # the API allows 4096 characters
@@ -160,10 +163,10 @@ class Http:
 META_KEYS = ("size", "etag", "last_modified")
 
 
-def observe_hazard(http: Http, prev: dict | None) -> dict:
+def observe_hazard(http: Http, prev: dict | None, now: datetime) -> dict:
     src = cfg.HAZARD
     head = http.request(src.download_url, method="HEAD", attempts=3)
-    carried = {k: prev[k] for k in (*META_KEYS, "served_sha") if prev and k in prev}
+    carried = {k: prev[k] for k in (*META_KEYS, "served_sha", "verified_at") if prev and k in prev}
     if not head.ok and head.status not in (405, 501):  # 405/501: no HEAD support, so download below
         return {**carried, "reachable": False, "status": head.status, "error": head.describe()}
     meta = {
@@ -173,13 +176,17 @@ def observe_hazard(http: Http, prev: dict | None) -> dict:
     }
     obs: dict = {"reachable": True, "status": head.status, **meta}
     unchanged = prev is not None and prev.get("served_sha") and all(prev.get(k) == meta[k] for k in META_KEYS) and head.ok
-    if unchanged:
-        obs.update(served_sha=prev["served_sha"], downloaded=False)
+    verified = datetime.fromisoformat(prev["verified_at"]) if prev and prev.get("verified_at") else None
+    due = verified is None or now - verified >= timedelta(days=FORCE_SHA_DAYS)
+    if unchanged and not due:
+        obs.update(served_sha=prev["served_sha"], downloaded=False, verified_at=prev["verified_at"])
     else:
         got = http.download_sha256(src.download_url)
         if not got.ok or not got.sha256:
             return {**carried, "reachable": False, "status": got.status, "error": got.describe()}
-        obs.update(served_sha=got.sha256, downloaded=True)
+        obs.update(served_sha=got.sha256, downloaded=True, verified_at=now.isoformat(timespec="seconds"))
+        if unchanged:
+            obs["forced"] = True  # the monthly check: the HEAD alone said nothing changed
         if obs["size"] is None:
             obs["size"] = got.size
     obs["matches_pin"] = obs["served_sha"] == src.sha256
@@ -338,7 +345,8 @@ def diff_hazard(prev: dict | None, cur: dict) -> list[str]:
         if new_version:
             out.append(
                 f"⚠️ pnct: ICNF hazard changed (SHA mismatch: served {cur['served_sha'][:12]}…, pinned {src.sha256[:12]}…). "
-                "Update HAZARD.sha256 in scripts/landcheck_config.py, run `uv run make landcheck-fetch landcheck`, check, then deploy."
+                + ("Found by the monthly full check: size, ETag and Last-Modified were unchanged. " if cur.get("forced") else "")
+                + "Update HAZARD.sha256 in scripts/landcheck_config.py, run `uv run make landcheck-fetch landcheck`, check, then deploy."
             )
         elif not was and cur["matches_pin"]:
             out.append("✅ pnct: ICNF hazard matches the pin again")
@@ -450,7 +458,7 @@ def run(http: Http, state: dict, now: datetime) -> RunResult:
     prev_checks: dict[str, dict] = state.get("checks", {})
     first = not prev_checks
     jobs: dict[str, Callable[[], dict]] = {
-        "hazard": lambda: observe_hazard(http, prev_checks.get("hazard")),
+        "hazard": lambda: observe_hazard(http, prev_checks.get("hazard"), now),
         "hazard-pages": lambda: observe_hazard_pages(http, prev_checks.get("hazard-pages")),
     }
     watches = {w.id: (fact, w) for fact in cfg.BLOCKED.values() for w in fact.watch}

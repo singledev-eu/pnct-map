@@ -112,6 +112,7 @@ Would send nothing (no change).
 - **Telegram was never called for real** (no token here). The send path is unit-tested; `--test-message` on the Pi is the real check.
 - **The WFS success path is tested only on synthetic fixtures**, because DGT has been down all day. The real answer may differ, e.g. a FeatureType name that needs a namespace prefix. If DGT comes back and GetFeature trips on that, the check reports `caps-only`: it stays quiet rather than sending a false unblock.
 - **The SHA download depends on the HEAD metadata.** It re-downloads only when size, ETag or Last-Modified change. If ICNF replaced the file with one of the same size without changing ETag or Last-Modified (IIS normally changes both), it would go unseen until one of them changes.
+  - *Resolved in the 0.10.0 wrap-up:* a forced SHA-256 check runs every 28 days (`FORCE_SHA_DAYS`) whatever the HEAD says, so such a replacement is reported within a month.
 - **File-resource detection is a heuristic** (format, filetype or extension). Anything it misses still raises the `ℹ️ resources changed` message.
 - **Load on DGT:** 7 requests a week, in parallel. That's negligible, but they are the slow part of every run (90–120 s each).
 - **systemd-analyze** runs only on the Pi, inside `install.sh`.
