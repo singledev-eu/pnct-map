@@ -19,6 +19,7 @@ Features:
 - **Nature protection:** RNAP (ICNF) and Natura 2000 (EEA) overlays, faded in once zoomed past the country view, and the share of each parish or concelho under protection in its panel. A "?" next to the legend heading explains what protection means for buying land.
 - **Português / English:** a PT | EN toggle in the legend header switches every UI string in place, and the basemap labels where OpenStreetMap has a name in that language. Parish and concelho names stay as they are. On first visit the language follows `?lang=`, then the saved choice, then the browser languages (any `pt*` → PT), then English.
 - **Light, dark or automatic theme:** a theme button next to the language toggle cycles Auto (follows the system, live) → Light → Dark. The page and the basemap start in the chosen theme, with no flash.
+- **Land check (v1, in progress):** "Check a spot" in the toolbar, then a click (or Enter at the centre crosshair) reports on that point: whether its parish is PNCT, the ICNF structural wildfire hazard class of the 25 m cell under it (a hazard classification, not a building rule), the Idealista links, and the sources with their dates. REN and fixed broadband are not covered yet, because no usable open data was found ([docs/land-check/DATA.md](docs/land-check/DATA.md)). The report is shareable (`#chk=lat,lon`), and an optional hazard overlay is off by default.
 - **Shortlist:** star (☆) a parish or concelho to keep it in a list in this browser; the list's link shares it, and opening a shared list never changes the receiver's own.
 - **Shareable views:** the map view, the selection, the filters and the selector all live in the URL (see [URL parameters](#url-parameters)).
 
@@ -70,6 +71,8 @@ Only needed to rebuild the data from the sources.
 uv sync
 uv run make all      # download (checksum-verified) → parse → match → geo → topo → shapes → outline → protected → concelhos → pytest
 ```
+
+`make landcheck` downloads the ICNF wildfire hazard GeoTIFF (19.5 MB, SHA-256 checked) and builds the land check files into the gitignored `web/public/landcheck/` (an overlay PMTiles and the lookup grid, 15.7 + 13.5 MiB). A deploy refuses to run without them ([docs/land-check/HOSTING.md](docs/land-check/HOSTING.md)).
 
 `make download` fetches two sources. Each download is checked against a SHA-256 before it is kept:
 
@@ -296,6 +299,8 @@ All state is in the hash, e.g. `https://pnct.singledev.eu/#map=10/41.79/-8.58&f=
 | `op=arrendar` | Property-search operation (default `comprar`, which is omitted). |
 | `t=casas` / `t=predios` | Property type (default `terrenos`, which is omitted). |
 | `land=urbano,urbanizavel,nao-urbanizavel` | Land filters, only for `terrenos`, comma-separated. |
+| `chk=lat,lon` | A land check at that point, 5 decimals, e.g. `chk=39.92681,-8.15187`. `https://pnct.singledev.eu/check?lat=39.92681&lon=-8.15187` links land on it. Ignored when `f=` or `c=` is set. |
+| `hz=1` | The wildfire hazard overlay (ICNF) switched on. |
 
 `op`, `t` and `land` are also remembered in `localStorage`; the hash wins when both are set.
 

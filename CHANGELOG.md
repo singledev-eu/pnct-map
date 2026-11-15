@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased (branch feat/land-check)
+
+### For users
+
+- **Land check (v1):** "Check a spot" in the toolbar. A click on the map (or Enter at the crosshair) reports on that point: the parish and concelho, whether the parish is PNCT, the ICNF structural wildfire hazard class 2020–2030 of the 25 m cell under it, the Idealista links, the sources with their dates, and "Indicative only. Confirm with the câmara (PDM, licensing) before buying." Built-up land and water show "Not classified", because the ICNF map leaves them unclassified. Points at sea or in Spain are "Outside mainland Portugal". Shareable as `#chk=lat,lon` or `/check?lat=..&lon=..`.
+- **Wildfire hazard overlay:** a legend toggle (off by default, `hz=1`) with ICNF's five colours.
+- REN and fixed broadband are not covered: DGT's REN service was down and its licence is unclear, and ANACOM publishes only a map view ([docs/land-check/DATA.md](docs/land-check/DATA.md)).
+
+### Infrastructure
+
+- Pipeline `make landcheck`: `fetch_landcheck.py`, `build_hazard.py` (rasterio, pmtiles). Two static files on Pages, read with HTTP Range: no Worker, no R2. `check_landcheck.mjs` gates both deploys on them.
+
 ## 0.9.0 (2026-11-09)
 
 ### For users
