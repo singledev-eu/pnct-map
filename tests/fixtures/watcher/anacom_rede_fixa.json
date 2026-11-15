@@ -1,0 +1,31 @@
+{
+ "currentVersion": 11.3,
+ "capabilities": "Map",
+ "copyrightText": "",
+ "layers": [
+  {
+   "id": 1,
+   "name": "Rede Fixa"
+  },
+  {
+   "id": 8,
+   "name": "Fibra Ótica"
+  },
+  {
+   "id": 4,
+   "name": "Cabo coaxial (DOCSIS 3.1)"
+  },
+  {
+   "id": 5,
+   "name": "Cabo coaxial (DOCSIS 3.0)"
+  },
+  {
+   "id": 6,
+   "name": "Cobre (com ADSL)"
+  },
+  {
+   "id": 7,
+   "name": "Cobre (sem ADSL)"
+  }
+ ]
+}

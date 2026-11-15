@@ -1,0 +1,59 @@
+{
+ "id": "619d8793078190067ac063de",
+ "slug": "srup-reserva-ecologica-nacional",
+ "title": "SRUP - Reserva Ecológica Nacional",
+ "license": "cc-by",
+ "page": "https://dados.gov.pt/datasets/srup-reserva-ecologica-nacional",
+ "last_update": "2026-06-22T00:00:00+00:00",
+ "resources": [
+  {
+   "title": "SRUP - Reserva Ecológica Nacional",
+   "format": "wms",
+   "filetype": "remote",
+   "type": "main",
+   "url": "https://servicos.dgterritorio.pt/SDISNITWMSSRUP_REN_PT1/WMService.aspx?service=WMS&request=getcapabilities"
+  },
+  {
+   "title": "SRUP - Reserva Ecológica Nacional",
+   "format": "wfs",
+   "filetype": "remote",
+   "type": "main",
+   "url": "https://servicos.dgterritorio.pt/SDISNITWFSSRUP_REN_NORTE/WFService.aspx?service=WFS&request=getcapabilities"
+  },
+  {
+   "title": "SRUP - Reserva Ecológica Nacional",
+   "format": "wfs",
+   "filetype": "remote",
+   "type": "main",
+   "url": "https://servicos.dgterritorio.pt/SDISNITWFSSRUP_REN_CENTRO/WFService.aspx?service=WFS&request=getcapabilities"
+  },
+  {
+   "title": "SRUP - Reserva Ecológica Nacional",
+   "format": "wfs",
+   "filetype": "remote",
+   "type": "main",
+   "url": "https://servicos.dgterritorio.pt/SDISNITWFSSRUP_REN_LVT/WFService.aspx?service=WFS&request=getcapabilities"
+  },
+  {
+   "title": "SRUP - Reserva Ecológica Nacional",
+   "format": "wfs",
+   "filetype": "remote",
+   "type": "main",
+   "url": "https://servicos.dgterritorio.pt/SDISNITWFSSRUP_REN_ALENTEJO/WFService.aspx?service=WFS&request=getcapabilities"
+  },
+  {
+   "title": "SRUP - Reserva Ecológica Nacional",
+   "format": "wfs",
+   "filetype": "remote",
+   "type": "main",
+   "url": "https://servicos.dgterritorio.pt/SDISNITWFSSRUP_REN_ALGARVE/WFService.aspx?service=WFS&request=getcapabilities"
+  },
+  {
+   "title": "SRUP - Reserva Ecológica Nacional",
+   "format": "wfs",
+   "filetype": "remote",
+   "type": "main",
+   "url": "https://servicos.dgterritorio.pt/SDISNITWFSSRUP_REN_PT1/WFService.aspx?service=WFS&request=getcapabilities"
+  }
+ ]
+}

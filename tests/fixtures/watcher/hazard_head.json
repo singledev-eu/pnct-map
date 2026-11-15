@@ -1,0 +1,10 @@
+{
+ "status": 200,
+ "headers": {
+  "content-length": "19542232",
+  "content-type": "application/x-zip-compressed",
+  "last-modified": "Mon, 28 Mar 2022 13:59:29 GMT",
+  "etag": "\"f7df13bac42d81:0\"",
+  "accept-ranges": "bytes"
+ }
+}

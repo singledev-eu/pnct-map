@@ -1,0 +1,17 @@
+{
+ "id": "6a452cc14960ebedc7f58de4",
+ "slug": "cobertura-da-rede-fixa-de-comunicacoes-eletronicas",
+ "title": "Cobertura da Rede Fixa de Comunicações Eletrónicas",
+ "license": "notspecified",
+ "page": "https://dados.gov.pt/datasets/cobertura-da-rede-fixa-de-comunicacoes-eletronicas",
+ "last_update": "2026-07-01T15:55:16.342000+00:00",
+ "resources": [
+  {
+   "title": "Serviço WMS – Cobertura da Rede Fixa de Comunicações Eletrónicas",
+   "format": null,
+   "filetype": "remote",
+   "type": "api",
+   "url": "https://geo.anacom.pt/server/services/publico/Rede_Fixa/MapServer/WMSServer"
+  }
+ ]
+}
