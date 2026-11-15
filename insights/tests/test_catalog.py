@@ -165,3 +165,64 @@ def test_real_prepared_data_loads_and_checks():
     assert len(d.parishes) == 3049 and len(d.pnct) == 1861
     ready, _ = compute_all(d)
     assert len(ready) >= 20
+
+
+def test_cheapest_in_portugal_claim_only_when_the_table_says_so(fixture_dir):
+    import json
+
+    ins = compute("below_national_median", Data(fixture_dir))
+    assert "lowest of any municipality in Portugal in 2025" in ins.caption_en
+    assert "mais baixo de todos os municípios do país" in ins.caption_pt
+    assert "4 of 5 municipalities" in ins.footnote["en"] and "Ilha" in ins.footnote["en"]
+    p = fixture_dir / "national.json"
+    n = json.loads(p.read_text())
+    n["sale_m2"]["lowest_municipality"].update(municipality="Elsewhere", tied=["Elsewhere"], value=100.0)
+    p.write_text(json.dumps(n))
+    ins = compute("below_national_median", Data(fixture_dir))
+    assert "lowest of any municipality" not in ins.caption_en and "Lowest in Portugal" not in ins.footnote["en"]
+
+
+def test_coastline_wording_in_captions(data):
+    for iid in ("closest_to_coast", "coastal_pnct_parishes", "cheapest_coastal_pnct"):
+        ins = compute(iid, data)
+        assert "coastline incl. estuaries and lagoons" in ins.caption_en, iid
+        assert "linha de costa, incl. estuários e lagoas" in ins.caption_pt, iid
+
+
+def test_population_share_says_what_it_measures(data):
+    ins = compute("area_vs_population", data)
+    assert "(Census 2021, all PNCT parishes)" in ins.caption_en
+    assert "(Censos 2021, todas as freguesias PNCT)" in ins.caption_pt
+
+
+def test_split_concelhos_explains_20_vs_21(data):
+    text = " ".join(a["en"] for a in compute("concelhos_split", data).assumptions)
+    assert "Dem (Caminha)" in text and "São Bento (Porto de Mós)" in text and "21" in text
+
+
+def test_low_density_note():
+    from insights.catalog.distance import _low_density
+
+    foot, extra = _low_density([{"name": "Pedorido", "census_code": "010610"}, {"name": "Fermedo", "census_code": "010409"}])
+    assert "Pedorido: classified as low-density by CIC Deliberação 20/2018" in foot["en"] and "straight line" in foot["en"]
+    assert len(extra) == 1
+    foot, extra = _low_density([{"name": "Fermedo", "census_code": "010409"}])
+    assert "Deliberação" not in foot["en"] and extra == []
+
+
+def test_pedorido_is_the_low_density_union():
+    """The note is right for the real data: Pedorido, Raiva and Paraíso map to Census parish 010610."""
+    d = Data()
+    rows = d.parishes[d.parishes.name.isin(["Pedorido", "Raiva", "Paraíso"]) & (d.parishes.concelho == "Castelo de Paiva")]
+    assert set(rows.census_code) == {"010610"} and rows.pnct.all()
+    assert d.units.set_index("census_code").loc["010610", "census_name"] == "União das freguesias de Raiva, Pedorido e Paraíso"
+    assert "Pedorido" in compute("closest_to_porto", d).footnote["en"]
+
+
+def test_iefp_list_lacks_two_official_parishes():
+    """The documented 20-vs-21 cause still holds: Dem and São Bento are not PNCT in the data we use."""
+    d = Data()
+    p = d.parishes.set_index("dicofre")
+    assert p.loc["160209", "name"] == "Dem" and not p.loc["160209", "pnct"]
+    assert p.loc["101610", "name"] == "São Bento" and not p.loc["101610", "pnct"]
+    assert (d.municipalities.status == "partial").sum() == 20

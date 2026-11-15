@@ -15,10 +15,12 @@
 /index.html
   Cache-Control: public, max-age=0, must-revalidate
 
-# script-src: the hash of index.html's inline theme boot script (i18n.test.ts checks it matches).
+# script-src: the hash of index.html's inline theme boot script (i18n.test.ts checks it matches), and the
+# Cloudflare Web Analytics beacon (static.cloudflareinsights.com; it reports to cloudflareinsights.com),
+# which is only in a build made with CF_WEB_ANALYTICS_TOKEN (analytics.ts).
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), browsing-topics=()
   X-Frame-Options: DENY
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-ip+10eBS/i8K0HiNruRjfAZmXNipAJYqVJvwZkdL+UQ='; worker-src 'self' blob:; connect-src 'self' https://tiles.openfreemap.org; img-src 'self' data: blob: https://tiles.openfreemap.org; style-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-ip+10eBS/i8K0HiNruRjfAZmXNipAJYqVJvwZkdL+UQ=' https://static.cloudflareinsights.com; worker-src 'self' blob:; connect-src 'self' https://tiles.openfreemap.org https://cloudflareinsights.com; img-src 'self' data: blob: https://tiles.openfreemap.org; style-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'

@@ -9,7 +9,21 @@
  "sale_m2": {
   "period": "2025",
   "portugal": 2076.0,
-  "mainland": 2083.0
+  "mainland": 2083.0,
+  "lowest_municipality": {
+   "value": 245.0,
+   "municipality": "Sernancelhe",
+   "tied": [
+    "Sernancelhe"
+   ],
+   "with_value": 305,
+   "municipalities": 308,
+   "no_value": [
+    "Corvo",
+    "Lajes das Flores",
+    "Santa Cruz das Flores"
+   ]
+  }
  },
  "reference_points": {
   "porto": {

@@ -86,7 +86,7 @@ Later, not built:
 - Relief (hillshade and terrain, `task/05-terrain`, off by default) and a LiDAR slope layer (`docs/06-lidar-slope`): waiting for Mapterhorn's terms and a DGT data-centre login.
 - Slow bearing swing after a selection (`task/09-bearing-swing`, behind `?swing=1`): not released.
 - Other ideas: `docs/10-ideas` (report only).
-- Cloudflare Web Analytics (cookieless). Undecided.
+- Cloudflare Web Analytics (cookieless): wired in, off until a token is set (README, "Analytics"). It records no query strings and no hash routes, so per-insight (`utm_content`) and per-parish counts need something else (see `insights/catalog/usage.py`).
 - Eventual migration from Cloudflare Pages to Workers static assets. Wrangler 4.149 already steers new projects there; `pnct-map` was created on classic Pages with `--force`.
 
 ## Decisions and rejected options

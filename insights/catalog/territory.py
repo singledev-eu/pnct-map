@@ -20,10 +20,10 @@ def area_vs_population(d: Data) -> Insight:
     area, pop, people, km2 = _shares(d)
     cap = caption(
         "area_vs_population",
-        (f"The PNCT covers {pct(area, 'en')} of mainland Portugal, but only {pct(pop, 'en')} of its people live there.",
-         f"That is {num(people, 'en')} residents (Census 2021) on {num(km2, 'en')} km² of the territory."),
-        (f"O PNCT abrange {pct(area, 'pt')} do continente, mas só {pct(pop, 'pt')} da população vive lá.",
-         f"São {num(people, 'pt')} residentes (Censos 2021) em {num(km2, 'pt')} km² do território."),
+        (f"The PNCT covers {pct(area, 'en')} of mainland Portugal, but only {pct(pop, 'en')} of its people live there (Census 2021, all PNCT parishes).",
+         f"That is {num(people, 'en')} residents on {num(km2, 'en')} km² of the territory."),
+        (f"O PNCT abrange {pct(area, 'pt')} do continente, mas só {pct(pop, 'pt')} da população vive lá (Censos 2021, todas as freguesias PNCT).",
+         f"São {num(people, 'pt')} residentes em {num(km2, 'pt')} km² do território."),
     )
     src, src_en = sources(d, "census21", "caop")
     return Insight(
@@ -40,7 +40,7 @@ def area_vs_population(d: Data) -> Insight:
                                         "pt": "do território do continente é PNCT, mas tem esta parte da população"}[l]),
             "items": [
                 {"value": both(lambda l: pct(area, l)), "label": {"en": "of the territory", "pt": "do território"}, "share": area, "highlight": True},
-                {"value": both(lambda l: pct(pop, l)), "label": {"en": "of the population (Census 2021)", "pt": "da população (Censos 2021)"}, "share": pop, "highlight": False},
+                {"value": both(lambda l: pct(pop, l)), "label": {"en": "of the population (Census 2021, all PNCT parishes)", "pt": "da população (Censos 2021, todas as freguesias PNCT)"}, "share": pop, "highlight": False},
             ],
         },
         evergreen=True,
@@ -121,8 +121,30 @@ def concelhos_split(d: Data) -> Insight:
         },
         evergreen=True,
         assumptions=[{"en": "A concelho is counted by its CAOP 2025 parishes; 'split' means at least one PNCT and one non-PNCT parish. Examples are the split concelhos closest to half-and-half.",
-                      "pt": "Cada concelho é contado pelas freguesias da CAOP 2025; 'dividido' quer dizer pelo menos uma freguesia PNCT e uma não PNCT. Os exemplos são os divididos mais próximos de metade-metade."}],
+                      "pt": "Cada concelho é contado pelas freguesias da CAOP 2025; 'dividido' quer dizer pelo menos uma freguesia PNCT e uma não PNCT. Os exemplos são os divididos mais próximos de metade-metade."},
+                     SPLIT_20_VS_21],
     )
+
+
+# Why 20 split concelhos and not the 21 of the official annexes (checked 2026-11-15; report
+# docs/reports/insights-fixes.md). Portaria n.º 208/2017 (annex) and CIC Deliberação n.º 20/2018 list
+# 74 parishes in 21 municipalities that are not low-density as a whole (2013 parish geography; 73 in
+# the Portaria, plus the União das Freguesias da Raiva, Pedorido e Paraíso added by the Deliberação).
+# The IEFP list of 2026-02-04 that the map uses has no line for two of them: Dem (Caminha, CAOP
+# 160209) and São Bento (Porto de Mós, 101610). Caminha keeps two listed parishes, so only Porto de
+# Mós drops out: 21 − 1 = 20. The other 72 entries are 72 Census 2021 parishes, 83 parishes today
+# after the 2025 de-aggregation (+11). The two missing parishes are reported, never added: the map
+# follows the IEFP list.
+SPLIT_20_VS_21 = {
+    "en": "The official annexes (Portaria 208/2017 and CIC Deliberação 20/2018) list 74 parishes in 21 municipalities that are not "
+          "low-density as a whole. The IEFP list of 2026-02-04 used here has no line for two of them, Dem (Caminha) and São Bento "
+          "(Porto de Mós). Caminha keeps two listed parishes, so only Porto de Mós drops out: 20 split concelhos, not 21. The other "
+          "72 entries are 83 parishes today, after the 2025 de-aggregation. The two missing parishes are not added; the map follows the IEFP list.",
+    "pt": "Os anexos oficiais (Portaria 208/2017 e Deliberação CIC 20/2018) listam 74 freguesias em 21 municípios que não são de baixa "
+          "densidade no seu todo. A lista do IEFP de 04-02-2026, usada aqui, não inclui duas delas: Dem (Caminha) e São Bento (Porto de Mós). "
+          "Caminha mantém duas freguesias da lista, por isso só Porto de Mós sai: 20 concelhos divididos, não 21. As outras 72 entradas "
+          "correspondem hoje a 83 freguesias, após a desagregação de 2025. As duas freguesias em falta não são acrescentadas; o mapa segue a lista do IEFP.",
+}
 
 
 def _district_rows(values, fmt) -> list[dict]:

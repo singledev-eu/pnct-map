@@ -41,6 +41,7 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
   - Review shots: `drill_review.mjs` (3D fit, hover, colour, occlusion, interplay; run before and after a change), `drill_shots.mjs` (3D design options, a/b), `theme_shots.mjs`, `protected_shots.mjs`, `landcheck_shots.mjs` (the land check at the verification points, with the HTTP status of each land check file request), `concelho_shots.mjs`, `i18n_shots.mjs` (PT/EN × light/dark), `phone_safe_area_shots.mjs` (iPhone insets, before/after), `polish_shots.mjs` (375/768/1440 × light/dark; run before and after a visual change). `settled.mjs` is their shared wait.
   - `e2e-flaky-report.mjs`: the flaky-test warning.
 - `web/public/`: `_headers` (caching, CSP, security headers), icons, OG image, robots.txt, sitemap.xml.
+- `web/analytics.ts`: Cloudflare Web Analytics, injected at build time only with `CF_WEB_ANALYTICS_TOKEN` (env or gitignored `web/.env.production.local`; never in code). It records no query strings or hash routes (README "Analytics").
 - `docs/`: `ROADMAP.md`, `i18n-glossary.md` (EN → PT terms), `reports/<task>.md` (one per task), screenshots and perf data.
 
 ## Commands

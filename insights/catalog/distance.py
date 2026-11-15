@@ -5,8 +5,31 @@ from __future__ import annotations
 
 from insights.catalog.base import (
     place,
-    A_COAST, F_CENTROID, Data, Insight, a_centroid, bar, both, caption, insight, km, num, sources,
+    A_COAST, COASTLINE, F_CENTROID, Data, Insight, a_centroid, bar, both, caption, insight, km, num, sources,
 )
+
+
+# Parishes in a concelho that isn't low-density as a whole, classified individually, keyed by Census
+# 2021 parish. Shown on a card when one of its current parishes appears (they sit close to Porto, so
+# readers ask why they are PNCT).
+LOW_DENSITY = {
+    "010610": {"en": "classified as low-density by CIC Deliberação 20/2018 (União das Freguesias da Raiva, Pedorido e Paraíso)",
+               "pt": "território classificado como de baixa densidade pela Deliberação CIC 20/2018 (União das Freguesias da Raiva, Pedorido e Paraíso)"},
+}
+
+
+def _low_density(rows) -> tuple[dict, list[dict]]:
+    """(footnote, assumptions) for the straight-line note plus any LOW_DENSITY parish among rows."""
+    foot, extra = dict(F_CENTROID), []
+    for code, note in LOW_DENSITY.items():
+        names = [r["name"] for r in rows if r["census_code"] == code]
+        if names:
+            who = {"en": ", ".join(names[:-1]) + (" and " if len(names) > 1 else "") + names[-1],
+                   "pt": ", ".join(names[:-1]) + (" e " if len(names) > 1 else "") + names[-1]}
+            for l in ("en", "pt"):
+                foot[l] += f" {who[l]}: {note[l]}."
+            extra.append({l: f"{who[l]}: {note[l]}." for l in ("en", "pt")})
+    return foot, extra
 
 
 def _ref_assumption(d: Data, *keys: str) -> dict:
@@ -30,6 +53,7 @@ def _closest_city(d: Data, key: str, iid: str) -> Insight:
     )
     src, src_en = sources(d, "caop", "osm")
     rows = [bar(d.label(r), r[col], both(lambda l, v=r[col]: km(v, l)), i == 0) for i, (_, r) in enumerate(top.iterrows())]
+    foot, extra = _low_density([r for _, r in top.iterrows()])
     return Insight(
         id=iid,
         title=f"Closest PNCT parishes to {ref['en']}",
@@ -45,8 +69,8 @@ def _closest_city(d: Data, key: str, iid: str) -> Insight:
             "rows": rows,
         },
         evergreen=True,
-        assumptions=[a_centroid(d), _ref_assumption(d, key)],
-        footnote=F_CENTROID,
+        assumptions=[a_centroid(d), _ref_assumption(d, key), *extra],
+        footnote=foot,
     )
 
 
@@ -71,6 +95,7 @@ def closest_to_airports(d: Data) -> Insight:
                 b_[f"{k}_km"], both(lambda l, v=b_[f"{k}_km"]: km(v, l)), k == near)
             for k, b_ in best.items()]
     others = [k for k in keys if k != near]
+    foot, extra = _low_density(list(best.values()))
     cap = caption(
         "closest_to_airports",
         (f"From {refs[near]['en']}, the nearest PNCT parish, {place(b)}, is {km(b[f'{near}_km'], 'en')} away in a straight line.",
@@ -95,8 +120,8 @@ def closest_to_airports(d: Data) -> Insight:
         evergreen=True,
         assumptions=[a_centroid(d), _ref_assumption(d, *keys),
                      {"en": "Airport position = the centre of the OSM aerodrome area.",
-                      "pt": "Posição do aeroporto = centro da área do aeródromo no OSM."}],
-        footnote=F_CENTROID,
+                      "pt": "Posição do aeroporto = centro da área do aeródromo no OSM."}, *extra],
+        footnote=foot,
     )
 
 
@@ -106,9 +131,9 @@ def closest_to_coast(d: Data) -> Insight:
     first = top.iloc[0]
     cap = caption(
         "closest_to_coast",
-        (f"The PNCT reaches the sea: the centre of {place(first)} is {km(first.coast_km, 'en')} from the coastline in a straight line.",
+        (f"The PNCT reaches the sea: the centre of {place(first)} is {km(first.coast_km, 'en')} from the {COASTLINE['en']}, in a straight line.",
          "These are the five PNCT parishes whose centres sit closest to the coast."),
-        (f"O PNCT chega ao mar: o centro da freguesia {place(first)} fica a {km(first.coast_km, 'pt')} da linha de costa, em linha reta.",
+        (f"O PNCT chega ao mar: o centro da freguesia {place(first)} fica a {km(first.coast_km, 'pt')} da {COASTLINE['pt']}, em linha reta.",
          "Estas são as cinco freguesias PNCT com o centro mais perto da costa."),
     )
     src, src_en = sources(d, "caop")
@@ -140,9 +165,9 @@ def coastal_pnct_parishes(d: Data) -> Insight:
     conc = sorted(pn.concelho.unique())
     cap = caption(
         "coastal_pnct_parishes",
-        (f"{k} PNCT parishes touch the coastline, out of {n} coastal parishes on the mainland.",
+        (f"{k} PNCT parishes touch the {COASTLINE['en']}, out of {n} coastal parishes on the mainland.",
          f"They are in {len(conc)} concelhos: {', '.join(conc)}."),
-        (f"{k} freguesias PNCT tocam a linha de costa, num total de {n} freguesias costeiras no continente.",
+        (f"{k} freguesias PNCT tocam a {COASTLINE['pt']}, num total de {n} freguesias costeiras no continente.",
          f"Ficam em {len(conc)} concelhos: {', '.join(conc)}."),
     )
     src, src_en = sources(d, "caop")
@@ -163,5 +188,5 @@ def coastal_pnct_parishes(d: Data) -> Insight:
         assumptions=[A_COAST, {"en": "A parish is coastal when its CAOP 2025 boundary touches the coastline (within 1 m).",
                                "pt": "Uma freguesia é costeira quando o seu limite na CAOP 2025 toca a linha de costa (a menos de 1 m)."}],
         footnote={"en": "Coastline as in CAOP 2025, estuary and lagoon shores included.",
-                  "pt": "Linha de costa da CAOP 2025, incluindo margens de estuários e rias."},
+                  "pt": "Linha de costa da CAOP 2025, incluindo margens de estuários e lagoas."},
     )

@@ -60,7 +60,9 @@ def write_fixture(path):
     national = {
         "mainland_area_km2_caop": 255.0,
         "census_mainland": {"2011": TOTAL_2011, "2021": TOTAL_2021},
-        "sale_m2": {"period": "2025", "portugal": 2000.0, "mainland": 2010.0},
+        "sale_m2": {"period": "2025", "portugal": 2000.0, "mainland": 2010.0,
+                    "lowest_municipality": {"value": 400.0, "municipality": "Ga", "tied": ["Ga"], "with_value": 4,
+                                            "municipalities": 5, "no_value": ["Ilha"]}},
         "reference_points": {"porto": ref("Porto", "Porto"), "lisbon": ref("Lisbon", "Lisboa"),
                              "opo": ref("Porto airport (OPO)", "aeroporto do Porto (OPO)"),
                              "lis": ref("Lisbon airport (LIS)", "aeroporto de Lisboa (LIS)"),

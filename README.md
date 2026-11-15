@@ -151,6 +151,18 @@ Live at https://pnct.singledev.eu (Pages project `pnct-map`, production branch `
 - The deploy needs no Python pipeline or source data, but its pytest step reads the local pipeline outputs in `data/processed/`. On a fresh clone, run `uv run make all` first.
 - `web/public/_headers` sets the caching and security headers. Everything under `/assets/` (including both data files) is content-hashed and cached as immutable.
 
+### Analytics (optional, off by default)
+
+The site can load [Cloudflare Web Analytics](https://developers.cloudflare.com/web-analytics/), which is cookieless, collects no personal data and adds one script tag. A build includes it only when a site token is configured, and the token is never in the code:
+
+1. In the Cloudflare dashboard: **Analytics & Logs → Web Analytics → Add a site** → `pnct.singledev.eu`. Choose the JS snippet (manual setup), not automatic injection, and copy the `token` value from the snippet.
+2. Give it to the build, either for one deploy (`CF_WEB_ANALYTICS_TOKEN=<token> npm run deploy`) or permanently in the gitignored `web/.env.production.local` (`CF_WEB_ANALYTICS_TOKEN=<token>`).
+3. Check after deploying: the page source has one `static.cloudflareinsights.com/beacon.min.js` script, and the dashboard shows visits within minutes. The CSP in `web/public/_headers` already allows the beacon (`script-src`) and its reports (`connect-src cloudflareinsights.com`).
+
+Builds without the token (dev, tests, CI) have no analytics. `web/analytics.ts` injects the tag, and `src/analytics.test.ts` covers it.
+
+**What it measures:** page loads, referrers (e.g. `facebook.com`, `l.facebook.com`), countries, devices, Core Web Vitals. **What it doesn't:** Cloudflare doesn't record query strings ([FAQ](https://developers.cloudflare.com/web-analytics/faq/): UTM parameters are "not yet" supported), so the `utm_*` values on the Insights links don't show up by campaign or `utm_content`. Its SPA mode doesn't follow hash routes, so the parish in `#…` isn't recorded either. Facebook traffic as a whole is visible through the referrer.
+
 ## Data and attribution
 
 This text matches the About panel on the site, plus the concelho card's own source lines.

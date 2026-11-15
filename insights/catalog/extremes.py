@@ -34,9 +34,9 @@ def least_populated_pnct(d: Data) -> Insight:
     f = top.iloc[0]
     cap = caption(
         "least_populated_pnct",
-        (f"{place(f)} had just {num(f.pop2021, 'en')} residents in the 2021 Census, the fewest of any PNCT parish.",
+        (f"{place(f)} had just {num(f.pop2021, 'en')} residents in the 2021 Census, the fewest of any PNCT parish unchanged since then.",
          f"Ten years earlier it had {num(f.pop2011, 'en')}."),
-        (f"{place(f)} tinha apenas {num(f.pop2021, 'pt')} residentes nos Censos 2021, o menor número entre as freguesias PNCT.",
+        (f"{place(f)} tinha apenas {num(f.pop2021, 'pt')} residentes nos Censos 2021, o menor número entre as freguesias PNCT sem alterações desde então.",
          f"Dez anos antes tinha {num(f.pop2011, 'pt')}."),
     )
     src, src_en = sources(d, "census", "caop")
@@ -65,9 +65,9 @@ def most_populous_pnct(d: Data) -> Insight:
     f = top.iloc[0]
     cap = caption(
         "most_populous_pnct",
-        (f"The most populous PNCT parish is {place(f)}, with {num(f.pop2021, 'en')} residents in the 2021 Census.",
+        (f"Of the PNCT parishes unchanged since the 2021 Census, the most populous is {place(f)}, with {num(f.pop2021, 'en')} residents.",
          "PNCT is not only villages: these five parishes are home to " + num(top.pop2021.sum(), 'en') + " people."),
-        (f"A freguesia PNCT com mais habitantes é {place(f)}, com {num(f.pop2021, 'pt')} residentes nos Censos 2021.",
+        (f"Entre as freguesias PNCT sem alterações desde os Censos 2021, a que tem mais habitantes é {place(f)}, com {num(f.pop2021, 'pt')} residentes.",
          "O PNCT não é só aldeias: estas cinco freguesias têm " + num(top.pop2021.sum(), 'pt') + " habitantes."),
     )
     src, src_en = sources(d, "census21", "caop")
@@ -163,9 +163,9 @@ def emptiest_pnct_density(d: Data) -> Insight:
     f = top.iloc[0]
     cap = caption(
         "emptiest_pnct_density",
-        (f"{place(f)} has {num(f.density, 'en', 1)} residents per km², the emptiest PNCT parish.",
+        (f"{place(f)} has {num(f.density, 'en', 1)} residents per km², the emptiest PNCT parish unchanged since the 2021 Census.",
          f"{num(f.pop2021, 'en')} people on {_km2(f.area_km2, 'en')} (Census 2021)."),
-        (f"{place(f)} tem {num(f.density, 'pt', 1)} habitantes por km², a freguesia PNCT menos povoada.",
+        (f"{place(f)} tem {num(f.density, 'pt', 1)} habitantes por km², a freguesia PNCT menos povoada entre as que não mudaram desde os Censos 2021.",
          f"São {num(f.pop2021, 'pt')} pessoas em {_km2(f.area_km2, 'pt')} (Censos 2021)."),
     )
     src, src_en = sources(d, "census21", "caop")
@@ -195,10 +195,10 @@ def densest_pnct_vs_emptiest_other(d: Data) -> Insight:
     empty = s[~s.pnct].nsmallest(1, "density").iloc[0]
     cap = caption(
         "densest_pnct_vs_emptiest_other",
-        (f"The densest PNCT parish, {place(dense)}, has {num(dense.density, 'en')} residents per km².",
-         f"The emptiest parish outside the PNCT, {place(empty)}, has {num(empty.density, 'en', 1)}."),
-        (f"A freguesia PNCT mais densa, {place(dense)}, tem {num(dense.density, 'pt')} habitantes por km².",
-         f"A menos povoada fora do PNCT, {place(empty)}, tem {num(empty.density, 'pt', 1)}."),
+        (f"The densest PNCT parish, {place(dense)}, has {num(dense.density, 'en')} residents per km²; the emptiest parish outside the PNCT, {place(empty)}, has {num(empty.density, 'en', 1)}.",
+         "Both among the parishes unchanged since the 2021 Census."),
+        (f"A freguesia PNCT mais densa, {place(dense)}, tem {num(dense.density, 'pt')} habitantes por km²; a menos povoada fora do PNCT, {place(empty)}, tem {num(empty.density, 'pt', 1)}.",
+         "Ambas entre as freguesias sem alterações desde os Censos 2021."),
     )
     src, src_en = sources(d, "census21", "caop")
     return Insight(

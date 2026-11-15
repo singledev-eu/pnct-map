@@ -64,18 +64,29 @@ def census_tables() -> tuple[pd.DataFrame, pd.DataFrame, dict, dict]:
     return pd.DataFrame(par.values()), pd.DataFrame(mun.values()), totals, records
 
 
-def sale_values() -> tuple[dict[str, float], dict, dict]:
+def sale_values() -> tuple[dict[str, float], dict, dict, dict]:
+    """(mainland {dico: €/m²}, other geographies, fetch record, Portugal-wide minimum over all 308
+    municipalities, islands included: the value, its municipality and the ones INE left empty)."""
     rows, record = ine_rows("sale_m2")
-    mun, other = {}, {}
+    mun, other, every, empty = {}, {}, [], []
     for r in rows:
+        code = r["geocod"]
+        municipal = len(code) == 7 and code[0] in "123"  # NUTS 2024: region + NUTS3 (2) + DICO
         if r.get("valor") in (None, ""):
+            if municipal:
+                empty.append(r["geodsg"])
             continue
-        code, value = r["geocod"], float(r["valor"])
-        if len(code) == 7 and code.startswith("1"):  # NUTS 2024: "1" + NUTS3 (2) + DICO
+        value = float(r["valor"])
+        if municipal:
+            every.append((value, r["geodsg"]))
+        if municipal and code.startswith("1"):
             mun[code[3:]] = value
-        else:
+        elif not municipal:
             other[code] = value
-    return mun, other, record
+    every.sort()
+    lowest = {"value": every[0][0], "municipality": every[0][1], "tied": [n for v, n in every if v == every[0][0]],
+              "with_value": len(every), "municipalities": len(every) + len(empty), "no_value": sorted(empty)}
+    return mun, other, record, lowest
 
 
 def to_3763(lon: float, lat: float) -> Point:
@@ -209,7 +220,8 @@ def prepare() -> None:
     mu = mu.merge(agg, on="dtmn").merge(census_mun, on="dtmn", how="left")
     check(len(mu) == 278 and mu[["pop2011", "pop2021"]].notna().all().all(), "278 concelhos, each with Census 2011 and 2021")
     mu["status"] = ["full" if p == n else "none" if p == 0 else "partial" for p, n in zip(mu.n_pnct, mu.n_parishes)]
-    sale, sale_other, sale_rec = sale_values()
+    sale, sale_other, sale_rec, sale_lowest = sale_values()
+    check(sale_lowest["municipalities"] == 308, f"INE €/m² table covers all 308 municipalities ({sale_lowest['with_value']} with a value)")
     mu["sale_m2"] = mu.dtmn.map(sale)
     print(f"  note: €/m² {sale_rec['period']} available for {mu.sale_m2.notna().sum()} of 278 concelhos")
     check(mu.sale_m2.notna().sum() >= 270, "€/m² available for nearly every concelho")
@@ -250,7 +262,8 @@ def prepare() -> None:
         "mainland_area_km2_computed": round(total_km2, 3),
         "census_mainland": {str(k): v for k, v in totals.items()},
         "pnct_census_pop2021": int(pnct_pop),
-        "sale_m2": {"period": sale_rec["period"], "portugal": sale_other.get("PT"), "mainland": sale_other.get("1")},
+        "sale_m2": {"period": sale_rec["period"], "portugal": sale_other.get("PT"), "mainland": sale_other.get("1"),
+                    "lowest_municipality": sale_lowest},
         "reference_points": refs,
         "coast": {"definition": f"CAOP 2025 boundary segments '{COAST}'", "length_km": round(coast.length / 1000, 1)},
         "crosswalk": {

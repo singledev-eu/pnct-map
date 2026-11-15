@@ -209,9 +209,11 @@ F_CENTROID = {
     "en": "Distance in a straight line from the parish centre, not by road.",
     "pt": "Distância em linha reta a partir do centro da freguesia, não por estrada.",
 }
+COASTLINE = {"en": "coastline incl. estuaries and lagoons", "pt": "linha de costa, incl. estuários e lagoas"}
+
 A_COAST = {
-    "en": "The coast is the CAOP 2025 coastline (boundary segments 'Limite e Linha de Costa', 1,217 km), which includes estuary and lagoon shores.",
-    "pt": "A costa é a linha de costa da CAOP 2025 (troços 'Limite e Linha de Costa', 1217 km), incluindo margens de estuários e rias.",
+    "en": "The coast is the CAOP 2025 coastline (boundary segments 'Limite e Linha de Costa', 1,217 km), which includes estuary and lagoon shores. Captions say \"coastline incl. estuaries and lagoons\": CAOP has no attribute that separates the open-sea shore from estuary and lagoon shores.",
+    "pt": "A costa é a linha de costa da CAOP 2025 (troços 'Limite e Linha de Costa', 1217 km), incluindo margens de estuários e lagoas. As legendas dizem \"linha de costa, incl. estuários e lagoas\": a CAOP não tem um atributo que separe a orla marítima das margens de estuários e lagoas.",
 }
 F_FULL = {
     "en": "Concelhos where every parish is PNCT.",

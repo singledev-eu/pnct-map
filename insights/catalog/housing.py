@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from insights import config as cfg
 from insights.catalog.base import (
-    A_COAST, Blocked, Data, Insight, a_full, bar, both, caption, eur_m2, insight, num, pct, sources,
+    A_COAST, COASTLINE, Blocked, Data, Insight, a_full, bar, both, caption, eur_m2, insight, num, pct, sources,
 )
 
 F_FULL = {"en": "Concelhos where every parish is PNCT.", "pt": "Concelhos com todas as freguesias no PNCT."}
@@ -37,9 +37,9 @@ def cheapest_coastal_pnct(d: Data) -> Insight:
     first = near.iloc[0]
     cap = caption(
         "cheapest_coastal_pnct",
-        (f"In {first.concelho}, a PNCT concelho whose seat is {num(first.seat_coast_km, 'en')} km from the coast in a straight line, homes sold for a median {eur_m2(first.sale_m2, 'en')} in {period}.",
+        (f"In {first.concelho}, a PNCT concelho whose seat is {num(first.seat_coast_km, 'en')} km from the {COASTLINE['en']}, in a straight line, homes sold for a median {eur_m2(first.sale_m2, 'en')} in {period}.",
          f"Portugal's median was {eur_m2(nat, 'en')}."),
-        (f"{first.concelho}, concelho PNCT com sede a {num(first.seat_coast_km, 'pt')} km da costa em linha reta: as casas venderam-se a um valor mediano de {eur_m2(first.sale_m2, 'pt')} em {period}.",
+        (f"{first.concelho}, concelho PNCT com sede a {num(first.seat_coast_km, 'pt')} km da {COASTLINE['pt']}, em linha reta: as casas venderam-se a um valor mediano de {eur_m2(first.sale_m2, 'pt')} em {period}.",
          f"O valor mediano em Portugal foi {eur_m2(nat, 'pt')}."),
     )
     src, src_en = sources(d, "sale", "caop", "osm")
@@ -62,8 +62,8 @@ def cheapest_coastal_pnct(d: Data) -> Insight:
         assumptions=[a_full(d), A_COAST,
                      {"en": f"'Within {cfg.COAST_KM} km of the coast' = the concelho's seat (OSM admin_centre) is within {cfg.COAST_KM} km of the coastline in a straight line.",
                       "pt": f"'A menos de {cfg.COAST_KM} km da costa' = a sede do concelho (admin_centre no OSM) fica a menos de {cfg.COAST_KM} km da linha de costa, em linha reta."}],
-        footnote={"en": f"Concelhos where every parish is PNCT; seat within {cfg.COAST_KM} km of the coast, straight line.",
-                  "pt": f"Concelhos com todas as freguesias no PNCT; sede a menos de {cfg.COAST_KM} km da costa, em linha reta."},
+        footnote={"en": f"Concelhos where every parish is PNCT; seat within {cfg.COAST_KM} km of the {COASTLINE['en']}, straight line.",
+                  "pt": f"Concelhos com todas as freguesias no PNCT; sede a menos de {cfg.COAST_KM} km da {COASTLINE['pt']}, em linha reta."},
     )
 
 
@@ -73,13 +73,20 @@ def below_national_median(d: Data) -> Insight:
     f = _priced(d).assign(gap=lambda x: 1 - x.sale_m2 / nat)
     top = f.nlargest(5, "gap")
     first = top.iloc[0]
+    low = d.national["sale_m2"].get("lowest_municipality") or {}
+    # "Cheapest in Portugal" only when INE's table across all 308 municipalities says so, with no tie.
+    cheapest = low.get("municipality") == first.concelho and low.get("tied") == [first.concelho] and low.get("value") == first.sale_m2
     cap = caption(
         "below_national_median",
         (f"Homes in {first.concelho} sold for a median {eur_m2(first.sale_m2, 'en')} in {period}, {pct(first.gap, 'en')} below Portugal's {eur_m2(nat, 'en')}.",
-         "These are the PNCT concelhos furthest below the national value."),
+         f"That is the lowest of any municipality in Portugal in {period}." if cheapest else "These are the PNCT concelhos furthest below the national value."),
         (f"{first.concelho}: as casas venderam-se a um valor mediano de {eur_m2(first.sale_m2, 'pt')} em {period}, {pct(first.gap, 'pt')} abaixo dos {eur_m2(nat, 'pt')} de Portugal.",
-         "Estes são os concelhos PNCT mais abaixo do valor nacional."),
+         f"É o valor mais baixo de todos os municípios do país em {period}." if cheapest else "Estes são os concelhos PNCT mais abaixo do valor nacional."),
     )
+    lowest_note = {
+        "en": f"Lowest in Portugal among the {low.get('with_value')} of {low.get('municipalities')} municipalities with a {period} value in INE's table (none for {', '.join(low.get('no_value', []))}).",
+        "pt": f"O mais baixo de Portugal entre os {low.get('with_value')} de {low.get('municipalities')} municípios com valor de {period} na tabela do INE (sem valor: {', '.join(low.get('no_value', []))}).",
+    } if cheapest else None
     src, src_en = sources(d, "sale", "caop")
     return Insight(
         id="below_national_median",
@@ -97,8 +104,8 @@ def below_national_median(d: Data) -> Insight:
             "reference": {"value": nat, "label": both(lambda l: "Portugal: " + eur_m2(nat, l))},
         },
         evergreen=False,
-        assumptions=[a_full(d)],
-        footnote=F_FULL,
+        assumptions=[a_full(d), *([lowest_note] if lowest_note else [])],
+        footnote={l: F_FULL[l] + (" " + lowest_note[l] if lowest_note else "") for l in ("en", "pt")},
     )
 
 
@@ -109,9 +116,9 @@ def housing_median_contrast(d: Data) -> Insight:
     med = float(f.sale_m2.median())
     cap = caption(
         "housing_median_contrast",
-        (f"In half of the fully PNCT concelhos, homes sold below {eur_m2(med, 'en')} in {period}.",
+        (f"In half of the fully PNCT concelhos, the median home sold for {eur_m2(med, 'en')} or less in {period}.",
          f"Portugal's median sale value was {eur_m2(nat, 'en')}, about {num(nat / med, 'en', 1)} times as much."),
-        (f"Em metade dos concelhos totalmente PNCT, as casas venderam-se abaixo de {eur_m2(med, 'pt')} em {period}.",
+        (f"Em metade dos concelhos totalmente PNCT, o valor mediano de venda das casas foi de {eur_m2(med, 'pt')} ou menos em {period}.",
          f"O valor mediano em Portugal foi {eur_m2(nat, 'pt')}, cerca de {num(nat / med, 'pt', 1)} vezes mais."),
     )
     src, src_en = sources(d, "sale", "caop")
