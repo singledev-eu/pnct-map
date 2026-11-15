@@ -31,9 +31,9 @@ Everything it runs is in this directory and in `scripts/landcheck_config.py`, wh
 - The **first run** sends one `🆕 baseline recorded` message, which also proves Telegram works.
 - If the Telegram send fails, the state isn't saved, so the next run tries again. The run then exits non-zero and shows as failed in systemd.
 
-State is one JSON file of about 7 KB in `STATE_DIR` (default `/var/lib/pnct-watcher`). Nothing else is written.
+State is one JSON file of about 3 KB in `STATE_DIR` (default `/var/lib/pnct-watcher`). Nothing else is written.
 
-**Load on the Pi:** the run is mostly waiting on DGT's dead services (90–120 s each, run in parallel). It takes 5–9 minutes and needs about 30 MB of RAM. It downloads 20 MB only when ICNF's file metadata changes.
+**Load on the Pi:** the run is mostly waiting on DGT's dead services (90–120 s each, run 8 at a time). Measured on the laptop against the real sources (2026-11-15): 4.5–6 minutes wall time, under 1 s of CPU, 38 MB peak memory (with the 20 MB download), and a 3 KB state file. It downloads the 20 MB only when ICNF's file metadata changes; a quiet week is one HEAD.
 
 ## Setup (once)
 
