@@ -372,3 +372,47 @@ def test_env_file_does_not_override_the_environment(tmp_path, monkeypatch):
     import os
 
     assert os.environ["TELEGRAM_CHAT_ID"] == "42" and os.environ["STATE_DIR"] == "/kept"
+
+
+# ---- the Pi units (systemd-analyze isn't available on macOS; install.sh runs it on the Pi) ----------
+
+
+def _unit(name: str) -> dict[str, dict[str, str]]:
+    sections: dict[str, dict[str, str]] = {}
+    current = None
+    for line in (ROOT / "ops/pi/systemd" / name).read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("["):
+            current = sections.setdefault(line.strip("[]"), {})
+        else:
+            key, value = line.split("=", 1)
+            current[key] = value
+    return sections
+
+
+def test_service_unit_keeps_the_pi_healthy():
+    svc = _unit("pnct-source-watcher.service")["Service"]
+    assert svc["Type"] == "oneshot" and svc["User"] == "pnct-watcher"
+    assert svc["EnvironmentFile"] == "/etc/pnct/pi.env"
+    assert (svc["Nice"], svc["IOSchedulingClass"], svc["MemoryMax"]) == ("10", "idle", "512M")
+    assert svc["TimeoutStartSec"] == "45min" and svc["StateDirectory"] == "pnct-watcher"
+    assert svc["ExecStart"] == "/usr/bin/python3 /opt/pnct-map/ops/pi/source_watcher.py"
+    assert svc["ProtectSystem"] == "strict" and svc["NoNewPrivileges"] == "yes"
+
+
+def test_timer_is_weekly_at_night_and_persistent():
+    timer = _unit("pnct-source-watcher.timer")
+    assert timer["Timer"]["OnCalendar"] == "Sun *-*-* 03:30:00" and timer["Timer"]["Persistent"] == "true"
+    assert timer["Install"]["WantedBy"] == "timers.target"
+
+
+def test_env_example_has_placeholders_only_and_they_are_refused(monkeypatch):
+    example = (ROOT / "ops/pi/pi.env.example").read_text()
+    assert "TELEGRAM_BOT_TOKEN=123456:replace-me" in example and "TELEGRAM_CHAT_ID=replace-me" in example
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "123456:replace-me")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "42")
+    monkeypatch.setattr(sw.urllib.request, "urlopen", lambda *a, **k: pytest.fail("no request with the placeholder token"))
+    with pytest.raises(SystemExit, match="must be set"):
+        sw.send_telegram("x")

@@ -32,3 +32,6 @@ web/public/landcheck/
 
 # Local screenshots and other throwaway outputs
 .artifacts/
+
+# Pi source watcher: the real env file lives in /etc/pnct/pi.env, never here (ops/pi/README.md).
+ops/pi/*.env

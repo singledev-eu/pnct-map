@@ -1,0 +1,45 @@
+# pnct-map source watcher (ops/pi/README.md). Installed by ops/pi/install.sh; a drop-in in
+# pnct-source-watcher.service.d/10-local.conf adapts ExecStart/paths when the repo or STATE_DIR differ.
+[Unit]
+Description=pnct-map source watcher (land check sources, Telegram alerts)
+Documentation=https://github.com/singledev-eu/pnct-map/blob/main/ops/pi/README.md
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=pnct-watcher
+Group=pnct-watcher
+EnvironmentFile=/etc/pnct/pi.env
+# /var/lib/pnct-watcher, owned by the service user; the watcher reads it from $STATE_DIRECTORY.
+StateDirectory=pnct-watcher
+StateDirectoryMode=0750
+ExecStart=/usr/bin/python3 /opt/pnct-map/ops/pi/source_watcher.py
+# The DGT services can take 2 min each to time out; a hazard download is ~20 MB.
+TimeoutStartSec=45min
+
+# Stay out of the way of Prazo and Postgres.
+Nice=10
+CPUWeight=20
+IOSchedulingClass=idle
+MemoryMax=512M
+
+# Hardening: network out, its state directory in, nothing else.
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+RestrictRealtime=yes
+LockPersonality=yes
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+UMask=0077

@@ -1,0 +1,13 @@
+# Weekly, at night. Persistent: a run missed while the Pi was off happens at the next boot.
+[Unit]
+Description=Weekly run of the pnct-map source watcher
+Documentation=https://github.com/singledev-eu/pnct-map/blob/main/ops/pi/README.md
+
+[Timer]
+OnCalendar=Sun *-*-* 03:30:00
+RandomizedDelaySec=45min
+AccuracySec=5min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
