@@ -60,6 +60,20 @@ Later candidates, each needing its own Phase 0 data check (source, licence, size
 - High-voltage lines (REN, the grid operator).
 - A dark-sky / light-pollution layer (VIIRS night lights or the World Atlas of artificial sky brightness).
 
+## Pi jobs
+
+Jobs on the Raspberry Pi (`prazo-pi`, next to the Prazo bot and Postgres), under `ops/pi/` ([README](../ops/pi/README.md)). They alert; they don't build or deploy.
+
+| Job | Status |
+|---|---|
+| Source watcher: weekly check of the land check sources (ICNF hazard metadata and pinned SHA-256, the catalogue link, the REN WFS/WMS, dados.gov.pt licence and resources, SNIG use constraints, ANACOM capabilities); Telegram message on change, monthly heartbeat | **Done** (branch `feat/pi-source-watcher`; install on the Pi pending) |
+
+Later, not built:
+
+- Automatic rebuild and preview deploy from the Pi. Only worth it once several datasets refresh regularly; today one dataset changes rarely, and the laptop deploy runs the full suite.
+- Travel-time precomputation with Valhalla (to SNS emergency services, health centres, schools and stations, for the land check), as a periodic batch job.
+- An ADS-B receiver (RTL-SDR) feeding adsb.lol and OpenSky.
+
 ## Next
 
 - Confirm ICNF's reuse terms for RNAP (and for BDG/RN2000, if Natura switches source). Until then RNAP is credited as "reuse terms not confirmed"; dropping it is one line in `scripts/protected_config.py`.
