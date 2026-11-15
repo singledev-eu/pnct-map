@@ -221,6 +221,7 @@ export const pt: Strings = {
   check: {
     toast: "Clique em qualquer ponto para verificar",
     toastTouch: "Toque em qualquer ponto para verificar",
+    toastKeyboard: "Enter verifica o centro · Esc sai",
     peekHazard: (label) => `Perigosidade: ${label}`,
     peekExpand: "Mostrar o relatório completo",
     marker: "Local verificado",

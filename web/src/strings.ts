@@ -112,6 +112,8 @@ export interface CheckStrings {
   /** The toast shown when "Check a spot" turns on (mouse; touch). */
   toast: string;
   toastTouch: string;
+  /** The toast the first time the map gets keyboard focus in the mode. */
+  toastKeyboard: string;
   /** The phone sheet's one-row peek (panel.ts showCheck): the hazard badge (the ICNF class name), and the hidden hint that a tap expands it. */
   peekHazard: (label: string) => string;
   peekExpand: string;

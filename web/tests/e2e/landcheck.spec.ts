@@ -176,6 +176,87 @@ test.describe("check mode with a mouse", () => {
   });
 });
 
+test.describe("check mode: accessibility", () => {
+  test("keyboard focus in the mode shows the keyboard toast once per session; mouse focus doesn't", async ({ page }) => {
+    await page.goto(START);
+    await waitForParishView(page);
+    await page.getByTestId("check-button").click();
+    const toast = page.getByTestId("check-toast");
+    const canvas = page.locator(".maplibregl-canvas");
+    await canvas.click({ position: { x: 400, y: 500 } }); // mouse focus: no keyboard hint
+    await expect(toast).toBeHidden();
+
+    await page.getByTestId("check-button").focus();
+    await page.keyboard.press("Shift");
+    await canvas.focus();
+    await expect(toast).toBeVisible();
+    await expect(toast).toHaveText("Enter checks the centre · Esc exits");
+    await expect(toast).toBeHidden({ timeout: 6000 });
+
+    // Focus away and back by keyboard: not again in this session, also after a reload.
+    await page.getByTestId("check-button").focus();
+    await canvas.focus();
+    await expect(canvas).toBeFocused();
+    await expect(toast).toBeHidden();
+    await page.reload();
+    await waitForParishView(page);
+    await page.getByTestId("check-button").click();
+    await page.keyboard.press("Shift");
+    await canvas.focus();
+    await page.keyboard.press("ArrowLeft");
+    await expect(toast).not.toHaveText("Enter checks the centre · Esc exits");
+  });
+
+  test("keys on a map focused by a mouse click show the keyboard toast too", async ({ page }) => {
+    await page.goto(START);
+    await waitForParishView(page);
+    await page.getByTestId("check-button").click();
+    const canvas = page.locator(".maplibregl-canvas");
+    await canvas.click({ position: { x: 400, y: 500 } });
+    await expect(page.getByTestId("check-toast")).toBeHidden();
+    await page.keyboard.press("ArrowRight");
+    await expect(page.getByTestId("check-toast")).toHaveText("Enter checks the centre · Esc exits");
+  });
+
+  test("keyboard toast in PT", async ({ page }) => {
+    await page.goto(`/?lang=pt${START.slice(1)}`);
+    await waitForParishView(page);
+    await page.getByTestId("check-button").click();
+    await page.keyboard.press("Shift");
+    await page.locator(".maplibregl-canvas").focus();
+    await expect(page.getByTestId("check-toast")).toHaveText("Enter verifica o centro · Esc sai");
+  });
+
+  test("the result is announced once per check, not on a re-render", async ({ page }) => {
+    await page.goto("/#chk=41.89600,-6.73300");
+    await waitForParishes(page);
+    const live = page.getByTestId("check-live");
+    await expect(live).toHaveAttribute("aria-live", "polite");
+    await expect(live).toHaveText("PNCT: yes. Hazard: Very high. França");
+    await expect(page.getByTestId("panel")).toHaveAttribute("aria-live", "off"); // no second reading of the panel
+
+    // A language switch re-renders the report but says nothing new.
+    await page.evaluate(() => {
+      const w = window as unknown as { liveChanges: number };
+      w.liveChanges = 0;
+      new MutationObserver(() => w.liveChanges++).observe(document.getElementById("check-live")!, { childList: true, characterData: true, subtree: true });
+    });
+    await page.getByTestId("settings").getByRole("button", { name: /Português/ }).click();
+    await expect(hazard(page)).toHaveText("Muito alta (5 de 5)");
+    await page.waitForTimeout(300); // let a stray announcement land, if any
+    expect(await page.evaluate(() => (window as unknown as { liveChanges: number }).liveChanges)).toBe(0);
+    await expect(live).toHaveText("PNCT: yes. Hazard: Very high. França");
+
+    // A new check is announced (in the current language).
+    await page.locator(".maplibregl-canvas").click({ position: { x: 300, y: 450 } });
+    await expect(live).toHaveText(/^PNCT: (sim|não)\. (Perigosidade: .+|Fora de Portugal continental)\. .+$|^Fora de Portugal continental$/);
+
+    // A parish panel is live again, as before.
+    await searchAndPick(page, "Erra", /Erra/);
+    await expect(page.getByTestId("panel")).toHaveAttribute("aria-live", "polite");
+  });
+});
+
 test.describe("check mode on a touch screen (390×844)", () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const panel = (page: Page) => page.getByTestId("panel");
@@ -218,6 +299,7 @@ test.describe("check mode on a touch screen (390×844)", () => {
     expect(peekBox.height).toBeGreaterThanOrEqual(44);
     const rows = await peek.evaluate((el) => new Set([...el.children].filter((c) => (c as HTMLElement).offsetParent && !c.classList.contains("visually-hidden")).map((c) => Math.round((c as HTMLElement).getBoundingClientRect().top / 10))).size);
     expect(rows).toBe(1);
+    await expect(page.getByTestId("check-live")).toHaveText(/^PNCT: (yes|no)\. Hazard: .+\. .+$/);
     const height = await visibleHeight(page);
     info.annotations.push({ type: "visible map height (390×844, peek open)", description: `${Math.round(height)} px` });
     console.log(`visible map height at 390x844 with the peek open: ${Math.round(height)} px`);

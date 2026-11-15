@@ -5,7 +5,7 @@ import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { renderAbout } from "./about";
 import { basemapStyle, setLabelLanguage } from "./basemap";
 import { BOUNDS_MARGIN, cameraLimits, protectedFade, constrainView, fitCenter, fitProjected, fitZoom, groundOffset, groundUnder, MAINLAND, measureFootprint, OUTLINE_MERC, paddingOffset, type CameraLimits } from "./camera";
-import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./data";
+import { concelhoCode, featureId, loadData, type Bounds, type MapData, type Parish } from "./data";
 import { metresPerPixel } from "./edges";
 import { DURATION_3D, FILL_3D, load3dPref, PHONE_QUERY, REDUCED_MOTION_QUERY, save3dPref, Slabs, view3dFor, type SlabTarget } from "./drill";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
@@ -13,9 +13,9 @@ import { addHazardLayer, addLayers, addOverlays, appLayers, HAZARD_SOURCE, remov
 import { mountSettings } from "./controls";
 import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountIntro } from "./intro";
-import { type Box, CellReader, chunkFiles, formatPoint, HAZARD, hazardAt, hazardAttributionHtml, parishAtPoint, parsePoint, publicUrl, visibleArea } from "./landcheck";
+import { type Box, CellReader, chunkFiles, formatPoint, HAZARD, hazardAt, type HazardResult, hazardAttributionHtml, parishAtPoint, parsePoint, publicUrl, visibleArea } from "./landcheck";
 import { mountLegend, mountOverlayToggles } from "./legend";
-import { h, Panel } from "./panel";
+import { checkSummary, h, Panel } from "./panel";
 import { mountShortlist, parseCodes, type Shortlist } from "./shortlist";
 import { loadOptions, saveOptions } from "./prefs";
 import { CITY_SOURCE, loadCities, loadCitiesPref, mountCityPointers, saveCitiesPref, type CitiesData } from "./cities";
@@ -793,32 +793,48 @@ function start(data: MapData): void {
   const markerEl = h("div", { class: "check-marker", role: "img", "data-testid": "check-marker" });
   const marker = new Marker({ element: markerEl, anchor: "bottom" });
   const coarse = window.matchMedia("(pointer: coarse)");
+  /** Which toast is up: the tap/click one, or the keyboard one (Enter, Esc). */
+  let toastKind: "pointer" | "keyboard" = "pointer";
   const labelCheck = () => {
-    checkToast.textContent = coarse.matches ? tk.toastTouch : tk.toast;
+    checkToast.textContent = toastKind === "keyboard" ? tk.toastKeyboard : coarse.matches ? tk.toastTouch : tk.toast;
     markerEl.setAttribute("aria-label", tk.marker);
   };
   labelCheck();
   coarse.addEventListener("change", labelCheck);
 
-  // The toast: shown when the mode turns on, fades after a few seconds, and not again in this
-  // session once a spot has been checked.
+  // The toasts, each once per session (sessionStorage): the tap/click one when the mode turns on,
+  // until the first check; the keyboard one the first time the map gets keyboard focus in the mode.
+  // Both fade after a few seconds.
   const TOAST_KEY = "pnct-map:check-toast";
+  const KEYBOARD_TOAST_KEY = "pnct-map:check-toast-keyboard";
   const TOAST_MS = 3000;
   let toastTimer = 0;
-  const toastDone = () => {
-    try {
-      return sessionStorage.getItem(TOAST_KEY) === "done";
-    } catch {
-      return false;
-    }
+  const session = {
+    done: (key: string) => {
+      try {
+        return sessionStorage.getItem(key) === "done";
+      } catch {
+        return false;
+      }
+    },
+    mark: (key: string) => {
+      try {
+        sessionStorage.setItem(key, "done");
+      } catch {
+        // storage unavailable: the toast just shows again next time
+      }
+    },
   };
   function hideToast(): void {
     clearTimeout(toastTimer);
     checkToast.classList.remove("check-toast-shown");
     toastTimer = window.setTimeout(() => (checkToast.hidden = true), motion(400)); // after the fade
   }
-  function showToast(): void {
-    if (toastDone()) return;
+  function showToast(kind: "pointer" | "keyboard"): void {
+    if (session.done(kind === "keyboard" ? KEYBOARD_TOAST_KEY : TOAST_KEY)) return;
+    if (kind === "keyboard") session.mark(KEYBOARD_TOAST_KEY);
+    toastKind = kind;
+    labelCheck();
     clearTimeout(toastTimer);
     checkToast.hidden = false;
     void checkToast.offsetWidth; // start the fade-in from opacity 0
@@ -889,7 +905,8 @@ function start(data: MapData): void {
     if (on) {
       clearHover();
       if (selection) select(null);
-      showToast();
+      showToast("pointer");
+      if (map.getCanvas().matches(":focus-visible")) showToast("keyboard");
     } else if (!checkToast.hidden) hideToast();
     placeCrosshair();
     syncMarker(); // the marker lives as long as the mode
@@ -900,27 +917,38 @@ function start(data: MapData): void {
    * point to the middle of the visible map (Enter, a link; `zoom`: at least that), otherwise it only
    * moves if the point is now hidden (keepVisible).
    */
-  function checkAt(lat: number, lon: number, opts: { centre?: boolean; zoom?: number; keep?: boolean } = {}): void {
+  function checkAt(lat: number, lon: number, opts: { centre?: boolean; zoom?: number; keep?: boolean; announce?: boolean } = {}): void {
     if (selection) select(null);
     check = { lat, lon };
     writeHash({ chk: formatPoint(lat, lon) });
     const dicofre = parishAtPoint(data, lon, lat);
     const p = dicofre ? (data.parishes.get(dicofre) ?? null) : null;
     const c = p ? (data.concelhos.get(concelhoCode(p.dicofre)) ?? null) : null;
-    panel.showCheck({ lat, lon }, p, c, p ? hazardAt(reader, lon, lat) : null, window.location.href);
+    const hazard = p ? hazardAt(reader, lon, lat) : null;
+    panel.showCheck({ lat, lon }, p, c, hazard, window.location.href);
+    if (opts.announce !== false) announceCheck(p, hazard);
     setPanelOpen(true);
     syncMarker();
     placeCrosshair();
     if (opts.centre) centreInView(lon, lat, Math.max(map.getZoom(), opts.zoom ?? 0));
     else if (opts.keep) keepVisible(lon, lat);
-    try {
-      sessionStorage.setItem(TOAST_KEY, "done");
-    } catch {
-      // storage unavailable: the toast just shows again next time
-    }
-    if (!checkToast.hidden) hideToast();
+    session.mark(TOAST_KEY);
+    if (!checkToast.hidden && toastKind === "pointer") hideToast();
     updateCountryButton();
     updateCityPointers();
+  }
+  // Screen readers: one persistent live region (index.html #check-live) says the result once per
+  // check, as the peek row and the report heading show it ("PNCT: yes. Hazard: Very high. França"),
+  // once the hazard cell is in. The panel itself is not live while it shows a check (panel.ts), and
+  // a re-render (a language switch) passes announce: false, so nothing is read twice.
+  const checkLive = $("check-live");
+  let announceToken = 0;
+  function announceCheck(p: Parish | null, hazard: Promise<HazardResult> | null): void {
+    const token = ++announceToken;
+    checkLive.textContent = "";
+    void (hazard ?? Promise.resolve(null)).then((result) => {
+      if (token === announceToken) checkLive.textContent = checkSummary(p, result);
+    });
   }
   /** A #chk= link (on load or a hash change): the mode on, the point in the middle of the visible map at zoom 12+. */
   const openCheckLink = (lat: number, lon: number) => {
@@ -936,7 +964,11 @@ function start(data: MapData): void {
   }
   // Keyboard: Enter on the focused map checks the point under the crosshair (the centre of the
   // visible map) and keeps it there; Esc, anywhere but a text field or an open dialog, leaves the mode.
+  map.getCanvas().addEventListener("focus", () => {
+    if (checkMode && map.getCanvas().matches(":focus-visible")) showToast("keyboard");
+  });
   map.getCanvas().addEventListener("keydown", (e) => {
+    if (checkMode && e.key !== "Escape") showToast("keyboard"); // keys on a map focused by a click count too
     if (!checkMode || e.key !== "Enter") return;
     e.preventDefault();
     const { centre } = checkArea();
@@ -1033,7 +1065,7 @@ function start(data: MapData): void {
     clearHover();
     labelCheck();
     if (selection) select(selection);
-    else if (check) checkAt(check.lat, check.lon);
+    else if (check) checkAt(check.lat, check.lon, { announce: false });
   };
 
   // ---- 3D setting ------------------------------------------------------------------

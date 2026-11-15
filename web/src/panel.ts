@@ -127,6 +127,23 @@ function paintHazard(badge: HTMLElement, color: string): void {
   badge.style.setProperty("--hazard-ink", contrast(color, "#000000") >= contrast(color, "#ffffff") ? "#000000" : "#ffffff");
 }
 
+/** The hazard badge's short text in the peek and the announcement: "Hazard: Very high"; "—" for a failed load. */
+const peekHazardText = (result: HazardResult): string => {
+  if (result.status === "error") return "—";
+  const cls = hazardClass(result.value);
+  return tk.peekHazard(cls ? cls[lang] : tk.hazardNone);
+};
+
+/**
+ * What screen readers hear once per check (main.ts announceCheck), the same facts as the peek row:
+ * "PNCT: yes. Hazard: Very high. França"; outside the mainland, just that.
+ */
+export function checkSummary(p: Parish | null, hazard: HazardResult | null): string {
+  if (!p || !hazard) return tk.outsideTitle;
+  const hz = hazard.status === "error" ? tk.hazardError : peekHazardText(hazard);
+  return `${p.pnct ? ui.pnctYes : ui.pnctNo}. ${hz.replace(/\.$/, "")}. ${p.freguesia}`;
+}
+
 /**
  * The land check's peek row (phone sheet, "peek" state; hidden elsewhere): the PNCT badge, the
  * hazard badge (its ICNF colour; "Checking…" until the cell arrives) and the place, as one button
@@ -147,7 +164,7 @@ function checkPeek(place: string, pnct: boolean | null, hazard: Promise<HazardRe
       const cls = hazardClass(result.value);
       slot.dataset.status = "ok";
       slot.dataset.value = String(cls?.value ?? 0);
-      slot.textContent = tk.peekHazard(cls ? cls[lang] : tk.hazardNone);
+      slot.textContent = peekHazardText(result);
       if (!cls) return;
       slot.className = "badge hazard-badge";
       paintHazard(slot, cls.color);
@@ -262,6 +279,8 @@ export class Panel {
     this.root.classList.remove("sheet-credit-open");
     // A new selection in an open sheet keeps its height; a sheet that was closed opens at half, or
     // as a peek for the land check (which then stays a peek until expanded).
+    // A land check is announced by main.ts (one short line per check), so the panel isn't live then.
+    this.root.setAttribute("aria-live", peek ? "off" : "polite");
     const current = this.root.hidden ? undefined : this.root.dataset.sheet;
     const expanded = current === "half" || current === "full" ? current : null;
     setSheetState(this.root, handle, peek ? (expanded ?? "peek") : current === "full" ? "full" : "half");

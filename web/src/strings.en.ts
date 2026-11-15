@@ -217,6 +217,7 @@ export const en: Strings = {
   check: {
     toast: "Click anywhere to check a spot",
     toastTouch: "Tap anywhere to check a spot",
+    toastKeyboard: "Enter checks the centre · Esc exits",
     peekHazard: (label) => `Hazard: ${label}`,
     peekExpand: "Show the full report",
     marker: "Checked spot",

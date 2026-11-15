@@ -94,6 +94,7 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | Land check (panel kicker) | Verificação do local |
 | Check a spot (toolbar button) | Verificar local |
 | Tap / Click anywhere to check a spot (check-mode toast) | Toque / Clique em qualquer ponto para verificar |
+| Enter checks the centre · Esc exits (check-mode keyboard toast) | Enter verifica o centro · Esc sai |
 | Show the full report (the land check peek) | Mostrar o relatório completo |
 | Wildfire hazard (ICNF's structural map) | Perigosidade de incêndio rural (ICNF's term; "Perigosidade de incêndio" in the legend) |
 | hazard classes: Very low … Very high | Muito baixa, Baixa, Média, Alta, Muito alta (ICNF's names, from landcheck.meta.json) |
