@@ -15,6 +15,7 @@ Unofficial map of the mainland Portugal parishes covered by the PNCT (Programa N
   - protected areas: `protected_config` → `fetch_protected` → `build_protected`;
   - concelho card: `concelhos_config` → `fetch_ine` → `build_concelhos`, plus `contacts_candidates` and `validate_contacts`;
   - land check: `landcheck_config` → `fetch_landcheck` → `build_hazard` (ICNF wildfire hazard GeoTIFF → static overlay tiles + 25 m lookup grid chunks).
+- `insights/`: **PNCT Insights**, twice-weekly data posts drafted to Telegram ([insights/README.md](insights/README.md)). `data/` (fetch, prepare with sanity checks; `prepared/` committed), `catalog/` (one function per insight, `@insight`), `render.py` (1080×1080 cards), `cli.py` (`python -m insights list|render|next`), `deploy/` (Pi systemd timer, Tue/Fri 09:00 Lisbon). Its tests are in `insights/tests/`.
 - `tests/`: pytest for the pipeline, shapes, outline, protected areas and concelho data.
 - `web/data/`: committed, built by the pipeline.
   - `pnct.topo.json` (display geometry), `shapes.json` (Idealista link shapes), `outline.json` (the camera outline, bundled).
@@ -50,6 +51,8 @@ uv run make protected-fetch           # re-fetch RNAP (ICNF) and Natura 2000 (EE
 uv run make concelhos-fetch           # re-fetch the INE indicators into data/external/ine/ (REFRESH=1 for a new year)
 uv run make concelhos                 # rebuild data/concelhos.json and web/data/concelhos.json (validates camaras.csv)
 uv run make landcheck                 # ICNF hazard GeoTIFF -> web/public/landcheck/ (gitignored; deploys refuse without it)
+uv run make insights                  # PNCT Insights: fetch INE/OSM, prepare (sanity checks), render every card to insights/out/
+uv run python -m insights next --dry-run   # the next Telegram draft, without sending (env: INSIGHTS_TELEGRAM_BOT_TOKEN/_CHAT_ID)
 cd web && npm ci && npm run dev       # dev server (data is committed; the pipeline is not needed)
 PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium   # once, for e2e
 
@@ -102,6 +105,7 @@ cd web && npm run deploy              # same, to production (main). Only after t
   - Framing uses the projected footprint at the final pitch/bearing (`fitProjected`); hit tests on a slab top look at the ground under it (`groundUnder`).
   - Pitch and bearing belong to a selection: clearing it, turning 3D off or reduced motion levels the camera. Under `prefers-reduced-motion` there is no tilt, no slab, and selections jump. The constrain's padding offset goes through `groundOffset`, so camera limits hold with pitch.
 - **Land check:** every fact shown traces to a dataset, with its source and date in the report; a missing value says so ("Not classified", "could not be loaded", "Outside mainland Portugal"), never a guess. The wildfire map is a *hazard classification*, never a building rule. Hazard values come from the exact 25 m ICNF cell (`hazard-cells-*/`), never from the display tiles. Facts without usable open data (REN, broadband) are listed in `landcheck_config.BLOCKED` and shown as not covered.
+- **Insights:** the same "no invented values" rule: a missing dataset raises `Blocked`, never an estimate. Telegram calls are only `sendPhoto` and `sendMessage` (never `getUpdates`/webhooks: another app polls the bot); the token is never printed (`bot***`). Every insight has a hand-computed fixture test.
 - **e2e waits:** wait for the parish layer (`waitForParishes` / `waitForParishView`), not the basemap. Use `waitForFullIdle` only before screenshots. No `waitForTimeout`.
 
 ## Working conventions

@@ -7,7 +7,7 @@ PNCT_SHA256 := c286ef77c16321e8c5124eeb92f8d3f0565dbe302787817a91fe526653e7cffc
 PNCT_PDF := data/raw/territorios-pnct-2026-02-04.pdf
 PY := uv run python
 
-.PHONY: all download parse match geo web-data shapes outline protected-fetch protected concelhos-fetch concelhos cities-fetch cities landcheck-fetch landcheck test web e2e clean
+.PHONY: all download parse match geo web-data shapes outline protected-fetch protected concelhos-fetch concelhos cities-fetch cities landcheck-fetch landcheck insights-fetch insights test web e2e clean
 
 all: web-data shapes outline protected concelhos cities landcheck test
 
@@ -127,3 +127,13 @@ clean:
 	@if [ -d data/interim/contacts ] && [ -n "$$(ls -A data/interim/contacts)" ]; then \
 	  echo "make clean: data/interim/contacts/ holds hand-made files; move them to data/manual/contacts/ first" >&2; exit 1; fi
 	rm -rf data/interim data/processed web/data
+
+# PNCT Insights (insights/README.md): data posts drafted to Telegram. `insights` fetches what is missing,
+# rebuilds the prepared tables (sanity-checked) and renders every ready card into insights/out/.
+insights-fetch:
+	$(PY) -m insights fetch $(if $(REFRESH),--refresh)
+
+insights: $(CAOP_GPKG)
+	$(PY) -m insights fetch
+	$(PY) -m insights prepare
+	$(PY) -m insights render --all

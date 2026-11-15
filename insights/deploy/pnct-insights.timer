@@ -1,0 +1,12 @@
+# Tuesdays and Fridays at 09:00 Lisbon time (WET/WEST, DST handled by systemd).
+[Unit]
+Description=PNCT Insights: Tuesday and Friday 09:00 Europe/Lisbon
+
+[Timer]
+OnCalendar=Tue,Fri *-*-* 09:00:00 Europe/Lisbon
+# A run missed while the Pi was off happens after the next boot.
+Persistent=true
+Unit=pnct-insights.service
+
+[Install]
+WantedBy=timers.target

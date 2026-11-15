@@ -1,0 +1,5 @@
+# Runtime only (catalog, render, CLI, Telegram): the Pi reads the committed insights/data/prepared/
+# and never needs the geospatial pipeline (geopandas, pyogrio, shapely).
+pandas>=2.2
+matplotlib>=3.8
+python-dotenv>=1.0

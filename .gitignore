@@ -35,3 +35,12 @@ web/public/landcheck/
 
 # Pi source watcher: the real env file lives in /etc/pnct/pi.env, never here (ops/pi/README.md).
 ops/pi/*.env
+
+# The env template is committed; the real .env stays ignored (above).
+!.env.example
+# PNCT Insights: downloads, rendered drafts and the posted state are local (insights/README.md).
+insights/data/raw/*
+!insights/data/raw/README.md
+insights/out/
+insights/state/*
+!insights/state/.gitkeep

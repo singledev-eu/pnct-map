@@ -1,0 +1,35 @@
+# PNCT Insights: render the next insight and send it to Telegram (insights/deploy/README.md).
+[Unit]
+Description=PNCT Insights: send the next draft post to Telegram
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=pnct-insights
+Group=pnct-insights
+WorkingDirectory=/opt/pnct-map
+EnvironmentFile=/etc/pnct-insights/insights.env
+Environment=INSIGHTS_STATE_DIR=/var/lib/pnct-insights
+Environment=INSIGHTS_OUT_DIR=/var/lib/pnct-insights/out
+Environment=MPLCONFIGDIR=/var/cache/pnct-insights
+ExecStart=/opt/pnct-insights/venv/bin/python -m insights next
+StateDirectory=pnct-insights
+CacheDirectory=pnct-insights
+TimeoutStartSec=10min
+Nice=10
+CPUWeight=20
+IOSchedulingClass=idle
+MemoryMax=512M
+# Sandbox: read-only system, its own state and cache directories only.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6
+RestrictNamespaces=true
+LockPersonality=true

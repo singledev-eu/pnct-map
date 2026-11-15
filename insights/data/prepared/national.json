@@ -1,0 +1,130 @@
+{
+ "mainland_area_km2_caop": 89102.14279999999,
+ "mainland_area_km2_computed": 89102.143,
+ "census_mainland": {
+  "2011": 10047621,
+  "2021": 9855909
+ },
+ "pnct_census_pop2021": 1968418,
+ "sale_m2": {
+  "period": "2025",
+  "portugal": 2076.0,
+  "mainland": 2083.0
+ },
+ "reference_points": {
+  "porto": {
+   "en": "Porto",
+   "pt": "Porto",
+   "lon": -8.61035,
+   "lat": 41.15022,
+   "source": "OSM admin_centre (web/data/cities.json)",
+   "x": -40061.577122826406,
+   "y": 164670.54588827438
+  },
+  "lisbon": {
+   "en": "Lisbon",
+   "pt": "Lisboa",
+   "lon": -9.13659,
+   "lat": 38.70775,
+   "source": "OSM admin_centre (web/data/cities.json)",
+   "x": -87285.45400774288,
+   "y": -106156.72895635974
+  },
+  "opo": {
+   "en": "Porto airport (OPO)",
+   "pt": "aeroporto do Porto (OPO)",
+   "lon": -8.6781906,
+   "lat": 41.2488304,
+   "source": "OSM way 13802869 (Aeroporto Francisco Sá Carneiro)",
+   "x": -45687.78242417975,
+   "y": 175655.4964852724
+  },
+  "fao": {
+   "en": "Faro airport (FAO)",
+   "pt": "aeroporto de Faro (FAO)",
+   "lon": -7.9705828,
+   "lat": 37.0175057,
+   "source": "OSM way 183076614 (Aeroporto Gago Coutinho)",
+   "x": 14463.357654530793,
+   "y": -294229.20363112295
+  },
+  "lis": {
+   "en": "Lisbon airport (LIS)",
+   "pt": "aeroporto de Lisboa (LIS)",
+   "lon": -9.1360051,
+   "lat": 38.7809855,
+   "source": "OSM way 336112741 (Aeroporto Humberto Delgado)",
+   "x": -87145.50354437283,
+   "y": -98027.09585787731
+  }
+ },
+ "coast": {
+  "definition": "CAOP 2025 boundary segments 'Limite e Linha de Costa'",
+  "length_km": 1216.8
+ },
+ "crosswalk": {
+  "caop_2025_parishes": 3049,
+  "census_2021_parishes": 2882,
+  "split_census_parishes": 134,
+  "one_to_one": 2736,
+  "clean_share": 0.9,
+  "not_clean": [
+   {
+    "code": "010607",
+    "name": "Santa Maria de Sardoura",
+    "pnct_share": 0.0402,
+    "pop2021": 2274
+   }
+  ]
+ },
+ "sources": {
+  "pnct": {
+   "title": "IEFP, Territórios PNCT (2026-02-04)",
+   "url": "https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf"
+  },
+  "caop_2025": {
+   "title": "DGT, CAOP 2025 (Continente)",
+   "url": "https://geo2.dgterritorio.gov.pt/caop/CAOP_Continente_2025-gpkg.zip",
+   "licence": "CC BY 4.0"
+  },
+  "caop_2024": {
+   "title": "DGT, CAOP 2024 (Continente), Censos 2021 parishes",
+   "url": "https://geo2.dgterritorio.gov.pt/caop/CAOP_Continente_2024-gpkg.zip",
+   "sha256": "a51b2458f703799f89224ac5f3521133f7b3f1495cf8af091d7e8920183858c5"
+  },
+  "census_2011": {
+   "file": "ine_census_2011.json",
+   "code": "0011609",
+   "indicator": "População residente (N.º) por Local de residência à data dos Censos [2021] (NUTS - 2013), Sexo e Grupo etário (Por ciclos de vida); Decenal - INE, Recenseamento da população e habitação - Censos 2021",
+   "period": "2011",
+   "url": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&lang=PT&varcd=0011609&Dim1=S7A2011&Dim3=T&Dim4=T",
+   "source_updated": "2022-11-23",
+   "fetched_at": "2026-11-15T20:23:56+00:00"
+  },
+  "census_2021": {
+   "file": "ine_census_2021.json",
+   "code": "0011609",
+   "indicator": "População residente (N.º) por Local de residência à data dos Censos [2021] (NUTS - 2013), Sexo e Grupo etário (Por ciclos de vida); Decenal - INE, Recenseamento da população e habitação - Censos 2021",
+   "period": "2021",
+   "url": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&lang=PT&varcd=0011609&Dim1=S7A2021&Dim3=T&Dim4=T",
+   "source_updated": "2022-11-23",
+   "fetched_at": "2026-11-15T20:25:40+00:00"
+  },
+  "sale_m2": {
+   "file": "ine_sale_m2.json",
+   "code": "0012255",
+   "indicator": "Valor mediano das vendas de alojamentos familiares (Metodologia 2022 - €/ m²) por Localização geográfica (NUTS - 2024) e Categoria do alojamento familiar; Anual - INE, Estatísticas de preços da habitação ao nível local (Metodologia 2022)",
+   "period": "2025",
+   "url": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&lang=PT&varcd=0012255&Dim1=S7A2025&Dim3=H1",
+   "source_updated": "2026-04-24",
+   "fetched_at": "2026-11-15T20:29:28+00:00"
+  },
+  "airports": {
+   "file": "osm_airports.json",
+   "url": "https://overpass-api.de/api/interpreter",
+   "query": "[out:json][timeout:60];area[\"ISO3166-1\"=\"PT\"][admin_level=2]->.pt;nwr[\"aeroway\"=\"aerodrome\"][\"iata\"~\"^(OPO|LIS|FAO)$\"](area.pt);out center tags;",
+   "source_updated": "2026-11-15T20:28:35Z",
+   "fetched_at": "2026-11-15T20:30:07+00:00"
+  }
+ }
+}
