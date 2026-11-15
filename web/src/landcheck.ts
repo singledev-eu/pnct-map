@@ -12,6 +12,7 @@
  * A point outside every parish is "outside mainland Portugal" and gets no hazard either.
  */
 import type { Area, MapData } from "./data";
+import { tk } from "./strings";
 import META from "../data/landcheck.meta.json";
 
 export interface HazardClass {
@@ -200,26 +201,14 @@ export function parishAtPoint(data: Pick<MapData, "parishBounds" | "parishGeomet
 
 export type HazardResult = { status: "ok"; value: number } | { status: "error" };
 
-export interface CheckReport {
-  lat: number;
-  lon: number;
-  /** null: outside mainland Portugal. */
-  dicofre: string | null;
-  /** Absent outside mainland. */
-  hazard?: HazardResult;
-}
-
-export async function runCheck(data: Pick<MapData, "parishBounds" | "parishGeometry">, reader: Pick<CellReader, "classAt">, lon: number, lat: number): Promise<CheckReport> {
-  const dicofre = parishAtPoint(data, lon, lat);
-  if (!dicofre) return { lat, lon, dicofre: null };
-  let hazard: HazardResult;
+/** The hazard class under the point; a failed read is an error, never a class. */
+export async function hazardAt(reader: Pick<CellReader, "classAt">, lon: number, lat: number): Promise<HazardResult> {
   try {
-    hazard = { status: "ok", value: await reader.classAt(lon, lat) };
+    return { status: "ok", value: await reader.classAt(lon, lat) };
   } catch (err) {
     console.error(err);
-    hazard = { status: "error" };
+    return { status: "error" };
   }
-  return { lat, lon, dicofre, hazard };
 }
 
 export const hazardClass = (value: number): HazardClass | undefined => HAZARD.classes.find((c) => c.value === value);
@@ -236,4 +225,11 @@ export function parsePoint(lat: string | null | undefined, lon?: string | null):
   const lo = Number(lon);
   if (!lat || !lon || !Number.isFinite(la) || !Number.isFinite(lo) || Math.abs(la) > 90 || Math.abs(lo) > 180) return null;
   return { lat: la, lon: lo };
+}
+
+// ---- credits ----------------------------------------------------------------------------------
+
+/** HTML for the map attribution control: "Wildfire hazard: <© ICNF>". Shown with the other credits, always. */
+export function hazardAttributionHtml(): string {
+  return `${tk.creditLead}: <a href="${HAZARD.url}" target="_blank" rel="noopener noreferrer">© ICNF</a>`;
 }

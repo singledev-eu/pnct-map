@@ -5,8 +5,9 @@
  */
 import { fill, rich } from "./i18n";
 import { h } from "./panel";
+import { HAZARD } from "./landcheck";
 import { credits } from "./protected";
-import { t, ui } from "./strings";
+import { formatDate, lang, t, tk, ui } from "./strings";
 
 const IEFP_LIST = "https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf";
 const CAOP = "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop";
@@ -49,6 +50,16 @@ export function renderAbout(dialog: HTMLDialogElement): void {
           }),
         ),
         protectedCredits,
+        h(
+          "li",
+          { "data-testid": "about-hazard" },
+          h("strong", {}, `${tk.legendHeading}:`),
+          " ",
+          link(HAZARD.url, `ICNF, ${HAZARD.title[lang]}`),
+          ` (${formatDate(HAZARD.reference_date)}, `,
+          link(HAZARD.licence_url, HAZARD.licence[lang]),
+          `). ${tk.hazardNote}`,
+        ),
       ),
       h("p", { class: "muted" }, a.notAffiliated),
       h("button", { type: "submit", class: "button" }, a.close),

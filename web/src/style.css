@@ -1914,3 +1914,219 @@ dialog a {
     transition: none;
   }
 }
+
+/* ---- land check (landcheck.ts, panel.ts showCheck) ------------------------------ */
+
+/* "Check a spot": a plain button in the toolbar chips' dress, with a crosshair mark; pressed while
+   the mode is on. On phones only the mark shows (the label stays its accessible name). */
+.check-button {
+  font-weight: 600;
+  color: inherit;
+}
+
+.check-button::before {
+  content: "";
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  background: radial-gradient(circle, currentColor 0 2.5px, transparent 3px); /* a target: ring and dot */
+  box-sizing: border-box;
+}
+
+.check-button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.check-button:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--shadow), 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+/* The mode hint: the intro's look, under the toolbar. */
+.check-hint {
+  max-width: min(100%, 640px);
+  padding: 8px 12px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--panel-bg);
+  box-shadow: var(--shadow);
+  font-size: 13px;
+}
+
+.check-hint[hidden],
+.check-crosshair[hidden] {
+  display: none;
+}
+
+/* The map centre, where Enter checks: a thin cross with a halo, so it reads on both basemaps. */
+.check-crosshair {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--text), var(--text)) center / 2px 100% no-repeat,
+    linear-gradient(var(--text), var(--text)) center / 100% 2px no-repeat;
+  filter: drop-shadow(0 0 1.5px var(--panel-bg)) drop-shadow(0 0 1.5px var(--panel-bg));
+}
+
+.check-mode .maplibregl-canvas {
+  cursor: crosshair;
+}
+
+/* The checked point: a pin whose tip is the point (Marker anchor "bottom"). */
+.check-marker {
+  width: 22px;
+  height: 30px;
+  pointer-events: none;
+}
+
+.check-marker::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--panel-bg);
+  border-radius: 50% 50% 50% 0;
+  background: var(--accent);
+  transform: translateY(1px) rotate(-45deg);
+  transform-origin: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.check-marker::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--panel-bg);
+}
+
+.check-coords {
+  margin: 0 0 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.check-share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.check-link {
+  flex: 1 1 180px;
+  min-width: 0;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 12px;
+  text-overflow: ellipsis;
+}
+
+.button-small {
+  height: 32px;
+  padding: 0 12px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.check-copy-status {
+  flex-basis: 100%;
+  font-size: 12px;
+}
+
+.check-copy-status:empty {
+  display: none;
+}
+
+/* The hazard class in ICNF's colour; the ink (black or white) is chosen for contrast in panel.ts. */
+.hazard-badge {
+  padding: 3px 12px;
+  font-size: 13px;
+  background: var(--hazard-bg);
+  color: var(--hazard-ink);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 18%, transparent);
+}
+
+.check-not-covered {
+  font-size: 12px;
+}
+
+.check-sources ul {
+  margin: 0 0 8px;
+  padding-left: 18px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.check-sources a {
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+.check-disclaimer {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Legend: the five ICNF colours as the toggle's swatch. */
+.hazard-ramp {
+  display: inline-flex;
+  flex: none;
+  width: 22px;
+  height: 12px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 20%, transparent);
+}
+
+.hazard-swatch {
+  flex: 1;
+}
+
+@media (max-width: 640px) {
+  .check-hint {
+    max-width: none;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+  }
+
+  .check-button {
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    font-size: 0; /* the mark only; the text is still the button's name */
+  }
+
+  .check-button::before {
+    width: 20px;
+    height: 20px;
+  }
+
+  .check-link,
+  .button-small {
+    height: 40px;
+  }
+}

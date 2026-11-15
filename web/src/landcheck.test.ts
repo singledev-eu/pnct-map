@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Area } from "./data";
-import { BLOCKED, cellAt, CellReader, formatPoint, HAZARD, httpRanges, inArea, parishAtPoint, parsePoint, runCheck, toPtTm06 } from "./landcheck";
+import { BLOCKED, cellAt, CellReader, formatPoint, HAZARD, hazardAt, httpRanges, inArea, parishAtPoint, parsePoint, toPtTm06 } from "./landcheck";
 
 // [lat, lon, x, y] from pyproj (EPSG:4326 -> EPSG:3763).
 const PROJ_FIXTURES: [number, number, number, number][] = [
@@ -127,18 +127,16 @@ describe("inArea and parishAtPoint", () => {
     expect(parishAtPoint(data, 2, 2)).toBe("010102");
     expect(parishAtPoint(data, 5, 5)).toBeNull();
   });
-  it("runCheck: outside mainland has no hazard; a failed read is an error, not a class", async () => {
-    const ok = { classAt: async () => 4 };
+  it("hazardAt: a failed read is an error, not a class", async () => {
+    expect(await hazardAt({ classAt: async () => 4 }, 0.5, 2)).toEqual({ status: "ok", value: 4 });
+    const original = console.error;
+    console.error = () => {};
     const broken = {
       classAt: async () => {
         throw new Error("offline");
       },
     };
-    expect(await runCheck(data, ok, 5, 5)).toEqual({ lat: 5, lon: 5, dicofre: null });
-    expect(await runCheck(data, ok, 0.5, 2)).toEqual({ lat: 2, lon: 0.5, dicofre: "010101", hazard: { status: "ok", value: 4 } });
-    const original = console.error;
-    console.error = () => {};
-    expect((await runCheck(data, broken, 0.5, 2)).hazard).toEqual({ status: "error" });
+    expect(await hazardAt(broken, 0.5, 2)).toEqual({ status: "error" });
     console.error = original;
   });
 });

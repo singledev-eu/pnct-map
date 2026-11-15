@@ -91,3 +91,14 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | reduced motion (the OS setting) | movimento reduzido (iOS/Android PT-PT: "Reduzir movimento") |
 | Language, theme and 3D view (settings group) | Idioma, tema e vista 3D |
 | Expand / Collapse panel | Expandir / Recolher painel |
+| Land check (panel kicker) | Verificação do local |
+| Check a spot (toolbar button) | Verificar local |
+| Wildfire hazard (ICNF's structural map) | Perigosidade de incêndio rural (ICNF's term; "Perigosidade de incêndio" in the legend) |
+| hazard classes: Very low … Very high | Muito baixa, Baixa, Média, Alta, Muito alta (ICNF's names, from landcheck.meta.json) |
+| Not classified (no hazard class) | Não classificado |
+| hazard classification, not a building rule | classificação da perigosidade, não uma regra de construção |
+| Outside mainland Portugal | Fora de Portugal continental |
+| fixed broadband and fibre | banda larga fixa e fibra |
+| crosshair (map centre) | mira |
+| downloaded (a dataset) | transferidos (PT-PT, not "baixados") |
+| licensing (câmara) | licenciamento |

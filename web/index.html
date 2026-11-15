@@ -69,12 +69,15 @@
             <span class="switch" aria-hidden="true"></span>
             <span data-i18n="onlyPnct"></span>
           </label>
+          <button id="check-button" type="button" class="toggle check-button" aria-pressed="false" data-i18n="checkButton" data-i18n-attr="title:checkTitle" data-testid="check-button"></button>
           <button id="shortlist-button" type="button" class="toggle shortlist-button" hidden aria-expanded="false" aria-controls="shortlist" data-testid="shortlist-button"></button>
         </div>
         <div id="shortlist" class="shortlist-pop" role="dialog" aria-labelledby="shortlist-title" hidden data-testid="shortlist"></div>
       </div>
       <!-- Filled by intro.ts on a first visit. -->
       <div id="intro" class="intro" role="note" hidden data-testid="intro"></div>
+      <!-- Land check mode (landcheck.ts): the hint, filled by main.ts in the active language. -->
+      <div id="check-hint" class="check-hint" role="status" hidden data-testid="check-hint"></div>
     </div>
 
     <aside id="panel" class="panel" hidden aria-live="polite" data-testid="panel"></aside>
@@ -95,11 +98,13 @@
       <div class="legend-row legend-parish legend-row-other"><span class="swatch swatch-other"></span><span data-i18n="legendOtherParish"></span></div>
       <div class="legend-row"><span class="swatch swatch-line"></span><span data-i18n="legendBoundary"></span></div>
       <label class="legend-row legend-overlay legend-cities"><input id="cities-toggle" type="checkbox" checked data-testid="cities-toggle" /><span class="swatch swatch-city" aria-hidden="true"></span><span data-i18n="legendCities"></span></label>
+      <label class="legend-row legend-overlay legend-hazard"><input id="hazard-toggle" type="checkbox" data-testid="hazard-toggle" /><span id="hazard-ramp" class="hazard-ramp" aria-hidden="true"></span><span data-i18n="legendHazard"></span></label>
       <div id="legend-protected" class="legend-protected" role="group" data-i18n-attr="aria-label:overlaysLabel" data-testid="legend-protected"></div>
       <button id="about-open" type="button" class="link-button" data-i18n="aboutButton"></button>
       </div>
     </div>
 
+    <div id="check-crosshair" class="check-crosshair" hidden aria-hidden="true"></div>
     <div id="tooltip" class="tooltip" hidden role="tooltip"></div>
     <div id="status" class="status" role="status" data-i18n="loadingMap"></div>
 

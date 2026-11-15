@@ -4,7 +4,7 @@
  * concelhos, districts) come from the data and are never translated. Data-derived labels (the
  * protected-area sources) carry both languages in their data meta (protected.ts).
  *
- * `t`, `tc`, `sheet` and `ui` are live bindings: setLang swaps them, and the importing modules
+ * `t`, `tc`, `tk`, `sheet` and `ui` are live bindings: setLang swaps them, and the importing modules
  * read them at render time, so main.ts re-renders after a switch (applyLanguage).
  * Index.html has no text of its own: its elements name a `ui` key in data-i18n (i18n.ts applyStatic).
  */
@@ -104,6 +104,55 @@ export interface ConcelhoStrings {
   newTab: string;
 }
 
+/**
+ * The land check (landcheck.ts, panel.ts showCheck). Hazard class names come from
+ * landcheck.meta.json (ICNF's own names in PT), not from here.
+ */
+export interface CheckStrings {
+  /** The mode hint under the toolbar while "Check a spot" is on (pointer devices; touch). */
+  hint: string;
+  hintTouch: string;
+  /** Accessible name of the centre crosshair shown in the mode (Enter checks the point under it). */
+  crosshair: string;
+  /** Accessible name of the marker on the checked point. */
+  marker: string;
+  kicker: string;
+  /** "39.92681° N, 8.15187° W": numbers already formatted. */
+  coords: (lat: string, lon: string) => string;
+  checking: string;
+  outsideTitle: string;
+  outsideBody: string;
+  pnctHeading: string;
+  pnctYes: string;
+  pnctNo: string;
+  factParish: string;
+  openParish: string;
+  hazardHeading: string;
+  /** "High (4 of 5)". */
+  hazardClass: (label: string, value: number) => string;
+  hazardNone: string;
+  hazardNoneNote: string;
+  hazardError: string;
+  hazardNote: string;
+  /** The blocked facts (landcheck.meta.json `blocked`), by id, and the line that lists them. */
+  blocked: Record<string, string>;
+  notCovered: (facts: string) => string;
+  sourcesHeading: string;
+  /** Title (in the UI language), dataset date and download date, formatted. */
+  sourceHazard: (title: string, dataset: string, fetched: string) => string;
+  sourceParish: string;
+  disclaimer: string;
+  copyLink: string;
+  copied: string;
+  copyManually: string;
+  linkLabel: string;
+  /** The legend toggle for the hazard overlay, its colour key, and its error. */
+  legendHeading: string;
+  overlayError: string;
+  /** Map attribution and credits: the lead before the ICNF link. */
+  creditLead: string;
+}
+
 /** The phone bottom sheet (sheet.ts, panel.ts). */
 export interface SheetStrings {
   expand: string;
@@ -149,6 +198,11 @@ export interface UiStrings {
   cityPointer: (name: string, km: string) => string;
   overlaysLabel: string;
   aboutButton: string;
+  /** The "Check a spot" toggle in the toolbar (landcheck mode): visible label and tooltip. */
+  checkButton: string;
+  checkTitle: string;
+  /** Legend toggle for the wildfire hazard overlay. */
+  legendHazard: string;
   /** The button under the zoom buttons that returns to the whole country: visible label, and accessible name/tooltip. */
   countryButton: string;
   countryLabel: string;
@@ -260,6 +314,7 @@ export interface Strings {
   protected: ProtectedStrings;
   concelho: ConcelhoStrings;
   sheet: SheetStrings;
+  check: CheckStrings;
 }
 
 export const STRINGS: Record<Lang, Strings> = { en, pt };
@@ -270,10 +325,11 @@ export let ui: UiStrings = en.ui;
 export let t: ProtectedStrings = en.protected;
 export let tc: ConcelhoStrings = en.concelho;
 export let sheet: SheetStrings = en.sheet;
+export let tk: CheckStrings = en.check;
 
 export function setLang(next: Lang): void {
   lang = next;
-  ({ ui, protected: t, concelho: tc, sheet } = STRINGS[next]);
+  ({ ui, protected: t, concelho: tc, sheet, check: tk } = STRINGS[next]);
 }
 
 /**
@@ -304,6 +360,11 @@ export const SMALL_SHARE = 0.5;
  */
 export function formatNumber(value: number, digits = 0, extra: Intl.NumberFormatOptions = {}): string {
   return new Intl.NumberFormat(ui.locale, { minimumFractionDigits: digits, maximumFractionDigits: digits, useGrouping: "always", ...extra }).format(value);
+}
+
+/** An ISO date (YYYY-MM-DD) in the active locale: "28 March 2022" / "28 de março de 2022". */
+export function formatDate(iso: string): string {
+  return new Intl.DateTimeFormat(ui.locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${iso}T00:00:00Z`));
 }
 
 /** "0%", "<0.5%", "12.3%", "100%" ("12,3%" in PT): one decimal, none for whole numbers. */

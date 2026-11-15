@@ -1,6 +1,6 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
-import { AttributionControl, LngLat, Map as MapLibreMap, NavigationControl, setWorkerUrl, type GeoJSONSource, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent, type StyleSpecification } from "maplibre-gl";
+import { addProtocol, AttributionControl, LngLat, Map as MapLibreMap, Marker, NavigationControl, setWorkerUrl, type GeoJSONSource, type LngLatBoundsLike, type MapMouseEvent, type MapSourceDataEvent, type StyleSpecification } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { renderAbout } from "./about";
 import { basemapStyle, setLabelLanguage } from "./basemap";
@@ -9,10 +9,11 @@ import { concelhoCode, featureId, loadData, type Bounds, type MapData } from "./
 import { metresPerPixel } from "./edges";
 import { DURATION_3D, FILL_3D, load3dPref, PHONE_QUERY, REDUCED_MOTION_QUERY, save3dPref, Slabs, view3dFor, type SlabTarget } from "./drill";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
-import { addLayers, addOverlays, appLayers, applyFilter, CONCELHO_FILL, CONCELHO_SLAB, CONCELHO_SOURCE, HOVER_POP, overlaySource, PARISH_FILL, PARISH_SLAB, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, setSelectedSeat, withAppLayers, type FilterState, type OverlayState } from "./layers";
+import { addHazardLayer, addLayers, addOverlays, appLayers, HAZARD_SOURCE, removeHazardLayer, applyFilter, CONCELHO_FILL, CONCELHO_SLAB, CONCELHO_SOURCE, HOVER_POP, overlaySource, PARISH_FILL, PARISH_SLAB, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, setSelectedSeat, withAppLayers, type FilterState, type OverlayState } from "./layers";
 import { mountSettings } from "./controls";
 import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountIntro } from "./intro";
+import { CellReader, formatPoint, HAZARD, hazardAt, hazardAttributionHtml, httpRanges, parishAtPoint, parsePoint, publicUrl } from "./landcheck";
 import { mountLegend, mountOverlayToggles } from "./legend";
 import { h, Panel } from "./panel";
 import { mountShortlist, parseCodes, type Shortlist } from "./shortlist";
@@ -20,12 +21,23 @@ import { loadOptions, saveOptions } from "./prefs";
 import { CITY_SOURCE, loadCities, loadCitiesPref, mountCityPointers, saveCitiesPref, type CitiesData } from "./cities";
 import { attributionHtml, CATEGORY_IDS, loadOverlay, loadSlabProtected, type OverlayData } from "./protected";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
-import { lang, setLang, t, ui, type Lang } from "./strings";
+import { lang, setLang, t, tk, ui, type Lang } from "./strings";
 import { applyPageTheme, DARK_QUERY, loadThemePref, nextThemePref, PALETTES, resolveTheme, saveThemePref, STYLE_URLS, themeOf, type Theme, type ThemePref } from "./theme";
 // ?url makes Vite emit the file content-hashed under assets/; index.html preloads the same file.
 import DATA_URL from "../data/pnct.topo.json?url";
 
 setWorkerUrl(workerUrl);
+
+// A /check?lat=..&lon=.. link (the shareable land check URL; Pages serves index.html for it) becomes
+// /#chk=lat,lon before the map reads the hash. Other query parameters (?lang=) are kept.
+if (/\/check\/?$/.test(window.location.pathname)) {
+  const query = new URLSearchParams(window.location.search);
+  const point = parsePoint(query.get("lat"), query.get("lon"));
+  query.delete("lat");
+  query.delete("lon");
+  const search = query.toString();
+  window.history.replaceState(null, "", `${import.meta.env.BASE_URL}${search ? `?${search}` : ""}${point ? `#chk=${formatPoint(point.lat, point.lon)}` : ""}`);
+}
 
 // The language (i18n.ts): every string below is read from the active table, so it is set first.
 setLang(initialLang());
@@ -153,7 +165,7 @@ const isCompact = () => attribution.classList.contains("maplibregl-compact");
 const collapseAttribution = () => attribution.classList.remove("maplibregl-compact-show"); // as MapLibre does on drag
 const addAttribution = () => {
   if (attributionControl) map.removeControl(attributionControl);
-  attributionControl = new AttributionControl({ customAttribution: [ui.attributionBoundaries, attributionHtml()] });
+  attributionControl = new AttributionControl({ customAttribution: [ui.attributionBoundaries, attributionHtml(), hazardAttributionHtml()] });
   // Before the zoom buttons, where it was first added (bottom-right stacks controls in order).
   map.addControl(attributionControl, "bottom-right");
   attribution = map.getContainer().querySelector<HTMLElement>(".maplibregl-ctrl-attrib")!;
@@ -265,6 +277,9 @@ function start(data: MapData): void {
 
   // ---- selection --------------------------------------------------------------
   let selection: Selection = null;
+  /** The land check on show (landcheck.ts), and whether "Check a spot" mode is on. */
+  let check: { lat: number; lon: number } | null = null;
+  let checkMode = false;
   let selectedIds: number[] = [];
   let groupIds: number[] = [];
   let selectedConcelhoId: number | null = null;
@@ -403,6 +418,8 @@ function start(data: MapData): void {
   };
 
   function select(next: Selection, opts: { fly?: boolean; tilt?: boolean; animate?: boolean } = {}): void {
+    clearCheck();
+    if (next) setCheckMode(false);
     const moves = opts.fly || opts.tilt;
     const animate = opts.animate !== false && !reducedMotion.matches;
     selection = next;
@@ -505,6 +522,11 @@ function start(data: MapData): void {
   };
 
   map.on("mousemove", (e: MapMouseEvent) => {
+    if (checkMode) {
+      clearHover();
+      map.getCanvas().style.cursor = "crosshair";
+      return;
+    }
     const target = hit(e.point);
     if (!target) return clearHover();
     map.getCanvas().style.cursor = "pointer";
@@ -540,6 +562,7 @@ function start(data: MapData): void {
   // At concelho level a click (or tap) selects the concelho and zooms into it; parishes are not
   // hit-tested there, so a tap on a country-wide view never selects a tiny parish by accident.
   map.on("click", (e) => {
+    if (checkMode) return checkAt(e.lngLat.lat, e.lngLat.lng);
     const target = hit(e.point);
     if (target?.kind === "concelho") select({ kind: "concelho", code: target.c.code }, { fly: true });
     else if (target?.kind === "parish") select({ kind: "parish", dicofre: target.p.dicofre }, { tilt: true });
@@ -591,7 +614,7 @@ function start(data: MapData): void {
     countryButton.setAttribute("aria-label", ui.countryLabel);
   };
   labelCountryButton();
-  const atCountryView = () => !selection && map.getZoom() <= limits.minZoom + 0.01 && !map.getPitch() && !map.getBearing();
+  const atCountryView = () => !selection && !check && map.getZoom() <= limits.minZoom + 0.01 && !map.getPitch() && !map.getBearing();
   updateCountryButton = () => {
     countryButton.disabled = atCountryView();
   };
@@ -755,6 +778,132 @@ function start(data: MapData): void {
   if (overlays.visible.size) void syncOverlays();
   else markOverlays();
 
+  // ---- land check (landcheck.ts) -------------------------------------------------------
+  // "Check a spot" mode: a click (or Enter, at the crosshair in the middle of the map) reports on that
+  // point in the panel; the URL carries it as chk=lat,lon. The mode clears any selection (camera
+  // levelled, slab lowered), so every click lands on the flat ground; selecting a parish or concelho
+  // (search, the panel) leaves it.
+  const checkButton = $<HTMLButtonElement>("check-button");
+  const checkHint = $("check-hint");
+  const crosshair = $("check-crosshair");
+  const reader = new CellReader(HAZARD.cells, httpRanges(publicUrl(HAZARD.cells.file)));
+  const markerEl = h("div", { class: "check-marker", role: "img", "data-testid": "check-marker" });
+  const marker = new Marker({ element: markerEl, anchor: "bottom" });
+  const coarse = window.matchMedia("(pointer: coarse)");
+  const labelCheck = () => {
+    checkHint.textContent = coarse.matches ? tk.hintTouch : tk.hint;
+    markerEl.setAttribute("aria-label", tk.marker);
+  };
+  labelCheck();
+  function setCheckMode(on: boolean): void {
+    if (on === checkMode) return;
+    checkMode = on;
+    checkButton.setAttribute("aria-pressed", String(on));
+    document.body.classList.toggle("check-mode", on);
+    checkHint.hidden = !on;
+    crosshair.hidden = !on;
+    map.getCanvas().style.cursor = on ? "crosshair" : "";
+    if (on) {
+      clearHover();
+      if (selection) select(null);
+    }
+  }
+  checkButton.addEventListener("click", () => setCheckMode(!checkMode));
+  /** Reports on (lat, lon): the panel, the marker and the hash. `fly` (a link): centre the point, zoomed in. */
+  function checkAt(lat: number, lon: number, opts: { fly?: boolean } = {}): void {
+    if (selection) select(null);
+    check = { lat, lon };
+    writeHash({ chk: formatPoint(lat, lon) });
+    const dicofre = parishAtPoint(data, lon, lat);
+    const p = dicofre ? (data.parishes.get(dicofre) ?? null) : null;
+    const c = p ? (data.concelhos.get(concelhoCode(p.dicofre)) ?? null) : null;
+    panel.showCheck({ lat, lon }, p, c, p ? hazardAt(reader, lon, lat) : null, window.location.href);
+    setPanelOpen(true);
+    marker.setLngLat([lon, lat]).addTo(map);
+    if (opts.fly) {
+      const zoom = Math.max(map.getZoom(), 12);
+      map.easeTo({ center: fitCenter([lon, lat, lon, lat], zoom, fitPadding(true)), zoom, pitch: 0, bearing: 0, duration: motion(900) });
+    }
+    updateCountryButton();
+    updateCityPointers();
+  }
+  /** Drops the current check (marker and hash); the caller closes or replaces the panel. */
+  function clearCheck(): void {
+    if (!check) return;
+    check = null;
+    marker.remove();
+    writeHash({ chk: null });
+  }
+  // Keyboard: Enter on the focused map checks the point under the crosshair (the map centre); Esc,
+  // anywhere but a text field or an open dialog, leaves the mode.
+  map.getCanvas().addEventListener("keydown", (e) => {
+    if (!checkMode || e.key !== "Enter") return;
+    e.preventDefault();
+    const { lat, lng } = map.getCenter();
+    checkAt(lat, lng);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !checkMode || e.defaultPrevented) return;
+    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || document.querySelector("dialog[open]")) return;
+    setCheckMode(false);
+  });
+
+  // The wildfire hazard overlay: off unless the hash says hz=1. The pmtiles protocol is loaded on first use.
+  const hazardToggle = $<HTMLInputElement>("hazard-toggle");
+  const hazardArchive = new URL(publicUrl(HAZARD.tiles.file), window.location.href).href;
+  let hazardOn = initial.hazard;
+  let pmtilesReady: Promise<void> | null = null;
+  const ensurePmtiles = () =>
+    (pmtilesReady ??= import("pmtiles").then(({ Protocol }) => {
+      addProtocol("pmtiles", new Protocol().tile);
+    }));
+  $("hazard-ramp").replaceChildren(
+    ...HAZARD.classes.map((c) => {
+      const swatch = h("span", { class: "hazard-swatch" });
+      swatch.style.background = c.color;
+      return swatch;
+    }),
+  );
+  const hazardFailed = () => {
+    hazardOn = false;
+    hazardToggle.checked = false;
+    removeHazardLayer(map);
+    writeHash({ hz: null });
+    document.body.dataset.hazard = "";
+    status.textContent = tk.overlayError;
+    status.hidden = false;
+    setTimeout(() => (status.hidden = true), 4000);
+  };
+  async function syncHazard(): Promise<void> {
+    hazardToggle.checked = hazardOn;
+    writeHash({ hz: hazardOn ? "1" : null });
+    if (!hazardOn) {
+      removeHazardLayer(map);
+      document.body.dataset.hazard = "";
+      return;
+    }
+    try {
+      await ensurePmtiles();
+    } catch (err) {
+      console.error(err);
+      return hazardFailed();
+    }
+    if (!hazardOn) return; // switched off while the protocol loaded
+    document.body.dataset.mapIdle = "false";
+    addHazardLayer(map, hazardArchive, HAZARD.tiles.tile_size);
+    document.body.dataset.hazard = "on";
+  }
+  hazardToggle.addEventListener("change", () => {
+    hazardOn = hazardToggle.checked;
+    void syncHazard();
+  });
+  map.on("error", (e) => {
+    if ((e as { sourceId?: string }).sourceId !== HAZARD_SOURCE || !hazardOn) return;
+    console.error(e.error);
+    hazardFailed();
+  });
+  if (hazardOn) void syncHazard();
+
   // ---- theme ------------------------------------------------------------------
   // A theme switch diffs the new basemap with the app's layers (rebuilt in the new palette) into the
   // current style, which keeps the sources, their feature state, the filters and the camera. If
@@ -765,6 +914,7 @@ function start(data: MapData): void {
     if (!map.getSource(PARISH_SOURCE)) addLayers(map, data, filter, limits.levelZoom, PALETTES[theme], slabs.state());
     if (overlayData && overlays.loaded && !map.getSource(overlaySource(CATEGORY_IDS[0]))) addOverlays(map, overlayData, overlays, filter, limits.levelZoom, PALETTES[theme]);
     setPatternImages(map, PALETTES[theme]);
+    if (hazardOn && pmtilesReady) addHazardLayer(map, hazardArchive, HAZARD.tiles.tile_size); // not in appLayers (layers.ts)
     slabs.restore();
     if (citiesData) (map.getSource(CITY_SOURCE) as GeoJSONSource | undefined)?.setData(citiesData);
     clearHover();
@@ -786,7 +936,9 @@ function start(data: MapData): void {
     ({ allIndex, pnctIndex } = buildIndexes());
     search.close();
     clearHover();
+    labelCheck();
     if (selection) select(selection);
+    else if (check) checkAt(check.lat, check.lon);
   };
 
   // ---- 3D setting ------------------------------------------------------------------
@@ -817,6 +969,9 @@ function start(data: MapData): void {
     else if (s.concelho) select({ kind: "concelho", code: s.concelho }, { fly, animate: false });
   };
   restore(!initial.hasMapView);
+  const initialCheck = initial.parish || initial.concelho ? null : parsePoint(initial.check);
+  if (initialCheck) checkAt(initialCheck.lat, initialCheck.lon, { fly: true });
+  else if (initial.check) writeHash({ chk: null });
   // A selection from the link gets its slab at once; a tilted view (map=…/bearing/pitch) without a
   // 3D selection is levelled.
   if (selection && is3d()) {
@@ -834,8 +989,19 @@ function start(data: MapData): void {
       overlays.visible = new Set(visible);
       void syncOverlays();
     }
+    if (s.hazard !== hazardOn) {
+      hazardOn = s.hazard;
+      void syncHazard();
+    }
     const current = selection?.kind === "parish" ? selection.dicofre : selection?.kind === "concelho" ? selection.code : null;
     if ((s.parish ?? s.concelho) !== current) restore(true, s);
+    const point = s.parish || s.concelho ? null : parsePoint(s.check);
+    if (point && (!check || formatPoint(point.lat, point.lon) !== formatPoint(check.lat, check.lon))) checkAt(point.lat, point.lon, { fly: true });
+    else if (!point && check && !s.parish && !s.concelho) {
+      clearCheck();
+      panel.close();
+      setPanelOpen(false);
+    }
   });
 
   // The map is usable once the parishes and concelhos are drawn; basemap labels may still be loading.

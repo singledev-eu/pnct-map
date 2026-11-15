@@ -7,6 +7,8 @@
  *   #...&pa=rnap,natura             protected-areas overlays switched on (category ids)
  *   #...&op=arrendar&t=casas&land=urbano   property-search selector (see prefs.ts)
  *   #list=160763,0808               a shared shortlist (shortlist.ts), shown apart from the viewer's own
+ *   #chk=39.92681,-8.15187          a land check at lat,lon (landcheck.ts); /check?lat=..&lon=.. links land here
+ *   #...&hz=1                       the wildfire hazard overlay switched on
  */
 export const MAP_HASH_KEY = "map";
 
@@ -22,6 +24,10 @@ export interface HashState {
   bearing: number;
   /** A shared shortlist from `list=`, raw (shortlist.ts parseCodes validates it), or null. */
   list: string | null;
+  /** A land check point from `chk=`, raw (landcheck.ts parsePoint validates it), or null. */
+  check: string | null;
+  /** The wildfire hazard overlay (`hz=1`). */
+  hazard: boolean;
 }
 
 function params(): URLSearchParams {
@@ -41,10 +47,12 @@ export function readHash(): HashState {
     hasMapView: p.has(MAP_HASH_KEY),
     bearing: Number(p.get(MAP_HASH_KEY)?.split("/")[3]) || 0,
     list: p.get("list"),
+    check: p.get("chk"),
+    hazard: p.get("hz") === "1",
   };
 }
 
-export function writeHash(update: Partial<Record<"f" | "c" | "d" | "focus" | "pnct" | "pa" | "op" | "t" | "land" | "list", string | null>>): void {
+export function writeHash(update: Partial<Record<"f" | "c" | "d" | "focus" | "pnct" | "pa" | "op" | "t" | "land" | "list" | "chk" | "hz", string | null>>): void {
   const p = params();
   for (const [k, v] of Object.entries(update)) {
     if (v === null || v === undefined || v === "") p.delete(k);

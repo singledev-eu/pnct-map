@@ -614,3 +614,33 @@ export function applyFilter(map: MapLibreMap, filter: FilterState, level: number
   map.setPaintProperty(CONCELHO_LINE, "line-opacity", lineOpacity(filter.district, 0.6, 0.2));
   map.setPaintProperty(CONCELHO_HIGHLIGHT, "line-opacity", concelhoHighlightOpacity(filter, level));
 }
+
+// ---- land check: the wildfire hazard overlay (landcheck.ts, docs/land-check/) -----------------
+
+export const HAZARD_SOURCE = "landcheck-hazard";
+export const HAZARD_LAYER = "landcheck-hazard";
+
+/**
+ * Adds the hazard raster (a PMTiles archive through the pmtiles:// protocol, registered by main.ts)
+ * above the parish fills and below the protected-area overlays and every line, like the protected
+ * overlays. Not part of appLayers: main.ts re-adds it on style.load after a theme switch.
+ */
+export function addHazardLayer(map: MapLibreMap, archiveUrl: string, tileSize: number): void {
+  if (!map.getSource(HAZARD_SOURCE)) map.addSource(HAZARD_SOURCE, { type: "raster", url: `pmtiles://${archiveUrl}`, tileSize });
+  if (map.getLayer(HAZARD_LAYER)) return;
+  const before = map.getStyle().layers.find((l) => l.id.startsWith("protected-"))?.id ?? (map.getLayer(PARISH_LINE) ? PARISH_LINE : undefined);
+  map.addLayer(
+    {
+      id: HAZARD_LAYER,
+      type: "raster",
+      source: HAZARD_SOURCE,
+      // Nearest: the classes stay crisp past the archive's z11 instead of blending into new colours.
+      paint: { "raster-opacity": 0.65, "raster-resampling": "nearest", "raster-fade-duration": 0 },
+    },
+    before,
+  );
+}
+
+export function removeHazardLayer(map: MapLibreMap): void {
+  if (map.getLayer(HAZARD_LAYER)) map.removeLayer(HAZARD_LAYER);
+}

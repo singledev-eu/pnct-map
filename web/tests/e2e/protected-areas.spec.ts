@@ -384,7 +384,8 @@ test("the map attribution and the About panel credit ICNF and EEA", async ({ pag
   await page.goto("/");
   await waitForParishes(page);
   const attribution = page.locator(".maplibregl-ctrl-attrib");
-  await expect(attribution.getByRole("link", { name: /ICNF/ })).toHaveAttribute("href", /icnf\.pt/);
+  // Two ICNF links: RNAP here, and the wildfire hazard of the land check (landcheck.spec.ts).
+  await expect(attribution.getByRole("link", { name: /RNAP © ICNF/ })).toHaveAttribute("href", /icnf\.pt/);
   await expect(attribution.getByRole("link", { name: /EEA/ })).toHaveAttribute("href", /eea\.europa\.eu/);
   await page.locator("#about-open").click();
   const about = page.getByTestId("about-protected");

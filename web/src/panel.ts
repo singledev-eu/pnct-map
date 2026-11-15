@@ -1,10 +1,12 @@
 import { concelhoCard, concelhoDetails } from "./concelho";
+import { contrast } from "./contrast";
 import type { Concelho, Parish } from "./data";
 import { LAND_FILTERS, type Operation, type PropertyType, type SearchOptions } from "./idealista";
+import { BLOCKED, formatPoint, HAZARD, hazardClass, type HazardResult } from "./landcheck";
 import { getConcelhoLinks, getLinks, type PropertyLink } from "./links";
 import { credits, loadProtection, panelAreas, type Protection, type ProtectionData } from "./protected";
 import { attachSheet, setSheetState } from "./sheet";
-import { formatPct, sheet, t, ui } from "./strings";
+import { formatDate, formatNumber, formatPct, lang, sheet, t, tk, ui } from "./strings";
 
 type Child = Node | string | null | undefined | false;
 
@@ -93,7 +95,32 @@ function sheetCredit(): HTMLElement {
     creditLink("https://www.openstreetmap.org/copyright", "OpenStreetMap"),
     ` · ${t.creditLead} `,
     ...credits().flatMap((c, i) => [i ? " · " : "", creditLink(c.url, c.label.replace(/ /g, "\u00a0"))]),
+    ` · ${tk.creditLead} `,
+    creditLink(HAZARD.url, "©\u00a0ICNF"),
   );
+}
+
+/** "39.92681° N, 8.15187° W" for mainland-side points; the signed pair elsewhere. */
+function coords(lat: number, lon: number): string {
+  if (lat < 0 || lon > 0) return formatPoint(lat, lon);
+  return tk.coords(formatNumber(lat, 5), formatNumber(-lon, 5));
+}
+
+/** The hazard class as a badge in ICNF's colour, with black or white text, whichever reads better. */
+function hazardBody(result: HazardResult): Child[] {
+  if (result.status === "error") return [h("p", { class: "muted", "data-testid": "check-hazard", "data-status": "error" }, tk.hazardError)];
+  const cls = hazardClass(result.value);
+  if (!cls) {
+    return [
+      h("p", {}, h("span", { class: "badge badge-other", "data-testid": "check-hazard", "data-status": "ok", "data-value": "0" }, tk.hazardNone)),
+      h("p", { class: "muted" }, tk.hazardNoneNote),
+    ];
+  }
+  const ink = contrast(cls.color, "#000000") >= contrast(cls.color, "#ffffff") ? "#000000" : "#ffffff";
+  const badge = h("span", { class: "badge hazard-badge", "data-testid": "check-hazard", "data-status": "ok", "data-value": String(cls.value) }, tk.hazardClass(cls[lang], cls.value));
+  badge.style.setProperty("--hazard-bg", cls.color);
+  badge.style.setProperty("--hazard-ink", ink);
+  return [h("p", {}, badge)];
 }
 
 /** "Under protection: X% (RNAP Y%, Natura Z%)" and the areas covering at least 0.5% (protection.json). */
@@ -165,13 +192,14 @@ export class Panel {
     b.title = on ? ui.shortlist.unstar : ui.shortlist.star;
   }
 
-  private open(title: string, kicker: string, code: string, ...body: Child[]): void {
+  /** `code`: the starrable parish/concelho, or null (the land check has no star). */
+  private open(title: string, kicker: string, code: string | null, ...body: Child[]): void {
     const star = h("button", { type: "button", class: "panel-star", "data-testid": "panel-star" });
     star.addEventListener("click", () => {
-      this.cb.onToggleStar?.(code);
+      if (code) this.cb.onToggleStar?.(code);
       this.refreshStar();
     });
-    this.starButton = star;
+    this.starButton = code ? star : null;
     this.starred = code;
     const close = h("button", { class: "panel-close", type: "button", "aria-label": ui.closePanel, title: ui.closePanel }, "×");
     close.addEventListener("click", () => this.cb.onClose());
@@ -183,8 +211,9 @@ export class Panel {
       credits.setAttribute("aria-expanded", String(open));
       this.root.classList.toggle("sheet-credit-open", open);
     });
-    const header = h("header", { class: "panel-header" }, h("div", {}, h("p", { class: "kicker" }, kicker), h("h2", { "data-testid": "panel-title" }, title)), h("div", { class: "panel-actions" }, ...(this.cb.onToggleStar ? [star] : []), credits, close));
+    const header = h("header", { class: "panel-header" }, h("div", {}, h("p", { class: "kicker" }, kicker), h("h2", { "data-testid": "panel-title" }, title)), h("div", { class: "panel-actions" }, ...(this.cb.onToggleStar && code ? [star] : []), credits, close));
     this.root.replaceChildren(handle, header, sheetCredit(), h("div", { class: "panel-body" }, ...body));
+    delete this.root.dataset.check; // showCheck sets it after opening
     this.root.classList.remove("sheet-credit-open");
     // A new selection in an open sheet keeps its height; a sheet that was closed opens at half.
     setSheetState(this.root, handle, !this.root.hidden && this.root.dataset.sheet === "full" ? "full" : "half");
@@ -199,6 +228,7 @@ export class Panel {
     this.renderToken++;
     this.root.hidden = true;
     this.root.replaceChildren();
+    delete this.root.dataset.check;
     document.body.classList.remove("panel-open");
   }
 
@@ -344,5 +374,90 @@ export class Panel {
       whole ? null : parishes,
       whole ? this.propertySection((opts) => getConcelhoLinks(c, opts)) : null,
     );
+  }
+
+  /**
+   * The land check report for a point (landcheck.ts): the parish and PNCT status at once, the hazard
+   * class when `hazard` resolves. `p` and `c` are null outside mainland Portugal. `link` is the
+   * shareable URL of this check.
+   */
+  showCheck(point: { lat: number; lon: number }, p: Parish | null, c: Concelho | null, hazard: Promise<HazardResult> | null, link: string): void {
+    this.renderToken++;
+    this.refreshLinks = null;
+
+    const field = h("input", { type: "text", readonly: "", class: "check-link", value: link, "aria-label": tk.linkLabel, "data-testid": "check-link" });
+    const copy = h("button", { type: "button", class: "button button-small", "data-testid": "check-copy" }, tk.copyLink);
+    const copyStatus = h("span", { class: "muted check-copy-status", role: "status" });
+    copy.addEventListener("click", async () => {
+      field.select();
+      try {
+        await navigator.clipboard.writeText(field.value);
+        copyStatus.textContent = tk.copied;
+      } catch {
+        field.focus(); // the link is selected for a manual copy
+        copyStatus.textContent = tk.copyManually;
+      }
+    });
+    const share = h("div", { class: "check-share" }, field, copy, copyStatus);
+    const where = h("p", { class: "muted check-coords", "data-testid": "check-coords" }, coords(point.lat, point.lon));
+
+    const sources = h(
+      "section",
+      { class: "check-sources", "data-testid": "check-sources" },
+      h("h3", {}, tk.sourcesHeading),
+      h(
+        "ul",
+        {},
+        p
+          ? h(
+              "li",
+              {},
+              creditLink(HAZARD.download_url, tk.sourceHazard(HAZARD.title[lang], formatDate(HAZARD.reference_date), formatDate(HAZARD.fetched))),
+              " (",
+              creditLink(HAZARD.licence_url, HAZARD.licence[lang]),
+              ")",
+            )
+          : null,
+        h("li", {}, tk.sourceParish),
+      ),
+      h("p", { class: "disclaimer check-disclaimer", "data-testid": "check-disclaimer" }, tk.disclaimer),
+    );
+
+    if (!p || !c || !hazard) {
+      this.open(tk.outsideTitle, tk.kicker, null, where, h("p", { "data-testid": "check-outside" }, tk.outsideBody), share, sources);
+      this.root.dataset.check = "outside";
+      return;
+    }
+
+    const openParish = h("button", { type: "button", class: "link-button" }, tk.openParish);
+    openParish.addEventListener("click", () => this.cb.onSelectParish(p.dicofre));
+    const pnct = h(
+      "section",
+      { "data-testid": "check-pnct", "data-pnct": String(p.pnct) },
+      h("h3", {}, tk.pnctHeading),
+      h("p", {}, h("span", { class: `badge ${p.pnct ? "badge-pnct" : "badge-other"}` }, p.pnct ? tk.pnctYes : tk.pnctNo)),
+      facts([
+        [tk.factParish, p.freguesia],
+        [ui.factConcelho, p.concelho],
+        [ui.factDistrito, p.distrito],
+      ]),
+      openParish,
+    );
+
+    const hazardSlot = h("div", {}, h("p", { class: "muted" }, tk.checking));
+    hazard.then((result) => {
+      if (hazardSlot.isConnected) hazardSlot.replaceChildren(...hazardBody(result).filter((n): n is Node => !!n));
+    });
+    const hazardSection = h("section", { class: "check-hazard" }, h("h3", {}, tk.hazardHeading), hazardSlot, h("p", { class: "disclaimer" }, tk.hazardNote));
+
+    const blocked = BLOCKED.map((id) => tk.blocked[id] ?? id);
+    const notCovered = blocked.length ? h("p", { class: "muted check-not-covered", "data-testid": "check-not-covered" }, tk.notCovered(blocked.join("; "))) : null;
+
+    const property = p.pnct
+      ? this.propertySection((opts) => getLinks(p, c, opts))
+      : h("section", { "data-testid": "property-search" }, h("h3", {}, ui.propertySearch), h("p", { class: "muted" }, ui.notPnctParish));
+
+    this.open(p.freguesia, tk.kicker, null, where, share, pnct, hazardSection, notCovered, property, sources);
+    this.root.dataset.check = "inside";
   }
 }
