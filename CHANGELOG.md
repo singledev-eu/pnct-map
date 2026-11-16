@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.11.0 (2026-11-16)
+
+### For users
+
+- **PNCT now follows the law:** the map's PNCT definition is the annex of Portaria 208/2017 plus verified amendments (none found; [data/sources/pnct-legal-status.md](data/sources/pnct-legal-status.md)). 1,858 parishes are shown as PNCT.
+- **Disputed parishes:** 5 parishes where the Portaria and the IEFP list (2026-02-04) disagree get their own amber hatch and dashed outline, never the PNCT colour:
+  - Dem (Caminha) and São Bento (Porto de Mós): in the Portaria, missing from the IEFP list;
+  - Raiva, Pedorido and Paraíso (Castelo de Paiva): on the IEFP list, not in the Portaria (added for EU funds by CIC Deliberação 20/2018).
+
+  The tooltip, panel and land check say "Sources disagree" with links to the three documents, the concelho panel lists them, and the legend shows the source and the date checked. Castelo de Paiva now counts 1 PNCT parish (Real), not 4.
+- **Insight landing paths:** `/i/<insight_id>` opens the normal map and keeps the path, so each Insights post can be counted.
+
+### Infrastructure
+
+- **PNCT Insights (`insights/`):** twice-weekly data cards (1080×1080, EN and PT) drafted to Telegram: `python -m insights fetch|prepare|list|render|next`. 26 insights, 25 ready; one blocked for lack of per-parish visit data. Sanity checks fail loudly, every insight has a hand-computed fixture test, totals use the legal definition and nothing names a disputed parish. Telegram calls are only `sendPhoto` and `sendMessage`. A Pi systemd timer (Tue/Fri 09:00 Lisbon) is in `insights/deploy/`, not installed yet.
+- **`data/pnct_status.csv` + `scripts/pnct_status.py`:** the disputed parishes, each with its legal status, a reason and ≥2 sources, validated in the pipeline; `web/data/pnct-status.json` carries them to the map.
+- **Cloudflare Web Analytics (optional):** cookieless beacon injected at build time only when `CF_WEB_ANALYTICS_TOKEN` is set (README, "Analytics"). e2e builds leave it out.
+
 ## 0.10.0 (2026-11-15)
 
 ### For users
