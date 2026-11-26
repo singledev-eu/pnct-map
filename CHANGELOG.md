@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+### For users
+
+- **Nearby services:** every parish and concelho panel has a "Nearby services" block with the nearest SNS health centre, SNS emergency service, supermarket, primary (1.º ciclo) and secondary school, pharmacy and train station: the name, the road distance and the drive time ("Health centre · Centro de Saúde de Penamacor · 20 km · 25 min by car"). Parishes are measured from their main village or town, concelhos from their seat, and the block says which. Each name shows the place on the map; "OSM ↗" opens it in OpenStreetMap.
+- **In the land check too:** the same rows for any clicked point, from a 1 km grid (the road nearest the spot). Where no road is within 1 km, the row gives the straight-line distance to the nearest one and says so.
+- **Services overlay:** an optional legend toggle shows every facility as a dot coloured by category, faded out at the country view, with a "?" explainer (what the numbers mean, from where, by car without traffic, the data dates, not travel advice; in an emergency, call 112). `sv=1` in the URL.
+- New credits in the map attribution, the phone sheet and About: SNS emergency services (CC BY 4.0); places from OpenStreetMap (ODbL).
+
+### Infrastructure
+
+- **`make services` / `make services-fetch`:** a pinned Geofabrik Portugal extract, OSM tag rules with tests (`scripts/services_config.py`), the curated SNS emergency list (`data/services/sns_urgencias.csv`), a car graph built in Python with pyosmium (OSRM-like speeds, `maxspeed`, oneways, access, tracks at 10 km/h), one `scipy` multi-source Dijkstra per category with the road distance along the fastest path. Outputs: `web/data/services.json` (lazy, content-hashed, 184 KB brotli), `web/data/services.meta.json`, the gitignored grid `web/public/services/` (419 files, 2.2 MiB, checked by `check_landcheck.mjs` before deploys, cached as immutable). New dependencies: `osmium`, `scipy`.
+- Validated against the public OSRM demo on 40 trips (10 PNCT parishes × 4 categories): same facility, within 0.7 km and 1 min. Initial load unchanged (perf: parishes 7.2 s, ready 10.1 s on the throttled phone profile, before and after).
+
 ## 0.11.0 (2026-11-16)
 
 ### For users

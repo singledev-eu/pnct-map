@@ -74,6 +74,8 @@ uv run make all      # download (checksum-verified) → parse → match → geo 
 
 `make landcheck` downloads the ICNF wildfire hazard GeoTIFF (19.5 MB, SHA-256 checked) and builds the land check files into the gitignored `web/public/landcheck/` (overlay tiles and the lookup grid chunks, 15.8 + 13.5 MiB in 3,517 files). A deploy refuses to run without them ([docs/land-check/HOSTING.md](docs/land-check/HOSTING.md)).
 
+`make services` builds the nearby services ([docs/nearby-services/DATA.md](docs/nearby-services/DATA.md)): it downloads the dated Geofabrik Portugal extract (430 MB, SHA-256 pinned) and the SNS emergency-service list into `data/external/services/`, classifies OSM facilities, builds a car road graph in Python (pyosmium + scipy, no routing server), runs one multi-source Dijkstra per category and writes `web/data/services.json` (committed, loaded on first use), `web/data/services.meta.json` and the land check grid in the gitignored `web/public/services/` (419 files, 2.2 MiB; deploys refuse without it). About 3 minutes and 5.5 GiB of RAM the first time, 1.5 minutes with the parsed roads cached. `make services-fetch` re-downloads.
+
 `make download` fetches two sources. Each download is checked against a SHA-256 before it is kept:
 
 - The CAOP 2025 Continente GeoPackage (a 106 MB zip, unpacked) into `data/external/`. It downloads only the 2025 edition.
@@ -102,6 +104,8 @@ The concelho step fetches the INE indicators once into `data/external/ine/` (git
 | `make protected` | `scripts/build_protected.py` → `web/data/protected.topo.json` (display overlay), `web/data/protection.json` (shares per DICOFRE/DICO), `web/data/protected.meta.json` (categories, bundled), `data/processed/protected_sites.csv` |
 | `make concelhos-fetch` | `scripts/fetch_ine.py` → `data/external/ine/` plus `fetch.json` (INE population estimates, ageing index, Censuses 2011/2021) |
 | `make concelhos` | `scripts/build_concelhos.py` → `data/concelhos.json` (with the curators' notes) and `web/data/concelhos.json` (population and contacts per DICO, loaded on the first concelho card) |
+| `make services-fetch` | `scripts/fetch_services.py` → `data/external/services/` (Geofabrik extract, SHA-256 and MD5 checked; SNS list with its SHA-256 and date in `fetch.json`) |
+| `make services` | `scripts/build_services.py` → `web/data/services.json` (facilities and per-parish/concelho results), `web/data/services.meta.json` (bundled), `web/public/services/grid-<sha8>/` (gitignored land check grid), `data/services/{build_report.json,facilities.csv,parish_points.csv}` |
 | `make test` | `pytest` (`tests/test_pipeline.py`, `tests/test_shapes.py`, `tests/test_outline.py`, `tests/test_protected.py`, `tests/test_fetch_protected.py`, `tests/test_concelhos.py`) |
 | `make web` | `npm ci && npm test && npm run build` in `web/` → static `web/dist/` |
 | `make e2e` | `npm ci`, builds, then runs the Playwright e2e suite (`web/tests/e2e`). Screenshots go to `web/test-results/screenshots/` (ignored by git) |
@@ -174,6 +178,7 @@ This text matches the About panel on the site, plus the concelho card's own sour
 - **Basemap:** [OpenFreeMap](https://openfreemap.org), © OpenMapTiles, © OpenStreetMap contributors (ODbL).
 - **Population (concelho card):** INE, population estimates 2025 and Censuses 2011/2021, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Câmara contacts are from each câmara's website. Both are credited in the card itself.
 - **Protected areas:** RNAP © ICNF (reuse terms not confirmed yet), fetched 2026-10-17; Natura 2000 end-2024 © EEA, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The overlay and the "under protection" shares are an indicator, not a verdict: check the municipal PDM. Details and licence status: [data/ATTRIBUTION.md](data/ATTRIBUTION.md).
+- **Nearby services:** places from OpenStreetMap (© OpenStreetMap contributors, ODbL), extract of 2026-11-25; SNS emergency services from the SNS transparency portal ("Caracterização das Valências de Urgência", data of May 2023, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) per the ACSS record on dados.gov.pt), each placed on its OSM building (`data/services/sns_urgencias.csv`). Drive times are computed by this project on OpenStreetMap roads, without traffic: estimates, not travel advice. Details: [docs/nearby-services/DATA.md](docs/nearby-services/DATA.md).
 - **Unofficial tool.** Always confirm eligibility with the official sources. This project is not affiliated with Idealista.
 
 | Source | Edition | URL | Downloaded |
@@ -192,6 +197,7 @@ The code is under the MIT licence (see `LICENSE`). The data keeps its own licenc
 - `docs/ROADMAP.md`: what's done, what's next, the backlog, past decisions and open items.
 - `CHANGELOG.md`: releases.
 - `CLAUDE.md`: starting context for Claude Code sessions (commands, invariants, conventions).
+- `docs/nearby-services/DATA.md`: the nearby-services sources, tag rules, routing and validation.
 - `docs/i18n-glossary.md`: the EN → PT terms and the European-Portuguese conventions for UI text.
 - `data/ATTRIBUTION.md`: every data source with its licence status.
 - `docs/reports/`: one report per task. The list below covers the early ones; [docs/ROADMAP.md](docs/ROADMAP.md) links every report since.

@@ -1,6 +1,6 @@
 # Roadmap
 
-Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-11-15.
+Live at https://pnct.singledev.eu · repo https://github.com/singledev-eu/pnct-map · last updated 2026-11-26.
 
 ## Done
 
@@ -50,13 +50,14 @@ Click any point of mainland Portugal for a short report for land buyers. Data fi
 | REN (Reserva Ecológica Nacional) | **Blocked**: DGT's SRUP WFS was down on 2026-11-15 (database error), and the licence conflicts (dados.gov.pt says CC BY, SNIT says consultation only). Next: written terms from DGT, then page the five regional WFS. |
 | Fixed broadband / fibre (ANACOM) | **Blocked**: only a WMS view service, no query, no download, no licence. Next: ask ANACOM for the address-level or BGRI file under Lei 26/2016. |
 
+**Nearby services: on branch `nearby-services`, not released** (night task 11, 2026-11-26; [report](reports/night/11-nearby-services.md), [data](nearby-services/DATA.md)). Nearest SNS health centre, SNS emergency service, supermarket, primary and secondary school, pharmacy and train station, with road distance and drive time, in the parish/concelho panels and the land check (1 km grid), plus an overlay. Routing in Python (pyosmium + scipy), no server. Left: bus stops/public transport, the type of emergency service (SUB/SUMC/SUP: the SNS export's field is mis-joined), a population-weighted parish point (INE BGRI 2021 not downloadable on 2026-11-26), a newer SNS list.
+
 Later candidates, each needing its own Phase 0 data check (source, licence, size, CRS):
 
 - Burnt-area history (ICNF annual burnt areas, 1975 onwards).
 - Flood zones: APA ARPSI (Áreas de Risco Potencial Significativo de Inundação) and flood hazard/risk maps.
 - RAN (Reserva Agrícola Nacional).
 - Radon (APA / LNEG indoor radon or geogenic potential).
-- Travel time to the nearest SNS emergency service, health centre, school and train station.
 - Mining and lithium concessions and prospecting areas (DGEG).
 - Wind and solar farms, existing and licensed (DGEG, LNEG PAER acceleration areas).
 - High-voltage lines (REN, the grid operator).
@@ -73,7 +74,7 @@ Jobs on the Raspberry Pi (`prazo-pi`, next to the Prazo bot and Postgres), under
 Later, not built:
 
 - Automatic rebuild and preview deploy from the Pi. Only worth it once several datasets refresh regularly; today one dataset changes rarely, and the laptop deploy runs the full suite.
-- Travel-time precomputation with Valhalla (to SNS emergency services, health centres, schools and stations, for the land check), as a periodic batch job.
+- Travel-time precomputation with Valhalla: not needed for now. Nearby services (branch `nearby-services`) computes the drive times in Python on the laptop in ~3 minutes (`make services`); a Pi job would only make sense to refresh the OSM extract on a schedule.
 - An ADS-B receiver (RTL-SDR) feeding adsb.lol and OpenSky.
 
 ## Next
