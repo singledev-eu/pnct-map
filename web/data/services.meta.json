@@ -1,0 +1,83 @@
+{
+  "grid": {
+    "dir": "services/grid-37e2a144",
+    "files": 419,
+    "bytes": 2341319,
+    "tree_sha256": "37e2a14484c3eefad5f1930bb2a7b5444500d3e799fcf8d28846f0c2d9a17fa1",
+    "crs": "EPSG:3763",
+    "origin": [
+      -120000,
+      277000
+    ],
+    "cell": 1000,
+    "width": 283,
+    "height": 578,
+    "chunk": 16,
+    "chunk_cols": 18,
+    "chunk_rows": 37,
+    "present": "f000e0df83ff0ffefff8ffc3ff0fff1ffc1ff07fc0ff01ff07fe1ff87fe0ff81ff07ff1ffc3ff0ffe0ffc1ff07ff1ffcfff0ffc3ff0fff1ff87fa0ff01fe1ff83fe07f80ff01fe03f80fe03f80ff00ff01000000",
+    "layout": "uint16le[category][facility,seconds,metres/10][row][col]",
+    "no_value": 65535
+  },
+  "categories": [
+    {
+      "id": "health",
+      "en": "Health centre",
+      "pt": "Centro de saúde",
+      "source": "osm"
+    },
+    {
+      "id": "emergency",
+      "en": "Hospital emergency",
+      "pt": "Urgência hospitalar",
+      "source": "sns"
+    },
+    {
+      "id": "supermarket",
+      "en": "Supermarket",
+      "pt": "Supermercado",
+      "source": "osm"
+    },
+    {
+      "id": "school1",
+      "en": "Primary school",
+      "pt": "Escola do 1.º ciclo",
+      "source": "osm"
+    },
+    {
+      "id": "school3",
+      "en": "Secondary school",
+      "pt": "Escola secundária",
+      "source": "osm"
+    },
+    {
+      "id": "pharmacy",
+      "en": "Pharmacy",
+      "pt": "Farmácia",
+      "source": "osm"
+    },
+    {
+      "id": "station",
+      "en": "Train station",
+      "pt": "Estação de comboio",
+      "source": "osm"
+    }
+  ],
+  "sources": {
+    "osm": {
+      "date": "2026-11-25",
+      "url": "https://download.geofabrik.de/europe/portugal/portugal-261125.osm.pbf",
+      "licence": "ODbL 1.0",
+      "licence_url": "https://www.openstreetmap.org/copyright"
+    },
+    "sns": {
+      "period": "2023-05",
+      "fetched": "2026-11-26",
+      "url": "https://transparencia.sns.gov.pt/explore/dataset/caracterizacao-das-valencias-de-urgencia/",
+      "dados_url": "https://dados.gov.pt/pt/datasets/caracterizacao-das-valencias-de-urgencia-1/",
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  },
+  "snap_max_m": 1000
+}

@@ -1,0 +1,1687 @@
+{
+ "osm_date": "2026-11-25",
+ "osm_sha256": "ad86a158145908bf1634d00c6633e01f0dbf3723cef1551b3b35b2294ff81952",
+ "facilities": {
+  "health": 953,
+  "emergency": 84,
+  "supermarket": 3245,
+  "school1": 3702,
+  "school3": 754,
+  "pharmacy": 2496,
+  "station": 433
+ },
+ "merged_duplicates": {
+  "health": 9,
+  "emergency": 0,
+  "supermarket": 31,
+  "school1": 12,
+  "school3": 5,
+  "pharmacy": 17,
+  "station": 2
+ },
+ "outside_mainland": 58,
+ "stations_off_active_rail": 37,
+ "sns_missing_from_list": [],
+ "unnamed": {
+  "health": 0,
+  "emergency": 0,
+  "supermarket": 161,
+  "school1": 0,
+  "school3": 0,
+  "pharmacy": 207,
+  "station": 1
+ },
+ "graph": {
+  "ways": 1170745,
+  "nodes": 14636361,
+  "edges": 29093325,
+  "main_component_nodes": 14478499
+ },
+ "points": {
+  "parish_method": {
+   "place-city": 6,
+   "place-hamlet": 5,
+   "place-named": 2972,
+   "place-neighbourhood": 2,
+   "place-suburb": 2,
+   "place-town": 16,
+   "place-village": 44,
+   "point-on-surface": 2
+  },
+  "concelho_method": {
+   "seat": 278
+  },
+  "grid_cells": 90708
+ },
+ "snaps": {
+  "parish_over_limit": [],
+  "concelho_over_limit": [],
+  "grid_over_limit": 1552,
+  "parish_snap_m_p50_p95_max": [
+   21,
+   84,
+   685
+  ]
+ },
+ "discarded_snaps": {
+  "health": [],
+  "emergency": [],
+  "supermarket": [
+   {
+    "name": "",
+    "ref": "n4392549131",
+    "snap_m": 3130
+   },
+   {
+    "name": "Kikas e Tânia",
+    "ref": "n4097074839",
+    "snap_m": 4873
+   },
+   {
+    "name": "Marília",
+    "ref": "n4392549124",
+    "snap_m": 3352
+   }
+  ],
+  "school1": [
+   {
+    "name": "EB1 de Ilha da Culatra",
+    "ref": "w1119630999",
+    "snap_m": 3332
+   },
+   {
+    "name": "Escola Básica da Ilha da Culatra",
+    "ref": "w659877577",
+    "snap_m": 3471
+   }
+  ],
+  "school3": [],
+  "pharmacy": [],
+  "station": []
+ },
+ "sizes": {
+  "services_json_bytes": 880885,
+  "grid_files": 419,
+  "grid_bytes": 2341319
+ },
+ "validation": {
+  "detour_p5_p50_p95": {
+   "health": [
+    1.11,
+    1.38,
+    1.98
+   ],
+   "emergency": [
+    1.14,
+    1.4,
+    1.99
+   ],
+   "supermarket": [
+    1.1,
+    1.36,
+    2.01
+   ],
+   "school1": [
+    1.12,
+    1.42,
+    2.14
+   ],
+   "school3": [
+    1.12,
+    1.39,
+    1.99
+   ],
+   "pharmacy": [
+    1.09,
+    1.36,
+    2.02
+   ],
+   "station": [
+    1.14,
+    1.38,
+    1.9
+   ]
+  },
+  "flagged": [
+   {
+    "cat": "health",
+    "parish": "031009",
+    "name": "Gondoriz",
+    "facility": "Centro de Saúde de Terras de Bouro",
+    "line_km": 2.0,
+    "road_km": 5.9,
+    "min": 9,
+    "ratio": 2.94
+   },
+   {
+    "cat": "health",
+    "parish": "040121",
+    "name": "União das freguesias de Agrobom, Saldonha e Vale Pereiro",
+    "facility": "Centro de Saúde de Alfândega da Fé",
+    "line_km": 7.1,
+    "road_km": 18.4,
+    "min": 22,
+    "ratio": 2.6
+   },
+   {
+    "cat": "health",
+    "parish": "040314",
+    "name": "Pombal",
+    "facility": "Centro de Saúde de Carrazeda de Ansiães",
+    "line_km": 5.8,
+    "road_km": 16.3,
+    "min": 15,
+    "ratio": 2.81
+   },
+   {
+    "cat": "health",
+    "parish": "040920",
+    "name": "União das freguesias de Felgueiras e Maçores",
+    "facility": "UCSP Torre de Moncorvo",
+    "line_km": 3.6,
+    "road_km": 11.9,
+    "min": 14,
+    "ratio": 3.29
+   },
+   {
+    "cat": "health",
+    "parish": "050327",
+    "name": "Verdelhos",
+    "facility": "Centro de Saúde de Manteigas",
+    "line_km": 6.6,
+    "road_km": 16.4,
+    "min": 17,
+    "ratio": 2.5
+   },
+   {
+    "cat": "health",
+    "parish": "060606",
+    "name": "União das freguesias de Cadafaz e Colmeal",
+    "facility": "Centro de Saúde de Góis",
+    "line_km": 5.6,
+    "road_km": 15.3,
+    "min": 23,
+    "ratio": 2.75
+   },
+   {
+    "cat": "health",
+    "parish": "061304",
+    "name": "Lorvão",
+    "facility": "Centro de Saúde de Penacova",
+    "line_km": 2.9,
+    "road_km": 7.5,
+    "min": 11,
+    "ratio": 2.56
+   },
+   {
+    "cat": "health",
+    "parish": "090716",
+    "name": "Faia",
+    "facility": "Extensão de Saúde de S. Miguel",
+    "line_km": 5.6,
+    "road_km": 14.9,
+    "min": 17,
+    "ratio": 2.66
+   },
+   {
+    "cat": "health",
+    "parish": "091221",
+    "name": "Teixeira",
+    "facility": "Extensão de Saúde de Loriga",
+    "line_km": 9.2,
+    "road_km": 24.9,
+    "min": 24,
+    "ratio": 2.7
+   },
+   {
+    "cat": "health",
+    "parish": "091307",
+    "name": "Fiães",
+    "facility": "Extensão de Saúde de Freches",
+    "line_km": 2.4,
+    "road_km": 12.1,
+    "min": 15,
+    "ratio": 5.14
+   },
+   {
+    "cat": "health",
+    "parish": "130221",
+    "name": "União das freguesias de Ancede e Ribadouro",
+    "facility": "Centro de Saúde de Oliveira do Douro",
+    "line_km": 2.5,
+    "road_km": 9.3,
+    "min": 10,
+    "ratio": 3.69
+   },
+   {
+    "cat": "health",
+    "parish": "140209",
+    "name": "Serra de Santo António",
+    "facility": "Centro de Saúde de Mira de Aire",
+    "line_km": 3.4,
+    "road_km": 10.2,
+    "min": 14,
+    "ratio": 2.97
+   },
+   {
+    "cat": "health",
+    "parish": "160123",
+    "name": "Oliveira",
+    "facility": "Centro de Saúde de Ponte da Barca",
+    "line_km": 2.5,
+    "road_km": 6.6,
+    "min": 8,
+    "ratio": 2.6
+   },
+   {
+    "cat": "health",
+    "parish": "170113",
+    "name": "Santa Eugénia",
+    "facility": "Extensão de Saúde Candedo",
+    "line_km": 2.8,
+    "road_km": 8.8,
+    "min": 13,
+    "ratio": 3.19
+   },
+   {
+    "cat": "health",
+    "parish": "171016",
+    "name": "União das freguesias de Provesende, Gouvães do Douro e São Cristóvão do Douro",
+    "facility": "Centro de Saúde do Pinhão",
+    "line_km": 2.5,
+    "road_km": 8.9,
+    "min": 12,
+    "ratio": 3.51
+   },
+   {
+    "cat": "health",
+    "parish": "171205",
+    "name": "Bouçoães",
+    "facility": "UCSP Vinhais - Polo Rebordelo",
+    "line_km": 3.8,
+    "road_km": 9.7,
+    "min": 9,
+    "ratio": 2.52
+   },
+   {
+    "cat": "health",
+    "parish": "180403",
+    "name": "Cinfães",
+    "facility": "Centro de Saúde de Oliveira do Douro",
+    "line_km": 4.4,
+    "road_km": 11.3,
+    "min": 11,
+    "ratio": 2.61
+   },
+   {
+    "cat": "health",
+    "parish": "180416",
+    "name": "Tendais",
+    "facility": "Centro de Saúde de Oliveira do Douro",
+    "line_km": 8.2,
+    "road_km": 24.0,
+    "min": 25,
+    "ratio": 2.92
+   },
+   {
+    "cat": "health",
+    "parish": "181303",
+    "name": "Cárquere",
+    "facility": "Centro de Saúde de Resende",
+    "line_km": 2.1,
+    "road_km": 5.8,
+    "min": 10,
+    "ratio": 2.72
+   },
+   {
+    "cat": "health",
+    "parish": "181905",
+    "name": "Desejosa",
+    "facility": "UCSP Tabuaço",
+    "line_km": 2.9,
+    "road_km": 8.4,
+    "min": 10,
+    "ratio": 2.94
+   },
+   {
+    "cat": "emergency",
+    "parish": "030301",
+    "name": "Adaúfe",
+    "facility": "Urgência do Hospital de Braga",
+    "line_km": 2.0,
+    "road_km": 5.3,
+    "min": 9,
+    "ratio": 2.63
+   },
+   {
+    "cat": "emergency",
+    "parish": "040118",
+    "name": "Vilar Chão",
+    "facility": "SUB Mogadouro",
+    "line_km": 12.6,
+    "road_km": 36.0,
+    "min": 35,
+    "ratio": 2.87
+   },
+   {
+    "cat": "emergency",
+    "parish": "040911",
+    "name": "Lousa",
+    "facility": "SUB Vila Nova de Foz Côa",
+    "line_km": 10.5,
+    "road_km": 28.1,
+    "min": 37,
+    "ratio": 2.67
+   },
+   {
+    "cat": "emergency",
+    "parish": "040921",
+    "name": "União das freguesias de Urros e Peredo dos Castelhanos",
+    "facility": "SUB Vila Nova de Foz Côa",
+    "line_km": 6.4,
+    "road_km": 19.3,
+    "min": 32,
+    "ratio": 3.02
+   },
+   {
+    "cat": "emergency",
+    "parish": "060105",
+    "name": "Celavisa",
+    "facility": "SUB Arganil",
+    "line_km": 2.9,
+    "road_km": 8.5,
+    "min": 11,
+    "ratio": 2.99
+   },
+   {
+    "cat": "emergency",
+    "parish": "060606",
+    "name": "União das freguesias de Cadafaz e Colmeal",
+    "facility": "SUB Arganil",
+    "line_km": 9.1,
+    "road_km": 28.2,
+    "min": 39,
+    "ratio": 3.11
+   },
+   {
+    "cat": "emergency",
+    "parish": "061206",
+    "name": "Pampilhosa da Serra",
+    "facility": "SUB Arganil",
+    "line_km": 20.8,
+    "road_km": 52.2,
+    "min": 54,
+    "ratio": 2.51
+   },
+   {
+    "cat": "emergency",
+    "parish": "061302",
+    "name": "Figueira de Lorvão",
+    "facility": "Urgência dos Hospitais da Universidade de Coimbra",
+    "line_km": 9.9,
+    "road_km": 25.5,
+    "min": 25,
+    "ratio": 2.58
+   },
+   {
+    "cat": "emergency",
+    "parish": "090312",
+    "name": "Prados",
+    "facility": "Urgência do Hospital Sousa Martins - Guarda",
+    "line_km": 9.2,
+    "road_km": 24.9,
+    "min": 35,
+    "ratio": 2.7
+   },
+   {
+    "cat": "emergency",
+    "parish": "090325",
+    "name": "União das freguesias de Cortiçô da Serra, Vide entre Vinhas e Salgueirais",
+    "facility": "Urgência do Hospital Sousa Martins - Guarda",
+    "line_km": 13.4,
+    "road_km": 35.9,
+    "min": 38,
+    "ratio": 2.69
+   },
+   {
+    "cat": "emergency",
+    "parish": "090716",
+    "name": "Faia",
+    "facility": "Urgência do Hospital Sousa Martins - Guarda",
+    "line_km": 4.3,
+    "road_km": 11.1,
+    "min": 15,
+    "ratio": 2.61
+   },
+   {
+    "cat": "emergency",
+    "parish": "090802",
+    "name": "Manteigas (Santa Maria)",
+    "facility": "Urgência do Hospital Pêro da Covilhã",
+    "line_km": 14.6,
+    "road_km": 38.6,
+    "min": 40,
+    "ratio": 2.65
+   },
+   {
+    "cat": "emergency",
+    "parish": "090803",
+    "name": "Manteigas (São Pedro)",
+    "facility": "Urgência do Hospital Pêro da Covilhã",
+    "line_km": 15.5,
+    "road_km": 39.3,
+    "min": 39,
+    "ratio": 2.54
+   },
+   {
+    "cat": "emergency",
+    "parish": "130115",
+    "name": "Fridão",
+    "facility": "SUB do Hospital São Gonçalo - Amarante",
+    "line_km": 3.9,
+    "road_km": 14.3,
+    "min": 20,
+    "ratio": 3.67
+   },
+   {
+    "cat": "emergency",
+    "parish": "130139",
+    "name": "Vila Chã do Marão",
+    "facility": "SUB do Hospital São Gonçalo - Amarante",
+    "line_km": 4.5,
+    "road_km": 12.5,
+    "min": 17,
+    "ratio": 2.77
+   },
+   {
+    "cat": "emergency",
+    "parish": "130146",
+    "name": "União das freguesias de Olo e Canadelo",
+    "facility": "SUB do Hospital São Gonçalo - Amarante",
+    "line_km": 5.9,
+    "road_km": 15.7,
+    "min": 23,
+    "ratio": 2.64
+   },
+   {
+    "cat": "emergency",
+    "parish": "130204",
+    "name": "Frende",
+    "facility": "SUB da Unidade Hospitalar de Proximidade de Lamego",
+    "line_km": 11.6,
+    "road_km": 29.8,
+    "min": 29,
+    "ratio": 2.57
+   },
+   {
+    "cat": "emergency",
+    "parish": "130221",
+    "name": "União das freguesias de Ancede e Ribadouro",
+    "facility": "SUB Cinfães",
+    "line_km": 4.2,
+    "road_km": 12.6,
+    "min": 13,
+    "ratio": 2.99
+   },
+   {
+    "cat": "emergency",
+    "parish": "130225",
+    "name": "União das freguesias de Santa Cruz do Douro e São Tomé de Covelas",
+    "facility": "SUB Cinfães",
+    "line_km": 8.6,
+    "road_km": 22.3,
+    "min": 23,
+    "ratio": 2.59
+   },
+   {
+    "cat": "emergency",
+    "parish": "130742",
+    "name": "Paços de Gaiolo",
+    "facility": "SUB Cinfães",
+    "line_km": 3.6,
+    "road_km": 11.2,
+    "min": 13,
+    "ratio": 3.15
+   },
+   {
+    "cat": "emergency",
+    "parish": "131108",
+    "name": "Croca",
+    "facility": "Urgência do Hospital Padre Américo - Vale do Sousa",
+    "line_km": 6.4,
+    "road_km": 17.9,
+    "min": 15,
+    "ratio": 2.79
+   },
+   {
+    "cat": "emergency",
+    "parish": "151010",
+    "name": "Seixal",
+    "facility": "Urgência do Hospital Garcia de Orta",
+    "line_km": 7.0,
+    "road_km": 17.8,
+    "min": 17,
+    "ratio": 2.54
+   },
+   {
+    "cat": "emergency",
+    "parish": "170401",
+    "name": "Barqueiros",
+    "facility": "SUB da Unidade Hospitalar de Proximidade de Lamego",
+    "line_km": 10.5,
+    "road_km": 27.0,
+    "min": 27,
+    "ratio": 2.56
+   },
+   {
+    "cat": "emergency",
+    "parish": "180405",
+    "name": "Ferreiros de Tendais",
+    "facility": "SUB Cinfães",
+    "line_km": 4.8,
+    "road_km": 13.6,
+    "min": 18,
+    "ratio": 2.87
+   },
+   {
+    "cat": "emergency",
+    "parish": "180410",
+    "name": "Oliveira do Douro",
+    "facility": "SUB Cinfães",
+    "line_km": 3.6,
+    "road_km": 10.2,
+    "min": 12,
+    "ratio": 2.81
+   },
+   {
+    "cat": "emergency",
+    "parish": "181303",
+    "name": "Cárquere",
+    "facility": "SUB Cinfães",
+    "line_km": 10.8,
+    "road_km": 28.0,
+    "min": 31,
+    "ratio": 2.6
+   },
+   {
+    "cat": "emergency",
+    "parish": "181312",
+    "name": "São Cipriano",
+    "facility": "SUB Cinfães",
+    "line_km": 8.3,
+    "road_km": 21.5,
+    "min": 24,
+    "ratio": 2.59
+   },
+   {
+    "cat": "emergency",
+    "parish": "181318",
+    "name": "União das freguesias de Freigil e Miomães",
+    "facility": "SUB Cinfães",
+    "line_km": 6.5,
+    "road_km": 18.2,
+    "min": 19,
+    "ratio": 2.82
+   },
+   {
+    "cat": "emergency",
+    "parish": "182015",
+    "name": "Gouviães",
+    "facility": "SUB da Unidade Hospitalar de Proximidade de Lamego",
+    "line_km": 4.8,
+    "road_km": 12.1,
+    "min": 14,
+    "ratio": 2.53
+   },
+   {
+    "cat": "supermarket",
+    "parish": "031020",
+    "name": "União das freguesias de Cibões e Brufe",
+    "facility": "João Manuel Pessoa Amaro",
+    "line_km": 3.7,
+    "road_km": 12.2,
+    "min": 16,
+    "ratio": 3.33
+   },
+   {
+    "cat": "supermarket",
+    "parish": "040121",
+    "name": "União das freguesias de Agrobom, Saldonha e Vale Pereiro",
+    "facility": "Meu Super",
+    "line_km": 7.0,
+    "road_km": 18.1,
+    "min": 22,
+    "ratio": 2.58
+   },
+   {
+    "cat": "supermarket",
+    "parish": "040920",
+    "name": "União das freguesias de Felgueiras e Maçores",
+    "facility": "Supermecado Jaloto",
+    "line_km": 3.9,
+    "road_km": 12.1,
+    "min": 14,
+    "ratio": 3.14
+   },
+   {
+    "cat": "supermarket",
+    "parish": "050406",
+    "name": "Alpedrinha",
+    "facility": "My Auchan",
+    "line_km": 5.3,
+    "road_km": 16.0,
+    "min": 16,
+    "ratio": 3.03
+   },
+   {
+    "cat": "supermarket",
+    "parish": "060105",
+    "name": "Celavisa",
+    "facility": "Intermarché",
+    "line_km": 3.2,
+    "road_km": 8.1,
+    "min": 11,
+    "ratio": 2.54
+   },
+   {
+    "cat": "supermarket",
+    "parish": "060410",
+    "name": "Zambujal",
+    "facility": "Supermercado",
+    "line_km": 3.2,
+    "road_km": 8.6,
+    "min": 10,
+    "ratio": 2.73
+   },
+   {
+    "cat": "supermarket",
+    "parish": "060606",
+    "name": "União das freguesias de Cadafaz e Colmeal",
+    "facility": "My Auchan",
+    "line_km": 5.6,
+    "road_km": 15.4,
+    "min": 23,
+    "ratio": 2.76
+   },
+   {
+    "cat": "supermarket",
+    "parish": "061301",
+    "name": "Carvalho",
+    "facility": "Auchan",
+    "line_km": 2.8,
+    "road_km": 7.3,
+    "min": 11,
+    "ratio": 2.6
+   },
+   {
+    "cat": "supermarket",
+    "parish": "090716",
+    "name": "Faia",
+    "facility": "Auchan Supermercado",
+    "line_km": 4.3,
+    "road_km": 12.7,
+    "min": 14,
+    "ratio": 2.98
+   },
+   {
+    "cat": "supermarket",
+    "parish": "130205",
+    "name": "Gestaçô",
+    "facility": "",
+    "line_km": 3.1,
+    "road_km": 9.6,
+    "min": 11,
+    "ratio": 3.09
+   },
+   {
+    "cat": "supermarket",
+    "parish": "160145",
+    "name": "Sistelo",
+    "facility": "",
+    "line_km": 3.4,
+    "road_km": 14.7,
+    "min": 22,
+    "ratio": 4.35
+   },
+   {
+    "cat": "supermarket",
+    "parish": "160428",
+    "name": "Tangil",
+    "facility": "",
+    "line_km": 2.7,
+    "road_km": 6.8,
+    "min": 11,
+    "ratio": 2.53
+   },
+   {
+    "cat": "supermarket",
+    "parish": "170403",
+    "name": "Oliveira",
+    "facility": "Pingo Doce",
+    "line_km": 2.3,
+    "road_km": 6.1,
+    "min": 7,
+    "ratio": 2.59
+   },
+   {
+    "cat": "supermarket",
+    "parish": "171016",
+    "name": "União das freguesias de Provesende, Gouvães do Douro e São Cristóvão do Douro",
+    "facility": "Amanhecer",
+    "line_km": 2.2,
+    "road_km": 7.4,
+    "min": 10,
+    "ratio": 3.36
+   },
+   {
+    "cat": "supermarket",
+    "parish": "180405",
+    "name": "Ferreiros de Tendais",
+    "facility": "Intermarché",
+    "line_km": 5.2,
+    "road_km": 13.8,
+    "min": 18,
+    "ratio": 2.66
+   },
+   {
+    "cat": "supermarket",
+    "parish": "180410",
+    "name": "Oliveira do Douro",
+    "facility": "Intermarché",
+    "line_km": 4.1,
+    "road_km": 10.3,
+    "min": 13,
+    "ratio": 2.53
+   },
+   {
+    "cat": "supermarket",
+    "parish": "181312",
+    "name": "São Cipriano",
+    "facility": "Meu Super",
+    "line_km": 5.9,
+    "road_km": 15.5,
+    "min": 18,
+    "ratio": 2.62
+   },
+   {
+    "cat": "school1",
+    "parish": "031107",
+    "name": "Eira Vedra",
+    "facility": "Escola Básica de Rio Caldo",
+    "line_km": 4.9,
+    "road_km": 12.7,
+    "min": 13,
+    "ratio": 2.63
+   },
+   {
+    "cat": "school1",
+    "parish": "031112",
+    "name": "Pinheiro",
+    "facility": "Centro Escolar de Rossas",
+    "line_km": 5.9,
+    "road_km": 15.3,
+    "min": 17,
+    "ratio": 2.62
+   },
+   {
+    "cat": "school1",
+    "parish": "040913",
+    "name": "Mós",
+    "facility": "Escola Básica do 1º Ciclo de Freixo de Espada à Cinta",
+    "line_km": 11.2,
+    "road_km": 28.1,
+    "min": 28,
+    "ratio": 2.52
+   },
+   {
+    "cat": "school1",
+    "parish": "040921",
+    "name": "União das freguesias de Urros e Peredo dos Castelhanos",
+    "facility": "Escola Básica Dr. Francisco Campos Henriques",
+    "line_km": 6.8,
+    "road_km": 19.2,
+    "min": 31,
+    "ratio": 2.82
+   },
+   {
+    "cat": "school1",
+    "parish": "060111",
+    "name": "Piódão",
+    "facility": "Escola Básica de Pomares",
+    "line_km": 7.2,
+    "road_km": 20.2,
+    "min": 27,
+    "ratio": 2.8
+   },
+   {
+    "cat": "school1",
+    "parish": "060606",
+    "name": "União das freguesias de Cadafaz e Colmeal",
+    "facility": "Escola Básica de Góis",
+    "line_km": 5.7,
+    "road_km": 15.7,
+    "min": 23,
+    "ratio": 2.74
+   },
+   {
+    "cat": "school1",
+    "parish": "090518",
+    "name": "União das freguesias de Juncais, Vila Ruiva e Vila Soeiro do Chão",
+    "facility": "Escola Básica de Figueiró da Granja",
+    "line_km": 2.5,
+    "road_km": 6.5,
+    "min": 8,
+    "ratio": 2.65
+   },
+   {
+    "cat": "school1",
+    "parish": "091221",
+    "name": "Teixeira",
+    "facility": "Escola Básica do Casal de Santa Teresinha",
+    "line_km": 7.6,
+    "road_km": 19.5,
+    "min": 23,
+    "ratio": 2.58
+   },
+   {
+    "cat": "school1",
+    "parish": "091335",
+    "name": "União das freguesias de Vilares e Carnicães",
+    "facility": "Escola Básica do 1º Ciclo de Freches",
+    "line_km": 2.3,
+    "road_km": 6.3,
+    "min": 9,
+    "ratio": 2.72
+   },
+   {
+    "cat": "school1",
+    "parish": "131001",
+    "name": "Aguiar de Sousa",
+    "facility": "Escola Básica de Recarei",
+    "line_km": 2.9,
+    "road_km": 7.3,
+    "min": 9,
+    "ratio": 2.51
+   },
+   {
+    "cat": "school1",
+    "parish": "160144",
+    "name": "Senharei",
+    "facility": "Escola Básica Doutor Manuel da Costa Brandão",
+    "line_km": 3.0,
+    "road_km": 8.7,
+    "min": 10,
+    "ratio": 2.9
+   },
+   {
+    "cat": "school1",
+    "parish": "161009",
+    "name": "Mentrestido",
+    "facility": "Centro Escolar de Covas",
+    "line_km": 2.8,
+    "road_km": 7.2,
+    "min": 9,
+    "ratio": 2.53
+   },
+   {
+    "cat": "school1",
+    "parish": "170403",
+    "name": "Oliveira",
+    "facility": "Centro Escolar das Alagoas",
+    "line_km": 2.5,
+    "road_km": 6.5,
+    "min": 7,
+    "ratio": 2.59
+   },
+   {
+    "cat": "school1",
+    "parish": "170607",
+    "name": "Covelo do Gerês",
+    "facility": "Escola Básica de Cabril",
+    "line_km": 4.3,
+    "road_km": 15.1,
+    "min": 20,
+    "ratio": 3.49
+   },
+   {
+    "cat": "school1",
+    "parish": "170609",
+    "name": "Ferral",
+    "facility": "Escola Básica de Cabril",
+    "line_km": 3.7,
+    "road_km": 10.2,
+    "min": 14,
+    "ratio": 2.78
+   },
+   {
+    "cat": "school1",
+    "parish": "171004",
+    "name": "Gouvinhas",
+    "facility": "Escola EB1 de Provesende",
+    "line_km": 7.0,
+    "road_km": 17.5,
+    "min": 20,
+    "ratio": 2.51
+   },
+   {
+    "cat": "school1",
+    "parish": "171011",
+    "name": "São Lourenço de Ribapinhão",
+    "facility": "Escola Básica de Vilar de Maçada",
+    "line_km": 2.1,
+    "road_km": 7.8,
+    "min": 8,
+    "ratio": 3.79
+   },
+   {
+    "cat": "school1",
+    "parish": "171016",
+    "name": "União das freguesias de Provesende, Gouvães do Douro e São Cristóvão do Douro",
+    "facility": "Escola Básica do Pinhão",
+    "line_km": 2.3,
+    "road_km": 8.2,
+    "min": 11,
+    "ratio": 3.59
+   },
+   {
+    "cat": "school1",
+    "parish": "171205",
+    "name": "Bouçoães",
+    "facility": "Escola Básica de Rebordelo",
+    "line_km": 3.5,
+    "road_km": 9.2,
+    "min": 9,
+    "ratio": 2.64
+   },
+   {
+    "cat": "school1",
+    "parish": "180809",
+    "name": "Trezói",
+    "facility": "Escola Básica de Luso",
+    "line_km": 3.6,
+    "road_km": 9.8,
+    "min": 11,
+    "ratio": 2.7
+   },
+   {
+    "cat": "school1",
+    "parish": "181617",
+    "name": "Valadares",
+    "facility": "Escola Básica n.º 1 de Oliveira de Frades",
+    "line_km": 3.0,
+    "road_km": 7.5,
+    "min": 11,
+    "ratio": 2.5
+   },
+   {
+    "cat": "school1",
+    "parish": "182108",
+    "name": "Guardão",
+    "facility": "Escola Básica de Campo de Besteiros",
+    "line_km": 3.1,
+    "road_km": 8.2,
+    "min": 12,
+    "ratio": 2.64
+   },
+   {
+    "cat": "school3",
+    "parish": "031015",
+    "name": "Valdosende",
+    "facility": "Escola Básica e Secundária Vieira de Araújo",
+    "line_km": 7.1,
+    "road_km": 18.2,
+    "min": 19,
+    "ratio": 2.55
+   },
+   {
+    "cat": "school3",
+    "parish": "031109",
+    "name": "Louredo",
+    "facility": "Escola Básica e Secundária Vieira de Araújo",
+    "line_km": 5.6,
+    "road_km": 16.0,
+    "min": 16,
+    "ratio": 2.85
+   },
+   {
+    "cat": "school3",
+    "parish": "031115",
+    "name": "Salamonde",
+    "facility": "Escola Básica e Secundária Vieira de Araújo",
+    "line_km": 6.2,
+    "road_km": 19.1,
+    "min": 19,
+    "ratio": 3.11
+   },
+   {
+    "cat": "school3",
+    "parish": "031126",
+    "name": "União das freguesias de Ventosa e Cova",
+    "facility": "Escola Básica e Secundária Vieira de Araújo",
+    "line_km": 5.3,
+    "road_km": 13.6,
+    "min": 15,
+    "ratio": 2.55
+   },
+   {
+    "cat": "school3",
+    "parish": "040121",
+    "name": "União das freguesias de Agrobom, Saldonha e Vale Pereiro",
+    "facility": "Escola Básica e Secundária de Alfândega da Fé",
+    "line_km": 7.2,
+    "road_km": 18.1,
+    "min": 22,
+    "ratio": 2.5
+   },
+   {
+    "cat": "school3",
+    "parish": "040314",
+    "name": "Pombal",
+    "facility": "Escola Secundária de Carrazeda de Ansiães",
+    "line_km": 6.0,
+    "road_km": 15.9,
+    "min": 15,
+    "ratio": 2.66
+   },
+   {
+    "cat": "school3",
+    "parish": "040920",
+    "name": "União das freguesias de Felgueiras e Maçores",
+    "facility": "Escola Secundária Doutor Ramiro Salgado",
+    "line_km": 4.5,
+    "road_km": 13.7,
+    "min": 16,
+    "ratio": 3.03
+   },
+   {
+    "cat": "school3",
+    "parish": "050327",
+    "name": "Verdelhos",
+    "facility": "Escola Profissional de Hotelaria de Manteigas",
+    "line_km": 6.4,
+    "road_km": 16.9,
+    "min": 18,
+    "ratio": 2.63
+   },
+   {
+    "cat": "school3",
+    "parish": "050406",
+    "name": "Alpedrinha",
+    "facility": "Escola Profissional do Fundão",
+    "line_km": 5.0,
+    "road_km": 15.9,
+    "min": 15,
+    "ratio": 3.17
+   },
+   {
+    "cat": "school3",
+    "parish": "060105",
+    "name": "Celavisa",
+    "facility": "Escola Secundária de Arganil",
+    "line_km": 3.6,
+    "road_km": 9.2,
+    "min": 12,
+    "ratio": 2.57
+   },
+   {
+    "cat": "school3",
+    "parish": "061125",
+    "name": "União das freguesias de Penalva de Alva e São Sebastião da Feira",
+    "facility": "Escola Secundária de Oliveira do Hospital",
+    "line_km": 3.0,
+    "road_km": 8.0,
+    "min": 11,
+    "ratio": 2.71
+   },
+   {
+    "cat": "school3",
+    "parish": "061304",
+    "name": "Lorvão",
+    "facility": "Escola Básica e Secundária de Penacova",
+    "line_km": 2.9,
+    "road_km": 7.3,
+    "min": 12,
+    "ratio": 2.54
+   },
+   {
+    "cat": "school3",
+    "parish": "090716",
+    "name": "Faia",
+    "facility": "Escola Secundária Afonso de Albuquerque",
+    "line_km": 3.9,
+    "road_km": 11.4,
+    "min": 14,
+    "ratio": 2.9
+   },
+   {
+    "cat": "school3",
+    "parish": "130205",
+    "name": "Gestaçô",
+    "facility": "Escola Básica e Secundária Professor António da Natividade",
+    "line_km": 3.2,
+    "road_km": 9.6,
+    "min": 12,
+    "ratio": 2.98
+   },
+   {
+    "cat": "school3",
+    "parish": "130742",
+    "name": "Paços de Gaiolo",
+    "facility": "Escola Básica 2 /3 Ciclos de Cinfães (edifício secundário) - Centro Novas Oportunidades",
+    "line_km": 2.6,
+    "road_km": 9.3,
+    "min": 12,
+    "ratio": 3.61
+   },
+   {
+    "cat": "school3",
+    "parish": "140209",
+    "name": "Serra de Santo António",
+    "facility": "Escola Secundária de Mira de Aire",
+    "line_km": 3.2,
+    "road_km": 10.4,
+    "min": 14,
+    "ratio": 3.19
+   },
+   {
+    "cat": "school3",
+    "parish": "160750",
+    "name": "Vitorino das Donas",
+    "facility": "Escola Básica e Secundária de Arga e Lima",
+    "line_km": 2.5,
+    "road_km": 6.8,
+    "min": 7,
+    "ratio": 2.7
+   },
+   {
+    "cat": "school3",
+    "parish": "180406",
+    "name": "Fornelos",
+    "facility": "Escola Básica e Secundária de Castelo de Paiva",
+    "line_km": 4.8,
+    "road_km": 13.4,
+    "min": 19,
+    "ratio": 2.77
+   },
+   {
+    "cat": "school3",
+    "parish": "180410",
+    "name": "Oliveira do Douro",
+    "facility": "Escola Profissional de Cinfães",
+    "line_km": 3.8,
+    "road_km": 10.3,
+    "min": 13,
+    "ratio": 2.68
+   },
+   {
+    "cat": "school3",
+    "parish": "180417",
+    "name": "Travanca",
+    "facility": "Escola Básica e Secundária de Castelo de Paiva",
+    "line_km": 3.3,
+    "road_km": 8.6,
+    "min": 11,
+    "ratio": 2.63
+   },
+   {
+    "cat": "school3",
+    "parish": "180516",
+    "name": "Penajóia",
+    "facility": "Escola Secundária Doutor João de Araújo Correia",
+    "line_km": 4.7,
+    "road_km": 12.1,
+    "min": 12,
+    "ratio": 2.59
+   },
+   {
+    "cat": "school3",
+    "parish": "181303",
+    "name": "Cárquere",
+    "facility": "Escola Secundária de Resende",
+    "line_km": 2.3,
+    "road_km": 5.9,
+    "min": 10,
+    "ratio": 2.55
+   },
+   {
+    "cat": "school3",
+    "parish": "181312",
+    "name": "São Cipriano",
+    "facility": "Escola Secundária de Resende",
+    "line_km": 5.7,
+    "road_km": 15.5,
+    "min": 18,
+    "ratio": 2.72
+   },
+   {
+    "cat": "school3",
+    "parish": "181905",
+    "name": "Desejosa",
+    "facility": "Escola Básica e Secundária Abel Botelho, Tabuaço",
+    "line_km": 3.6,
+    "road_km": 9.5,
+    "min": 12,
+    "ratio": 2.67
+   },
+   {
+    "cat": "school3",
+    "parish": "181917",
+    "name": "Valença do Douro",
+    "facility": "Escola Básica e Secundária Abel Botelho, Tabuaço",
+    "line_km": 4.8,
+    "road_km": 15.3,
+    "min": 16,
+    "ratio": 3.18
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "010424",
+    "name": "União das freguesias de Covelo de Paivó e Janarde",
+    "facility": "Farmácia Galvão",
+    "line_km": 4.5,
+    "road_km": 12.3,
+    "min": 22,
+    "ratio": 2.72
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "030738",
+    "name": "União de freguesias de Agrela e Serafão",
+    "facility": "Farmácia Nossa Senhora do Porto",
+    "line_km": 2.3,
+    "road_km": 5.9,
+    "min": 6,
+    "ratio": 2.55
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "040314",
+    "name": "Pombal",
+    "facility": "Farmácia Veiga",
+    "line_km": 6.3,
+    "road_km": 15.7,
+    "min": 15,
+    "ratio": 2.5
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "040920",
+    "name": "União das freguesias de Felgueiras e Maçores",
+    "facility": "Farmácia Avenida",
+    "line_km": 3.6,
+    "road_km": 11.7,
+    "min": 14,
+    "ratio": 3.28
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "050327",
+    "name": "Verdelhos",
+    "facility": "Farmácia Ascensão",
+    "line_km": 6.5,
+    "road_km": 16.2,
+    "min": 17,
+    "ratio": 2.5
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "050609",
+    "name": "Orvalho",
+    "facility": "Farmácia Martins Gonçalves",
+    "line_km": 8.0,
+    "road_km": 25.3,
+    "min": 24,
+    "ratio": 3.17
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "060105",
+    "name": "Celavisa",
+    "facility": "Interfarma",
+    "line_km": 3.2,
+    "road_km": 8.0,
+    "min": 10,
+    "ratio": 2.51
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "060606",
+    "name": "União das freguesias de Cadafaz e Colmeal",
+    "facility": "Farmácia Coroa",
+    "line_km": 5.5,
+    "road_km": 15.2,
+    "min": 23,
+    "ratio": 2.77
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "061304",
+    "name": "Lorvão",
+    "facility": "Farmácia Penacova",
+    "line_km": 3.3,
+    "road_km": 8.9,
+    "min": 12,
+    "ratio": 2.66
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "090605",
+    "name": "Folgosinho",
+    "facility": "Farmácia Central",
+    "line_km": 2.0,
+    "road_km": 6.2,
+    "min": 9,
+    "ratio": 3.06
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "171011",
+    "name": "São Lourenço de Ribapinhão",
+    "facility": "Farmácia Nova Vilar de Maçada",
+    "line_km": 2.1,
+    "road_km": 7.7,
+    "min": 8,
+    "ratio": 3.66
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "171016",
+    "name": "União das freguesias de Provesende, Gouvães do Douro e São Cristóvão do Douro",
+    "facility": "Farmácia Saraiva",
+    "line_km": 2.2,
+    "road_km": 7.3,
+    "min": 9,
+    "ratio": 3.33
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "171205",
+    "name": "Bouçoães",
+    "facility": "Farmácia de Rebordelo",
+    "line_km": 3.7,
+    "road_km": 9.4,
+    "min": 9,
+    "ratio": 2.52
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "180405",
+    "name": "Ferreiros de Tendais",
+    "facility": "Farmácia Vieira Marques",
+    "line_km": 4.9,
+    "road_km": 13.7,
+    "min": 18,
+    "ratio": 2.79
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "180410",
+    "name": "Oliveira do Douro",
+    "facility": "Farmácia Vieira Marques",
+    "line_km": 3.8,
+    "road_km": 10.3,
+    "min": 12,
+    "ratio": 2.68
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "180809",
+    "name": "Trezói",
+    "facility": "Lucília Ruivo",
+    "line_km": 3.6,
+    "road_km": 9.6,
+    "min": 11,
+    "ratio": 2.7
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "181312",
+    "name": "São Cipriano",
+    "facility": "Farmácia Vieira Marques",
+    "line_km": 8.5,
+    "road_km": 21.6,
+    "min": 24,
+    "ratio": 2.53
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "181313",
+    "name": "São João de Fontoura",
+    "facility": "Farmácia União",
+    "line_km": 2.0,
+    "road_km": 7.0,
+    "min": 8,
+    "ratio": 3.44
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "181318",
+    "name": "União das freguesias de Freigil e Miomães",
+    "facility": "Farmácia Vieira Marques",
+    "line_km": 6.7,
+    "road_km": 18.3,
+    "min": 19,
+    "ratio": 2.74
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "181622",
+    "name": "União das freguesias de São Martinho das Moitas e Covas do Rio",
+    "facility": "Farmácia Costa",
+    "line_km": 4.1,
+    "road_km": 12.2,
+    "min": 19,
+    "ratio": 2.98
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "181804",
+    "name": "Cunha",
+    "facility": "Farmácia Mota - Posto Farmacêutico Móvel",
+    "line_km": 2.6,
+    "road_km": 8.7,
+    "min": 11,
+    "ratio": 3.33
+   },
+   {
+    "cat": "pharmacy",
+    "parish": "181905",
+    "name": "Desejosa",
+    "facility": "Farmácia D'Ouro",
+    "line_km": 2.9,
+    "road_km": 8.5,
+    "min": 11,
+    "ratio": 2.96
+   },
+   {
+    "cat": "station",
+    "parish": "021208",
+    "name": "União das freguesias de Panoias e Conceição",
+    "facility": "Funcheira",
+    "line_km": 4.8,
+    "road_km": 16.9,
+    "min": 19,
+    "ratio": 3.52
+   },
+   {
+    "cat": "station",
+    "parish": "030705",
+    "name": "Armil",
+    "facility": "Covas",
+    "line_km": 8.5,
+    "road_km": 22.4,
+    "min": 20,
+    "ratio": 2.62
+   },
+   {
+    "cat": "station",
+    "parish": "040308",
+    "name": "Linhares",
+    "facility": "Tua",
+    "line_km": 4.7,
+    "road_km": 13.7,
+    "min": 18,
+    "ratio": 2.89
+   },
+   {
+    "cat": "station",
+    "parish": "040713",
+    "name": "Cobro",
+    "facility": "Tua",
+    "line_km": 27.0,
+    "road_km": 69.3,
+    "min": 62,
+    "ratio": 2.57
+   },
+   {
+    "cat": "station",
+    "parish": "040911",
+    "name": "Lousa",
+    "facility": "Pocinho",
+    "line_km": 6.2,
+    "road_km": 21.1,
+    "min": 28,
+    "ratio": 3.37
+   },
+   {
+    "cat": "station",
+    "parish": "040921",
+    "name": "União das freguesias de Urros e Peredo dos Castelhanos",
+    "facility": "Pocinho",
+    "line_km": 4.7,
+    "road_km": 12.3,
+    "min": 23,
+    "ratio": 2.59
+   },
+   {
+    "cat": "station",
+    "parish": "091110",
+    "name": "Bendada",
+    "facility": "Maçainhas",
+    "line_km": 3.4,
+    "road_km": 10.7,
+    "min": 16,
+    "ratio": 3.15
+   },
+   {
+    "cat": "station",
+    "parish": "091201",
+    "name": "Alvoco da Serra",
+    "facility": "Tortosendo",
+    "line_km": 14.7,
+    "road_km": 43.1,
+    "min": 42,
+    "ratio": 2.92
+   },
+   {
+    "cat": "station",
+    "parish": "140122",
+    "name": "União das freguesias de Alvega e Concavada",
+    "facility": "Mouriscas-A",
+    "line_km": 2.2,
+    "road_km": 5.6,
+    "min": 7,
+    "ratio": 2.55
+   },
+   {
+    "cat": "station",
+    "parish": "170407",
+    "name": "Vila Marim",
+    "facility": "Rede",
+    "line_km": 2.1,
+    "road_km": 5.5,
+    "min": 7,
+    "ratio": 2.56
+   },
+   {
+    "cat": "station",
+    "parish": "171004",
+    "name": "Gouvinhas",
+    "facility": "Ferrão",
+    "line_km": 3.2,
+    "road_km": 8.5,
+    "min": 8,
+    "ratio": 2.66
+   },
+   {
+    "cat": "station",
+    "parish": "171016",
+    "name": "União das freguesias de Provesende, Gouvães do Douro e São Cristóvão do Douro",
+    "facility": "Pinhão",
+    "line_km": 2.5,
+    "road_km": 7.6,
+    "min": 10,
+    "ratio": 3.1
+   },
+   {
+    "cat": "station",
+    "parish": "180403",
+    "name": "Cinfães",
+    "facility": "Mosteirô",
+    "line_km": 3.0,
+    "road_km": 8.7,
+    "min": 8,
+    "ratio": 2.89
+   },
+   {
+    "cat": "station",
+    "parish": "180410",
+    "name": "Oliveira do Douro",
+    "facility": "Mosteirô",
+    "line_km": 2.3,
+    "road_km": 6.8,
+    "min": 8,
+    "ratio": 3.02
+   },
+   {
+    "cat": "station",
+    "parish": "180413",
+    "name": "São Cristóvão de Nogueira",
+    "facility": "Pala",
+    "line_km": 4.6,
+    "road_km": 12.4,
+    "min": 13,
+    "ratio": 2.68
+   },
+   {
+    "cat": "station",
+    "parish": "181311",
+    "name": "Resende",
+    "facility": "Ermida",
+    "line_km": 2.3,
+    "road_km": 6.2,
+    "min": 7,
+    "ratio": 2.63
+   },
+   {
+    "cat": "station",
+    "parish": "181313",
+    "name": "São João de Fontoura",
+    "facility": "Ermida",
+    "line_km": 2.9,
+    "road_km": 9.6,
+    "min": 11,
+    "ratio": 3.25
+   },
+   {
+    "cat": "station",
+    "parish": "181517",
+    "name": "União das freguesias de Vilarouco e Pereiros",
+    "facility": "Ferradosa",
+    "line_km": 5.8,
+    "road_km": 20.0,
+    "min": 21,
+    "ratio": 3.42
+   }
+  ]
+ },
+ "timings_s": {
+  "caop": 1.4,
+  "pois": 39.4,
+  "roads": 0.4,
+  "graph": 19.6,
+  "routing": 35.1,
+  "total": 97.8
+ },
+ "peak_rss_mib": 5465
+}
