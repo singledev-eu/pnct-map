@@ -897,8 +897,13 @@ function start(data: MapData): void {
     panel.revealMap();
     requestAnimationFrame(() => {
       const el = map.getContainer();
-      const { centre } = checkArea();
-      map.easeTo({ center: [f.lon, f.lat], zoom: Math.max(map.getZoom(), 13), offset: [centre.x - el.clientWidth / 2, centre.y - el.clientHeight / 2], duration: motion(700) });
+      const { padding, centre } = checkArea();
+      // The first-visit intro card under the toolbar (intro.ts) covers the top of the map too.
+      const intro = document.getElementById("intro");
+      const introBottom = intro && !intro.hidden ? intro.getBoundingClientRect().bottom - el.getBoundingClientRect().top : 0;
+      const top = Math.max(padding.top, introBottom);
+      const y = top > padding.top ? top + (el.clientHeight - top - padding.bottom) / 2 : centre.y;
+      map.easeTo({ center: [f.lon, f.lat], zoom: Math.max(map.getZoom(), 13), offset: [centre.x - el.clientWidth / 2, y - el.clientHeight / 2], duration: motion(700) });
     });
   }
   /** Room kept around the checked point inside the visible map: the marker pin stands this tall above it. */

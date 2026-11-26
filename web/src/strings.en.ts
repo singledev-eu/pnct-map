@@ -305,7 +305,7 @@ export const en: Strings = {
     loadError: "Could not load the nearby services. Check your connection and try again.",
     source: (osm, sns) => `Places: © OpenStreetMap contributors (ODbL), ${osm}; SNS emergency services: SNS list (CC BY 4.0), data of ${sns}. Drive times computed on OpenStreetMap roads.`,
     disclaimer: "Estimates without traffic, not travel advice. In an emergency, call 112.",
-    legendToggle: "Services (health, shops, schools)",
+    legendToggle: "Nearby services",
     zoomHint: "Zoom in to see services",
     overlayError: "Could not load the services layer. Please try again.",
     explainer: {

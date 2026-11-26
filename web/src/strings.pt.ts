@@ -309,7 +309,7 @@ export const pt: Strings = {
     loadError: "Não foi possível carregar os serviços próximos. Verifique a ligação e tente novamente.",
     source: (osm, sns) => `Locais: © contribuidores do OpenStreetMap (ODbL), ${osm}; urgências: lista do SNS (CC BY 4.0), dados de ${sns}. Tempos de viagem calculados sobre as estradas do OpenStreetMap.`,
     disclaimer: "Estimativas sem trânsito, não são indicações de viagem. Em caso de emergência, ligue 112.",
-    legendToggle: "Serviços (saúde, comércio, escolas)",
+    legendToggle: "Serviços próximos",
     zoomHint: "Aumente o zoom para ver os serviços",
     overlayError: "Não foi possível carregar a camada de serviços. Tente novamente.",
     explainer: {

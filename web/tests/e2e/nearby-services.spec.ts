@@ -122,6 +122,28 @@ test("the services explainer opens from the legend and closes with Escape", asyn
   await expect(help).toBeFocused();
 });
 
+test("phone: 'show on the map' from a full sheet puts the marker in view, clear of the intro card", async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 375, height: 667 }, isMobile: true, hasTouch: true });
+  const page = await context.newPage();
+  await page.goto(`/#f=${MONSANTO}`);
+  await waitForParishes(page);
+  await page.getByTestId("sheet-handle").click();
+  await expect(page.locator("#panel")).toHaveAttribute("data-sheet", "full");
+  await page.getByTestId("service-show-emergency").click();
+  await expect(page.locator("#panel")).toHaveAttribute("data-sheet", "half");
+  const marker = page.getByTestId("service-marker");
+  await expect
+    .poll(async () => {
+      const m = await marker.boundingBox();
+      const sheet = (await page.locator("#panel").boundingBox())!;
+      const intro = page.getByTestId("intro");
+      const covered = (await intro.isVisible()) ? (await intro.boundingBox())!.y + (await intro.boundingBox())!.height : 0;
+      return m !== null && m.y > covered && m.y + m.height < sheet.y;
+    }, { timeout: 10_000 })
+    .toBe(true);
+  await context.close();
+});
+
 test("phone: the rows fit the bottom sheet", async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 375, height: 667 }, isMobile: true, hasTouch: true });
   const page = await context.newPage();

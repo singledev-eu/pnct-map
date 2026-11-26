@@ -30,7 +30,7 @@ const out = process.argv[2];
 if (!out) throw new Error("usage: node scripts/landcheck_shots.mjs <out-dir>");
 mkdirSync(out, { recursive: true });
 
-const reportDone = (page) => page.waitForSelector('[data-testid="check-hazard"], [data-testid="check-outside"]', { timeout: 30_000 });
+const reportDone = (page) => page.waitForSelector('[data-testid="check-hazard"], [data-testid="check-outside"]', { state: "attached", timeout: 30_000 }); // phones: the report body is hidden behind the peek row
 
 const browser = await chromium.launch({ channel: "chromium" });
 const rows = [];

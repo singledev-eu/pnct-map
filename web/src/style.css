@@ -2323,6 +2323,11 @@ dialog a {
 
 
 /* Legend: the toggle row with its "?", and the colour key while the overlay is on. */
+/* The row fills the width, so the "?" can't hang 6 px past it as it does after a heading. */
+.legend-services-row .help-button {
+  margin-right: 0;
+}
+
 .legend-services-row .legend-row {
   flex: 1;
   min-width: 0;
