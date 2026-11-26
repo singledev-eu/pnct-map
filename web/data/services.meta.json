@@ -28,8 +28,8 @@
     },
     {
       "id": "emergency",
-      "en": "Hospital emergency",
-      "pt": "Urgência hospitalar",
+      "en": "SNS emergency service",
+      "pt": "Urgência do SNS",
       "source": "sns"
     },
     {
@@ -59,7 +59,7 @@
     {
       "id": "station",
       "en": "Train station",
-      "pt": "Estação de comboio",
+      "pt": "Estação de comboios",
       "source": "osm"
     }
   ],

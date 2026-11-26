@@ -1676,12 +1676,12 @@
   ]
  },
  "timings_s": {
-  "caop": 1.4,
-  "pois": 39.4,
+  "caop": 1.6,
+  "pois": 42.4,
   "roads": 0.4,
-  "graph": 19.6,
-  "routing": 35.1,
-  "total": 97.8
+  "graph": 21.6,
+  "routing": 40.3,
+  "total": 108.4
  },
- "peak_rss_mib": 5465
+ "peak_rss_mib": 4157
 }
