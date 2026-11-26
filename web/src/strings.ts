@@ -4,7 +4,7 @@
  * concelhos, districts) come from the data and are never translated. Data-derived labels (the
  * protected-area sources) carry both languages in their data meta (protected.ts).
  *
- * `t`, `tc`, `tk`, `sheet` and `ui` are live bindings: setLang swaps them, and the importing modules
+ * `t`, `tc`, `tk`, `tn`, `sheet` and `ui` are live bindings: setLang swaps them, and the importing modules
  * read them at render time, so main.ts re-renders after a switch (applyLanguage).
  * Index.html has no text of its own: its elements name a `ui` key in data-i18n (i18n.ts applyStatic).
  */
@@ -328,12 +328,68 @@ export interface UiStrings {
   };
 }
 
+/**
+ * Nearby services (services.ts): the panel block, the land check rows, the legend toggle and its
+ * "?" explainer. Category labels by id (services.meta.json ids).
+ */
+export interface ServicesStrings {
+  heading: string;
+  category: Record<"health" | "emergency" | "supermarket" | "school1" | "school3" | "pharmacy" | "station", string>;
+  /** Where unnamed facilities (OSM has no name) are shown: "Unnamed supermarket". */
+  unnamed: Record<"health" | "emergency" | "supermarket" | "school1" | "school3" | "pharmacy" | "station", string>;
+  /** Under the heading: where the times are measured from. */
+  fromPlace: (place: string) => string;
+  fromParishCentre: string;
+  fromSeat: (place: string) => string;
+  fromCell: string;
+  byCar: (duration: string) => string;
+  /** The tile's small line under the drive time: "7.2 km by road". */
+  byRoad: (km: string) => string;
+  minutes: (n: string) => string;
+  hoursMinutes: (h: string, m: string) => string;
+  underMinute: string;
+  km: (n: string) => string;
+  straightLine: (km: string) => string;
+  /** The tile's small line under a straight-line distance. */
+  straightLabel: string;
+  /** The land check note when some rows are straight-line distances. */
+  straightNote: string;
+  missing: string;
+  notAvailable: string;
+  showOnMap: (name: string) => string;
+  openOsm: string;
+  openOsmLabel: (name: string) => string;
+  marker: (name: string) => string;
+  loading: string;
+  loadError: string;
+  /** {osm}: the OSM extract date; {sns}: the SNS data period. */
+  source: (osm: string, sns: string) => string;
+  disclaimer: string;
+  legendToggle: string;
+  zoomHint: string;
+  overlayError: string;
+  explainer: {
+    button: string;
+    title: string;
+    items: { lead: string; body: string }[];
+    footnote: string;
+    close: string;
+  };
+  /** Map attribution and the credits: the SNS emergency list. */
+  creditSns: string;
+  aboutLabel: string;
+  /** {osm}, {sns}: links. */
+  aboutBody: string;
+  aboutSnsLink: string;
+}
+
 export interface Strings {
   ui: UiStrings;
   protected: ProtectedStrings;
   concelho: ConcelhoStrings;
   sheet: SheetStrings;
   check: CheckStrings;
+  services: ServicesStrings;
 }
 
 export const STRINGS: Record<Lang, Strings> = { en, pt };
@@ -345,10 +401,11 @@ export let t: ProtectedStrings = en.protected;
 export let tc: ConcelhoStrings = en.concelho;
 export let sheet: SheetStrings = en.sheet;
 export let tk: CheckStrings = en.check;
+export let tn: ServicesStrings = en.services;
 
 export function setLang(next: Lang): void {
   lang = next;
-  ({ ui, protected: t, concelho: tc, sheet, check: tk } = STRINGS[next]);
+  ({ ui, protected: t, concelho: tc, sheet, check: tk, services: tn } = STRINGS[next]);
 }
 
 /**

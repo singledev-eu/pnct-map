@@ -71,12 +71,12 @@ class Category:
 
 CATEGORIES: tuple[Category, ...] = (
     Category("health", "Health centre", "Centro de saúde", "osm"),
-    Category("emergency", "Hospital emergency", "Urgência hospitalar", "sns"),
+    Category("emergency", "SNS emergency service", "Urgência do SNS", "sns"),
     Category("supermarket", "Supermarket", "Supermercado", "osm"),
     Category("school1", "Primary school", "Escola do 1.º ciclo", "osm"),
     Category("school3", "Secondary school", "Escola secundária", "osm"),
     Category("pharmacy", "Pharmacy", "Farmácia", "osm"),
-    Category("station", "Train station", "Estação de comboio", "osm"),
+    Category("station", "Train station", "Estação de comboios", "osm"),
 )
 CATEGORY_IDS = tuple(c.id for c in CATEGORIES)
 

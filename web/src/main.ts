@@ -9,12 +9,13 @@ import { concelhoCode, featureId, loadData, type Bounds, type MapData, type Pari
 import { metresPerPixel } from "./edges";
 import { DURATION_3D, FILL_3D, load3dPref, PHONE_QUERY, REDUCED_MOTION_QUERY, save3dPref, Slabs, view3dFor, type SlabTarget } from "./drill";
 import { MAP_HASH_KEY, readHash, writeHash, type HashState } from "./hash";
-import { addHazardLayer, addLayers, addOverlays, appLayers, HAZARD_SOURCE, removeHazardLayer, applyFilter, CONCELHO_FILL, CONCELHO_SLAB, CONCELHO_SOURCE, HOVER_POP, overlaySource, PARISH_FILL, PARISH_SLAB, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, setSelectedSeat, withAppLayers, type FilterState, type OverlayState } from "./layers";
+import { addHazardLayer, addLayers, addOverlays, addServicesLayer, appLayers, HAZARD_SOURCE, removeHazardLayer, removeServicesLayer, SERVICES_FADE, applyFilter, CONCELHO_FILL, CONCELHO_SLAB, CONCELHO_SOURCE, HOVER_POP, overlaySource, PARISH_FILL, PARISH_SLAB, PARISH_SOURCE, patternImages, setOverlayVisibility, setPatternImages, setSelectedSeat, withAppLayers, type FilterState, type OverlayState } from "./layers";
 import { mountSettings } from "./controls";
 import { applyStatic, initialLang, rememberLang } from "./i18n";
 import { mountIntro } from "./intro";
 import { type Box, CellReader, chunkFiles, formatPoint, HAZARD, hazardAt, type HazardResult, hazardAttributionHtml, parishAtPoint, parsePoint, publicUrl, visibleArea } from "./landcheck";
-import { mountLegend, mountOverlayToggles } from "./legend";
+import { type Facility, facilityName, GRID, GridReader, loadServices, servicesAt, servicesAttributionHtml, servicesGeoJson } from "./services";
+import { mountLegend, mountOverlayToggles, mountServicesToggle } from "./legend";
 import { checkSummary, h, Panel, parishStatus } from "./panel";
 import { disputeOf, STATUS_CHECKED } from "./status";
 import { mountShortlist, parseCodes, type Shortlist } from "./shortlist";
@@ -22,8 +23,8 @@ import { loadOptions, saveOptions } from "./prefs";
 import { CITY_SOURCE, loadCities, loadCitiesPref, mountCityPointers, saveCitiesPref, type CitiesData } from "./cities";
 import { attributionHtml, CATEGORY_IDS, loadOverlay, loadSlabProtected, type OverlayData } from "./protected";
 import { createSearchIndex, mountSearch, type SearchItem } from "./search";
-import { formatDate, lang, setLang, t, tk, ui, type Lang } from "./strings";
-import { applyPageTheme, DARK_QUERY, loadThemePref, nextThemePref, PALETTES, resolveTheme, saveThemePref, STYLE_URLS, themeOf, type Theme, type ThemePref } from "./theme";
+import { formatDate, lang, setLang, t, tk, tn, ui, type Lang } from "./strings";
+import { applyPageTheme, DARK_QUERY, loadThemePref, nextThemePref, PALETTES, resolveTheme, saveThemePref, SERVICE_COLORS, STYLE_URLS, themeOf, type Theme, type ThemePref } from "./theme";
 // ?url makes Vite emit the file content-hashed under assets/; index.html preloads the same file.
 import DATA_URL from "../data/pnct.topo.json?url";
 
@@ -166,7 +167,7 @@ const isCompact = () => attribution.classList.contains("maplibregl-compact");
 const collapseAttribution = () => attribution.classList.remove("maplibregl-compact-show"); // as MapLibre does on drag
 const addAttribution = () => {
   if (attributionControl) map.removeControl(attributionControl);
-  attributionControl = new AttributionControl({ customAttribution: [ui.attributionBoundaries, attributionHtml(), hazardAttributionHtml()] });
+  attributionControl = new AttributionControl({ customAttribution: [ui.attributionBoundaries, attributionHtml(), hazardAttributionHtml(), servicesAttributionHtml()] });
   // Before the zoom buttons, where it was first added (bottom-right stacks controls in order).
   map.addControl(attributionControl, "bottom-right");
   attribution = map.getContainer().querySelector<HTMLElement>(".maplibregl-ctrl-attrib")!;
@@ -385,9 +386,14 @@ function start(data: MapData): void {
       onOptionsChange: saveOptions,
       isStarred: (code) => shortlist?.has(code) ?? false,
       onToggleStar: (code) => shortlist?.toggle(code),
+      nearby: { concelhoName: (code) => data.concelhos.get(code)?.name, onShow: (f) => showFacility(f) },
     },
     searchOptions,
   );
+  // The nearby-services marker (showFacility, below): one at a time, gone with the panel's content.
+  const serviceMarkerEl = h("div", { class: "service-marker", role: "img", "data-testid": "service-marker" });
+  const serviceMarker = new Marker({ element: serviceMarkerEl, anchor: "center" });
+  const clearServiceMarker = () => serviceMarker.remove();
 
   /**
    * `fly` (search, panel, link) or `tilt` (a click on the map): frame the camera on the selection
@@ -423,6 +429,7 @@ function start(data: MapData): void {
   };
 
   function select(next: Selection, opts: { fly?: boolean; tilt?: boolean; animate?: boolean } = {}): void {
+    clearServiceMarker();
     clearCheck();
     if (next) setCheckMode(false);
     const moves = opts.fly || opts.tilt;
@@ -798,6 +805,7 @@ function start(data: MapData): void {
   const crosshair = $("check-crosshair");
   const toolbarEl = document.querySelector<HTMLElement>(".toolbar")!;
   const reader = new CellReader(HAZARD.cells, chunkFiles(publicUrl(HAZARD.cells.dir)));
+  const gridReader = new GridReader(GRID);
   const markerEl = h("div", { class: "check-marker", role: "img", "data-testid": "check-marker" });
   const marker = new Marker({ element: markerEl, anchor: "bottom" });
   const coarse = window.matchMedia("(pointer: coarse)");
@@ -876,6 +884,23 @@ function start(data: MapData): void {
     const { centre } = checkArea();
     map.easeTo({ center: [lon, lat], zoom, offset: [centre.x - el.clientWidth / 2, centre.y - el.clientHeight / 2], pitch: 0, bearing: 0, duration: motion(500) });
   }
+  /**
+   * "Show on the map" in a nearby-services row: a marker on the facility, the camera eased so it sits
+   * in the middle of the visible map (at least zoom 13, pitch and bearing kept, so a 3D selection stays
+   * as it was), and a full phone sheet dropped to half. Without motion it jumps.
+   */
+  function showFacility(f: Facility): void {
+    serviceMarkerEl.setAttribute("aria-label", tn.marker(facilityName(f)));
+    serviceMarkerEl.dataset.cat = f.cat;
+    serviceMarkerEl.style.background = SERVICE_COLORS[theme][f.cat];
+    serviceMarker.setLngLat([f.lon, f.lat]).addTo(map);
+    panel.revealMap();
+    requestAnimationFrame(() => {
+      const el = map.getContainer();
+      const { centre } = checkArea();
+      map.easeTo({ center: [f.lon, f.lat], zoom: Math.max(map.getZoom(), 13), offset: [centre.x - el.clientWidth / 2, centre.y - el.clientHeight / 2], duration: motion(700) });
+    });
+  }
   /** Room kept around the checked point inside the visible map: the marker pin stands this tall above it. */
   const KEEP_MARGIN = 16;
   const MARKER_H = 30;
@@ -927,13 +952,15 @@ function start(data: MapData): void {
    */
   function checkAt(lat: number, lon: number, opts: { centre?: boolean; zoom?: number; keep?: boolean; announce?: boolean } = {}): void {
     if (selection) select(null);
+    clearServiceMarker();
     check = { lat, lon };
     writeHash({ chk: formatPoint(lat, lon) });
     const dicofre = parishAtPoint(data, lon, lat);
     const p = dicofre ? (data.parishes.get(dicofre) ?? null) : null;
     const c = p ? (data.concelhos.get(concelhoCode(p.dicofre)) ?? null) : null;
     const hazard = p ? hazardAt(reader, lon, lat) : null;
-    panel.showCheck({ lat, lon }, p, c, hazard, window.location.href);
+    const services = p ? servicesAt(gridReader, loadServices, lon, lat) : null;
+    panel.showCheck({ lat, lon }, p, c, hazard, window.location.href, services);
     if (opts.announce !== false) announceCheck(p, hazard);
     setPanelOpen(true);
     syncMarker();
@@ -1039,6 +1066,52 @@ function start(data: MapData): void {
   });
   if (hazardOn) syncHazard();
 
+  // ---- nearby services overlay ------------------------------------------------------
+  // Off unless the hash says sv=1. The dots come from services.json (loaded on the first switch-on,
+  // shared with the panels and the land check), fade in between SERVICES_FADE zooms, and the legend
+  // says "Zoom in" below that. Display only (no hover or clicks).
+  let servicesOn = initial.services;
+  let servicesGeo: GeoJSON.FeatureCollection | null = null;
+  const servicesLegend = mountServicesToggle($("legend-services"), () => servicesOn, (on) => {
+    servicesOn = on;
+    void syncServices();
+  }, theme);
+  const updateServicesHint = () => servicesLegend.setZoomHint(servicesOn && map.getZoom() < SERVICES_FADE[0]);
+  map.on("zoom", updateServicesHint);
+  async function syncServices(): Promise<void> {
+    servicesLegend.sync();
+    writeHash({ sv: servicesOn ? "1" : null });
+    updateServicesHint();
+    if (!servicesOn) {
+      removeServicesLayer(map);
+      document.body.dataset.services = "";
+      return;
+    }
+    if (!servicesGeo) {
+      servicesLegend.setLoading(true);
+      try {
+        const data = await loadServices();
+        servicesGeo = servicesGeoJson(data);
+      } catch (err) {
+        console.error(err);
+        servicesOn = false;
+        servicesLegend.sync();
+        writeHash({ sv: null });
+        status.textContent = tn.overlayError;
+        status.hidden = false;
+        setTimeout(() => (status.hidden = true), 4000);
+        return;
+      } finally {
+        servicesLegend.setLoading(false);
+      }
+      if (!servicesOn) return; // switched off while loading
+    }
+    document.body.dataset.mapIdle = "false";
+    addServicesLayer(map, servicesGeo, SERVICE_COLORS[theme]);
+    document.body.dataset.services = "on";
+  }
+  if (servicesOn) void syncServices();
+
   // ---- theme ------------------------------------------------------------------
   // A theme switch diffs the new basemap with the app's layers (rebuilt in the new palette) into the
   // current style, which keeps the sources, their feature state, the filters and the camera. If
@@ -1050,6 +1123,8 @@ function start(data: MapData): void {
     if (overlayData && overlays.loaded && !map.getSource(overlaySource(CATEGORY_IDS[0]))) addOverlays(map, overlayData, overlays, filter, limits.levelZoom, PALETTES[theme]);
     setPatternImages(map, PALETTES[theme]);
     if (hazardOn) addHazardLayer(map, hazardTiles); // not in appLayers (layers.ts)
+    servicesLegend.setTheme(theme);
+    if (servicesOn && servicesGeo) addServicesLayer(map, servicesGeo, SERVICE_COLORS[theme]); // not in appLayers either
     slabs.restore();
     if (citiesData) (map.getSource(CITY_SOURCE) as GeoJSONSource | undefined)?.setData(citiesData);
     clearHover();
@@ -1065,6 +1140,7 @@ function start(data: MapData): void {
   // the tooltip, and the panel (re-rendered for the same selection, without moving the camera).
   onLangChange = () => {
     toggles.relabel();
+    servicesLegend.relabel();
     labelCountryButton();
     shortlist?.relabel();
     panel.refreshStar();

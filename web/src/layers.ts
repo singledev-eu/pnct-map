@@ -682,3 +682,45 @@ export function addHazardLayer(map: MapLibreMap, tiles: { url: string; tileSize:
 export function removeHazardLayer(map: MapLibreMap): void {
   if (map.getLayer(HAZARD_LAYER)) map.removeLayer(HAZARD_LAYER);
 }
+
+// ---- nearby services overlay (services.ts) ------------------------------------------------------
+
+export const SERVICES_SOURCE = "services";
+export const SERVICES_LAYER = "services-points";
+/** The overlay fades in between these zooms: invisible at the country view, full at the parish level. */
+export const SERVICES_FADE: [number, number] = [7.5, 9];
+
+/**
+ * The facilities as small dots coloured by category, under the 3D slabs and the basemap labels (an
+ * app circle above an extrusion would float over it). Display only: no hover, no clicks.
+ */
+export function addServicesLayer(map: MapLibreMap, data: GeoJSON.FeatureCollection, colors: Record<string, string>): void {
+  if (!map.getSource(SERVICES_SOURCE)) map.addSource(SERVICES_SOURCE, { type: "geojson", data });
+  if (map.getLayer(SERVICES_LAYER)) return;
+  const layers = map.getStyle().layers;
+  const before = layers.find((l) => l.type === "fill-extrusion")?.id ?? layers.find((l) => l.type === "symbol")?.id;
+  const match: unknown[] = ["match", ["get", "cat"]];
+  for (const [cat, color] of Object.entries(colors)) if (cat !== "halo") match.push(cat, color);
+  match.push(colors.station);
+  const [z0, z1] = SERVICES_FADE;
+  map.addLayer(
+    {
+      id: SERVICES_LAYER,
+      type: "circle",
+      source: SERVICES_SOURCE,
+      paint: {
+        "circle-color": match as unknown as string,
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 8, 2.5, 12, 5, 15, 7],
+        "circle-stroke-color": colors.halo,
+        "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 8, 0.5, 12, 1.5],
+        "circle-opacity": ["interpolate", ["linear"], ["zoom"], z0, 0, z1, 1],
+        "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], z0, 0, z1, 1],
+      },
+    },
+    before,
+  );
+}
+
+export function removeServicesLayer(map: MapLibreMap): void {
+  if (map.getLayer(SERVICES_LAYER)) map.removeLayer(SERVICES_LAYER);
+}

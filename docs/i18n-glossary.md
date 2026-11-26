@@ -107,3 +107,14 @@ The reference for UI wording in `web/src/strings.en.ts` and `web/src/strings.pt.
 | sources disagree (a disputed parish) | fontes divergentes |
 | as amended (of a portaria) | na redação em vigor |
 | check with Finanças/IEFP | confirme junto das Finanças/IEFP |
+| Nearby services (panel block, legend toggle) | Serviços próximos |
+| Health centre (SNS primary care: centro de saúde, USF, UCSP) | Centro de saúde |
+| SNS emergency service (hospital or SUB) | Urgência do SNS |
+| Primary school (1.º ciclo) / Secondary school | Escola do 1.º ciclo / Escola secundária |
+| Train station | Estação de comboios (not "estação de trem") |
+| by car / by road / in a straight line | de carro / por estrada / em linha reta |
+| From Monsanto, by car (where the times are measured from) | A partir de Monsanto, de carro |
+| the concelho seat | a sede do concelho |
+| 1 km grid (land check) | grelha de 1 km |
+| Estimates without traffic, not travel advice | Estimativas sem trânsito, não são indicações de viagem |
+| In an emergency, call 112 | Em caso de emergência, ligue 112 |

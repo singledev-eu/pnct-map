@@ -2257,3 +2257,118 @@ dialog a {
     height: 40px;
   }
 }
+
+/* ---- nearby services (nearby.ts, legend.ts mountServicesToggle) ------------------------------- */
+
+/* One stat tile per category: what it is, the drive time large, the road distance small, then the
+   facility (a "show on the map" button) with its concelho and an OpenStreetMap link. Two columns in
+   the panel and the phone sheet. --muted on --hover is 5.0:1 (light) and 5.8:1 (dark). */
+.service-tiles {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.service-label {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.service-tile .stat-value {
+  margin-top: 2px;
+}
+
+.service-where {
+  margin-top: auto; /* names line up along the bottom of a row of tiles */
+  padding-top: 6px;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.service-where .service-name {
+  font-size: 12px;
+  text-align: left;
+}
+
+.service-osm {
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.service-tile[data-mode="none"] .stat-value {
+  color: var(--muted);
+}
+
+.nearby-from {
+  margin: 0;
+  font-size: 12px;
+}
+
+.nearby-straight {
+  margin: 8px 0 0;
+  font-size: 12px;
+}
+
+/* The facility shown from a row: a dot in its category's colour (main.ts, SERVICE_COLORS) with a halo. */
+.service-marker {
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--panel-bg);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--text), 0 1px 6px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+
+/* Legend: the toggle row with its "?", and the colour key while the overlay is on. */
+.legend-services-row .legend-row {
+  flex: 1;
+  min-width: 0;
+}
+
+.swatch-services {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.services-key {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 10px;
+  margin: 2px 0 4px 26px;
+  padding: 0;
+  list-style: none;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.services-key li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.service-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--panel-bg);
+}
+
+@media (max-width: 640px) {
+  .service-where .service-name,
+  .service-osm {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+  }
+}
+
+.services-key[hidden] {
+  display: none;
+}

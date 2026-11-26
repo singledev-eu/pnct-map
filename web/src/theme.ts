@@ -190,3 +190,13 @@ export function applyPageTheme(theme: Theme, pref: ThemePref, doc: Document = do
     meta.content = THEME_COLORS[pref === "auto" ? own : theme];
   }
 }
+
+/**
+ * Nearby services overlay (layers.ts addServicesLayer) and its legend swatches, per theme: seven hues
+ * apart from each other, from the PNCT teal and from the basemap's water blue and park green, with a
+ * halo in the basemap's background colour so small dots read on any fill.
+ */
+export const SERVICE_COLORS: Record<Theme, { halo: string } & Record<"health" | "emergency" | "supermarket" | "school1" | "school3" | "pharmacy" | "station", string>> = {
+  light: { health: "#1d4ed8", emergency: "#dc2626", supermarket: "#d97706", school1: "#9333ea", school3: "#6d28d9", pharmacy: "#db2777", station: "#1f2937", halo: "#ffffff" },
+  dark: { health: "#60a5fa", emergency: "#f87171", supermarket: "#fbbf24", school1: "#c084fc", school3: "#a78bfa", pharmacy: "#f472b6", station: "#e5e7eb", halo: "#0c0c0c" },
+};

@@ -9,6 +9,10 @@
 /landcheck/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Nearby-services grid (docs/nearby-services/DATA.md): the directory name carries its content hash.
+/services/*
+  Cache-Control: public, max-age=31536000, immutable
+
 # The page itself: always revalidate so a deploy shows up at once.
 /
   Cache-Control: public, max-age=0, must-revalidate

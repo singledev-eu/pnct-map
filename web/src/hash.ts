@@ -9,6 +9,7 @@
  *   #list=160763,0808               a shared shortlist (shortlist.ts), shown apart from the viewer's own
  *   #chk=39.92681,-8.15187          a land check at lat,lon (landcheck.ts); /check?lat=..&lon=.. links land here
  *   #...&hz=1                       the wildfire hazard overlay switched on
+ *   #...&sv=1                       the nearby-services overlay switched on
  */
 export const MAP_HASH_KEY = "map";
 
@@ -28,6 +29,8 @@ export interface HashState {
   check: string | null;
   /** The wildfire hazard overlay (`hz=1`). */
   hazard: boolean;
+  /** The nearby-services overlay (`sv=1`). */
+  services: boolean;
 }
 
 function params(): URLSearchParams {
@@ -49,10 +52,11 @@ export function readHash(): HashState {
     list: p.get("list"),
     check: p.get("chk"),
     hazard: p.get("hz") === "1",
+    services: p.get("sv") === "1",
   };
 }
 
-export function writeHash(update: Partial<Record<"f" | "c" | "d" | "focus" | "pnct" | "pa" | "op" | "t" | "land" | "list" | "chk" | "hz", string | null>>): void {
+export function writeHash(update: Partial<Record<"f" | "c" | "d" | "focus" | "pnct" | "pa" | "op" | "t" | "land" | "list" | "chk" | "hz" | "sv", string | null>>): void {
   const p = params();
   for (const [k, v] of Object.entries(update)) {
     if (v === null || v === undefined || v === "") p.delete(k);

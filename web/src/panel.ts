@@ -4,10 +4,12 @@ import type { Concelho, Parish } from "./data";
 import { LAND_FILTERS, type Operation, type PropertyType, type SearchOptions } from "./idealista";
 import { BLOCKED, formatPoint, HAZARD, hazardClass, type HazardResult } from "./landcheck";
 import { getConcelhoLinks, getLinks, type PropertyLink } from "./links";
+import { nearbyCheckSection, type NearbyContext, nearbySection } from "./nearby";
 import { credits, loadProtection, panelAreas, type Protection, type ProtectionData } from "./protected";
 import { attachSheet, setSheetState } from "./sheet";
+import { type CheckServices, SERVICES_META } from "./services";
 import { disputeOf } from "./status";
-import { formatDate, formatNumber, formatPct, lang, sheet, t, tk, ui } from "./strings";
+import { formatDate, formatNumber, formatPct, lang, sheet, t, tk, tn, ui } from "./strings";
 
 type Child = Node | string | null | undefined | false;
 
@@ -30,6 +32,8 @@ export interface PanelCallbacks {
   /** The shortlist (shortlist.ts): whether `code` is starred, and toggling it. */
   isStarred?: (code: string) => boolean;
   onToggleStar?: (code: string) => void;
+  /** Nearby services (nearby.ts): concelho names and "show on the map". Without it, the block is left out. */
+  nearby?: NearbyContext;
 }
 
 const OPERATIONS: Operation[] = ["comprar", "arrendar"];
@@ -122,6 +126,8 @@ function sheetCredit(): HTMLElement {
     ...credits().flatMap((c, i) => [i ? " · " : "", creditLink(c.url, c.label.replace(/ /g, "\u00a0"))]),
     ` · ${tk.creditLead} `,
     creditLink(HAZARD.url, "©\u00a0ICNF"),
+    " · ",
+    creditLink(SERVICES_META.sources.sns.dados_url, tn.creditSns.replace(/ /g, "\u00a0")),
   );
 }
 
@@ -316,6 +322,12 @@ export class Panel {
     this.refreshStar();
   }
 
+  /** Phones: a full sheet drops to half, so a place shown on the map (a nearby service) is visible. */
+  revealMap(): void {
+    const handle = this.root.querySelector<HTMLButtonElement>(".sheet-handle");
+    if (handle && this.root.dataset.sheet === "full") setSheetState(this.root, handle, "half");
+  }
+
   close(): void {
     this.refreshLinks = null;
     this.renderToken++;
@@ -429,6 +441,7 @@ export class Panel {
       ]),
       h("section", {}, h("h3", {}, ui.concelhoCoverage), coverage(c), showConcelho),
       concelhoDetails(c),
+      this.cb.nearby ? nearbySection("parishes", p.dicofre, this.cb.nearby) : null,
       protectionSection("freguesias", p.dicofre),
       property,
     );
@@ -473,6 +486,7 @@ export class Panel {
         whole ? parishes : null,
       ),
       concelhoCard(c),
+      this.cb.nearby ? nearbySection("concelhos", c.code, this.cb.nearby) : null,
       protectionSection("concelhos", c.code),
       whole ? null : parishes,
       whole ? this.propertySection((opts) => getConcelhoLinks(c, opts)) : null,
@@ -484,7 +498,7 @@ export class Panel {
    * class when `hazard` resolves. `p` and `c` are null outside mainland Portugal. `link` is the
    * shareable URL of this check.
    */
-  showCheck(point: { lat: number; lon: number }, p: Parish | null, c: Concelho | null, hazard: Promise<HazardResult> | null, link: string): void {
+  showCheck(point: { lat: number; lon: number }, p: Parish | null, c: Concelho | null, hazard: Promise<HazardResult> | null, link: string, services: Promise<CheckServices> | null = null): void {
     this.renderToken++;
     this.refreshLinks = null;
 
@@ -564,7 +578,8 @@ export class Panel {
       : h("section", { "data-testid": "property-search" }, h("h3", {}, ui.propertySearch), h("p", { class: "muted" }, ui.notPnctParish));
 
     this.pendingPeek = checkPeek(p.freguesia, p, hazard);
-    this.open(p.freguesia, tk.kicker, null, where, share, pnct, hazardSection, notCovered, property, sources);
+    const nearby = services && this.cb.nearby ? nearbyCheckSection(services, this.cb.nearby) : null;
+    this.open(p.freguesia, tk.kicker, null, where, share, pnct, hazardSection, nearby, notCovered, property, sources);
     this.root.dataset.check = "inside";
   }
 }

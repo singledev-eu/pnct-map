@@ -8,15 +8,18 @@ import { join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const meta = JSON.parse(readFileSync(new URL("../data/landcheck.meta.json", import.meta.url), "utf8"));
+// The nearby-services grid (docs/nearby-services/DATA.md) follows the same scheme: built by `uv run make services`.
+const services = JSON.parse(readFileSync(new URL("../data/services.meta.json", import.meta.url), "utf8"));
 const publicDir = fileURLToPath(new URL("../public/", import.meta.url));
 
 const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)]));
 
 let failed = false;
-for (const [part, m] of Object.entries({ tiles: meta.hazard.tiles, cells: meta.hazard.cells })) {
+const BUILD = { tiles: "landcheck", cells: "landcheck", "services grid": "services" };
+for (const [part, m] of Object.entries({ tiles: meta.hazard.tiles, cells: meta.hazard.cells, "services grid": services.grid })) {
   const dir = join(publicDir, m.dir);
   if (!existsSync(dir)) {
-    console.error(`land check ${part}: ${m.dir} is missing; run \`uv run make landcheck\` in the repo root`);
+    console.error(`land check ${part}: ${m.dir} is missing; run \`uv run make ${BUILD[part]}\` in the repo root`);
     failed = true;
     continue;
   }
@@ -32,7 +35,7 @@ for (const [part, m] of Object.entries({ tiles: meta.hazard.tiles, cells: meta.h
   }
   const sha = tree.digest("hex");
   if (files.length !== m.files || bytes !== m.bytes || sha !== m.tree_sha256) {
-    console.error(`land check ${part}: ${m.dir} does not match the meta (${files.length} files, ${bytes} bytes); rebuild with \`uv run make landcheck\``);
+    console.error(`land check ${part}: ${m.dir} does not match the meta (${files.length} files, ${bytes} bytes); rebuild with \`uv run make ${BUILD[part]}\``);
     failed = true;
   } else console.log(`land check ${part}: ${m.dir} ok (${files.length} files, ${(bytes / 2 ** 20).toFixed(1)} MiB)`);
 }

@@ -8,7 +8,8 @@ import { h } from "./panel";
 import { HAZARD } from "./landcheck";
 import { credits } from "./protected";
 import { LEGAL_SOURCE, STATUS_CHECKED } from "./status";
-import { formatDate, lang, t, tk, ui } from "./strings";
+import { SERVICES_META } from "./services";
+import { formatDate, lang, t, tk, tn, ui } from "./strings";
 
 const IEFP_LIST = "https://www.iefp.pt/documents/10181/4287418/Territorios+PNCT_04-02-2026.pdf";
 const CAOP = "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop";
@@ -60,6 +61,15 @@ export function renderAbout(dialog: HTMLDialogElement): void {
           ` (${formatDate(HAZARD.reference_date)}, `,
           link(HAZARD.licence_url, HAZARD.licence[lang]),
           `). ${tk.hazardNote}`,
+        ),
+        h(
+          "li",
+          { "data-testid": "about-services" },
+          h("strong", {}, `${tn.aboutLabel}:`),
+          " ",
+          ...tn.aboutBody.split(/(\{osm\}|\{sns\})/).map((part) =>
+            part === "{osm}" ? link("https://www.openstreetmap.org/copyright", "OpenStreetMap") : part === "{sns}" ? link(SERVICES_META.sources.sns.url, tn.aboutSnsLink) : part,
+          ),
         ),
       ),
       h("p", { class: "muted" }, a.notAffiliated),

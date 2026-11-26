@@ -6,7 +6,9 @@
 import { rich } from "./i18n";
 import { h } from "./panel";
 import { CATEGORIES, categoryLabel, sourceLabel } from "./protected";
-import { t } from "./strings";
+import { SERVICE_COLORS, type Theme } from "./theme";
+import { CATEGORIES as SERVICE_CATEGORIES } from "./services";
+import { t, tn } from "./strings";
 
 const STORAGE_KEY = "pnct-map:legend";
 
@@ -106,24 +108,32 @@ export function mountOverlayToggles(
  * or its close button closes it, and focus goes back to the "?" button; tabbing out of it closes it
  * and leaves focus where it went. `relabel` re-renders its text in the active language.
  */
-export function mountExplainer(button: HTMLButtonElement): { relabel: () => void } {
-  const titleId = "explainer-title";
+export interface ExplainerText {
+  title: string;
+  items: { lead: string; body: string }[];
+  footnote: string;
+  close: string;
+}
+
+export function mountExplainer(button: HTMLButtonElement, text: () => ExplainerText = () => t.explainer, id = "protection-explainer"): { relabel: () => void } {
+  const titleId = `${id}-title`;
   const close = h("button", { type: "button", class: "explainer-close" }, "×");
   const title = h("h2", { id: titleId });
   const list = h("ul", {});
   const footnote = h("em", {});
   const pop = h(
     "div",
-    { id: "protection-explainer", class: "explainer", role: "dialog", "aria-labelledby": titleId, tabindex: "-1", "data-testid": "protection-explainer" },
+    { id, class: "explainer", role: "dialog", "aria-labelledby": titleId, tabindex: "-1", "data-testid": id },
     h("div", { class: "explainer-header" }, title, close),
     list,
     h("p", { class: "explainer-footnote" }, footnote),
   );
   const relabel = () => {
-    close.setAttribute("aria-label", t.explainer.close);
-    title.textContent = t.explainer.title;
-    list.replaceChildren(...t.explainer.items.map((item) => h("li", {}, h("strong", {}, ...rich(item.lead)), " ", ...rich(item.body))));
-    footnote.textContent = t.explainer.footnote;
+    const x = text();
+    close.setAttribute("aria-label", x.close);
+    title.textContent = x.title;
+    list.replaceChildren(...x.items.map((item) => h("li", {}, h("strong", {}, ...rich(item.lead)), " ", ...rich(item.body))));
+    footnote.textContent = x.footnote;
   };
   const backdrop = h("div", { class: "explainer-backdrop", "aria-hidden": "true" });
   pop.hidden = backdrop.hidden = true;
@@ -178,4 +188,68 @@ export function mountExplainer(button: HTMLButtonElement): { relabel: () => void
   button.addEventListener("click", () => (isOpen() ? hide(true) : open()));
   close.addEventListener("click", () => hide(true));
   return { relabel };
+}
+
+/**
+ * The nearby-services overlay toggle (off by default) with its "?" explainer, the colour key (shown
+ * while it is on) and the "Zoom in" hint (main.ts: on but faded out at country zoom). `onChange` gets
+ * the new state; `sync` re-reads it (hash), `setLoading` marks the row while services.json loads,
+ * `setTheme` repaints the key, `relabel` re-reads the strings.
+ */
+export function mountServicesToggle(
+  container: HTMLElement,
+  isOn: () => boolean,
+  onChange: (on: boolean) => void,
+  theme: Theme,
+): { sync: () => void; setLoading: (on: boolean) => void; setZoomHint: (show: boolean) => void; setTheme: (theme: Theme) => void; relabel: () => void } {
+  const input = h("input", { type: "checkbox", "data-testid": "services-toggle" });
+  input.addEventListener("change", () => onChange(input.checked));
+  const label = h("span", {});
+  const loadingText = h("span", {});
+  const loading = h("span", { class: "overlay-loading", role: "status" }, h("span", { class: "spinner", "aria-hidden": "true" }), loadingText);
+  loading.hidden = true;
+  const swatch = h("span", { class: "swatch swatch-services", "aria-hidden": "true" });
+  const row = h("label", { class: "legend-row legend-overlay" }, input, swatch, label, loading);
+  const help = h("button", { type: "button", class: "help-button", "data-testid": "services-help" }, "?");
+  const keyItems = SERVICE_CATEGORIES.map((cat) => {
+    const dot = h("span", { class: "service-dot", "aria-hidden": "true" });
+    const text = h("span", {});
+    return { cat, dot, text, li: h("li", { "data-cat": cat }, dot, text) };
+  });
+  const key = h("ul", { class: "services-key", "data-testid": "services-key" }, ...keyItems.map((k) => k.li));
+  const hint = h("p", { class: "legend-hint", "data-testid": "services-zoom-hint" });
+  hint.hidden = true;
+  container.replaceChildren(h("div", { class: "legend-heading-row legend-services-row" }, row, help), key, hint);
+  const explainer = mountExplainer(help, () => tn.explainer, "services-explainer");
+  const setTheme = (next: Theme) => {
+    const colors = SERVICE_COLORS[next];
+    for (const k of keyItems) k.dot.style.background = colors[k.cat];
+    swatch.style.background = `conic-gradient(${SERVICE_CATEGORIES.map((c, i) => `${colors[c]} ${(i * 100) / SERVICE_CATEGORIES.length}% ${((i + 1) * 100) / SERVICE_CATEGORIES.length}%`).join(", ")})`;
+  };
+  const relabel = () => {
+    label.textContent = tn.legendToggle;
+    loadingText.textContent = tn.loading;
+    help.setAttribute("aria-label", tn.explainer.button);
+    hint.textContent = tn.zoomHint;
+    key.setAttribute("aria-label", tn.heading);
+    for (const k of keyItems) k.text.textContent = tn.category[k.cat];
+    explainer.relabel();
+  };
+  const sync = () => {
+    input.checked = isOn();
+    key.hidden = !isOn();
+  };
+  setTheme(theme);
+  relabel();
+  sync();
+  return {
+    sync,
+    setLoading: (on) => {
+      loading.hidden = !on;
+      row.toggleAttribute("aria-busy", on);
+    },
+    setZoomHint: (show) => (hint.hidden = !show),
+    setTheme,
+    relabel,
+  };
 }
