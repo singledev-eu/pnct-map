@@ -1,6 +1,6 @@
 # 11: Nearby services (health, emergency, shops, schools, pharmacy, train)
 
-**Status:** done, with driving times (no straight-line fallback needed) · **Branch:** `nearby-services` (from `main` d6a861c, not merged, not pushed) · **Preview:** see "Preview deploy" below · **Date:** night of 2026-11-26
+**Status:** done, with driving times (no straight-line fallback needed) · **Branch:** `nearby-services` (from `main` d6a861c, not merged, not pushed) · **Preview:** https://preview.pnct-map.pages.dev · **Date:** night of 2026-11-26
 
 For each parish, each concelho and any point checked in the land check, the app now shows the nearest:
 
@@ -123,9 +123,9 @@ On all 40 trips, our road distance and time agree with OSRM's within 0.7 km and 
 
 | Suite | Result |
 |---|---|
-| pytest | TESTS_PY |
-| Vitest | TESTS_VITEST |
-| Playwright e2e | TESTS_E2E |
+| pytest | **302 passed** (228 before + 74 in `tests/test_services.py`) |
+| Vitest | **279 passed** (260 before + 19 in `services.test.ts`) |
+| Playwright e2e | **194 passed**, none flaky (185 before + 9 in `nearby-services.spec.ts`; full `npm run test:all` at 22:31) |
 
 New tests:
 
@@ -141,7 +141,7 @@ New tests:
   - the straight line, the grid reader on a synthetic little-endian zlib chunk;
   - the straight-line fallback and a failed load as an error;
   - the real data (Monsanto) and a real grid chunk.
-- `web/tests/e2e/nearby-services.spec.ts` (8 tests, also run 3× each: 24/24): the parish block, concelho PT, show on map, land check rows (one grid GET), a failed grid load, the overlay (not loaded on start, `sv=1`, zoom hint), the explainer, and the phone sheet.
+- `web/tests/e2e/nearby-services.spec.ts` (9 tests; the first 8 were also run 3× each: 24/24): the parish block, concelho PT, show on map, land check rows (one grid GET), a failed grid load, the overlay (not loaded on start, `sv=1`, zoom hint), the explainer, and the phone sheet.
 
 **Perf** (`web/scripts/perf.mjs`, Pixel 7, Fast 3G, 4× CPU, 3 runs, analytics off; `docs/perf/nearby-services/{before,after}.json`):
 
@@ -174,11 +174,15 @@ New tests:
 9. **Nearest = nearest by drive time**, distance along that route (stated in the explainer).
 10. **Ferries excluded.**
 11. **One lazy `services.json` (184 KB br)** for the panels, the land check and the overlay. Splitting it would save ~70 KB for the panel only, at the cost of a second file. Precision is cut to what's shown (10 s, 100 m, ~10 m positions). OSM ids are kept in the tracked `facilities.csv`; the app links OSM by position.
-12. **No preview deploy** (see below).
+12. **Preview deploy done** (wrangler was already logged in; the preview branch only, as allowed).
 
 ## Preview deploy
 
-PREVIEW_LINE
+Wrangler was already logged in, so `npm run deploy:preview` ran. It repeated the full suite (pytest 302, Vitest 279, e2e 194, none flaky), then deployed to the **preview branch only**. Production was not touched.
+
+- **https://preview.pnct-map.pages.dev** (deploy `cb140e66`: 423 new files uploaded, 3,530 reused).
+- On Pages, a grid chunk answers `200 application/octet-stream`, 6.6 KB, `cache-control: public, max-age=31536000, immutable`.
+- `nearby-services.spec.ts` against the preview (`E2E_BASE_URL`): 9/9 passed.
 
 ## What's left
 
@@ -194,10 +198,10 @@ PREVIEW_LINE
 
 ## Release checklist for Mike
 
-1. Review the branch (`git log main..nearby-services`, 9 commits), DATA.md and `data/services/sns_urgencias.csv` (the 84 emergency rows, especially the 3 `position=sns` rows and SUB Estremoz).
+1. Review the branch (`git log main..nearby-services`, 11 commits), DATA.md and `data/services/sns_urgencias.csv` (the 84 emergency rows, especially the 3 `position=sns` rows and SUB Estremoz).
 2. On a fresh checkout: `uv sync && uv run make services` (downloads the 430 MB extract; ~3 min, 5.5 GiB RAM) so `web/public/services/` exists; `node web/scripts/check_landcheck.mjs` must say "ok" for the services grid.
 3. Run `cd web && npm run test:all`.
-4. `npm run deploy:preview`, then check on the phone: a parish panel, a land check in the countryside, "show on the map", the overlay and the "?" text in PT.
+4. The preview is already up at https://preview.pnct-map.pages.dev (re-run `npm run deploy:preview` after any change). Check on the phone: a parish panel, a land check in the countryside, "show on the map", the overlay and the "?" text in PT.
 5. Merge (fast-forward) into `main`, bump to **0.12.0** (CHANGELOG "Unreleased" → 0.12.0; `web/package.json`), tag `v0.12.0`, push.
 6. `npm run deploy` (production) after the phone check.
 7. Optional: ask ACSS/SPMS to confirm the CC BY terms on the transparency portal itself (dados.gov.pt says CC BY; the DE-SNS record says "notspecified").
