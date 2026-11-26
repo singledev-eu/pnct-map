@@ -6,7 +6,7 @@
 
 - **Nearby services:** every parish and concelho panel has a "Nearby services" block with the nearest SNS health centre, SNS emergency service, supermarket, primary (1.º ciclo) and secondary school, pharmacy and train station: the name, the road distance and the drive time ("Health centre · Centro de Saúde de Penamacor · 20 km · 25 min by car"). Parishes are measured from their main village or town, concelhos from their seat, and the block says which. Each name shows the place on the map; "OSM ↗" opens it in OpenStreetMap.
 - **In the land check too:** the same rows for any clicked point, from a 1 km grid (the road nearest the spot). Where no road is within 1 km, the row gives the straight-line distance to the nearest one and says so.
-- **Services overlay:** an optional legend toggle shows every facility as a dot coloured by category, faded out at the country view, with a "?" explainer (what the numbers mean, from where, by car without traffic, the data dates, not travel advice; in an emergency, call 112). `sv=1` in the URL.
+- **Services overlay:** an optional legend toggle ("Nearby services") shows every facility as a dot coloured by category, faded out at the country view, with a "?" explainer (what the numbers mean, from where, by car without traffic, the data dates, not travel advice; in an emergency, call 112). `sv=1` in the URL.
 - New credits in the map attribution, the phone sheet and About: SNS emergency services (CC BY 4.0); places from OpenStreetMap (ODbL).
 
 ### Infrastructure
