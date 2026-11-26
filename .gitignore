@@ -44,3 +44,6 @@ insights/data/raw/*
 insights/out/
 insights/state/*
 !insights/state/.gitkeep
+# Nearby services grid (docs/nearby-services/DATA.md): built by `make services`, served by Cloudflare Pages.
+# web/data/services.meta.json names it and stays committed.
+web/public/services/

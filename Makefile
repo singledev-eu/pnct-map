@@ -7,9 +7,9 @@ PNCT_SHA256 := c286ef77c16321e8c5124eeb92f8d3f0565dbe302787817a91fe526653e7cffc
 PNCT_PDF := data/raw/territorios-pnct-2026-02-04.pdf
 PY := uv run python
 
-.PHONY: all download parse match geo web-data shapes outline protected-fetch protected concelhos-fetch concelhos cities-fetch cities landcheck-fetch landcheck insights-fetch insights test web e2e clean
+.PHONY: all download parse match geo web-data shapes outline protected-fetch protected concelhos-fetch concelhos cities-fetch cities landcheck-fetch landcheck services-fetch services insights-fetch insights test web e2e clean
 
-all: web-data shapes outline protected concelhos cities landcheck test
+all: web-data shapes outline protected concelhos cities landcheck services test
 
 download: $(CAOP_GPKG) $(PNCT_PDF)
 
@@ -86,10 +86,10 @@ web/data/concelhos.json: scripts/build_concelhos.py scripts/concelhos_config.py 
 test:
 	uv run pytest -q
 
-web: web-data shapes outline protected concelhos cities landcheck
+web: web-data shapes outline protected concelhos cities landcheck services
 	cd web && npm ci && npm test && npm run build
 
-e2e: web-data shapes outline protected concelhos cities landcheck
+e2e: web-data shapes outline protected concelhos cities landcheck services
 	cd web && npm ci && npm run test:e2e
 
 CITIES_FETCHED := data/external/osm/fetch.json
@@ -118,6 +118,23 @@ LANDCHECK_BUILT := web/public/landcheck/.built
 landcheck: $(LANDCHECK_BUILT)
 $(LANDCHECK_BUILT): scripts/build_hazard.py scripts/landcheck_config.py $(LANDCHECK_FETCHED) $(CAOP_GPKG)
 	$(PY) scripts/build_hazard.py
+	touch $@
+
+# Nearby services (docs/nearby-services/): OSM facilities (Geofabrik extract, SHA-256 pinned) and the SNS
+# emergency list (data/services/sns_urgencias.csv, hand-checked), drive times on a car graph built in Python
+# (scripts/services_graph.py) -> web/data/services.json (committed, lazy), web/data/services.meta.json
+# (committed) and the land check grid in web/public/services/ (gitignored). `make services-fetch` re-downloads.
+SERVICES_FETCHED := data/external/services/fetch.json
+services-fetch:
+	$(PY) scripts/fetch_services.py --refresh
+
+$(SERVICES_FETCHED): scripts/services_config.py scripts/fetch_services.py
+	$(PY) scripts/fetch_services.py
+
+SERVICES_BUILT := web/public/services/.built
+services: $(SERVICES_BUILT)
+$(SERVICES_BUILT): scripts/build_services.py scripts/services_graph.py scripts/services_config.py data/services/sns_urgencias.csv web/data/cities.json $(SERVICES_FETCHED) $(CAOP_GPKG)
+	$(PY) scripts/build_services.py
 	touch $@
 
 # Hand-maintained data is never under a clean target: data/contacts/ (tracked) and data/manual/
