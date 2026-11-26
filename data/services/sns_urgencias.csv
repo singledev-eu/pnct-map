@@ -1,0 +1,85 @@
+sns_name,position,osm,lon,lat,note
+SUB Albufeira,sns,,-8.255000,37.098000,"automatic match was a private hospital; SNS coordinate is at the Albufeira health centre (USF Sol Nascente, 15 m)"
+SUB Alcácer do Sal,osm,n9723988091,-8.509929,38.376101,matched by name: UCSP Alcácer do Sal
+SUB Algueirão Mem-Martins,osm,w263486826,-9.351807,38.790222,"OSM 'Serviço de Urgência Básica (SUB)', 78 m from the SNS coordinate"
+SUB Arganil,osm,w889290629,-8.054444,40.215836,matched by name: Centro de Saúde de Arganil
+SUB Arouca,osm,n14346486700,-8.254432,40.930164,OSM 'Serviço de Urgência Básica de Arouca' at the health centre
+SUB Castro Verde,osm,n9744154705,-8.084054,37.702328,matched by name: UCSP Castro Verde
+SUB Cinfães,osm,w108129444,-8.091310,41.074029,matched by name: Centro de Atendimento Permanente Cinfães (Hospital)
+SUB Estremoz,osm,n9723349238,-7.585896,38.848688,UCSP Estremoz (health centre); not cross-checked against a second source
+SUB Loulé,sns,,-8.017458,37.141949,SNS coordinate kept: no OSM object could be confirmed as the SUB; not cross-checked
+SUB Mogadouro,osm,n9874655283,-6.711838,41.342908,matched by name: UCSP Mogadouro
+SUB Moimenta da Beira,osm,n9828362587,-7.611241,40.972223,matched by name: UCSP Moimenta da Beira
+SUB Montalegre,osm,n9860233319,-7.782408,41.830808,UCSP Montalegre (health centre)
+SUB Monção,osm,w330382584,-8.486342,42.069032,matched by name: Centro de Saúde de Monção
+SUB Moura,osm,n9744936739,-7.452073,38.138019,matched by name: UCSP Moura
+SUB Odemira,osm,n12840402825,-8.645223,37.601261,OSM 'Serviço de Urgência Básica de Odemira'
+SUB Ponte de Sor,osm,w545358009,-8.014637,39.250914,SNS coordinate is 23.8 km off (near Montargil); placed on the Ponte de Sor health centre
+SUB São Pedro do Sul,osm,w891338423,-8.061564,40.759655,matched by name: Centro de Saúde de São Pedro do Sul
+SUB Vila Nova de Foz Côa,osm,w996270219,-7.140804,41.079254,matched by name: Centro de Saúde de Vila Nova de Foz Côa e Serviço de Urgência Básica
+SUB Vila Real de Santo António,osm,w472976826,-7.418699,37.190253,matched by name: Centro de Saúde de Vila Real de Santo António
+SUB da Unidade Hospitalar de Macedo de Cavaleiros,osm,w712626861,-6.960451,41.535013,matched by name: ULS do Nordeste - Unidade Hospitalar de Macedo de Cavaleiros
+SUB da Unidade Hospitalar de Proximidade de Lamego,osm,w361342933,-7.796098,41.083255,matched by name: Unidade Hospitalar de Lamego - Unidade Local de Saúde de Trás-os-Montes e Alto Douro
+SUB da Unidade Hospitalar de Santo Tirso,osm,w307556440,-8.480541,41.341831,automatic match was a private hospital; Hospital de Santo Tirso (emergency=yes)
+SUB da Unidade Hospitalar de São João da Madeira,osm,w319345373,-8.494547,40.893426,matched by name: Hospital de São João da Madeira
+SUB do Hospital Bernardino Lopes de Oliveira - Alcobaça,osm,w278570744,-8.972516,39.550590,matched by name: Hospital Bernardino Lopes de Oliveira
+SUB do Hospital Cândido de Figueiredo - Tondela,osm,w1237956312,-8.082967,40.516987,matched by name: Hospital Cândido de Figueiredo - Unidade Local de Saúde de Viseu Dão-Lafões; the SNS coordinate is 2315 m away (geocoded to the town)
+SUB do Hospital Distrital de Águeda,osm,w95032433,-8.449421,40.575818,matched by name: Hospital Distrital de Águeda
+SUB do Hospital Nossa Senhora da Assunção - Seia,osm,w1447487487,-7.695743,40.420887,matched by name: Hospital Nossa Senhora da Assunção
+SUB do Hospital Nossa Senhora da Graça - Tomar,osm,w172451266,-8.395649,39.609713,"matched by name: Hospital Nossa Senhora da Graça - Tomar (Centro Hospitalar Médio Tejo, EPE)"
+SUB do Hospital Rainha Santa Isabel - Torres Novas,osm,w1206970972,-8.536619,39.468371,matched by name: Hospital Rainha Santa Isabel
+SUB do Hospital São Gonçalo - Amarante,osm,w390106556,-8.079609,41.301204,matched by name: Hospital de São Gonçalo
+SUB do Hospital São José - Fafe,osm,w263733952,-8.169639,41.449607,matched by name: Hospital de Fafe
+SUB do Hospital São Miguel - Oliveira de Azeméis,osm,w142128294,-8.471781,40.841283,matched by name: Hospital de São Miguel
+SUB do Hospital São Pedro Gonçalves Telmo - Peniche,osm,w131582991,-9.382794,39.363450,matched by name: Hospital de Peniche
+SUB do Hospital de Lagos,sns,,-8.670200,37.099600,SNS coordinate kept (68 m from the hospital area); no OSM hospital object found
+SUB do Hospital de Pombal,osm,w153954949,-8.625059,39.917407,matched by name: Hospital Distrital de Pombal
+SUB do Hospital de Santa Luzia de Elvas,osm,w1051147716,-7.163073,38.875443,"matched by name: Unidade Local de Saúde do Norte Alentejano, EPE - Hospital de Santa Luzia"
+SUB do Hospital de Santa Maria Maior,osm,w104555893,-8.615963,41.533301,matched by name: Hospital de Santa Maria Maior
+SUB do Hospital do Conde de Bertiandos - Ponte de Lima,osm,n1172233243,-8.579164,41.767303,matched by name: Hospital do Conde de Bertiandos
+SUB do Hospital do Montijo,osm,w304166828,-8.971238,38.707439,"matched by name: Centro Hospitalar Barreiro-Montijo, EPE - Hospital Distrital do Montijo"
+Urgência Médico-cirúrgica do Hospital de Santa Luzia - Viana do Castelo,osm,w365905085,-8.832519,41.696841,matched by name: Hospital de Santa Luzia
+Urgência da Unidade Hospitalar da Póvoa do Varzim,osm,n2041651512,-8.758771,41.382944,matched by name: Hospital da Póvoa de Varzim
+Urgência da Unidade Hospitalar de Bragança,osm,w23376429,-6.767669,41.802950,automatic match was a private clinic; ULS do Nordeste hospital (emergency=yes)
+Urgência da Unidade Hospitalar de Chaves,osm,w174958342,-7.477331,41.744267,matched by name: Unidade Hospitalar de Chaves - Unidade Local de Saúde de Trás-os-Montes e Alto Douro
+Urgência da Unidade Hospitalar de Mirandela,osm,w293793744,-7.189656,41.485042,matched by name: Hospital de Mirandela
+Urgência da Unidade Hospitalar de São Pedro - Vila Real,osm,w805944793,-7.760682,41.309852,matched by name: Unidade Local de Saúde de Trás-os-Montes e Alto Douro
+Urgência do Hospital Amato Lusitano - Castelo Branco,osm,w229123318,-7.499831,39.822950,"matched by name: Unidade Local de Saúde de Castelo Branco, EPE - Hospital Amato Lusitano"
+Urgência do Hospital Beatriz Ângelo - Loures,osm,w510427026,-9.175897,38.821500,matched by name: Hospital Beatriz Ângelo
+Urgência do Hospital Distrital da Figueira da Foz,osm,w212007171,-8.860268,40.131237,matched by name: Hospital Distrital da Figueira da Foz
+Urgência do Hospital Distrital das Caldas da Rainha,osm,w282697178,-9.130138,39.404412,matched by name: Hospital de Caldas da Rainha
+Urgência do Hospital Distrital de Santarém,osm,w940457864,-8.696527,39.241053,matched by name: Hospital Distrital de Santarém; the SNS coordinate is 1860 m away (geocoded to the town)
+Urgência do Hospital Distrital de Torres Vedras,osm,n428770612,-9.257145,39.086165,matched by name: Hospital de Torres Vedras
+Urgência do Hospital Doutor José Maria Grande - Portalegre,osm,w303503663,-7.427861,39.300227,"matched by name: Unidade Local de Saúde do Norte Alentejano, EPE - Hospital Doutor José Maria Grande"
+Urgência do Hospital Doutor Manoel Constâncio - Abrantes,osm,w828128504,-8.198656,39.456167,matched by name: Hospital Doutor Manuel Constâncio
+Urgência do Hospital Eduardo Santos Silva - Gaia - Unidade I,osm,w490137959,-8.592888,41.104672,matched by name: Centro Hospitalar Vila Nova de Gaia/Espinho Santos Silva - Unidade 1; the SNS coordinate is 2456 m away (geocoded to the town)
+Urgência do Hospital Egas Moniz,osm,w940457865,-9.188064,38.699540,matched by name: Hospital de Egas Moniz
+Urgência do Hospital Espírito Santo - Évora,osm,r13478475,-7.902724,38.569236,matched by name: Hospital do Espírito Santo
+Urgência do Hospital Garcia de Orta,osm,w156449735,-9.176938,38.673861,matched by name: Hospital Garcia de Orta
+Urgência do Hospital Geral de Coimbra,osm,r10577459,-8.459440,40.195446,automatic match was the military hospital; Hospital dos Covões
+Urgência do Hospital Infante Dom Pedro - Aveiro,osm,w541359025,-8.654837,40.634573,matched by name: Hospital Infante Dom Pedro
+Urgência do Hospital José Joaquim Fernandes - Beja,osm,w235944289,-7.869658,38.013798,matched by name: Hospital José Joaquim Fernandes
+Urgência do Hospital Nossa Senhora do Rosário - Barreiro,osm,w113221513,-9.057126,38.654751,"matched by name: Centro Hospitalar Barreiro-Montijo, EPE - Hospital de Nossa Senhora do Rosário"
+Urgência do Hospital Padre Américo - Vale do Sousa,osm,w126366393,-8.309087,41.196759,matched by name: Hospital Padre Américo
+Urgência do Hospital Pedro Hispano,osm,w25689164,-8.662917,41.182327,matched by name: Hospital Pedro Hispano
+Urgência do Hospital Prof. Doutor Fernando Fonseca - Amadora/Sintra,osm,w467861629,-9.246552,38.743031,matched by name: Hospital Amadora-Sintra
+Urgência do Hospital Pêro da Covilhã,osm,w358193659,-7.492354,40.266491,matched by name: Hospital Pêro da Covilhã; the SNS coordinate is 1982 m away (geocoded to the town)
+Urgência do Hospital Santa Maria,osm,w71571984,-9.160851,38.748585,matched by name: Hospital Santa Maria
+Urgência do Hospital Santo André - Leiria,osm,w166576348,-8.794989,39.743710,matched by name: Hospital de Santo André
+Urgência do Hospital Senhora da Oliveira - Guimarães,osm,w134573230,-8.305686,41.442450,"matched by name: Hospital da Senhora da Oliveira Guimarães, EPE; the SNS coordinate is 5819 m away (geocoded to the town)"
+Urgência do Hospital Sousa Martins - Guarda,osm,r2156564,-7.275680,40.531883,matched by name: Parque da Saúde da Guarda
+Urgência do Hospital São Bernardo - Setúbal,osm,r15697749,-8.880410,38.528865,"matched by name: Centro Hospitalar de Setúbal, EPE - Hospital de São Bernardo"
+Urgência do Hospital São Francisco Xavier,osm,w115235575,-9.217893,38.707063,matched by name: Hospital São Francisco Xavier
+Urgência do Hospital São José - Lisboa,osm,w97822055,-9.137945,38.718199,"Hospital de São José (the hospital area, not the outpatient node)"
+Urgência do Hospital São João - Porto,osm,w36362332,-8.601198,41.181060,automatic match was a USF; Centro Hospitalar Universitário de São João
+Urgência do Hospital São João de Deus - Vila Nova de Famalicão,osm,w118467672,-8.522527,41.412790,automatic match was a physiotherapy clinic; Hospital de Famalicão
+Urgência do Hospital São Sebastião - Santa Maria da Feira,osm,w155977438,-8.546903,40.930279,matched by name: Hospital de São Sebastião
+Urgência do Hospital São Teotónio - Viseu,osm,w567956450,-7.906457,40.650327,matched by name: Hospital de São Teotónio
+Urgência do Hospital Vila Franca de Xira,osm,w232209608,-8.985244,38.977547,matched by name: Hospital de Vila Franca de Xira
+Urgência do Hospital de Braga,osm,w309605882,-8.399162,41.567494,matched by name: Hospital de Braga
+Urgência do Hospital de Cascais Dr. José de Almeida,osm,w173078954,-9.418493,38.730085,matched by name: Hospital de Cascais Dr. José de Almeida
+Urgência do Hospital de Faro,osm,w182876161,-7.928716,37.024564,matched by name: Centro Hospitalar e Universitário do Algarve-Hospital de Faro
+Urgência do Hospital de Portimão,osm,r6452262,-8.539303,37.155453,matched by name: Centro Hospitalar e Universitário do Algarve-Hospital de Portimão
+Urgência do Hospital de Santo António,osm,w26120268,-8.619098,41.147065,matched by name: Hospital de Santo António
+Urgência do Hospital do Litoral Alentejano - Santiago do Cacém,osm,w195909949,-8.732246,38.040199,matched by name: Hospital do Litoral Alentejano
+Urgência dos Hospitais da Universidade de Coimbra,osm,w279668688,-8.408491,40.219934,matched by name: Hospitais da Universidade de Coimbra - Blocos de Celas
