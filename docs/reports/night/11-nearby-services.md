@@ -198,7 +198,7 @@ Wrangler was already logged in, so `npm run deploy:preview` ran. It repeated the
 
 ## Release checklist for Mike
 
-1. Review the branch (`git log main..nearby-services`, 11 commits), DATA.md and `data/services/sns_urgencias.csv` (the 84 emergency rows, especially the 3 `position=sns` rows and SUB Estremoz).
+1. Review the branch (`git log main..nearby-services`, 10 commits incl. this fix), DATA.md and `data/services/sns_urgencias.csv` (the 84 emergency rows, especially the 3 `position=sns` rows and SUB Estremoz).
 2. On a fresh checkout: `uv sync && uv run make services` (downloads the 430 MB extract; ~3 min, 5.5 GiB RAM) so `web/public/services/` exists; `node web/scripts/check_landcheck.mjs` must say "ok" for the services grid.
 3. Run `cd web && npm run test:all`.
 4. The preview is already up at https://preview.pnct-map.pages.dev (re-run `npm run deploy:preview` after any change). Check on the phone: a parish panel, a land check in the countryside, "show on the map", the overlay and the "?" text in PT.
