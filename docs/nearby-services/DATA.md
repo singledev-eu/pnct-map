@@ -62,9 +62,11 @@ The export is a join of services and valências, and the join is broken in place
 its id; `sns` = the official coordinate kept), and a note. Automatic matching (name tokens + distance,
 `build_services` does not redo it) picked a wrong object 11 times (private hospitals for Albufeira, Santo Tirso
 and Bragança; a military hospital for Coimbra-Covões; a USF for São João; a physiotherapy clinic for
-Famalicão…); these were replaced by hand. Three rows keep the SNS coordinate (SUB Albufeira, SUB Loulé,
-SUB Lagos): no OSM object could be confirmed as the service, and SUB Loulé and SUB Estremoz are **not
-cross-checked** against a second source.
+Famalicão…); these were replaced by hand. In November 2026 the last uncertain rows (SUB Loulé, Lagos,
+Albufeira and Estremoz) were checked against at least two independent sources each and placed on their OSM
+buildings ([sub-verification-2026-11](../reports/sub-verification-2026-11.md)). SUB Lagos moved to the
+Hospital Terras do Infante on 2022-07-05; the SNS export (May 2023) still gives the old hospital's address and
+coordinate, so a row's official address is not proof of where a service is today.
 
 ## OSM tag rules (`scripts/services_config.py`)
 

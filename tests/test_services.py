@@ -289,6 +289,29 @@ def test_sns_urgencias_csv():
         assert r["note"]
 
 
+
+# The four SUB positions verified in November 2026 (docs/reports/sub-verification-2026-11.md): the OSM object,
+# its centre, and the coordinate before (the SNS export's, or the earlier pick) that they must have left.
+VERIFIED_SUBS = {
+    "SUB Loulé": ("w1060369440", -8.012607, 37.145526, (-8.017458, 37.141949)),  # Centro de Saúde de Loulé
+    "SUB do Hospital de Lagos": ("w93276413", -8.682069, 37.097885, (-8.670200, 37.099600)),  # H. Terras do Infante
+    "SUB Albufeira": ("w760612149", -8.254972, 37.098197, (-8.255000, 37.098000)),  # Centro de Saúde de Albufeira
+    "SUB Estremoz": ("n9723349238", -7.585896, 38.848688, None),  # UCSP Estremoz, unchanged, now cross-checked
+}
+
+
+def test_verified_sub_positions():
+    with cfg.URGENCIAS_CSV.open(encoding="utf-8") as f:
+        rows = {r["sns_name"]: r for r in csv.DictReader(f)}
+    for name, (ref, lon, lat, before) in VERIFIED_SUBS.items():
+        r = rows[name]
+        assert (r["position"], r["osm"]) == ("osm", ref), name
+        assert (float(r["lon"]), float(r["lat"])) == (lon, lat), name
+        assert "verified 2026-11" in r["note"], name
+        if before:
+            assert haversine(lon, lat, *before) > 20, name  # moved off the old point
+
+
 # ---- built outputs ------------------------------------------------------------------------------------
 
 BUILT = cfg.OUT_WEB.exists() and cfg.META_JSON.exists()
@@ -394,3 +417,13 @@ def test_grid_reads_like_parish_results(web):
             assert f < len(web["facilities"][cat]["name"])
     # The Atlantic: no cell.
     assert bs.read_grid(GRID_DIR, META["grid"], *to3763.transform(-10.5, 39.5)) is None
+
+
+@needs_build
+def test_verified_sub_positions_built():
+    """The app's data carries the verified points (4 decimals, ~10 m)."""
+    data = json.loads(cfg.OUT_WEB.read_text(encoding="utf-8"))
+    em = data["facilities"]["emergency"]
+    at = {n: (em["lon"][i], em["lat"][i]) for i, n in enumerate(em["name"])}
+    for name, (_, lon, lat, _before) in VERIFIED_SUBS.items():
+        assert haversine(lon, lat, *at[name]) < 10, name

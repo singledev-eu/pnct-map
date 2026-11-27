@@ -100,9 +100,9 @@
   "station": []
  },
  "sizes": {
-  "services_json_bytes": 880885,
+  "services_json_bytes": 880889,
   "grid_files": 419,
-  "grid_bytes": 2341319
+  "grid_bytes": 2341132
  },
  "validation": {
   "detour_p5_p50_p95": {
@@ -112,7 +112,7 @@
     1.98
    ],
    "emergency": [
-    1.14,
+    1.15,
     1.4,
     1.99
    ],
@@ -1677,11 +1677,11 @@
  },
  "timings_s": {
   "caop": 1.6,
-  "pois": 42.4,
-  "roads": 0.4,
-  "graph": 21.6,
-  "routing": 40.3,
-  "total": 108.4
+  "pois": 40.4,
+  "roads": 0.6,
+  "graph": 20.5,
+  "routing": 38.7,
+  "total": 103.8
  },
- "peak_rss_mib": 4157
+ "peak_rss_mib": 3682
 }

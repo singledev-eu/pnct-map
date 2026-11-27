@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+### For users
+
+- **Nearby services, emergency positions checked:** four SNS basic emergency services (SUB) were verified against at least two independent sources each. SUB Lagos is now at the Hospital Terras do Infante (Avenida Dom Sebastião), where it has worked since July 2022, not at the old hospital in the historic centre (about 1 km away). SUB Loulé is on the Centro de Saúde de Loulé (about 600 m from the official coordinate), and SUB Albufeira on the Centro de Saúde de Albufeira. SUB Estremoz was confirmed as operating and stays where it was. The nearest emergency service changed for 38 parishes and 6 concelhos ([report](docs/reports/sub-verification-2026-11.md)).
+
+### Infrastructure
+
+- README "Before deploying": a fresh checkout needs `uv run make services` (and `make landcheck`) before `npm run deploy`; the deploy's refusal message now says so and names the command.
+- Tests for the four verified positions: in the curated CSV and the built data (pytest), and on the rendered overlay (e2e).
+
 ## 0.12.0 (2026-11-27)
 
 ### For users

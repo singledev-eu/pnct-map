@@ -1,13 +1,13 @@
 sns_name,position,osm,lon,lat,note
-SUB Albufeira,sns,,-8.255000,37.098000,"automatic match was a private hospital; SNS coordinate is at the Albufeira health centre (USF Sol Nascente, 15 m)"
+SUB Albufeira,osm,w760612149,-8.254972,37.098197,"Centro de Saúde de Albufeira building (Urbanização dos Caliços): SNS export, CHUA SUB page and ARS Algarve agree; automatic match was a private hospital (verified 2026-11, docs/reports/sub-verification-2026-11.md)"
 SUB Alcácer do Sal,osm,n9723988091,-8.509929,38.376101,matched by name: UCSP Alcácer do Sal
 SUB Algueirão Mem-Martins,osm,w263486826,-9.351807,38.790222,"OSM 'Serviço de Urgência Básica (SUB)', 78 m from the SNS coordinate"
 SUB Arganil,osm,w889290629,-8.054444,40.215836,matched by name: Centro de Saúde de Arganil
 SUB Arouca,osm,n14346486700,-8.254432,40.930164,OSM 'Serviço de Urgência Básica de Arouca' at the health centre
 SUB Castro Verde,osm,n9744154705,-8.084054,37.702328,matched by name: UCSP Castro Verde
 SUB Cinfães,osm,w108129444,-8.091310,41.074029,matched by name: Centro de Atendimento Permanente Cinfães (Hospital)
-SUB Estremoz,osm,n9723349238,-7.585896,38.848688,UCSP Estremoz (health centre); not cross-checked against a second source
-SUB Loulé,sns,,-8.017458,37.141949,SNS coordinate kept: no OSM object could be confirmed as the SUB; not cross-checked
+SUB Estremoz,osm,n9723349238,-7.585896,38.848688,"UCSP Estremoz in the Centro de Saúde (Av. 9 de Abril); operating 24 h per the Estremoz council minutes of 2026-08-19 and the ULS Alentejo Central tender for 2026 (verified 2026-11, docs/reports/sub-verification-2026-11.md)"
+SUB Loulé,osm,w1060369440,-8.012607,37.145526,"Centro de Saúde de Loulé building (Av. Eng. Laginha Serafim): SNS export address, ARS Algarve and centrosaude.pt agree; SNS coordinate was 590 m off (verified 2026-11, docs/reports/sub-verification-2026-11.md)"
 SUB Mogadouro,osm,n9874655283,-6.711838,41.342908,matched by name: UCSP Mogadouro
 SUB Moimenta da Beira,osm,n9828362587,-7.611241,40.972223,matched by name: UCSP Moimenta da Beira
 SUB Montalegre,osm,n9860233319,-7.782408,41.830808,UCSP Montalegre (health centre)
@@ -32,7 +32,7 @@ SUB do Hospital São Gonçalo - Amarante,osm,w390106556,-8.079609,41.301204,matc
 SUB do Hospital São José - Fafe,osm,w263733952,-8.169639,41.449607,matched by name: Hospital de Fafe
 SUB do Hospital São Miguel - Oliveira de Azeméis,osm,w142128294,-8.471781,40.841283,matched by name: Hospital de São Miguel
 SUB do Hospital São Pedro Gonçalves Telmo - Peniche,osm,w131582991,-9.382794,39.363450,matched by name: Hospital de Peniche
-SUB do Hospital de Lagos,sns,,-8.670200,37.099600,SNS coordinate kept (68 m from the hospital area); no OSM hospital object found
+SUB do Hospital de Lagos,osm,w93276413,-8.682069,37.097885,"moved to Hospital Terras do Infante (Av. Dom Sebastião) on 2022-07-05 per Correio de Lagos and Hospitais Online; the SNS export (May 2023) still has the old hospital (verified 2026-11, docs/reports/sub-verification-2026-11.md)"
 SUB do Hospital de Pombal,osm,w153954949,-8.625059,39.917407,matched by name: Hospital Distrital de Pombal
 SUB do Hospital de Santa Luzia de Elvas,osm,w1051147716,-7.163073,38.875443,"matched by name: Unidade Local de Saúde do Norte Alentejano, EPE - Hospital de Santa Luzia"
 SUB do Hospital de Santa Maria Maior,osm,w104555893,-8.615963,41.533301,matched by name: Hospital de Santa Maria Maior

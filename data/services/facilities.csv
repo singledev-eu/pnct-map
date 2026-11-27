@@ -952,7 +952,7 @@ health,949,Unidade de Saúde Familiar Infante Dom Henrique,-7.915264,40.659211,1
 health,950,USF Casa das Bocas,-7.908774,40.657452,1823,w776975771,32
 health,951,Centro de Saúde de Vouzela,-8.113554,40.722279,1824,w307092977,29
 health,952,Extensão de Saúde de Cambra,-8.158529,40.686545,1824,w521842260,27
-emergency,0,SUB Albufeira,-8.255000,37.098000,0801,,20
+emergency,0,SUB Albufeira,-8.254972,37.098197,0801,w760612149,19
 emergency,1,SUB Alcácer do Sal,-8.509929,38.376101,1501,n9723988091,28
 emergency,2,SUB Algueirão Mem-Martins,-9.351807,38.790222,1111,w263486826,30
 emergency,3,SUB Arganil,-8.054444,40.215836,0601,w889290629,15
@@ -960,7 +960,7 @@ emergency,4,SUB Arouca,-8.254432,40.930164,0104,n14346486700,7
 emergency,5,SUB Castro Verde,-8.084054,37.702328,0206,n9744154705,24
 emergency,6,SUB Cinfães,-8.091310,41.074029,1804,w108129444,15
 emergency,7,SUB Estremoz,-7.585896,38.848688,0704,n9723349238,24
-emergency,8,SUB Loulé,-8.017458,37.141949,0808,,36
+emergency,8,SUB Loulé,-8.012607,37.145526,0808,w1060369440,17
 emergency,9,SUB Mogadouro,-6.711838,41.342908,0408,n9874655283,25
 emergency,10,SUB Moimenta da Beira,-7.611241,40.972223,1807,n9828362587,33
 emergency,11,SUB Montalegre,-7.782408,41.830808,1706,n9860233319,22
@@ -985,7 +985,7 @@ emergency,29,SUB do Hospital São Gonçalo - Amarante,-8.079609,41.301204,1301,w
 emergency,30,SUB do Hospital São José - Fafe,-8.169639,41.449607,0307,w263733952,54
 emergency,31,SUB do Hospital São Miguel - Oliveira de Azeméis,-8.471781,40.841283,0113,w142128294,27
 emergency,32,SUB do Hospital São Pedro Gonçalves Telmo - Peniche,-9.382794,39.363450,1014,w131582991,42
-emergency,33,SUB do Hospital de Lagos,-8.670200,37.099600,0807,,3
+emergency,33,SUB do Hospital de Lagos,-8.682069,37.097885,0807,w93276413,38
 emergency,34,SUB do Hospital de Pombal,-8.625059,39.917407,1015,w153954949,28
 emergency,35,SUB do Hospital de Santa Luzia de Elvas,-7.163073,38.875443,1207,w1051147716,15
 emergency,36,SUB do Hospital de Santa Maria Maior,-8.615963,41.533301,0302,w104555893,90

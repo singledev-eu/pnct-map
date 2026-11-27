@@ -156,3 +156,33 @@ test("phone: the rows fit the bottom sheet", async ({ browser }) => {
   expect(box.x + box.width).toBeLessThanOrEqual(375);
   await context.close();
 });
+
+// The four SUB positions verified in November 2026 (docs/reports/sub-verification-2026-11.md): the overlay
+// draws an emergency dot on the verified building, and none is left at the old point.
+const VERIFIED_SUBS: { name: string; at: [number, number]; before?: [number, number] }[] = [
+  { name: "SUB Loulé", at: [-8.012607, 37.145526], before: [-8.017458, 37.141949] },
+  { name: "SUB do Hospital de Lagos", at: [-8.682069, 37.097885], before: [-8.6702, 37.0996] },
+  { name: "SUB Albufeira", at: [-8.254972, 37.098197] },
+  { name: "SUB Estremoz", at: [-7.585896, 38.848688] },
+];
+
+for (const sub of VERIFIED_SUBS) {
+  test(`the overlay draws ${sub.name} at its verified position`, async ({ page }) => {
+    await page.goto(`/#map=15/${sub.at[1]}/${sub.at[0]}&sv=1`);
+    await waitForParishes(page);
+    await expect(page.locator("body")).toHaveAttribute("data-services", "on");
+    /** Metres from a point to the nearest rendered emergency dot (Infinity: none drawn). */
+    const nearest = (p: [number, number]) =>
+      page.evaluate(([lon, lat]) => {
+        const map = window.pnctMap;
+        const dots = map.queryRenderedFeatures({ layers: ["services-points"] }).filter((f: any) => f.properties.cat === "emergency");
+        const m = (a: number[]) => Math.hypot((a[0] - lon) * 111_320 * Math.cos((lat * Math.PI) / 180), (a[1] - lat) * 110_574);
+        return Math.min(Infinity, ...dots.map((f: any) => m(f.geometry.coordinates)));
+      }, p);
+    await expect.poll(() => nearest(sub.at), { timeout: 15_000 }).toBeLessThan(15); // the data has 4 decimals (~10 m)
+    if (sub.before) {
+      await page.evaluate(([lon, lat]) => window.pnctMap.jumpTo({ center: [lon, lat], zoom: 15 }), sub.before);
+      await expect.poll(() => nearest(sub.before!), { timeout: 15_000 }).toBeGreaterThan(300);
+    }
+  });
+}
