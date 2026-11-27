@@ -144,6 +144,18 @@ Playwright retries a failed test once. A test that passes only on the retry is r
 
 For throttled load timing, start the preview server (`npm run preview` in one terminal), then run `node scripts/perf.mjs` from `web/` in another. Results from earlier runs are in `docs/perf/`.
 
+## Before deploying
+
+The land check and nearby-services files in `web/public/` are gitignored, so a fresh checkout doesn't have them, and `npm run deploy` refuses to run without them. Build them once from the repo root:
+
+```sh
+uv sync
+uv run make services    # nearby-services grid (downloads the ~430 MB OSM extract, ~3 min)
+uv run make landcheck   # land check tiles and cells
+```
+
+`node web/scripts/check_landcheck.mjs` should then print "ok" for each part.
+
 ## Deploy
 
 Live at https://pnct.singledev.eu (Pages project `pnct-map`, production branch `main`, direct upload).

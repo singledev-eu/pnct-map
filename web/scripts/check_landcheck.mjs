@@ -19,7 +19,7 @@ const BUILD = { tiles: "landcheck", cells: "landcheck", "services grid": "servic
 for (const [part, m] of Object.entries({ tiles: meta.hazard.tiles, cells: meta.hazard.cells, "services grid": services.grid })) {
   const dir = join(publicDir, m.dir);
   if (!existsSync(dir)) {
-    console.error(`land check ${part}: ${m.dir} is missing; run \`uv run make ${BUILD[part]}\` in the repo root`);
+    console.error(`land check ${part}: ${m.dir} is missing (gitignored, so a fresh checkout doesn't have it). Run \`uv run make ${BUILD[part]}\` in the repo root before deploying.`);
     failed = true;
     continue;
   }
